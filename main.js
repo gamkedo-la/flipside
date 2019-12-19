@@ -10,9 +10,28 @@ document.body.appendChild( stats.dom );
 window.c=document.getElementById("c");
 window.ctx = c.getContext('2d');
 
-// canvas is 4x pixel scale, 320x180. 
-c.width = 1280 * .25;
-c.height = 720 * .25;
+// canvas is 2x pixel scale, 640x360. 
+c.width = 1280 * .5;
+c.height = 720 * .5;
+
+window.world = {
+    widthInTiles: 100,
+    heightInTiles: 100,
+    tileSize: 8,
+    data: [],
+    pos: []
+}
+
+const player = {
+    x: 100,
+    y: 100,
+    diameter: 4,
+
+}
+
+for(let i = 0; i < world.widthInTiles * world.heightInTiles; i++){
+    world.data[i] = Math.round( Math.random() );
+}
 
 //initialize  event listeners-------------------------------------------------
 
@@ -22,13 +41,15 @@ window.addEventListener('blur',     function (event) { paused = true; }, false);
 window.addEventListener('focus',    function (event) { paused = false; }, false);
 
 
-
 //game loop--------------------------------------------------------------------
 
-const   now, 
-        dt      = 0,
-        last    = performance.now();
+var     dt      = 0,
+        last    = performance.now(),
+        elapsed = 0,
         step    = 1/60; //60 frapes per second.
+
+var     now,
+        paused = false;
 
 function frame(){
     stats.begin();
@@ -53,10 +74,32 @@ function frame(){
 
 requestAnimationFrame(frame);
 
+//game loop steps--------------------------------------------------------------------
+
+
 function update(dt){
+    elapsed += dt;
     //update all the things
 }
 
 function render(dt){
     //draw all the things
+    clearScreen('black');
+    //simplest possible map data render
+    ctx.fillStyle = 'white';
+    world.pos = [];
+    for(let i = 0; i < world.data.length; i++){
+
+        let x = (i % world.widthInTiles) * world.tileSize;
+        let y = Math.floor(i / world.heightInTiles)*world.tileSize;
+        let s = world.tileSize;
+        world.pos.push({x: x, y: y});
+
+        if(world.data[i] == 0)ctx.fillRect(x, y, s, s);
+    }
+    //red square spinny
+    ctx.fillStyle = 'red';
+    ctx.fillRect(c.width/2 + Math.sin(elapsed*5)*50, c.height/2+Math.cos(elapsed*5)*50, 16,16);
+    //console.log(elapsed);
 }
+
