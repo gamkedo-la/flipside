@@ -1,5 +1,5 @@
 import Stats from './src/js/stats.module.js';
-import { Key } from './src/js/util.js';
+import { Key, lerp } from './src/js/util.js';
 import { clearScreen } from './src/js/graphics.js'
 
 const stats = new Stats();
@@ -17,15 +17,17 @@ c.height = 720 * .5;
 window.world = {
     widthInTiles: 100,
     heightInTiles: 100,
-    tileSize: 8,
+    tileSize: 16,
     data: [],
-    pos: []
+    
 }
 
 const player = {
     x: 100,
     y: 100,
-    diameter: 4,
+    targetX: 100,
+    targetY: 100,
+    diameter: 8,
 
 }
 
@@ -78,8 +80,20 @@ requestAnimationFrame(frame);
 
 
 function update(dt){
-    elapsed += dt;
     //update all the things
+    elapsed += dt;
+    
+
+    if(Key.justReleased(Key.LEFT) ){
+        player.targetX -= world.tileSize;
+    }
+    if(Key.justReleased(Key.RIGHT) ){
+        player.targetX += world.tileSize;
+    }
+    player.x = lerp(player.x, player.targetX, .2);
+
+    Key.update();
+    
 }
 
 function render(dt){
@@ -87,13 +101,13 @@ function render(dt){
     clearScreen('black');
     //simplest possible map data render
     ctx.fillStyle = 'white';
-    world.pos = [];
+    
     for(let i = 0; i < world.data.length; i++){
 
         let x = (i % world.widthInTiles) * world.tileSize;
         let y = Math.floor(i / world.heightInTiles)*world.tileSize;
         let s = world.tileSize;
-        world.pos.push({x: x, y: y});
+        
 
         if(world.data[i] == 0)ctx.fillRect(x, y, s, s);
     }
@@ -101,5 +115,8 @@ function render(dt){
     ctx.fillStyle = 'red';
     ctx.fillRect(c.width/2 + Math.sin(elapsed*5)*50, c.height/2+Math.cos(elapsed*5)*50, 16,16);
     //console.log(elapsed);
+
+    ctx.fillStyle = '#4f0';
+    ctx.fillRect(player.x-player.diameter, player.y-player.diameter, player.diameter*2, player.diameter*2)
 }
 
