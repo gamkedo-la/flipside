@@ -26,7 +26,7 @@ export function rect(x,y,width,height){
 
 export function pset(x,y){
     //assumes global ctx
-    ctx.fillRect(x,y, .01, .01);
+    ctx.fillRect(x,y, 1, 1);
 }
 
 export function onScreen(position){

@@ -62,25 +62,5 @@
         return v0*(1-t)+v1*t
     }
 
-    export function HashMap(cellSize=50){
-        this.cellSize = cellSize;
-        return this;
-    }
-
-    HashMap.prototype._key = function(position){
-        let cellSize = this.cellSize;
-        return `${Math.floor(position.x/cellSize)*cellSize},${Math.floor(position.x/cellSize)*cellSize}`
-    }
-
-    HashMap.prototype.add = function(entity){
-        let key = this._key({ x:entity.components.position.x, y:entity.components.position.y } );
-        if(!this[key]) {this[key] = []}
-
-        this[key].push(entity);
-    }
-    HashMap.prototype.getList = function(x,y){
-        
-        return this[ this._key( { x:x, y:y } ) ];
-    }
-
+   
     

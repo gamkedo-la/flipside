@@ -1,0 +1,18 @@
+body {
+    margin: 8px;
+    padding: 0;
+    background-color: rgb(60, 60, 60);
+    color: white;
+    background: #111;
+}
+
+#c {
+    display: block;
+    background-color: black;
+    margin: 0 auto;
+    width: 1280px;
+    height: 720px;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+
+}
