@@ -18,15 +18,16 @@ window.world = {
     widthInTiles: 100,
     heightInTiles: 100,
     tileSize: 16,
+    flipswitch: false,
     data: [],
     
 }
 
 const player = {
-    x: 100,
-    y: 100,
-    targetX: 100,
-    targetY: 100,
+    x: 168,
+    y: 168,
+    targetX: 168,
+    targetY: 168,
     diameter: 8,
 
 }
@@ -83,14 +84,23 @@ function update(dt){
     //update all the things
     elapsed += dt;
     
-
+    if(Key.justReleased(Key.x)){
+        world.flipswitch = true;
+    }
     if(Key.justReleased(Key.LEFT) ){
         player.targetX -= world.tileSize;
     }
     if(Key.justReleased(Key.RIGHT) ){
         player.targetX += world.tileSize;
     }
+    if(Key.justReleased(Key.DOWN) ){
+        player.targetY += world.tileSize;
+    }
+    if(Key.justReleased(Key.UP) ){
+        player.targetY -= world.tileSize;
+    }
     player.x = lerp(player.x, player.targetX, .2);
+    player.y = lerp(player.y, player.targetY, .2);
 
     Key.update();
     
@@ -108,9 +118,11 @@ function render(dt){
         let y = Math.floor(i / world.heightInTiles)*world.tileSize;
         let s = world.tileSize;
         
+        if(world.flipswitch)world.data[i] = !world.data[i]
 
         if(world.data[i] == 0)ctx.fillRect(x, y, s, s);
     }
+    world.flipswitch = false;
     //red square spinny
     ctx.fillStyle = 'red';
     ctx.fillRect(c.width/2 + Math.sin(elapsed*5)*50, c.height/2+Math.cos(elapsed*5)*50, 16,16);
