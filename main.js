@@ -11,13 +11,13 @@ window.c=document.getElementById("c");
 window.ctx = c.getContext('2d');
 
 // canvas is 2x pixel scale, 640x360. 
-c.width = 1280 * .5;
-c.height = 720 * .5;
+c.width = 1280 * .333;
+c.height = 720 * .333;
 
 window.world = {
     widthInTiles: 100,
     heightInTiles: 100,
-    tileSize: 16,
+    tileSize: 8,
     flipswitch: false,
     data: [],
     
@@ -28,7 +28,7 @@ const player = {
     y: 168,
     targetX: 168,
     targetY: 168,
-    diameter: 8,
+    diameter: 4,
 
 }
 

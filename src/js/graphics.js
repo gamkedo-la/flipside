@@ -46,6 +46,33 @@ export function onScreen(position){
   
 }
 
+export function makeMosaic(){ //totally stealing from deepnight here.
+    var c = document.createElement('canvas');
+    var ctx = c.getContext('2d');
+    c.width = Const.GAMEWIDTH * Const.SCALE;
+    c.height = Const.GAMEHEIGHT * Const.SCALE;
+    ctx.fillStyle = "#808080";
+    ctx.fillRect(0,0, c.width, c.height);
+    for(var w = 0; w <= Const.GAMEWIDTH; w++){
+
+        for(var h = 0; h <= Const.GAMEHEIGHT; h++){
+
+            ctx.fillStyle = "#e0e0e0";
+            ctx.fillRect(w*Const.SCALE, h*Const.SCALE, 2, 2);
+
+            ctx.fillStyle = "#707070";
+            ctx.fillRect(w*Const.SCALE, h*Const.SCALE + 2, 1, 1);
+
+            ctx.fillStyle = "#f8f8f8";
+            ctx.fillRect(w*Const.SCALE + 2, h*Const.SCALE, 1, 1);
+
+        }
+    }
+    return {canvas: c, context: ctx};
+
+
+}
+
 export const colors = [
     
 ]
