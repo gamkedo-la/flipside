@@ -1,7 +1,9 @@
 import Stats from './src/js/stats.module.js';
 import { Key, lerp } from './src/js/util.js';
 import { clearScreen } from './src/js/graphics.js'
+import World from './src/js/world.js';
 
+//initialize and show the FPS/mem use counter
 const stats = new Stats();
 stats.showPanel( 1 ); // 0: fps, 1: ms, 2: mb, 3+: custom
 document.body.appendChild( stats.dom );
@@ -10,18 +12,14 @@ document.body.appendChild( stats.dom );
 window.c=document.getElementById("c");
 window.ctx = c.getContext('2d');
 
-// canvas is 2x pixel scale, 640x360. 
+// canvas is 3x pixel scale, 427x240. 
 c.width = 1280 * .333;
 c.height = 720 * .333;
 
-window.world = {
-    widthInTiles: 100,
-    heightInTiles: 100,
-    tileSize: 8,
-    flipswitch: false,
-    data: [],
-    
-}
+
+window.world = new World({
+    widthInTiles: 100, heightInTiles: 100, tileSize: 8
+})
 
 const player = {
     x: 168,
@@ -29,11 +27,10 @@ const player = {
     targetX: 168,
     targetY: 168,
     diameter: 4,
-
 }
 
-for(let i = 0; i < world.widthInTiles * world.heightInTiles; i++){
-    world.data[i] = Math.round( Math.random() );
+for(let i = 0; i < world.data.length; i++){
+    world.data[i] = Math.round(Math.random());
 }
 
 //initialize  event listeners-------------------------------------------------
