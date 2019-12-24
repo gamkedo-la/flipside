@@ -28,10 +28,10 @@ function Camera(xView, yView, canvasWidth, canvasHeight, worldWidth, worldHeight
     this.followed = null;
     
     // rectangle that represents the viewport
-    this.viewportRect = new G.Rectangle(this.xView, this.yView, this.wView, this.hView);				
+    this.viewportRect ={ x:this.xView, y:this.yView, w:this.wView, h:this.hView };				
                         
     // rectangle that represents the world's boundary (room's boundary)
-    this.worldRect = new G.Rectangle(0, 0, worldWidth, worldHeight);			
+    this.worldRect = {x:0, y:0, w:worldWidth, h:worldHeight};			
 }
 
 // gameObject needs to have "x" and "y" properties (as world(or room) position)
@@ -50,9 +50,9 @@ Camera.prototype.update = function()
         if(this.axis == AXIS.HORIZONTAL || this.axis == AXIS.BOTH)
         {		
             // moves camera on horizontal axis based on followed object position
-            if(this.followed.xx - this.xView  + this.xDeadZone > this.wView)
+            if(this.followed.pos.x - this.xView  + this.xDeadZone > this.wView)
                 this.xView = this.followed.xx - (this.wView - this.xDeadZone);
-            else if(this.followed.xx  - this.xDeadZone < this.xView)
+            else if(this.followed.pos.y  - this.xDeadZone < this.xView)
                 this.xView = this.followed.xx  - this.xDeadZone;
             
         }
@@ -68,20 +68,20 @@ Camera.prototype.update = function()
     }		
     
     // update viewportRect
-    this.viewportRect.set(this.xView, this.yView);
+   // this.viewportRect.set(this.xView, this.yView);
     
     // don't let camera leaves the world's boundary
-    if(!this.viewportRect.within(this.worldRect))
-    {
-        if(this.viewportRect.left < this.worldRect.left)
-            this.xView = this.worldRect.left;
-        if(this.viewportRect.top < this.worldRect.top)					
-            this.yView = this.worldRect.top;
-        if(this.viewportRect.right > this.worldRect.right)
-            this.xView = this.worldRect.right - this.wView;
-        if(this.viewportRect.bottom > this.worldRect.bottom)					
-            this.yView = this.worldRect.bottom - this.hView;
-    }
+    // if(!this.viewportRect.within(this.worldRect))
+    // {
+    //     if(this.viewportRect.left < this.worldRect.left)
+    //         this.xView = this.worldRect.left;
+    //     if(this.viewportRect.top < this.worldRect.top)					
+    //         this.yView = this.worldRect.top;
+    //     if(this.viewportRect.right > this.worldRect.right)
+    //         this.xView = this.worldRect.right - this.wView;
+    //     if(this.viewportRect.bottom > this.worldRect.bottom)					
+    //         this.yView = this.worldRect.bottom - this.hView;
+    // }
     
 }	
 

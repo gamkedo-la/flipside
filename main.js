@@ -1,8 +1,13 @@
 import Stats from './src/js/stats.module.js';
-import { Key, lerp } from './src/js/util.js';
+import { Key, lerp, loadImages } from './src/js/util.js';
 import { clearScreen } from './src/js/graphics.js'
 import World from './src/js/world.js';
 
+const images = [
+    //image loader assumes .png and appends it. all images should be in /src/img/.
+    'tiles'
+]
+//import Camera from './src/js/camera.js';
 //initialize and show the FPS/mem use counter
 const stats = new Stats();
 stats.showPanel( 1 ); // 0: fps, 1: ms, 2: mb, 3+: custom
@@ -22,15 +27,27 @@ window.world = new World({
 })
 
 const player = {
-    x: 168,
-    y: 168,
+    pos: {
+        x: 168,
+        y: 168,
+    },
+    
     targetX: 168,
     targetY: 168,
     diameter: 4,
 }
 
-for(let i = 0; i < world.data.length; i++){
-    world.data[i] = Math.round(Math.random());
+//const camera = new Camera(0 ,0, c.width, c.height, world.widthInTiles * world.tileSize, world.heightInTiles * world.tileSize )
+
+// for(let i = 0; i < world.data.length; i++){
+//     world.data[i] = Math.round(Math.random());
+// }
+for(let i = 0; i < 30; i++){
+    let tx = Math.floor( Math.random() * world.widthInTiles );
+    let ty = Math.floor( Math.random() * world.heightInTiles );
+    let w = Math.floor( Math.random() * 5 + 5);
+    let h = Math.floor( Math.random() * 5 + 5);
+    world.tileFillRect({tx: tx, ty: ty, width: w, height: h, value: 1});
 }
 
 //initialize  event listeners-------------------------------------------------
@@ -72,7 +89,7 @@ function frame(){
     requestAnimationFrame(frame);
 }
 
-requestAnimationFrame(frame);
+
 
 //game loop steps--------------------------------------------------------------------
 
@@ -82,7 +99,9 @@ function update(dt){
     elapsed += dt;
     
     if(Key.justReleased(Key.x)){
-        world.flipswitch = true;
+        let tpos = world.pixelToTileGrid(player.pos)
+        tpos.x -= 2; tpos.y -= 2;
+        world.tileFillRect({tx:tpos.x, ty:tpos.y, width: 4, height: 4, value: 0})
     }
     if(Key.justReleased(Key.LEFT) ){
         player.targetX -= world.tileSize;
@@ -96,8 +115,8 @@ function update(dt){
     if(Key.justReleased(Key.UP) ){
         player.targetY -= world.tileSize;
     }
-    player.x = lerp(player.x, player.targetX, .2);
-    player.y = lerp(player.y, player.targetY, .2);
+    player.pos.x = lerp(player.pos.x, player.targetX, .2);
+    player.pos.y = lerp(player.pos.y, player.targetY, .2);
 
     Key.update();
     
@@ -106,6 +125,7 @@ function update(dt){
 function render(dt){
     //draw all the things
     clearScreen('black');
+    ctx.drawImage(img.tiles, 0,0);
     //simplest possible map data render
     ctx.fillStyle = 'white';
     
@@ -117,15 +137,21 @@ function render(dt){
         
         if(world.flipswitch)world.data[i] = !world.data[i]
 
-        if(world.data[i] == 0)ctx.fillRect(x, y, s, s);
+        if(world.data[i] == 1){
+            let tileindex = Math.floor( Math.random()*7 ) + 1;
+
+            ctx.fillRect(x, y, s, s);
+        }
     }
     world.flipswitch = false;
-    //red square spinny
-    ctx.fillStyle = 'red';
-    ctx.fillRect(c.width/2 + Math.sin(elapsed*5)*50, c.height/2+Math.cos(elapsed*5)*50, 16,16);
-    //console.log(elapsed);
-
     ctx.fillStyle = '#4f0';
-    ctx.fillRect(player.x-player.diameter, player.y-player.diameter, player.diameter*2, player.diameter*2)
+    ctx.fillRect(player.pos.x-player.diameter, player.pos.y-player.diameter, player.diameter*2, player.diameter*2)
 }
 
+//load assets, then start game
+
+loadImages(images, start);
+function start(img){
+    window.img = img;
+    requestAnimationFrame(frame);
+}

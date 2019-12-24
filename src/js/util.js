@@ -62,5 +62,21 @@
         return v0*(1-t)+v1*t
     }
 
+    export function loadImages(names, callback) {
+
+        var n,name,
+            result = {},
+            count  = names.length,
+            onload = function() { if (--count == 0) callback(result); };
+      
+        for(n = 0 ; n < names.length ; n++) {
+          name = names[n];
+          result[name] = document.createElement('img');
+          result[name].addEventListener('load', onload);
+          result[name].src = "/src/img/" + name + ".png";
+        }
+      
+      }
+
    
     

@@ -18,6 +18,7 @@ World.prototype.setTileAtPosition = function setTileAtPosition(pos={tx:0, ty:0},
     return this.data[this.widthInTiles*pos.ty + pos.tx] = value;
 }
 
+
 World.prototype.getIndexAtPosition = function getIndexAtPosition(pos={tx:0, ty:0}){
     return this.widthInTiles*pos.ty + pos.tx;
 }
@@ -26,6 +27,13 @@ World.prototype.pixelToTileIndex = function pixelToTileIndex(params = {x:0, y:0}
     let tx = Math.floor(params.x / this.tileSize);
     let ty = Math.floor(params.y / this.tileSize);
     return this.getIndexAtPosition({tx: tx, ty: ty});
+}
+
+World.prototype.pixelToTileGrid = function pixelToTileGrid(params = {x:0, y:0}){
+    return {
+            x: Math.floor(params.x / this.tileSize),
+            y: Math.floor(params.y / this.tileSize)
+            }
 }
 
 World.prototype.drawLine = function drawLine(params={
@@ -80,7 +88,7 @@ World.prototype.drawLine = function drawLine(params={
 
   }
 
-World.prototype.fillRect = function fillRect(params = {
+World.prototype.tileFillRect = function tileFillRect(params = {
     tx: 0, ty: 0, width: 1, height: 1, value: 1
 }){
     for(let i = params.ty; i <= params.ty + params.height; i++){
