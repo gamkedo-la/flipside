@@ -17,9 +17,9 @@ document.body.appendChild( stats.dom );
 window.c=document.getElementById("c");
 window.ctx = c.getContext('2d');
 
-// canvas is 3x pixel scale, 427x240. 
-c.width = 1280 * .333;
-c.height = 720 * .333;
+// canvas is 4x pixel scale, 320x180 
+c.width = 1280 * .25;
+c.height = 720 * .25;
 
 
 window.world = new World({
@@ -47,7 +47,7 @@ for(let i = 0; i < 30; i++){
     let ty = Math.floor( Math.random() * world.heightInTiles );
     let w = Math.floor( Math.random() * 5 + 5);
     let h = Math.floor( Math.random() * 5 + 5);
-    world.tileFillRect({tx: tx, ty: ty, width: w, height: h, value: 1});
+    world.tileFillRect({tx: tx, ty: ty, width: w, height: h, value: 4 });
 }
 
 //initialize  event listeners-------------------------------------------------
@@ -129,19 +129,16 @@ function render(dt){
     //simplest possible map data render
     ctx.fillStyle = 'white';
     
-    for(let i = 0; i < world.data.length; i++){
+    for(let i = 0; i < (Math.floor(c.width/world.tileSize)); i++){
+        for(let j = 0; j < (Math.floor(c.height/world.tileSize)); j++){
+            //TODO: needs adjusted for camera view rectangle + padding
 
-        let x = (i % world.widthInTiles) * world.tileSize;
-        let y = Math.floor(i / world.heightInTiles)*world.tileSize;
-        let s = world.tileSize;
-        
-        if(world.flipswitch)world.data[i] = !world.data[i]
-
-        if(world.data[i] == 1){
-            let tileindex = Math.floor( Math.random()*7 ) + 1;
-
-            ctx.fillRect(x, y, s, s);
+            let flatIndex = j * world.widthInTiles + i
+            ctx.drawImage(img.tiles, world.data[flatIndex] * 8, 0, 8,8, i*8, j*8, 8,8)
         }
+        
+            //ctx.fillRect(x, y, s, s);
+        //}
     }
     world.flipswitch = false;
     ctx.fillStyle = '#4f0';
