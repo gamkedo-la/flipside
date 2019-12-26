@@ -186,6 +186,7 @@ function handleInput(dt){
     else if(Key.isDown(Key.UP)){
         player.input.up = true;
     }
+    
 
     if(Key.justReleased(Key.LEFT)){
         player.input.left = false;
