@@ -34,24 +34,38 @@ window.world = new World({
 
 const player = {
     pos: {
-        x: 10*world.tileSize,
-        y: 10*world.tileSize,
+        x: 50*world.tileSize,
+        y: 50*world.tileSize,
     },
+
+    maxVel: {
+        x: 2,
+        y: 2
+    },
+
+    accel: 2,
     
-    targetX: 10*world.tileSize,
-    targetY: 10*world.tileSize,
+    targetX: 50*world.tileSize,
+    targetY: 50*world.tileSize,
     diameter: 4,
 }
 
 //const camera = new Camera(0 ,0, c.width, c.height, world.widthInTiles * world.tileSize, world.heightInTiles * world.tileSize )
 
 //------fill the world with random rectangles/platforms made of tiles----------
+for(let i = 0; i < 200; i++){
+    let tx = Math.floor( Math.random() * world.widthInTiles );
+    let ty = Math.floor( Math.random() * world.heightInTiles );
+    let w = Math.floor( Math.random() * 5);
+    let h = Math.floor( Math.random() * 5);
+    world.tileFillRectRandom({tx: tx, ty: ty, width: w, height: h, rangeStart: 1, rangeEnd: 3 });
+}
 for(let i = 0; i < 30; i++){
     let tx = Math.floor( Math.random() * world.widthInTiles );
     let ty = Math.floor( Math.random() * world.heightInTiles );
     let w = Math.floor( Math.random() * 5 + 5);
     let h = Math.floor( Math.random() * 5 + 5);
-    world.tileFillRect({tx: tx, ty: ty, width: w, height: h, value: 4 });
+    world.tileFillRectRandom({tx: tx, ty: ty, width: w, height: h, rangeStart: 4, rangeEnd: 7 });
 }
 
 //initialize  event listeners-------------------------------------------------

@@ -103,7 +103,7 @@ World.prototype.tileFillRectRandom = function tileFillRectRandom(params = {
 }){
     for(let i = params.ty; i <= params.ty + params.height; i++){
         for(let j = params.tx; j <= params.tx + params.width; j++){
-            this.data[j * this.widthInTiles + i] = Math.floor( Math.random() * params.rangeEnd-params.rangeStart+1)
+            this.data[j * this.widthInTiles + i] = Math.floor( Math.random() * (params.rangeEnd-params.rangeStart) ) + params.rangeStart
         }
     }
 }
