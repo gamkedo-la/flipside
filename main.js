@@ -1,5 +1,5 @@
 import Stats from './src/js/stats.module.js';
-import { Key, lerp, loadImages } from './src/js/util.js';
+import { Key,loadImages } from './src/js/util.js';
 import { clearScreen } from './src/js/graphics.js'
 import World from './src/js/world.js';
 import player from './src/js/player.js';
@@ -166,6 +166,8 @@ function render(dt){
     
     ctx.fillStyle = '#4f0';
     ctx.fillRect(Math.floor(player.pos.x-player.width/2-view.x), Math.floor(player.pos.y-player.height/2-view.y), player.width, player.height)
+
+ 
 }
 
 
