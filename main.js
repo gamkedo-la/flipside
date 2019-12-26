@@ -2,6 +2,10 @@ import Stats from './src/js/stats.module.js';
 import { Key, lerp, loadImages } from './src/js/util.js';
 import { clearScreen } from './src/js/graphics.js'
 import World from './src/js/world.js';
+import player from './src/js/player.js';
+
+
+
 
 const images = [
     //image loader assumes .png and appends it. all images should be in /src/img/.
@@ -20,7 +24,7 @@ window.ctx = c.getContext('2d');
 c.width = 1280 * .25;
 c.height = 720 * .25;
 
-const view = {
+window.view = {
     x: 0, y: 0, w: c.width, h: c.height
 }
 
@@ -32,31 +36,9 @@ window.world = new World({
     widthInTiles: 100, heightInTiles: 100, tileSize: 8
 })
 
-window.player = {
-    pos: {
-        x: 50*world.tileSize,
-        y: 50*world.tileSize,
-    },
+player.pos.x = 50*8;
+player.pos.y = 50*8;
 
-    maxVel: {
-        x: 10,
-        y: 10
-    },
-
-    dx: 0,
-    dy: 0,
-    vx: 0, 
-    vy: 0,
-    
-    friction: 0.7,
-
-    accel: 7,
-    gravity: 1,
-    
-    targetX: 50*world.tileSize,
-    targetY: 50*world.tileSize,
-    diameter: 4,
-}
 
 //const camera = new Camera(0 ,0, c.width, c.height, world.widthInTiles * world.tileSize, world.heightInTiles * world.tileSize )
 
@@ -75,6 +57,7 @@ for(let i = 0; i < 30; i++){
     let h = Math.floor( Math.random() * 5 + 5);
     world.tileFillRectRandom({tx: tx, ty: ty, width: w, height: h, rangeStart: 4, rangeEnd: 7 });
 }
+    world.tileFillRect({tx: 0, ty: 0, width: 10, height: 30, value: 3})
 
 //initialize  event listeners-------------------------------------------------
 
@@ -82,6 +65,15 @@ window.addEventListener('keyup',    function (event) { Key.onKeyup(event); }, fa
 window.addEventListener('keydown',  function (event) { Key.onKeydown(event); }, false);
 window.addEventListener('blur',     function (event) { paused = true; }, false);
 window.addEventListener('focus',    function (event) { paused = false; }, false);
+
+
+//load assets, then start game-------------------------------------------------------------
+
+loadImages(images, start);
+function start(img){
+    window.img = img;
+    requestAnimationFrame(frame);
+}
 
 
 //game loop--------------------------------------------------------------------
@@ -123,63 +115,11 @@ function frame(){
 function update(dt){
     //update all the things
     elapsed += dt;
-    //---camera follow player-------------------------------
-    if(player.pos.x - view.x + deadZone.x > view.w){
-        view.x = player.pos.x - (view.w - deadZone.x)
-    }
-    if(player.pos.x - deadZone.x < view.x){
-        view.x = player.pos.x - deadZone.x
-    }
-    if(player.pos.y - view.y + deadZone.y > view.h){
-        view.y = player.pos.y -(view.h - deadZone.y)
-    }
-    if(player.pos.y - deadZone.y < view.y){
-        view.y = player.pos.y - deadZone.y 
-    }
+    
     //-------------------------------------------------------
-
-
-    //testing dynamic map stuffs. press X to knock a box-shaped hole in the world around you
-    if(Key.justReleased(Key.x)){
-        let tpos = world.pixelToTileGrid(player.pos)
-        tpos.x -= 2; tpos.y -= 2;
-        world.tileFillRect({tx:tpos.x, ty:tpos.y, width: 4, height: 4, value: 0})
-    }
-
-    //basic player movement.
-    if(Key.isDown(Key.LEFT) ){
-        player.vx -= player.accel;
-    }
-    else if(Key.isDown(Key.RIGHT) ){
-        player.vx += player.accel;
-    }
-    else(player.vx *= player.friction)
-
-    if(Key.isDown(Key.DOWN) ){
-        player.vy += player.accel;
-    }
-    else if(Key.isDown(Key.UP) ){
-        player.vy -= player.accel;
-    }
-    else(player.vy *= player.friction)
-    
-    
-    
-
-        
-    player.pos.x = player.pos.x + (dt * player.vx);
-    player.pos.y = player.pos.y + (dt * player.vy);
-
-    player.vx.clamp(-player.maxVel.x, player.maxVel.x);
-    player.vy.clamp(-player.maxVel.y, player.maxVel.y);
-    //player.dx = ( player.dx + (dt * player.vx) ).clamp( -player.maxVel.x, player.maxVel.x );
-   // player.dy = ( player.dy + (dt * player.vy) ).clamp( -player.maxVel.y, player.maxVel.y );
-
-    
-
-
-    
-
+    handleCamera(dt);
+    handleInput(dt);
+    player.update(dt, world);
     //Key needs updated so justReleased queue gets emptied at end of frame
     Key.update();
     
@@ -188,8 +128,6 @@ function update(dt){
 function render(dt){
     //draw all the things
     clearScreen('black');
-    //ctx.drawImage(img.tiles, 0,0);
-    ctx.fillStyle = 'white';
 
     //setup vars for render optimization. we only want to render tiles that would be visible in viewport.
     //tilepad to prevent 'blinking' at partial tile overlap at edges of screen.
@@ -210,8 +148,16 @@ function render(dt){
             let drawX =     Math.floor( i*8 - view.x),
                 drawY =     Math.floor(j*8 - view.y),
                 flatIndex = j * world.widthInTiles + i
+
             //todo: abtract out into tile draw function, maybe? -flipped and rotated tiles? 
-            ctx.drawImage(img.tiles, world.data[flatIndex] * 8, 0, 8,8, drawX, drawY,  8,8)
+            ctx.drawImage(
+                img.tiles, world.data[flatIndex] * world.tileSize,
+                0,
+                world.tileSize,
+                world.tileSize,
+                drawX,
+                drawY,
+                world.tileSize, world.tileSize)
         }
         
     }
@@ -219,16 +165,60 @@ function render(dt){
 
     
     ctx.fillStyle = '#4f0';
-    ctx.fillRect(Math.floor(player.pos.x-player.diameter-view.x), Math.floor(player.pos.y-player.diameter-view.y), player.diameter*2, player.diameter*2)
+    ctx.fillRect(Math.floor(player.pos.x-player.width/2-view.x), Math.floor(player.pos.y-player.height/2-view.y), player.width, player.height)
 }
 
-//load assets, then start game-------------------------------------------------------------
 
-loadImages(images, start);
-function start(img){
-    window.img = img;
-    requestAnimationFrame(frame);
+
+function handleInput(dt){
+
+    if(Key.isDown(Key.LEFT)){
+        player.input.left = true;
+    }
+    else if(Key.isDown(Key.RIGHT)){
+        player.input.right = true;
+    }
+    if(Key.isDown(Key.DOWN)){
+        player.input.down = true;
+    }
+    else if(Key.isDown(Key.UP)){
+        player.input.up = true;
+    }
+
+    if(Key.justReleased(Key.LEFT)){
+        player.input.left = false;
+    }
+    if(Key.justReleased(Key.RIGHT)){
+        player.input.right = false;
+    }
+    if(Key.justReleased(Key.UP)){
+        player.input.up = false;
+    }
+    if(Key.justReleased(Key.DOWN)){
+        player.input.down = false;
+    }
+
 }
+
+function handleCamera(dt){
+    //---camera follow player-------------------------------
+    if(player.pos.x - view.x + deadZone.x > view.w){
+        view.x = player.pos.x - (view.w - deadZone.x)
+    }
+    if(player.pos.x - deadZone.x < view.x){
+        view.x = player.pos.x - deadZone.x
+    }
+    if(player.pos.y - view.y + deadZone.y > view.h){
+        view.y = player.pos.y -(view.h - deadZone.y)
+    }
+    if(player.pos.y - deadZone.y < view.y){
+        view.y = player.pos.y - deadZone.y 
+    }
+
+    view.x = view.x.clamp(0, world.widthInTiles * world.tileSize - c.width);
+    view.y = view.y.clamp(0, world.heightInTiles * world.tileSize - c.height);
+}
+
 
 //Number utility functions------
 Number.prototype.clamp = function(min, max) {
