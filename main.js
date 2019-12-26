@@ -25,7 +25,7 @@ const view = {
 }
 
 const deadZone = {
-    x: 60, y: 60
+    x: 50, y: 50
 }
 
 window.world = new World({
@@ -34,12 +34,12 @@ window.world = new World({
 
 const player = {
     pos: {
-        x: 168,
-        y: 168,
+        x: 10*world.tileSize,
+        y: 10*world.tileSize,
     },
     
-    targetX: 168,
-    targetY: 168,
+    targetX: 10*world.tileSize,
+    targetY: 10*world.tileSize,
     diameter: 4,
 }
 
@@ -101,6 +101,22 @@ function frame(){
 function update(dt){
     //update all the things
     elapsed += dt;
+    //---camera follow player-------------------------------
+    if(player.pos.x - view.x + deadZone.x > view.w){
+        view.x = player.pos.x - (view.w - deadZone.x)
+    }
+    if(player.pos.x - deadZone.x < view.x){
+        view.x = player.pos.x - deadZone.x
+    }
+    if(player.pos.y - view.y + deadZone.y > view.h){
+        view.y = player.pos.y -(view.h - deadZone.y)
+    }
+    if(player.pos.y - deadZone.y < view.y){
+        view.y = player.pos.y - deadZone.y 
+    }
+    //-------------------------------------------------------
+
+
     //testing dynamic map stuffs. press X to knock a box-shaped hole in the world around you
     if(Key.justReleased(Key.x)){
         let tpos = world.pixelToTileGrid(player.pos)
@@ -121,24 +137,13 @@ function update(dt){
     if(Key.justReleased(Key.UP) ){
         player.targetY -= world.tileSize;
     }
-    player.pos.x = lerp(player.pos.x, player.targetX, .2);
-    player.pos.y = lerp(player.pos.y, player.targetY, .2);
+
+    //lerped for smooth move, but rounded for clean rendering.
+    player.pos.x = Math.round( lerp(player.pos.x, player.targetX, .2) );
+    player.pos.y = Math.round( lerp(player.pos.y, player.targetY, .2) );
 
 
-    //---camera follow player-------------------------------
-    if(player.pos.x - view.x + deadZone.x > view.w){
-        view.x = player.pos.x - (view.w - deadZone.x)
-    }
-    if(player.pos.x - deadZone.x < view.x){
-        view.x = player.pos.x - deadZone.x
-    }
-    if(player.pos.y - view.y + deadZone.y > view.h){
-        view.y = player.pos.y -(view.h - deadZone.y)
-    }
-    if(player.pos.y - deadZone.y < view.y){
-        view.y = player.pos.y - deadZone.y 
-    }
-    //-------------------------------------------------------
+    
 
     //Key needs updated so justReleased queue gets emptied at end of frame
     Key.update();
@@ -148,28 +153,41 @@ function update(dt){
 function render(dt){
     //draw all the things
     clearScreen('black');
-    ctx.drawImage(img.tiles, 0,0);
-    //simplest possible map data render
+    //ctx.drawImage(img.tiles, 0,0);
     ctx.fillStyle = 'white';
-    
-    for(let i = 0; i < (Math.floor(c.width/world.tileSize)); i++){
-        for(let j = 0; j < (Math.floor(c.height/world.tileSize)); j++){
+
+    //setup vars for render optimization. we only want to render tiles that would be visible in viewport.
+    //tilepad to prevent 'blinking' at partial tile overlap at edges of screen.
+    //rx0, rx1, ry0, ry1 are the edges of the screen in tile positions, left, right, top, bottom, respectively.
+
+    let tilePad = 3,
+        rx0 = view.x/world.tileSize - tilePad | 0,
+        rx1 = (view.x + c.width)/world.tileSize + tilePad | 0,
+        ry0 = view.y / world.tileSize - tilePad | 0,
+        ry1 = (view.y + c.height)/world.tileSize + tilePad | 0;
+
+    //tile render loop! render order is columns.  
+    //for each column( i )
+    for(let i = rx0; i < rx1; i++){
+        //render all tiles in the column
+        for(let j = ry0; j < ry1; j++){
 
             let drawX =     i*8 - view.x,
                 drawY =     j*8 - view.y,
                 flatIndex = j * world.widthInTiles + i
+            //todo: abtract out into tile draw function, maybe? -flipped and rotated tiles? 
             ctx.drawImage(img.tiles, world.data[flatIndex] * 8, 0, 8,8, drawX, drawY,  8,8)
         }
         
-            //ctx.fillRect(x, y, s, s);
-        //}
     }
     world.flipswitch = false;
+
+    
     ctx.fillStyle = '#4f0';
-    ctx.fillRect(player.pos.x-player.diameter, player.pos.y-player.diameter, player.diameter*2, player.diameter*2)
+    ctx.fillRect(player.pos.x-player.diameter-view.x, player.pos.y-player.diameter-view.y, player.diameter*2, player.diameter*2)
 }
 
-//load assets, then start game
+//load assets, then start game-------------------------------------------------------------
 
 loadImages(images, start);
 function start(img){

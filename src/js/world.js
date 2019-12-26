@@ -89,12 +89,22 @@ World.prototype.drawLine = function drawLine(params={
   }
 
 World.prototype.tileFillRect = function tileFillRect(params = {
-    tx: 0, ty: 0, width: 1, height: 1, value: 1
+    tx: 0, ty: 0, width: 1, height: 1, value: 1,
 }){
     for(let i = params.ty; i <= params.ty + params.height; i++){
         let start = this.widthInTiles * i + params.tx;
         let finish = start + params.width+1;
         this.data.fill(params.value, start, finish);
+    }
+}
+
+World.prototype.tileFillRectRandom = function tileFillRectRandom(params = {
+    tx: 0, ty: 0, width: 1, height: 1, rangeStart: 0, rangeEnd: 0,
+}){
+    for(let i = params.ty; i <= params.ty + params.height; i++){
+        for(let j = params.tx; j <= params.tx + params.width; j++){
+            this.data[j * this.widthInTiles + i] = Math.floor( Math.random() * params.rangeEnd-params.rangeStart+1)
+        }
     }
 }
 
