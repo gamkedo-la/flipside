@@ -1,4 +1,6 @@
 // possibles axis to move the camera
+import Rect from './rect.js'
+
 var AXIS = {
     NONE: "none", 
     HORIZONTAL: "horizontal", 
@@ -28,7 +30,7 @@ function Camera(xView, yView, canvasWidth, canvasHeight, worldWidth, worldHeight
     this.followed = null;
     
     // rectangle that represents the viewport
-    this.viewportRect ={ x:this.xView, y:this.yView, w:this.wView, h:this.hView };				
+    this.viewportRect = new Rect({left: this.xView, right: this.yView, this.wView, this.hView})				
                         
     // rectangle that represents the world's boundary (room's boundary)
     this.worldRect = {x:0, y:0, w:worldWidth, h:worldHeight};			

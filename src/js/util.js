@@ -23,6 +23,10 @@
         f: 70,
         p: 80,
         r: 82,
+        i: 73,
+        j: 74,
+        k: 75,
+        l: 76,
 
         isDown(keyCode) {
             return this._pressed[keyCode];
@@ -77,6 +81,8 @@
         }
       
       }
+
+    
 
    
     

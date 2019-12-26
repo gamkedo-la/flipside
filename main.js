@@ -7,7 +7,6 @@ const images = [
     //image loader assumes .png and appends it. all images should be in /src/img/.
     'tiles'
 ]
-//import Camera from './src/js/camera.js';
 //initialize and show the FPS/mem use counter
 const stats = new Stats();
 stats.showPanel( 1 ); // 0: fps, 1: ms, 2: mb, 3+: custom
@@ -21,6 +20,13 @@ window.ctx = c.getContext('2d');
 c.width = 1280 * .25;
 c.height = 720 * .25;
 
+const view = {
+    x: 0, y: 0, w: c.width, h: c.height
+}
+
+const deadZone = {
+    x: 60, y: 60
+}
 
 window.world = new World({
     widthInTiles: 100, heightInTiles: 100, tileSize: 8
@@ -39,9 +45,7 @@ const player = {
 
 //const camera = new Camera(0 ,0, c.width, c.height, world.widthInTiles * world.tileSize, world.heightInTiles * world.tileSize )
 
-// for(let i = 0; i < world.data.length; i++){
-//     world.data[i] = Math.round(Math.random());
-// }
+//------fill the world with random rectangles/platforms made of tiles----------
 for(let i = 0; i < 30; i++){
     let tx = Math.floor( Math.random() * world.widthInTiles );
     let ty = Math.floor( Math.random() * world.heightInTiles );
@@ -63,7 +67,7 @@ window.addEventListener('focus',    function (event) { paused = false; }, false)
 var     dt      = 0,
         last    = performance.now(),
         elapsed = 0,
-        step    = 1/60; //60 frapes per second.
+        step    = 1/60; //60 frames per second.
 
 var     now,
         paused = false;
@@ -97,12 +101,14 @@ function frame(){
 function update(dt){
     //update all the things
     elapsed += dt;
-    
+    //testing dynamic map stuffs. press X to knock a box-shaped hole in the world around you
     if(Key.justReleased(Key.x)){
         let tpos = world.pixelToTileGrid(player.pos)
         tpos.x -= 2; tpos.y -= 2;
         world.tileFillRect({tx:tpos.x, ty:tpos.y, width: 4, height: 4, value: 0})
     }
+
+    //super basic player movement. tween/lerp to position
     if(Key.justReleased(Key.LEFT) ){
         player.targetX -= world.tileSize;
     }
@@ -118,6 +124,23 @@ function update(dt){
     player.pos.x = lerp(player.pos.x, player.targetX, .2);
     player.pos.y = lerp(player.pos.y, player.targetY, .2);
 
+
+    //---camera follow player-------------------------------
+    if(player.pos.x - view.x + deadZone.x > view.w){
+        view.x = player.pos.x - (view.w - deadZone.x)
+    }
+    if(player.pos.x - deadZone.x < view.x){
+        view.x = player.pos.x - deadZone.x
+    }
+    if(player.pos.y - view.y + deadZone.y > view.h){
+        view.y = player.pos.y -(view.h - deadZone.y)
+    }
+    if(player.pos.y - deadZone.y < view.y){
+        view.y = player.pos.y - deadZone.y 
+    }
+    //-------------------------------------------------------
+
+    //Key needs updated so justReleased queue gets emptied at end of frame
     Key.update();
     
 }
@@ -131,10 +154,11 @@ function render(dt){
     
     for(let i = 0; i < (Math.floor(c.width/world.tileSize)); i++){
         for(let j = 0; j < (Math.floor(c.height/world.tileSize)); j++){
-            //TODO: needs adjusted for camera view rectangle + padding
 
-            let flatIndex = j * world.widthInTiles + i
-            ctx.drawImage(img.tiles, world.data[flatIndex] * 8, 0, 8,8, i*8, j*8, 8,8)
+            let drawX =     i*8 - view.x,
+                drawY =     j*8 - view.y,
+                flatIndex = j * world.widthInTiles + i
+            ctx.drawImage(img.tiles, world.data[flatIndex] * 8, 0, 8,8, drawX, drawY,  8,8)
         }
         
             //ctx.fillRect(x, y, s, s);
