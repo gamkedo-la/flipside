@@ -32,15 +32,15 @@ window.world = new World({
     widthInTiles: 100, heightInTiles: 100, tileSize: 8
 })
 
-const player = {
+window.player = {
     pos: {
         x: 50*world.tileSize,
         y: 50*world.tileSize,
     },
 
     maxVel: {
-        x: 60,
-        y: 60
+        x: 10,
+        y: 10
     },
 
     dx: 0,
@@ -48,9 +48,9 @@ const player = {
     vx: 0, 
     vy: 0,
     
-    friction: 0.5,
+    friction: 0.7,
 
-    accel: 20,
+    accel: 7,
     gravity: 1,
     
     targetX: 50*world.tileSize,
@@ -153,22 +153,27 @@ function update(dt){
     else if(Key.isDown(Key.RIGHT) ){
         player.vx += player.accel;
     }
+    else(player.vx *= player.friction)
+
     if(Key.isDown(Key.DOWN) ){
         player.vy += player.accel;
     }
     else if(Key.isDown(Key.UP) ){
         player.vy -= player.accel;
     }
-    else{
-        player.vx *= player.friction;
-        player.vy *= player.friction;
-
-    }
+    else(player.vy *= player.friction)
     
-    player.pos.x = player.pos.x + (dt * player.dx);
-    player.pos.y = player.pos.y + (dt * player.dy);
-    player.dx = ( player.dx + (dt * player.vx) ).clamp( -player.maxVel.x, player.maxVel.x );
-    player.dy = ( player.dy + (dt * player.vy) ).clamp( -player.maxVel.y, player.maxVel.y );
+    
+    
+
+        
+    player.pos.x = player.pos.x + (dt * player.vx);
+    player.pos.y = player.pos.y + (dt * player.vy);
+
+    player.vx.clamp(-player.maxVel.x, player.maxVel.x);
+    player.vy.clamp(-player.maxVel.y, player.maxVel.y);
+    //player.dx = ( player.dx + (dt * player.vx) ).clamp( -player.maxVel.x, player.maxVel.x );
+   // player.dy = ( player.dy + (dt * player.vy) ).clamp( -player.maxVel.y, player.maxVel.y );
 
     
 
