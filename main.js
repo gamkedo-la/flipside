@@ -39,11 +39,19 @@ const player = {
     },
 
     maxVel: {
-        x: 2,
-        y: 2
+        x: 60,
+        y: 60
     },
 
-    accel: 2,
+    dx: 0,
+    dy: 0,
+    vx: 0, 
+    vy: 0,
+    
+    friction: 0.5,
+
+    accel: 20,
+    gravity: 1,
     
     targetX: 50*world.tileSize,
     targetY: 50*world.tileSize,
@@ -138,23 +146,31 @@ function update(dt){
         world.tileFillRect({tx:tpos.x, ty:tpos.y, width: 4, height: 4, value: 0})
     }
 
-    //super basic player movement. tween/lerp to position
-    if(Key.justReleased(Key.LEFT) ){
-        player.targetX -= world.tileSize;
+    //basic player movement.
+    if(Key.isDown(Key.LEFT) ){
+        player.vx -= player.accel;
     }
-    if(Key.justReleased(Key.RIGHT) ){
-        player.targetX += world.tileSize;
+    else if(Key.isDown(Key.RIGHT) ){
+        player.vx += player.accel;
     }
-    if(Key.justReleased(Key.DOWN) ){
-        player.targetY += world.tileSize;
+    if(Key.isDown(Key.DOWN) ){
+        player.vy += player.accel;
     }
-    if(Key.justReleased(Key.UP) ){
-        player.targetY -= world.tileSize;
+    else if(Key.isDown(Key.UP) ){
+        player.vy -= player.accel;
     }
+    else{
+        player.vx *= player.friction;
+        player.vy *= player.friction;
 
-    //lerped for smooth move, but rounded for clean rendering.
-    player.pos.x = Math.round( lerp(player.pos.x, player.targetX, .2) );
-    player.pos.y = Math.round( lerp(player.pos.y, player.targetY, .2) );
+    }
+    
+    player.pos.x = player.pos.x + (dt * player.dx);
+    player.pos.y = player.pos.y + (dt * player.dy);
+    player.dx = ( player.dx + (dt * player.vx) ).clamp( -player.maxVel.x, player.maxVel.x );
+    player.dy = ( player.dy + (dt * player.vy) ).clamp( -player.maxVel.y, player.maxVel.y );
+
+    
 
 
     
@@ -186,8 +202,8 @@ function render(dt){
         //render all tiles in the column
         for(let j = ry0; j < ry1; j++){
 
-            let drawX =     i*8 - view.x,
-                drawY =     j*8 - view.y,
+            let drawX =     Math.floor( i*8 - view.x),
+                drawY =     Math.floor(j*8 - view.y),
                 flatIndex = j * world.widthInTiles + i
             //todo: abtract out into tile draw function, maybe? -flipped and rotated tiles? 
             ctx.drawImage(img.tiles, world.data[flatIndex] * 8, 0, 8,8, drawX, drawY,  8,8)
@@ -198,7 +214,7 @@ function render(dt){
 
     
     ctx.fillStyle = '#4f0';
-    ctx.fillRect(player.pos.x-player.diameter-view.x, player.pos.y-player.diameter-view.y, player.diameter*2, player.diameter*2)
+    ctx.fillRect(Math.floor(player.pos.x-player.diameter-view.x), Math.floor(player.pos.y-player.diameter-view.y), player.diameter*2, player.diameter*2)
 }
 
 //load assets, then start game-------------------------------------------------------------
@@ -208,3 +224,18 @@ function start(img){
     window.img = img;
     requestAnimationFrame(frame);
 }
+
+//Number utility functions------
+Number.prototype.clamp = function(min, max) {
+    return Math.min(Math.max(this, min), max);
+  };
+  
+  Number.prototype.map = function(old_bottom, old_top, new_bottom, new_top) {
+    return (this - old_bottom) / (old_top - old_bottom) * (new_top - new_bottom) + new_bottom;
+  };
+  
+  Number.prototype.pad = function(size, char="0") {
+    var s = String(this);
+    while (s.length < (size || 2)) {s = char + s;}
+    return s;
+  };
