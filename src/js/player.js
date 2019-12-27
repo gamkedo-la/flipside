@@ -25,7 +25,7 @@ const Player = {
     dx: 0,
     dy: 0,
     vx: 0, 
-    vy: 0,
+    vy: 7,
     
     friction: 0.7,
 
@@ -34,6 +34,9 @@ const Player = {
     gravity: 10,
     falling: false,
     jumping: false,
+    inTheFlip: false,
+    colorNormal: '#f40',
+    colorFlip: '#4f0',
     
     targetX: 0,
     targetY: 0,
@@ -49,7 +52,7 @@ const Player = {
     }
 }
 
-Player.update = function update(dt, world){
+Player.update = function update(dt, world, worldFlipped){
     
     this.prevX = this.pos.x;
     this.prevY = this.pos.y;
@@ -57,10 +60,31 @@ Player.update = function update(dt, world){
     
     //testing dynamic map stuffs. press X to knock a box-shaped hole in the world around you
     if(this.input.carveWorld){
-        let tpos = world.pixelToTileGrid(player.pos)
+        let tpos = world.pixelToTileGrid(this.pos)
         tpos.x -= 2; tpos.y -= 2;
-        world.tileFillRect({tx:tpos.x, ty:tpos.y, width: 4, height: 4, value: 0})
+        worldFlipped.tileFillRect({tx:tpos.x, ty:tpos.y, width: 4, height: 4, value: 0})
     }
+
+    if(this.inTheFlip){
+        this.inTheFlipPhysics(dt, world, worldFlipped);
+    }else{
+        this.normalPhysics(dt, world, worldFlipped)
+    }
+
+
+    //---flipped world checks
+    if( this.tileCollisionCheck(worldFlipped) ){
+        this.inTheFlip = true; //console.log('in the flip');
+    }else{
+        this.inTheFlip = false
+    }
+}
+
+
+Player.inTheFlipPhysics = function inTheFlipPhysics(dt, world, worldFlipped){
+    this.gravity = 0;
+    this.friction = .99;
+
     if(this.vy < 0){
         this.falling = true;
     }
@@ -86,32 +110,73 @@ Player.update = function update(dt, world){
         this.input.jump = false;
     }
 
-    // if(this.input.down ){
-    //     this.vy += this.accel;
-    // }
-    // else if(this.input.up ){
-    //     this.vy -= this.accel;
-    // }
-    // else{this.vy *= this.friction}
-    
     this.vx = this.vx.clamp(-this.maxVel.x, this.maxVel.x);
     this.vy = this.vy.clamp(-this.maxVel.y, this.maxVel.y);
         
     this.pos.x = this.pos.x + (dt * this.vx);
-    if( this.tileCollisionCheck() ){
+    if( this.tileCollisionCheck(world) ){
         this.pos.x = this.prevX;
         this.vx = 0;
     }
     this.pos.y = this.pos.y + (dt * this.vy);
-    if( this.tileCollisionCheck() ){
+    if( this.tileCollisionCheck(world) ){
         this.vy =0;
         this.jumping = false;
         this.falling = false;
         this.pos.y = this.prevY;
     }
+
 }
 
-Player.tileCollisionCheck = function tileCollisionCheck(){
+Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
+    this.gravity = 10;
+    this.friction = 0.7;
+    
+    if(this.vy < 0){
+        this.falling = true;
+    }
+
+    if(this.input.left ){
+        this.vx -= this.accel;
+    }
+    else if(this.input.right ){
+        this.vx += this.accel;
+    }
+    else{this.vx *= this.friction}
+
+    if(this.input.jump && !this.jumping){
+        this.vy = -this.jumpVel
+        this.jumping = true;
+         this.input.jump = false; 
+    }
+    else{
+        this.vy += this.gravity;
+    }
+
+    if(this.jumping){
+        this.input.jump = false;
+    }
+
+    this.vx = this.vx.clamp(-this.maxVel.x, this.maxVel.x);
+    this.vy = this.vy.clamp(-this.maxVel.y, this.maxVel.y);
+        
+    this.pos.x = this.pos.x + (dt * this.vx);
+    if( this.tileCollisionCheck(world) ){
+        this.pos.x = this.prevX;
+        this.vx = 0;
+    }
+    this.pos.y = this.pos.y + (dt * this.vy);
+    if( this.tileCollisionCheck(world) ){
+        this.vy =0;
+        this.jumping = false;
+        this.falling = false;
+        this.pos.y = this.prevY;
+    }
+
+}
+
+
+Player.tileCollisionCheck = function tileCollisionCheck(world){
     //update body edges
     this.rect.top = this.pos.y - this.height/2;
     this.rect.bottom = this.pos.y + this.height/2;

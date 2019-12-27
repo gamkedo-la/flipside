@@ -5,9 +5,6 @@ import World from './src/js/world.js';
 import player from './src/js/player.js';
 import { rndInt } from './src/js/math.js';
 
-
-
-
 const images = [
     //image loader assumes .png and appends it. all images should be in /src/img/.
     'tiles'
@@ -30,35 +27,42 @@ window.view = {
 }
 
 const deadZone = {
-    x: 50, y: 50
+    x: 60, y: 60
 }
 
 window.world = new World({
-    widthInTiles: 100, heightInTiles: 100, tileSize: 8
+    widthInTiles: 1000, heightInTiles: 1000, tileSize: 8
+})
+window.worldFlipped = new World({
+    widthInTiles: 1000, heightInTiles: 1000, tileSize: 8
 })
 
-player.pos.x = 50*8;
-player.pos.y = 50*8;
-
-
-//const camera = new Camera(0 ,0, c.width, c.height, world.widthInTiles * world.tileSize, world.heightInTiles * world.tileSize )
+player.pos.x = 500*8;
+player.pos.y = 500*8;
 
 //------fill the world with random rectangles/platforms made of tiles----------
-for(let i = 0; i < 200; i++){
+for(let i = 0; i < 10000; i++){
     let tx = rndInt(0, world.widthInTiles);
     let ty = rndInt(0, world.heightInTiles);
     let w =  rndInt(0,5);
     let h =  rndInt(0,5);
     world.tileFillRectRandom({tx: tx, ty: ty, width: w, height: h, rangeStart: 1, rangeEnd: 3 });
 }
-for(let i = 0; i < 30; i++){
-    let tx = rndInt(0, world.widthInTiles);
-    let ty = rndInt(0, world.heightInTiles);
-    let w =  rndInt(5,10);
-    let h =  rndInt(5,10);
-    world.tileFillRectRandom({tx: tx, ty: ty, width: w, height: h, rangeStart: 4, rangeEnd: 7 });
+// for(let i = 0; i < 10000; i++){
+//     let tx = rndInt(0, world.widthInTiles);
+//     let ty = rndInt(0, world.heightInTiles);
+//     let w =  rndInt(5,15);
+//     let h =  rndInt(1,5);
+//     world.tileFillRectRandom({tx: tx, ty: ty, width: w, height: h, rangeStart: 4, rangeEnd: 7 });
+// }
+for(let i = 0; i < 1; i++){
+    let tx = 495
+    let ty = 495
+    let w =  10
+    let h =  10
+    worldFlipped.tileFillRect({tx: tx, ty: ty, width: w, height: h, value: 8 });
+    world.tileFillRect({tx: 450, ty: 505, width: 100, height: 3, value: 5})
 }
-    world.tileFillRect({tx: 0, ty: 0, width: 10, height: 30, value: 3})
 
 //initialize  event listeners-------------------------------------------------
 
@@ -120,7 +124,7 @@ function update(dt){
     //-------------------------------------------------------
     handleCamera(dt);
     handleInput(dt);
-    player.update(dt, world);
+    player.update(dt, world, worldFlipped);
     //Key needs updated so justReleased queue gets emptied at end of frame
     Key.update();
     
@@ -146,7 +150,7 @@ function render(dt){
         //render all tiles in the column
         for(let j = ry0; j < ry1; j++){
 
-            let drawX =     Math.floor( i*8 - view.x),
+            let drawX =     Math.floor(i*8 - view.x),
                 drawY =     Math.floor(j*8 - view.y),
                 flatIndex = j * world.widthInTiles + i
 
@@ -158,14 +162,27 @@ function render(dt){
                 world.tileSize,
                 drawX,
                 drawY,
-                world.tileSize, world.tileSize)
+                world.tileSize, world.tileSize
+                )
+            if(worldFlipped.data[flatIndex]){
+                ctx.drawImage(
+                    img.tiles, worldFlipped.data[flatIndex] * world.tileSize,
+                    0,
+                    world.tileSize,
+                    world.tileSize,
+                    drawX,
+                    drawY,
+                    world.tileSize, world.tileSize
+                    )
+            }
+                
         }
         
     }
     world.flipswitch = false;
 
     
-    ctx.fillStyle = '#4f0';
+    player.inTheFlip ? ctx.fillStyle = '#4f0' : ctx.fillStyle = '#F40'; 
     ctx.fillRect(Math.floor(player.pos.x-player.width/2-view.x), Math.floor(player.pos.y-player.height/2-view.y), player.width, player.height)
 
  
@@ -187,6 +204,12 @@ function handleInput(dt){
     else if(Key.isDown(Key.UP)){
         player.input.up = true;
     }
+    if(Key.isDown(Key.x)){
+        player.input.carveWorld = true;
+    }
+    if(Key.isDown(Key.z)){
+        player.input.jump = true;
+    }
     
 
     if(Key.justReleased(Key.LEFT)){
@@ -201,10 +224,10 @@ function handleInput(dt){
     if(Key.justReleased(Key.DOWN)){
         player.input.down = false;
     }
-    if(Key.justReleased(Key.SPACE)){
-        player.input.jump = true; 
+    if(Key.justReleased(Key.x)){
+        player.input.carveWorld = false;
     }
-
+   
 }
 
 function handleCamera(dt){
