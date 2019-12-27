@@ -7,6 +7,7 @@ const World = function World(params={
     this.widthInTiles = params.widthInTiles;
     this.tileSize = params.tileSize;
     this.data = new Uint8Array(params.widthInTiles * params.heightInTiles);
+    this.doors = [];
     return this;
 }
 
@@ -101,11 +102,17 @@ World.prototype.tileFillRect = function tileFillRect(params = {
 World.prototype.tileFillRectRandom = function tileFillRectRandom(params = {
     tx: 0, ty: 0, width: 1, height: 1, rangeStart: 0, rangeEnd: 0,
 }){
-    for(let i = params.ty; i <= params.ty + params.height; i++){
-        for(let j = params.tx; j <= params.tx + params.width; j++){
+    for(let i = params.tx; i <= params.tx + params.width; i++){
+        for(let j = params.ty; j <= params.ty + params.height; j++){
             this.data[j * this.widthInTiles + i] = Math.floor( Math.random() * (params.rangeEnd-params.rangeStart) ) + params.rangeStart
         }
     }
+}
+
+World.prototype.loadMap = function loadMap(params = {
+
+}){
+    
 }
 
 export default World;

@@ -4,9 +4,6 @@ import { clearScreen } from './src/js/graphics.js'
 import World from './src/js/world.js';
 import player from './src/js/player.js';
 
-
-
-
 const images = [
     //image loader assumes .png and appends it. all images should be in /src/img/.
     'tiles'
@@ -29,32 +26,32 @@ window.view = {
 }
 
 const deadZone = {
-    x: 50, y: 50
+    x: 60, y: 60
 }
 
 window.world = new World({
-    widthInTiles: 100, heightInTiles: 100, tileSize: 8
+    widthInTiles: 1000, heightInTiles: 1000, tileSize: 8
 })
 
-player.pos.x = 50*8;
-player.pos.y = 50*8;
+player.pos.x = 500*8;
+player.pos.y = 500*8;
 
 
 //const camera = new Camera(0 ,0, c.width, c.height, world.widthInTiles * world.tileSize, world.heightInTiles * world.tileSize )
 
 //------fill the world with random rectangles/platforms made of tiles----------
-for(let i = 0; i < 200; i++){
+for(let i = 0; i < 10000; i++){
     let tx = Math.floor( Math.random() * world.widthInTiles );
     let ty = Math.floor( Math.random() * world.heightInTiles );
     let w = Math.floor( Math.random() * 5);
     let h = Math.floor( Math.random() * 5);
     world.tileFillRectRandom({tx: tx, ty: ty, width: w, height: h, rangeStart: 1, rangeEnd: 3 });
 }
-for(let i = 0; i < 30; i++){
+for(let i = 0; i < 4000; i++){
     let tx = Math.floor( Math.random() * world.widthInTiles );
     let ty = Math.floor( Math.random() * world.heightInTiles );
-    let w = Math.floor( Math.random() * 5 + 5);
-    let h = Math.floor( Math.random() * 5 + 5);
+    let w = Math.floor( Math.random() * 10 + 5);
+    let h = Math.floor( Math.random() * 3+1);
     world.tileFillRectRandom({tx: tx, ty: ty, width: w, height: h, rangeStart: 4, rangeEnd: 7 });
 }
     world.tileFillRect({tx: 0, ty: 0, width: 10, height: 30, value: 3})
@@ -145,7 +142,7 @@ function render(dt){
         //render all tiles in the column
         for(let j = ry0; j < ry1; j++){
 
-            let drawX =     Math.floor( i*8 - view.x),
+            let drawX =     Math.floor(i*8 - view.x),
                 drawY =     Math.floor(j*8 - view.y),
                 flatIndex = j * world.widthInTiles + i
 
