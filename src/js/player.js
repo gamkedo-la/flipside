@@ -18,8 +18,8 @@ const Player = {
     height: 18,
 
     maxVel: {
-        x: 60,
-        y: 60,
+        x: 160,
+        y: 200,
     },
 
     dx: 0,
@@ -29,8 +29,11 @@ const Player = {
     
     friction: 0.7,
 
-    accel: 7,
-    gravity: 1,
+    accel: 10,
+    jumpVel: 1200,
+    gravity: 10,
+    falling: false,
+    jumping: false,
     
     targetX: 0,
     targetY: 0,
@@ -41,6 +44,7 @@ const Player = {
         up: false,
         right: false, 
         down: false,
+        jump: false,
         carveWorld: false
     }
 }
@@ -49,15 +53,18 @@ Player.update = function update(dt, world){
     
     this.prevX = this.pos.x;
     this.prevY = this.pos.y;
+
+    
     //testing dynamic map stuffs. press X to knock a box-shaped hole in the world around you
     if(this.input.carveWorld){
         let tpos = world.pixelToTileGrid(player.pos)
         tpos.x -= 2; tpos.y -= 2;
         world.tileFillRect({tx:tpos.x, ty:tpos.y, width: 4, height: 4, value: 0})
     }
+    if(this.vy < 0){
+        this.falling = true;
+    }
 
-    let dx, dy
-    //basic player movement.
     if(this.input.left ){
         this.vx -= this.accel;
     }
@@ -66,13 +73,26 @@ Player.update = function update(dt, world){
     }
     else{this.vx *= this.friction}
 
-    if(this.input.down ){
-        this.vy += this.accel;
+    if(this.input.jump && !this.jumping){
+        this.vy = -this.jumpVel
+        this.jumping = true;
+         this.input.jump = false; 
     }
-    else if(this.input.up ){
-        this.vy -= this.accel;
+    else{
+        this.vy += this.gravity;
     }
-    else{this.vy *= this.friction}
+
+    if(this.jumping){
+        this.input.jump = false;
+    }
+
+    // if(this.input.down ){
+    //     this.vy += this.accel;
+    // }
+    // else if(this.input.up ){
+    //     this.vy -= this.accel;
+    // }
+    // else{this.vy *= this.friction}
     
     this.vx = this.vx.clamp(-this.maxVel.x, this.maxVel.x);
     this.vy = this.vy.clamp(-this.maxVel.y, this.maxVel.y);
@@ -80,9 +100,13 @@ Player.update = function update(dt, world){
     this.pos.x = this.pos.x + (dt * this.vx);
     if( this.tileCollisionCheck() ){
         this.pos.x = this.prevX;
+        this.vx = 0;
     }
     this.pos.y = this.pos.y + (dt * this.vy);
     if( this.tileCollisionCheck() ){
+        this.vy =0;
+        this.jumping = false;
+        this.falling = false;
         this.pos.y = this.prevY;
     }
 }
