@@ -110,6 +110,20 @@ World.prototype.tileFillRectRandom = function tileFillRectRandom(params = {
     }
 }
 
+World.prototype.tileFillCircle = function tileFillCircle(params = {
+    tx: 0, ty: 0, radius: 1, value: 1,
+}){
+    let rad = Math.floor(params.radius);
+    for(let y = -rad; y <= rad; y++){
+        for(let x = -rad; x <=rad; x++){
+            if(x*x+y*y <= rad*rad){
+                this.data[this.getIndexAtPosition({tx: params.tx+x, ty: params.ty+y})] = params.value;
+            }
+            
+        }
+    }
+}
+
 World.prototype.loadMap = function loadMap(params = {
 
 }){

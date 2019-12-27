@@ -35,9 +35,8 @@ const Player = {
     falling: false,
     jumping: false,
     inTheFlip: false,
-    colorNormal: '#f40',
-    colorFlip: '#4f0',
-    
+    crossedOver: false,
+
     targetX: 0,
     targetY: 0,
     //diameter: 4,
@@ -83,7 +82,8 @@ Player.update = function update(dt, world, worldFlipped){
 
 Player.inTheFlipPhysics = function inTheFlipPhysics(dt, world, worldFlipped){
     this.gravity = 0;
-    this.friction = .99;
+    this.friction = .9;
+    this.maxVel = {x: 60, y: 60}
 
     if(this.vy < 0){
         this.falling = true;
@@ -106,9 +106,9 @@ Player.inTheFlipPhysics = function inTheFlipPhysics(dt, world, worldFlipped){
         this.vy += this.gravity;
     }
 
-    if(this.jumping){
-        this.input.jump = false;
-    }
+    // if(this.jumping){
+    //     this.input.jump = false;
+    // }
 
     this.vx = this.vx.clamp(-this.maxVel.x, this.maxVel.x);
     this.vy = this.vy.clamp(-this.maxVel.y, this.maxVel.y);
@@ -131,6 +131,7 @@ Player.inTheFlipPhysics = function inTheFlipPhysics(dt, world, worldFlipped){
 Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
     this.gravity = 10;
     this.friction = 0.7;
+    this.maxVel = {x: 160, y: 200}
     
     if(this.vy < 0){
         this.falling = true;

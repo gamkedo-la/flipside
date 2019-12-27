@@ -41,7 +41,7 @@ player.pos.x = 500*8;
 player.pos.y = 500*8;
 
 //------fill the world with random rectangles/platforms made of tiles----------
-for(let i = 0; i < 10000; i++){
+for(let i = 0; i < 6000; i++){
     let tx = rndInt(0, world.widthInTiles);
     let ty = rndInt(0, world.heightInTiles);
     let w =  rndInt(0,5);
@@ -55,14 +55,17 @@ for(let i = 0; i < 10000; i++){
 //     let h =  rndInt(1,5);
 //     world.tileFillRectRandom({tx: tx, ty: ty, width: w, height: h, rangeStart: 4, rangeEnd: 7 });
 // }
-for(let i = 0; i < 1; i++){
-    let tx = 495
-    let ty = 495
-    let w =  10
-    let h =  10
-    worldFlipped.tileFillRect({tx: tx, ty: ty, width: w, height: h, value: 8 });
-    world.tileFillRect({tx: 450, ty: 505, width: 100, height: 3, value: 5})
+for(let i = 0; i < 10000; i++){
+    let tx = rndInt(0,worldFlipped.widthInTiles),
+        ty = rndInt(0,worldFlipped.heightInTiles),
+        radius = rndInt(1,4)
+    
+        worldFlipped.tileFillCircle({tx: tx, ty: ty, radius:radius, value: 8 });
 }
+ //add a section of Flip
+worldFlipped.tileFillCircle({tx: 495, ty: 495, radius:7, value: 8 });
+//and platform to stand on
+world.tileFillRect({tx: 450, ty: 505, width: 100, height: 3, value: 5})
 
 //initialize  event listeners-------------------------------------------------
 
