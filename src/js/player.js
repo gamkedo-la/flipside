@@ -25,7 +25,7 @@ const Player = {
     dx: 0,
     dy: 0,
     vx: 0, 
-    vy: 0,
+    vy: 7,
     
     friction: 0.7,
 
