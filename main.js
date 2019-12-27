@@ -48,13 +48,13 @@ for(let i = 0; i < 6000; i++){
     let h =  rndInt(0,5);
     world.tileFillRectRandom({tx: tx, ty: ty, width: w, height: h, rangeStart: 1, rangeEnd: 3 });
 }
-// for(let i = 0; i < 10000; i++){
-//     let tx = rndInt(0, world.widthInTiles);
-//     let ty = rndInt(0, world.heightInTiles);
-//     let w =  rndInt(5,15);
-//     let h =  rndInt(1,5);
-//     world.tileFillRectRandom({tx: tx, ty: ty, width: w, height: h, rangeStart: 4, rangeEnd: 7 });
-// }
+for(let i = 0; i < 3000; i++){
+    let tx = rndInt(0, world.widthInTiles);
+    let ty = rndInt(510, 1000);
+    let w =  rndInt(5,10);
+    let h =  rndInt(1,2);
+    world.tileFillRectRandom({tx: tx, ty: ty, width: w, height: h, rangeStart: 4, rangeEnd: 7 });
+}
 for(let i = 0; i < 10000; i++){
     let tx = rndInt(0,worldFlipped.widthInTiles),
         ty = rndInt(0,worldFlipped.heightInTiles),
@@ -66,6 +66,11 @@ for(let i = 0; i < 10000; i++){
 worldFlipped.tileFillCircle({tx: 495, ty: 495, radius:7, value: 8 });
 //and platform to stand on
 world.tileFillRect({tx: 450, ty: 505, width: 100, height: 3, value: 5})
+
+world.tileFillRect({tx: 0, ty: 0, width: 1000, height: 1, value: 5})
+world.tileFillRect({tx: 0, ty: 0, width: 1, height: 1000, value: 5})
+world.tileFillRect({tx: 1000, ty: 0, width: 1, height: 1000, value: 5})
+world.tileFillRect({tx: 0, ty: 1000, width: 1000, height: 1, value: 5})
 
 //initialize  event listeners-------------------------------------------------
 
