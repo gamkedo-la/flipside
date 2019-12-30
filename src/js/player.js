@@ -1,5 +1,6 @@
 
 const Player = {
+    collideIndex: 128,
     pos: {
         x: 0,
         y: 0,
@@ -14,12 +15,12 @@ const Player = {
         bottom: 0
     },
 
-    width: 6,
-    height: 18,
+    width: 12,
+    height: 36,
 
     maxVel: {
-        x: 160,
-        y: 200,
+        x: 190,
+        y: 260,
     },
 
     dx: 0,
@@ -37,10 +38,6 @@ const Player = {
     inTheFlip: false,
     crossedOver: false,
 
-    targetX: 0,
-    targetY: 0,
-    //diameter: 4,
-
     input: {
         left: false,
         up: false,
@@ -48,6 +45,22 @@ const Player = {
         down: false,
         jump: false,
         carveWorld: false
+    },
+
+    physicsNormal: {
+        maxVel: { x: 190, y: 260 },
+        accel: 10,
+        jumpVel: 1200,
+        gravity: 10,
+        friction: 0.7
+    },
+
+    physicsFlip: {
+        maxVel: { x: 80, y: 80 },
+        accel: 10,
+        jumpVel: 1200,
+        gravity: 0,
+        friction: 0.99
     }
 }
 
@@ -72,8 +85,8 @@ Player.update = function update(dt, world, worldFlipped){
 
 
     //---flipped world checks
-    if( this.tileCollisionCheck(worldFlipped) ){
-        this.inTheFlip = true; //console.log('in the flip');
+    if( this.tileCollisionCheck(worldFlipped, 2) ){
+        this.inTheFlip = true; console.log('in the flip');
     }else{
         this.inTheFlip = false
     }
@@ -81,9 +94,11 @@ Player.update = function update(dt, world, worldFlipped){
 
 
 Player.inTheFlipPhysics = function inTheFlipPhysics(dt, world, worldFlipped){
-    this.gravity = 0;
-    this.friction = .9;
-    this.maxVel = {x: 60, y: 60}
+    this.gravity = this.physicsFlip.gravity;
+    this.friction = this.physicsFlip.friction;
+    this.maxVel = this.physicsFlip.maxVel;
+    this.accel = this.physicsFlip.accel;
+    this.jumpVel = this.physicsFlip.jumpVel;
 
     if(this.vy < 0){
         this.falling = true;
@@ -114,12 +129,12 @@ Player.inTheFlipPhysics = function inTheFlipPhysics(dt, world, worldFlipped){
     this.vy = this.vy.clamp(-this.maxVel.y, this.maxVel.y);
         
     this.pos.x = this.pos.x + (dt * this.vx);
-    if( this.tileCollisionCheck(world) ){
+    if( this.tileCollisionCheck(world, this.collideIndex) ){
         this.pos.x = this.prevX;
         this.vx = 0;
     }
     this.pos.y = this.pos.y + (dt * this.vy);
-    if( this.tileCollisionCheck(world) ){
+    if( this.tileCollisionCheck(world, this.collideIndex) ){
         this.vy =0;
         this.jumping = false;
         this.falling = false;
@@ -129,10 +144,12 @@ Player.inTheFlipPhysics = function inTheFlipPhysics(dt, world, worldFlipped){
 }
 
 Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
-    this.gravity = 10;
-    this.friction = 0.7;
-    this.maxVel = {x: 160, y: 200}
-    
+    this.gravity = this.physicsNormal.gravity;
+    this.friction = this.physicsNormal.friction;
+    this.maxVel = this.physicsNormal.maxVel;
+    this.accel = this.physicsNormal.accel;
+    this.jumpVel = this.physicsNormal.jumpVel;
+
     if(this.vy < 0){
         this.falling = true;
     }
@@ -162,12 +179,12 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
     this.vy = this.vy.clamp(-this.maxVel.y, this.maxVel.y);
         
     this.pos.x = this.pos.x + (dt * this.vx);
-    if( this.tileCollisionCheck(world) ){
+    if( this.tileCollisionCheck(world, this.collideIndex) ){
         this.pos.x = this.prevX;
         this.vx = 0;
     }
     this.pos.y = this.pos.y + (dt * this.vy);
-    if( this.tileCollisionCheck(world) ){
+    if( this.tileCollisionCheck(world, this.collideIndex) ){
         this.vy =0;
         this.jumping = false;
         this.falling = false;
@@ -177,7 +194,7 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
 }
 
 
-Player.tileCollisionCheck = function tileCollisionCheck(world){
+Player.tileCollisionCheck = function tileCollisionCheck(world, tileId){
     //update body edges
     this.rect.top = this.pos.y - this.height/2;
     this.rect.bottom = this.pos.y + this.height/2;
@@ -193,7 +210,7 @@ Player.tileCollisionCheck = function tileCollisionCheck(world){
     for(let i = leftTile; i <=rightTile; i++){
         for(let j = topTile; j<= bottomTile; j++){
             let tile = world.getTileAtPosition({tx: i, ty: j})
-            if(tile > 3){
+            if(tile >= tileId){
                 return true;
             }
         }

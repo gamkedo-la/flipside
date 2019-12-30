@@ -27,9 +27,9 @@ document.body.appendChild( stats.dom );
 window.c=document.getElementById("c");
 window.ctx = c.getContext('2d');
 
-// canvas is 4x pixel scale, 320x180 
-c.width = 1280 * .33;
-c.height = 720 * .33;
+
+c.width = 427;
+c.height = 240;
 
 window.view = {
     x: 0, y: 0, w: c.width, h: c.height
@@ -39,47 +39,44 @@ const deadZone = {
     x: 60, y: 60
 }
 
-window.world = new World({
-    widthInTiles: 1000, heightInTiles: 1000, tileSize: 8
-})
-window.worldFlipped = new World({
-    widthInTiles: 1000, heightInTiles: 1000, tileSize: 8
-})
 
-player.pos.x = 500*8;
-player.pos.y = 500*8;
+
+player.pos.x = 100;
+player.pos.y = 100;
 
 //------fill the world with random rectangles/platforms made of tiles----------
-for(let i = 0; i < 6000; i++){
-    let tx = rndInt(0, world.widthInTiles);
-    let ty = rndInt(0, world.heightInTiles);
-    let w =  rndInt(0,5);
-    let h =  rndInt(0,5);
-    world.tileFillRectRandom({tx: tx, ty: ty, width: w, height: h, rangeStart: 1, rangeEnd: 3 });
-}
-for(let i = 0; i < 3000; i++){
-    let tx = rndInt(0, world.widthInTiles);
-    let ty = rndInt(510, 1000);
-    let w =  rndInt(5,10);
-    let h =  rndInt(1,2);
-    world.tileFillRectRandom({tx: tx, ty: ty, width: w, height: h, rangeStart: 4, rangeEnd: 7 });
-}
-for(let i = 0; i < 10000; i++){
-    let tx = rndInt(0,worldFlipped.widthInTiles),
-        ty = rndInt(0,worldFlipped.heightInTiles),
-        radius = rndInt(1,4)
+// for(let i = 0; i < 12000; i++){
+//     let tx = rndInt(0, world.widthInTiles);
+//     let ty = rndInt(0, world.heightInTiles);
+//     let w =  rndInt(0,5);
+//     let h =  rndInt(0,5);
+//     world.tileFillRectRandom({tx: tx, ty: ty, width: w, height: h, rangeStart: 1, rangeEnd: 3 });
+// }
+// for(let i = 0; i < 3000; i++){
+//     let tx = rndInt(0, world.widthInTiles);
+//     let ty = rndInt(510, 1000);
+//     let w =  rndInt(5,10);
+//     let h =  rndInt(1,2);
+//     world.tileFillRectRandom({tx: tx, ty: ty, width: w, height: h, rangeStart: 4, rangeEnd: 7 });
+// }
+// for(let i = 0; i < 10000; i++){
+//     let tx = rndInt(0,worldFlipped.widthInTiles),
+//         ty = rndInt(0,worldFlipped.heightInTiles),
+//         radius = rndInt(1,4)
     
-        worldFlipped.tileFillCircle({tx: tx, ty: ty, radius:radius, value: 8 });
-}
+//         worldFlipped.tileFillCircle({tx: tx, ty: ty, radius:radius, value: 8 });
+// }
  //add a section of Flip
-worldFlipped.tileFillCircle({tx: 495, ty: 495, radius:7, value: 8 });
-//and platform to stand on
-world.tileFillRect({tx: 450, ty: 505, width: 100, height: 3, value: 5})
+// worldFlipped.tileFillCircle({tx: 495, ty: 495, radius:7, value: 8 });
+// worldFlipped.tileFillCircle({tx: 480, ty: 490, radius:7, value: 8 });
+// worldFlipped.tileFillCircle({tx: 487, ty: 491, radius:5, value: 8 });
+// //and platform to stand on
+// world.tileFillRect({tx: 450, ty: 505, width: 100, height: 3, value: 5})
 
-world.tileFillRect({tx: 0, ty: 0, width: 1000, height: 1, value: 5})
-world.tileFillRect({tx: 0, ty: 0, width: 1, height: 1000, value: 5})
-world.tileFillRect({tx: 1000, ty: 0, width: 1, height: 1000, value: 5})
-world.tileFillRect({tx: 0, ty: 1000, width: 1000, height: 1, value: 5})
+// world.tileFillRect({tx: 0, ty: 0, width: 1000, height: 1, value: 5})
+// world.tileFillRect({tx: 0, ty: 0, width: 1, height: 1000, value: 5})
+// world.tileFillRect({tx: 1000, ty: 0, width: 1, height: 1000, value: 5})
+// world.tileFillRect({tx: 0, ty: 1000, width: 1000, height: 1, value: 5})
 
 //initialize  event listeners-------------------------------------------------
 
@@ -91,8 +88,27 @@ window.addEventListener('focus',    function (event) { paused = false; }, false)
 
 //load assets, then start game-------------------------------------------------------------
 
-loader.loadImages(images, start);
-loader.loadMapData(maps);
+
+loader.loadMapData(maps, init);
+
+function init(){
+    window.world = new World({
+        widthInTiles: loader.tileMaps['000'].layers[0].width,
+        heightInTiles: loader.tileMaps['000'].layers[0].height,
+        tileSize: 8
+    })
+    world.data = Uint16Array.from(loader.tileMaps['000'].layers[0].data);
+    window.worldFlipped = new World({
+        widthInTiles: loader.tileMaps['000'].layers[1].width,
+        heightInTiles: loader.tileMaps['000'].layers[1].height,
+        tileSize: 8
+    })
+    worldFlipped.data = Uint16Array.from(loader.tileMaps['000'].layers[1].data);
+
+    loader.loadImages(images, start);
+
+}
+
 function start(img){
     window.img = img;
     requestAnimationFrame(frame);
@@ -134,14 +150,14 @@ function frame(){
 
 //game loop steps--------------------------------------------------------------------
 
-
 function update(dt){
     //update all the things
     elapsed += dt;
     
-    //-------------------------------------------------------
     handleCamera(dt);
+
     handleInput(dt);
+
     player.update(dt, world, worldFlipped);
     //Key needs updated so justReleased queue gets emptied at end of frame
     Key.update();
@@ -153,7 +169,7 @@ function render(dt){
     clearScreen('black');
 
     //setup vars for render optimization. we only want to render tiles that would be visible in viewport.
-    //tilepad to prevent 'blinking' at partial tile overlap at edges of screen.
+    //tilepad is to prevent 'blinking' at partial tile overlap at edges of screen.
     //rx0, rx1, ry0, ry1 are the edges of the screen in tile positions, left, right, top, bottom, respectively.
 
     let tilePad = 3,
@@ -170,28 +186,50 @@ function render(dt){
 
             let drawX =     Math.floor(i*8 - view.x),
                 drawY =     Math.floor(j*8 - view.y),
-                flatIndex = j * world.widthInTiles + i
+                flatIndex = j * world.widthInTiles + i,
+                gid = world.data[flatIndex],
+                gidFlipped = worldFlipped[flatIndex],
+                tileSheetHeight = 16,
+                tileSheetWidth = 16;
+                if(gid > 0)gid-=1;
+                if(gidFlipped > 0)gid -=1;
+
+                
             
             //todo: abtract out into tile draw function, maybe? -flipped and rotated tiles? 
             ctx.drawImage(
-                img.tiles, world.data[flatIndex] * world.tileSize,
-                0,
+                img.tiles,
+                gid%tileSheetHeight * world.tileSize,
+                Math.floor(gid/tileSheetWidth) * world.tileSize,
                 world.tileSize,
                 world.tileSize,
                 drawX,
                 drawY,
                 world.tileSize, world.tileSize
-                )
+                );
+            //---additional rendering for pockets of Flip in the map
             if(worldFlipped.data[flatIndex]){
+                
                 let modX = rndInt(-1,1);
                 let modY = rndInt(-1,1);
                 ctx.drawImage(
-                    img.tiles, world.data[flatIndex] * world.tileSize,
-                    0,
+                    img.tiles,
+                    gid%tileSheetHeight * world.tileSize,
+                    Math.floor(gid/tileSheetWidth) * world.tileSize,
                     world.tileSize,
                     world.tileSize,
                     drawX+modX,
                     drawY+modY,
+                    world.tileSize, world.tileSize
+                    );
+                ctx.drawImage(
+                    img.tiles,
+                    2 * world.tileSize,
+                    0,
+                    world.tileSize,
+                    world.tileSize,
+                    drawX,
+                    drawY,
                     world.tileSize, world.tileSize
                     )
             }
@@ -201,7 +239,6 @@ function render(dt){
     }
     world.flipswitch = false;
 
-    
     player.inTheFlip ? ctx.fillStyle = '#4f0' : ctx.fillStyle = '#F40'; 
     ctx.fillRect(Math.floor(player.pos.x-player.width/2-view.x), Math.floor(player.pos.y-player.height/2-view.y), player.width, player.height)
 

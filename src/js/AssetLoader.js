@@ -32,12 +32,14 @@ AssetLoader.prototype.loadFile = function loadFile(filePath, done){
     xhr.send();
 }
 
-AssetLoader.prototype.loadMapData = function loadMapData(tileMapList){
+AssetLoader.prototype.loadMapData = function loadMapData(tileMapList, done){
     var self = this;
     tileMapList.forEach(function(file){
         self.loadFile(`src/maps/${file}.json`, function(response){
             self.tileMaps[file] = JSON.parse(response);
+            return done();
         })
+        
     })
 }
 

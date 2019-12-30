@@ -6,8 +6,7 @@ const World = function World(params={
     this.heightInTiles = params.heightInTiles;
     this.widthInTiles = params.widthInTiles;
     this.tileSize = params.tileSize;
-    this.data = new Uint8Array(params.widthInTiles * params.heightInTiles);
-    //this.dataFlip = new Uint8Array(params.widthInTiles * params.heightInTiles);
+    this.data = new Uint16Array(params.widthInTiles * params.heightInTiles);
     this.doors = [];
     return this;
 }
