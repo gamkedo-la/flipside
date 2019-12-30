@@ -7,9 +7,24 @@ const Signal = function Signal(){
     return this;
 }
 
-Signal.prototype.dispatch = function dispatch(eventName, params={bubbles: true}){
+Signal.prototype.dispatch = function dispatch(eventName, params={}){
     var event = new CustomEvent(eventName, params);
     this.dispatchEvent(event);
 }
 
 export default Signal;
+
+/* Use examples:
+
+signal.addEventListener('bulletHitWall', bulletSplode)
+
+emit event in update:
+
+signal.dispatch('bulletHitWall', {x: bullet.x, y: bullet.y })
+
+
+function bulletSplode(event){
+    emitParticles(event.x, event.y);
+}
+
+*/

@@ -1,0 +1,30 @@
+{
+    "activeFile": "001.tmx",
+    "fileStates": {
+        "000.tmx": {
+            "scale": 0.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 292,
+                "y": 146
+            }
+        },
+        "001.tmx": {
+            "scale": 2.60359375,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 159.77915141331093,
+                "y": 159.77915141331093
+            }
+        }
+    },
+    "openFiles": [
+        "000.tmx",
+        "001.tmx"
+    ],
+    "project": "flipsideMaps.tiled-project",
+    "recentFiles": [
+        "001.tmx",
+        "000.tmx"
+    ]
+}
