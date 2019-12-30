@@ -1,6 +1,6 @@
-
 const Player = {
     collideIndex: 128,
+    color: '#4f0',
     pos: {
         x: 0,
         y: 0,
@@ -36,8 +36,8 @@ const Player = {
     falling: false,
     jumping: false,
     inTheFlip: false,
-    crossedOver: false,
-
+    crossing: false,
+    
     input: {
         left: false,
         up: false,
@@ -86,10 +86,18 @@ Player.update = function update(dt, world, worldFlipped){
 
     //---flipped world checks
     if( this.tileCollisionCheck(worldFlipped, 2) ){
-        this.inTheFlip = true; console.log('in the flip');
-    }else{
-        this.inTheFlip = false
+        if(!this.inTheFlip){
+            MSG.dispatch('crossed');
+        }
+        this.inTheFlip = true;
+    } else {
+        if(this.inTheFlip){
+            MSG.dispatch('crossed');
+            this.inTheFlip = false;
+        }
     }
+
+    
 }
 
 
@@ -119,11 +127,8 @@ Player.inTheFlipPhysics = function inTheFlipPhysics(dt, world, worldFlipped){
     }
     else{
         this.vy += this.gravity;
+        this.vy *= this.friction;
     }
-
-    // if(this.jumping){
-    //     this.input.jump = false;
-    // }
 
     this.vx = this.vx.clamp(-this.maxVel.x, this.maxVel.x);
     this.vy = this.vy.clamp(-this.maxVel.y, this.maxVel.y);
@@ -234,6 +239,11 @@ Player.getTiles = function getTiles(world){
         bottomLeft: world.widthInTiles * bottomTile + leftTile,
         bottomRight: world.widthInTiles * bottomTile + rightTile
     }
+}
+
+Player.crossedOver = function crossedOver(event){
+    console.log('crossed over');
+    //this.color = 'white';
 }
 
 
