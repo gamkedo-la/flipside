@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="2019.12.11" orientation="orthogonal" renderorder="right-down" compressionlevel="-1" width="40" height="40" tilewidth="8" tileheight="8" infinite="0" nextlayerid="4" nextobjectid="2">
+<map version="1.2" tiledversion="2019.12.11" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="40" height="40" tilewidth="8" tileheight="8" infinite="0" nextlayerid="4" nextobjectid="2">
+ <editorsettings>
+  <export target="../../src/maps/001.json" format="json"/>
+ </editorsettings>
  <tileset firstgid="1" source="tiles.tsx"/>
- <layer id="1" name="Tile Layer 1" width="40" height="40">
+ <layer id="1" name="Background" width="40" height="40">
   <data encoding="csv">
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
@@ -45,7 +48,7 @@
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 </data>
  </layer>
- <layer id="2" name="Tile Layer 2" width="40" height="40">
+ <layer id="2" name="Collides" width="40" height="40">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -89,8 +92,8 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="3" name="Object Layer 1">
-  <object id="1" type="Door" x="280" y="136" width="16" height="32">
+ <objectgroup id="3" name="Objects">
+  <object id="1" name="0" type="Door" x="280" y="136" width="16" height="32">
    <properties>
     <property name="DestinationDoor" type="int" value="0"/>
     <property name="DestinationMap" type="int" value="0"/>

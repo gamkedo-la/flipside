@@ -1,14 +1,23 @@
 import Stats from './src/js/stats.module.js';
-import { Key,loadImages } from './src/js/util.js';
+import { Key } from './src/js/util.js';
 import { clearScreen } from './src/js/graphics.js'
 import World from './src/js/world.js';
 import player from './src/js/player.js';
 import { rndInt } from './src/js/math.js';
+import AssetLoader from './src/js/AssetLoader.js';
+
+window.loader = new AssetLoader();
 
 const images = [
     //image loader assumes .png and appends it. all images should be in /src/img/.
     'tiles'
 ]
+
+const maps = [
+    '000',
+    '001'
+]
+
 //initialize and show the FPS/mem use counter
 const stats = new Stats();
 stats.showPanel( 1 ); // 0: fps, 1: ms, 2: mb, 3+: custom
@@ -19,8 +28,8 @@ window.c=document.getElementById("c");
 window.ctx = c.getContext('2d');
 
 // canvas is 4x pixel scale, 320x180 
-c.width = 1280 * .25;
-c.height = 720 * .25;
+c.width = 1280 * .33;
+c.height = 720 * .33;
 
 window.view = {
     x: 0, y: 0, w: c.width, h: c.height
@@ -82,7 +91,8 @@ window.addEventListener('focus',    function (event) { paused = false; }, false)
 
 //load assets, then start game-------------------------------------------------------------
 
-loadImages(images, start);
+loader.loadImages(images, start);
+loader.loadMapData(maps);
 function start(img){
     window.img = img;
     requestAnimationFrame(frame);
@@ -161,7 +171,7 @@ function render(dt){
             let drawX =     Math.floor(i*8 - view.x),
                 drawY =     Math.floor(j*8 - view.y),
                 flatIndex = j * world.widthInTiles + i
-
+            
             //todo: abtract out into tile draw function, maybe? -flipped and rotated tiles? 
             ctx.drawImage(
                 img.tiles, world.data[flatIndex] * world.tileSize,
@@ -173,13 +183,15 @@ function render(dt){
                 world.tileSize, world.tileSize
                 )
             if(worldFlipped.data[flatIndex]){
+                let modX = rndInt(-1,1);
+                let modY = rndInt(-1,1);
                 ctx.drawImage(
-                    img.tiles, worldFlipped.data[flatIndex] * world.tileSize,
+                    img.tiles, world.data[flatIndex] * world.tileSize,
                     0,
                     world.tileSize,
                     world.tileSize,
-                    drawX,
-                    drawY,
+                    drawX+modX,
+                    drawY+modY,
                     world.tileSize, world.tileSize
                     )
             }
