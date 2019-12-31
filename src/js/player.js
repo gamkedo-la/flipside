@@ -1,4 +1,8 @@
+import { clamp } from './math.js';
+
 const Player = {
+    spritesheet:{},
+    currentAnimation:{},
     collideIndex: 128,
     color: '#4f0',
     pos: {
@@ -17,6 +21,7 @@ const Player = {
 
     width: 12,
     height: 36,
+
 
     maxVel: {
         x: 190,
@@ -65,6 +70,8 @@ const Player = {
 }
 
 Player.update = function update(dt, world, worldFlipped){
+
+    this.currentAnimation.update(dt);
     
     this.prevX = this.pos.x;
     this.prevY = this.pos.y;
@@ -130,8 +137,8 @@ Player.inTheFlipPhysics = function inTheFlipPhysics(dt, world, worldFlipped){
         this.vy *= this.friction;
     }
 
-    this.vx = this.vx.clamp(-this.maxVel.x, this.maxVel.x);
-    this.vy = this.vy.clamp(-this.maxVel.y, this.maxVel.y);
+    this.vx = clamp(this.vx, -this.maxVel.x, this.maxVel.x);
+    this.vy = clamp(this.vy, -this.maxVel.y, this.maxVel.y);
         
     this.pos.x = this.pos.x + (dt * this.vx);
     if( this.tileCollisionCheck(world, this.collideIndex) ){
@@ -180,8 +187,8 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         this.input.jump = false;
     }
 
-    this.vx = this.vx.clamp(-this.maxVel.x, this.maxVel.x);
-    this.vy = this.vy.clamp(-this.maxVel.y, this.maxVel.y);
+    this.vx = clamp(this.vx, -this.maxVel.x, this.maxVel.x);
+    this.vy = clamp(this.vy, -this.maxVel.y, this.maxVel.y);
         
     this.pos.x = this.pos.x + (dt * this.vx);
     if( this.tileCollisionCheck(world, this.collideIndex) ){
@@ -244,6 +251,13 @@ Player.getTiles = function getTiles(world){
 Player.crossedOver = function crossedOver(event){
     console.log('crossed over');
     //this.color = 'white';
+}
+
+Player.play = function play(animationName){
+    this.currentAnimation = this.spritesheet.animations[animationName];
+    if (!this.currentAnimation.loop){
+        this.currentAnimation.reset();
+    }
 }
 
 

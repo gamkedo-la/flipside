@@ -3,18 +3,24 @@ import { Key } from './src/js/util.js';
 import { clearScreen } from './src/js/graphics.js'
 import World from './src/js/world.js';
 import player from './src/js/player.js';
-import { rndInt } from './src/js/math.js';
+import { rndInt, clamp } from './src/js/math.js';
 import AssetLoader from './src/js/AssetLoader.js';
 import Signal from './src/js/Signal.js';
+import SpriteSheet from './src/js/spritesheet.js';
+import Animation from './src/js/animation.js';
 
 window.MSG = new Signal();
 window.loader = new AssetLoader();
+
+window.player = player;
 
 window.currentMap = '000'; 
 
 const images = [
     //image loader assumes .png and appends it. all images should be in /src/img/.
-    'tiles'
+    'tiles',
+    'aap64',
+    'player'
 ]
 
 const maps = [
@@ -86,15 +92,32 @@ function init(){
 
 function start(img){
     window.img = img;
+    //create player animation------------------------------------------
+    player.spritesheet = new SpriteSheet({
+        image: img.player,
+        frameWidth: 16,
+        frameHeight: 36,
+        animations: {
+            idle: {
+                frames: 0
+            },
+            walk: {
+                frames: [0,1,2,3,4,5,6,7],
+                frameRate: 20
+            }
+        }
+    })
+    //player must have an anim set at start, or player.currentAnimation is null
+    player.play('walk');
     requestAnimationFrame(frame);
 }
-
 
 //game loop--------------------------------------------------------------------
 
 var     dt      = 0,
         last    = performance.now(),
         elapsed = 0,
+        frameCount = 0,
         step    = 1/60; //60 frames per second.
 
 var     now,
@@ -121,13 +144,12 @@ function frame(){
     requestAnimationFrame(frame);
 }
 
-
-
 //game loop steps--------------------------------------------------------------------
 
 function update(dt){
     //update all the things
     elapsed += dt;
+    frameCount ++;
     
     handleCamera(dt);
 
@@ -170,8 +192,9 @@ function render(dt){
                 if(gidFlipped > 0)gid -=1;
 
                 
-            
-            //todo: abtract out into tile draw function, maybe? -flipped and rotated tiles? 
+            if(!worldFlipped.data[flatIndex])
+            {
+                //todo: abtract out into tile draw function, maybe? -flipped and rotated tiles? 
             ctx.drawImage(
                 img.tiles,
                 gid%tileSheetHeight * world.tileSize,
@@ -182,11 +205,15 @@ function render(dt){
                 drawY,
                 world.tileSize, world.tileSize
                 );
+            }
+            
             //---additional rendering for pockets of Flip in the map
             if(worldFlipped.data[flatIndex]){
-                
                 let modX = rndInt(-1,1);
                 let modY = rndInt(-1,1);
+                if(frameCount % rndInt(20,60) > 0){
+                    modX = 0; modY = 0;
+                }
                 ctx.drawImage(
                     img.tiles,
                     gid%tileSheetHeight * world.tileSize,
@@ -197,31 +224,40 @@ function render(dt){
                     drawY+modY,
                     world.tileSize, world.tileSize
                     );
+                
+                ctx.save();
+                ctx.globalCompositeOperation = 'difference';
                 ctx.drawImage(
-                    img.tiles,
-                    2 * world.tileSize,
+                    img.aap64,
                     0,
-                    world.tileSize,
-                    world.tileSize,
+                    2,
+                    1,
+                    1,
                     drawX,
                     drawY,
                     world.tileSize, world.tileSize
                     )
-            }
-                
-        }
-        
-    }
-    world.flipswitch = false;
-
-    //player.inTheFlip ? ctx.fillStyle = '#4f0' : ctx.fillStyle = '#F40'; 
-    ctx.fillStyle = player.color;
-    ctx.fillRect(Math.floor(player.pos.x-player.width/2-view.x), Math.floor(player.pos.y-player.height/2-view.y), player.width, player.height)
-
+                ctx.restore();
+            }//end flip render
  
+        }//end row render
+        
+    }//end column render
+    
+   
+    //render player;
+    //TODO: abstract away tile rendering, allow for rendering in front of player?
+    ctx.fillStyle = player.color;
+    //ctx.fillRect(Math.floor(player.pos.x-player.width/2-view.x), Math.floor(player.pos.y-player.height/2-view.y), player.width, player.height)
+    player.currentAnimation.render({
+        x: Math.floor(player.pos.x-player.width/2-view.x),
+        y: Math.floor(player.pos.y-player.height/2-view.y),
+        width: 16,
+        height: 36
+
+    })
+    
 }
-
-
 
 function handleInput(dt){
 
@@ -278,22 +314,12 @@ function handleCamera(dt){
         view.y = player.pos.y - deadZone.y 
     }
 
-    view.x = view.x.clamp(0, world.widthInTiles * world.tileSize - c.width);
-    view.y = view.y.clamp(0, world.heightInTiles * world.tileSize - c.height);
+    // view.x = view.x.clamp(0, world.widthInTiles * world.tileSize - c.width);
+    // view.y = view.y.clamp(0, world.heightInTiles * world.tileSize - c.height);
+
+    view.x = clamp(view.x, 0, world.widthInTiles * world.tileSize - c.width);
+    view.y = clamp(view.y, 0, world.heightInTiles * world.tileSize - c.height);
+    
 }
 
 
-//Number utility functions------
-Number.prototype.clamp = function(min, max) {
-    return Math.min(Math.max(this, min), max);
-  };
-  
-  Number.prototype.map = function(old_bottom, old_top, new_bottom, new_top) {
-    return (this - old_bottom) / (old_top - old_bottom) * (new_top - new_bottom) + new_bottom;
-  };
-  
-  Number.prototype.pad = function(size, char="0") {
-    var s = String(this);
-    while (s.length < (size || 2)) {s = char + s;}
-    return s;
-  };
