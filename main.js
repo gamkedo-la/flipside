@@ -98,17 +98,37 @@ function start(img){
         frameWidth: 16,
         frameHeight: 36,
         animations: {
-            idle: {
+            idleLeft: {
+                frames: 1
+            },
+            idleRight: {
                 frames: 0
             },
-            walk: {
-                frames: [0,1,2,3,4,5,6,7],
-                frameRate: 20
+            walkRight: {
+                frames: '2..9',
+                frameRate: 16
+            },
+            walkLeft: {
+                frames: '10..17',
+                frameRate: 16
+            },
+            fallingLeft:{
+                frames: 20
+            },
+            fallingRight: {
+                frames: 18
+            },
+            airLeft: {
+                frames: 21
+            },
+            airRight: {
+                frames: 19
             }
+
         }
     })
     //player must have an anim set at start, or player.currentAnimation is null
-    player.play('walk');
+    player.play('idleRight');
     requestAnimationFrame(frame);
 }
 

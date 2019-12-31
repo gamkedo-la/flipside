@@ -3,6 +3,7 @@ import { clamp } from './math.js';
 const Player = {
     spritesheet:{},
     currentAnimation:{},
+    facingLeft: false,
     collideIndex: 128,
     color: '#4f0',
     pos: {
@@ -162,12 +163,27 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
     this.accel = this.physicsNormal.accel;
     this.jumpVel = this.physicsNormal.jumpVel;
 
+    this.facingLeft ? this.play('idleLeft') : this.play('idleRight');
     if(this.vy < 0){
         this.falling = true;
+        this.facingLeft ? this.play('airLeft') : this.play('airRight');
+    }
+    if(this.vy > 0){
+        this.falling = true;
+        this.facingLeft ? this.play('fallingLeft') : this.play('fallingRight');
+    }
+    if(this.vx < 0 && this.input.left && !this.falling){
+        this.facingLeft = true;
+        this.play('walkLeft');
+    }
+    if(this.vx > 0 && this.input.right && !this.falling){
+        this.facingLeft = false;
+        this.play('walkRight');
     }
 
     if(this.input.left ){
         this.vx -= this.accel;
+        
     }
     else if(this.input.right ){
         this.vx += this.accel;
