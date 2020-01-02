@@ -14,7 +14,7 @@ window.loader = new AssetLoader();
 
 window.player = player;
 
-window.currentMap = '000'; 
+window.currentMap = 'map000'; 
 
 const images = [
     //image loader assumes .png and appends it. all images should be in /src/img/.
@@ -24,7 +24,8 @@ const images = [
 ]
 
 const maps = [
-    '000'
+    'map000',
+    'map001'
 ]
 
 //initialize and show the FPS/mem use counter
@@ -70,17 +71,17 @@ loader.loadMapData(maps, init);
 
 function init(){
     window.world = new World({
-        widthInTiles: loader.tileMaps['000'].layers[0].width,
-        heightInTiles: loader.tileMaps['000'].layers[0].height,
+        widthInTiles: loader.tileMaps[currentMap].layers[0].width,
+        heightInTiles: loader.tileMaps[currentMap].layers[0].height,
         tileSize: 8
     })
-    world.data = Uint16Array.from(loader.tileMaps['000'].layers[0].data);
+    world.data = Uint16Array.from(loader.tileMaps[currentMap].layers[0].data);
     window.worldFlipped = new World({
-        widthInTiles: loader.tileMaps['000'].layers[1].width,
-        heightInTiles: loader.tileMaps['000'].layers[1].height,
+        widthInTiles: loader.tileMaps[currentMap].layers[1].width,
+        heightInTiles: loader.tileMaps[currentMap].layers[1].height,
         tileSize: 8
     })
-    worldFlipped.data = Uint16Array.from(loader.tileMaps['000'].layers[1].data);
+    worldFlipped.data = Uint16Array.from(loader.tileMaps[currentMap].layers[1].data);
 
     loader.loadImages(images, start);
 
@@ -125,8 +126,8 @@ function start(img){
     })
     //player must have an anim set at start, or player.currentAnimation is null
     player.play('idleRight');
-    console.log("playerstart", loader.tileMaps['000'].layers[2].objects.find(function(e){return e.name == "PlayerStart"}) )
-    player.pos = loader.tileMaps['000'].layers[2].objects.find(function(e){return e.name == "PlayerStart"})
+    console.log("playerstart", loader.tileMaps[currentMap].layers[2].objects.find(function(e){return e.name == "PlayerStart"}) )
+    player.pos = loader.tileMaps[currentMap].layers[2].objects.find(function(e){return e.name == "PlayerStart"})
     requestAnimationFrame(frame);
 }
 

@@ -6,7 +6,8 @@ const AssetLoader = function AssetLoader(){
 }
 AssetLoader.prototype.loadImages = function loadImages(names, callback) {
 
-    var n,name,
+    var n,
+        name,
         result = {},
         count  = names.length,
         onload = function() {
@@ -33,11 +34,21 @@ AssetLoader.prototype.loadFile = function loadFile(filePath, done){
 }
 
 AssetLoader.prototype.loadMapData = function loadMapData(tileMapList, done){
-    var self = this;
+        var n,
+        name,
+        result = {},
+        self = this,
+        count  = tileMapList.length,
+        onload = function() {
+            if(--count == 0){
+                self.tileMaps = result;
+                done(result);
+            };
+        }
     tileMapList.forEach(function(file){
         self.loadFile(`src/maps/${file}.json`, function(response){
-            self.tileMaps[file] = JSON.parse(response);
-            return done();
+            result[file] = JSON.parse(response);
+            return onload();
         })
         
     })

@@ -1,6 +1,6 @@
-function Particle{(x,y,color,xspeed,yspeed, life = 40}={}){
-    this.x = x;
-    this.y = y;
+const Particle = function Particle({x,y,color,xspeed,yspeed,pool, life = 40}={}){
+    this.pos = {x: x, y: y};
+    
     this.width = 1;
     this.height = 1;
     this.xspeed = xspeed;
@@ -8,11 +8,14 @@ function Particle{(x,y,color,xspeed,yspeed, life = 40}={}){
     this.life = life;
     this.color = color;
 
-    this.draw = function(){
+    
+    }
+    Particle.prototype.draw = function draw(){
         this.oldX = this.x;
         this.oldY = this.y;
         let sx = this.x - viewX;
         let sy = this.y - viewY;
+        
         if(inView(sx,sy,24)){
             //pat = dither[random()*15|0]
             renderTarget = SCREEN;
@@ -20,8 +23,7 @@ function Particle{(x,y,color,xspeed,yspeed, life = 40}={}){
             pset(sx,sy);
             //pat = dither[8];
         }
-    }
-    this.update = function(){
+    Particle.prototype.update = function update(){
         this.life--
         this.oldX = this.x;
         this.oldY = this.y;
@@ -36,9 +38,9 @@ function Particle{(x,y,color,xspeed,yspeed, life = 40}={}){
         
     }
 
-    this.kill = function(){
+    Particle.prototype.kill = function kill(){
         //splode play
         
-        particles.splice( particles.indexOf(this), 1 );
+        this.pool.splice( this.pool.indexOf(this), 1 );
     }
 }
