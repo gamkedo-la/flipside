@@ -24,8 +24,7 @@ const images = [
 ]
 
 const maps = [
-    '000',
-    '001'
+    '000'
 ]
 
 //initialize and show the FPS/mem use counter
@@ -38,8 +37,8 @@ window.c=document.getElementById("c");
 window.ctx = c.getContext('2d');
 
 
-c.width = 427;
-c.height = 240;
+c.width = 320;
+c.height = 180;
 
 window.view = {
     x: 0, y: 0, w: c.width, h: c.height
@@ -51,15 +50,12 @@ const deadZone = {
 
 
 
-player.pos.x = 100;
-player.pos.y = 100;
-
 //initialize  event listeners-------------------------------------------------
 
 
 
-window.addEventListener('keyup',    function (event) { Key.onKeyup(event); event.preventDefault}, false);
-window.addEventListener('keydown',  function (event) { Key.onKeydown(event); event.preventDefault}, false);
+window.addEventListener('keyup',    function (event) { Key.onKeyup(event); event.preventDefault() }, false);
+window.addEventListener('keydown',  function (event) { Key.onKeydown(event); event.preventDefault() }, false);
 window.addEventListener('blur',     function (event) { paused = true; }, false);
 window.addEventListener('focus',    function (event) { paused = false; }, false);
 
@@ -129,6 +125,8 @@ function start(img){
     })
     //player must have an anim set at start, or player.currentAnimation is null
     player.play('idleRight');
+    console.log("playerstart", loader.tileMaps['000'].layers[2].objects.find(function(e){return e.name == "PlayerStart"}) )
+    player.pos = loader.tileMaps['000'].layers[2].objects.find(function(e){return e.name == "PlayerStart"})
     requestAnimationFrame(frame);
 }
 

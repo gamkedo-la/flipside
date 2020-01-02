@@ -1,10 +1,20 @@
+(function(name,data){
+ if(typeof onTileMapLoaded === 'undefined') {
+  if(typeof TileMaps === 'undefined') TileMaps = {};
+  TileMaps[name] = data;
+ } else {
+  onTileMapLoaded(name,data);
+ }
+ if(typeof module === 'object' && module && module.exports) {
+  module.exports = data;
+ }})("000",
 { "compressionlevel":-1,
  "editorsettings":
     {
      "export":
         {
-         "format":"json",
-         "target":"000.json"
+         "format":"js",
+         "target":"000.js"
         }
     },
  "height":600,
@@ -96,4 +106,4 @@
  "type":"map",
  "version":1.2,
  "width":600
-}
+});
