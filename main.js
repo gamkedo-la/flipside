@@ -27,6 +27,8 @@ const images = [
 ]
 
 const maps = [
+    //map loader assumes JSON files. TMX maps are are at /rawAssets/maps,  exported maps loaded
+    //from this array are located in /src/maps/*.json. 
     'map000',
     'map001'
 ]
@@ -133,8 +135,8 @@ function start(img){
     })
     //player must have an anim set at start, or player.currentAnimation is null
     player.play('idleRight');
-    console.log("playerstart", loader.tileMaps[currentMap].layers[2].objects.find(function(e){return e.name == "PlayerStart"}) )
-    player.pos = loader.tileMaps[currentMap].layers[2].objects.find(function(e){return e.name == "PlayerStart"})
+    console.log("playerstart", loader.tileMaps[currentMap].layers[3].objects.find(function(e){return e.name == "PlayerStart"}) )
+    player.pos = loader.tileMaps[currentMap].layers[3].objects.find(function(e){return e.name == "PlayerStart"})
     requestAnimationFrame(frame);
 }
 
