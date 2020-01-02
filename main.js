@@ -9,12 +9,15 @@ import Signal from './src/js/Signal.js';
 import SpriteSheet from './src/js/spritesheet.js';
 import Animation from './src/js/animation.js';
 
-window.MSG = new Signal();
-window.loader = new AssetLoader();
+//one global object to rule them all
+window.G = {};
 
-window.player = player;
+G.MSG = new Signal();
+G.loader = new AssetLoader();
 
-window.currentMap = 'map000'; 
+G.player = player;
+
+G.currentMap = 'map000'; 
 
 const images = [
     //image loader assumes .png and appends it. all images should be in /src/img/.
@@ -34,20 +37,24 @@ stats.showPanel( 1 ); // 0: fps, 1: ms, 2: mb, 3+: custom
 document.body.appendChild( stats.dom );
 
 //get our canvas from the document. for convenience these are global
-window.c=document.getElementById("c");
-window.ctx = c.getContext('2d');
+G.c=document.getElementById("c");
+G.ctx = G.c.getContext('2d');
+
+G.view = {
+    x: 0, y: 0, w: G.c.width, h: G.c.height
+}
+
+G.deadZone = {
+    x: 60, y: 60
+}
+
+//destructure out of global game object for coding convenience----------------
+const { MSG, loader, view, c, ctx, currentMap, deadZone } = G;
 
 
 c.width = 320;
 c.height = 180;
 
-window.view = {
-    x: 0, y: 0, w: c.width, h: c.height
-}
-
-const deadZone = {
-    x: 60, y: 60
-}
 
 
 

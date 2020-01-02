@@ -60,7 +60,7 @@ class Animation {
     let row = this.frames[this.currentFrame] / this.spriteSheet._f | 0;
     let col = this.frames[this.currentFrame] % this.spriteSheet._f | 0;
 
-    ctx.drawImage(
+    G.ctx.drawImage(
       this.spriteSheet.image,
       col * this.width + (col * 2 + 1) * this.margin,
       row * this.height + (row * 2 + 1) * this.margin,
