@@ -137,25 +137,25 @@
 </data>
  </layer>
  <objectgroup id="3" name="Objects">
-  <object id="3" name="enterRight" type="spawnPoint" x="221.977" y="145.152">
+  <object id="3" name="enterRight" type="spawnPoint" x="268.477" y="144.152">
    <point/>
   </object>
-  <object id="4" name="enterLeft" type="spawnPoint" x="84.8105" y="145.818">
+  <object id="4" name="enterLeft" type="spawnPoint" x="51.8105" y="146.318">
    <point/>
   </object>
-  <object id="5" name="exitLeft" type="portal" x="0.6442" y="105.485" width="45.3333" height="60.6667">
+  <object id="5" name="exitLeft" type="portal" x="-21.3558" y="105.985" width="45.3333" height="60.6667">
    <properties>
     <property name="destinationMap" value="map000"/>
     <property name="destinationSpawn" value="enterRight"/>
    </properties>
   </object>
-  <object id="6" name="exitRight" type="portal" x="275.023" y="105.849" width="45.3333" height="60.6667">
+  <object id="6" name="exitRight" type="portal" x="300.523" y="106.349" width="45.3333" height="60.6667">
    <properties>
     <property name="destinationMap" value="map000"/>
     <property name="destinationSpawn" value="enterLeft"/>
    </properties>
   </object>
-  <object id="7" name="exitBottom" type="portal" x="117" y="209" width="51" height="38.5">
+  <object id="7" name="exitBottom" type="portal" x="117" y="209" width="51" height="61">
    <properties>
     <property name="destinationMap" value="map000"/>
     <property name="destinationSpawn" value="PlayerStart"/>

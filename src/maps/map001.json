@@ -60,8 +60,8 @@
                  "type":"spawnPoint",
                  "visible":true,
                  "width":0,
-                 "x":221.9775,
-                 "y":145.15165
+                 "x":268.4775,
+                 "y":144.15165
                 }, 
                 {
                  "height":0,
@@ -72,8 +72,8 @@
                  "type":"spawnPoint",
                  "visible":true,
                  "width":0,
-                 "x":84.8105,
-                 "y":145.81765
+                 "x":51.8105,
+                 "y":146.31765
                 }, 
                 {
                  "height":60.6667,
@@ -94,8 +94,8 @@
                  "type":"portal",
                  "visible":true,
                  "width":45.3333,
-                 "x":0.644200000000019,
-                 "y":105.48465
+                 "x":-21.3558,
+                 "y":105.98465
                 }, 
                 {
                  "height":60.6667,
@@ -116,11 +116,11 @@
                  "type":"portal",
                  "visible":true,
                  "width":45.3333,
-                 "x":275.0225,
-                 "y":105.84865
+                 "x":300.5225,
+                 "y":106.34865
                 }, 
                 {
-                 "height":38.5,
+                 "height":61,
                  "id":7,
                  "name":"exitBottom",
                  "properties":[
