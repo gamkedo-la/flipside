@@ -71,6 +71,7 @@ const Player = {
 }
 
 Player.update = function update(dt, world, worldFlipped){
+    const { MSG } = G;
 
     this.currentAnimation.update(dt);
     
@@ -96,8 +97,9 @@ Player.update = function update(dt, world, worldFlipped){
     if( this.tileCollisionCheck(worldFlipped, 2) ){
         if(!this.inTheFlip){
             MSG.dispatch('crossed');
+            this.inTheFlip = true;
         }
-        this.inTheFlip = true;
+        
     } else {
         if(this.inTheFlip){
             MSG.dispatch('crossed');

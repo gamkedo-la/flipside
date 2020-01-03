@@ -79,25 +79,36 @@ MSG.addEventListener('crossed',  function (event) { player.crossedOver(event) })
 loader.loadMapData(maps, init);
 
 function init(){
-    window.world = new World({
+    G.world = new World({
         widthInTiles: loader.tileMaps[currentMap].layers[0].width,
         heightInTiles: loader.tileMaps[currentMap].layers[0].height,
         tileSize: 8
     })
-    world.data = Uint16Array.from(loader.tileMaps[currentMap].layers[0].data);
-    window.worldFlipped = new World({
+    G.worldFlipped = new World({
         widthInTiles: loader.tileMaps[currentMap].layers[1].width,
         heightInTiles: loader.tileMaps[currentMap].layers[1].height,
         tileSize: 8
     })
-    worldFlipped.data = Uint16Array.from(loader.tileMaps[currentMap].layers[1].data);
+    G.worldForeground = new World({
+        widthInTiles: loader.tileMaps[currentMap].layers[2].width,
+        heightInTiles: loader.tileMaps[currentMap].layers[2].height,
+        tileSize: 8
+    })
+    
+    G.world.data = Uint16Array.from(loader.tileMaps[currentMap].layers[0].data);
+    
+    G.worldFlipped.data = Uint16Array.from(loader.tileMaps[currentMap].layers[1].data);
+
+    G.worldForeground.data = Uint16Array.from(loader.tileMaps[currentMap].layers[2].data);
 
     loader.loadImages(images, start);
 
 }
 
 function start(img){
-    window.img = img;
+    
+    G.img = img;
+    const { world, worldFlipped, worldForeground} = G;
     //create player animation------------------------------------------
     player.spritesheet = new SpriteSheet({
         image: img.player,
@@ -183,13 +194,14 @@ function update(dt){
 
     handleInput(dt);
 
-    player.update(dt, world, worldFlipped);
+    player.update(dt, G.world, G.worldFlipped);
     //Key needs updated so justReleased queue gets emptied at end of frame
     Key.update();
     
 }
 
 function render(dt){
+    let {world, worldFlipped, worldForeground, img } = G;
     //draw all the things
     clearScreen('black');
 
@@ -328,6 +340,7 @@ function handleInput(dt){
 }
 
 function handleCamera(dt){
+    let { world } = G;
     //---camera follow player-------------------------------
     if(player.pos.x - view.x + deadZone.x > view.w){
         view.x = player.pos.x - (view.w - deadZone.x)
