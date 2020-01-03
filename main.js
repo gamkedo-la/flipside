@@ -200,6 +200,7 @@ function render(dt){
             
             //---additional rendering for pockets of Flip in the map
             if(worldFlipped.data[flatIndex]){
+                //modify the draw position at random intervals between 20 and 60 ticks for glitchy effect
                 let modX = rndInt(-1,1);
                 let modY = rndInt(-1,1);
                 if(frameCount % rndInt(20,60) > 0){
@@ -215,13 +216,13 @@ function render(dt){
                     drawY+modY,
                     world.tileSize, world.tileSize
                     );
-                
+                //draw a dark color blended over top to create the darkened effect
                 ctx.save();
                 ctx.globalCompositeOperation = 'difference';
                 ctx.drawImage(
                     img.aap64,
                     0,
-                    2,
+                    45,
                     1,
                     1,
                     drawX,
