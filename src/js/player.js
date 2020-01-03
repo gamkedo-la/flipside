@@ -1,4 +1,6 @@
 import { clamp } from './math.js';
+import SpriteSheet from './spritesheet.js';
+import Animation from './animation.js';
 
 const Player = {
     spritesheet:{},
@@ -71,12 +73,18 @@ const Player = {
 }
 
 Player.update = function update(dt, world, worldFlipped){
+    this.world = world;
     const { MSG } = G;
 
     this.currentAnimation.update(dt);
     
     this.prevX = this.pos.x;
     this.prevY = this.pos.y;
+
+    this.rect.top = this.pos.y - this.height/2;
+    this.rect.bottom = this.pos.y + this.height/2;
+    this.rect.left = this.pos.x - this.width/2;
+    this.rect.right = this.pos.x + this.width/2;
 
     
     //testing dynamic map stuffs. press X to knock a box-shaped hole in the world around you
@@ -106,8 +114,17 @@ Player.update = function update(dt, world, worldFlipped){
             this.inTheFlip = false;
         }
     }
+    let self = this;
 
-    
+    world.portals.forEach(function(portal){
+        if(self.rectCollision(portal) ){
+            console.log('entered portal');
+            let destinationMap = portal.properties.find(function(prop){return prop.name == 'destinationMap'}).value;
+            let destinationSpawn = portal.properties.find(function(prop){return prop.name == 'destinationSpawn'}).value;
+            console.log(destinationMap, destinationSpawn);
+            G.loadMap({map: destinationMap, spawnPoint: destinationSpawn });
+        }
+    })
 }
 
 
@@ -278,5 +295,59 @@ Player.play = function play(animationName){
     }
 }
 
+Player.init = function init(){
+    let { img } = G;
+    this.spritesheet = new SpriteSheet({
+        image: img.player,
+        frameWidth: 16,
+        frameHeight: 36,
+        animations: {
+            idleLeft: {
+                frames: 1
+            },
+            idleRight: {
+                frames: 0
+            },
+            walkRight: {
+                frames: '2..9',
+                frameRate: 16
+            },
+            walkLeft: {
+                frames: '10..17',
+                frameRate: 16
+            },
+            fallingLeft:{
+                frames: 20
+            },
+            fallingRight: {
+                frames: 18
+            },
+            airLeft: {
+                frames: 21
+            },
+            airRight: {
+                frames: 19
+            }
+
+        }
+    })
+    //player must have an anim set at start, or player.currentAnimation is null
+    this.play('idleRight');
+
+}
+
+Player.rectCollision = function(body) {
+    let left    = body.x,
+        right   = body.x + body.width,
+        top     = body.y, 
+        bottom  = body.y + body.height
+    //console.log(this.pos.x);
+    return (
+        this.rect.left < right &&
+        left < this.rect.right &&
+        this.rect.top < bottom &&
+        top < this.rect.bottom
+      );
+  }
 
 export default Player

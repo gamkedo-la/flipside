@@ -6,10 +6,9 @@ import player from './src/js/player.js';
 import { rndInt, clamp } from './src/js/math.js';
 import AssetLoader from './src/js/AssetLoader.js';
 import Signal from './src/js/Signal.js';
-import SpriteSheet from './src/js/spritesheet.js';
-import Animation from './src/js/animation.js';
 
-//one global object to rule them all
+
+//one global (G)ame object to rule them all
 window.G = {};
 
 G.MSG = new Signal();
@@ -51,103 +50,68 @@ G.deadZone = {
 }
 
 //destructure out of global game object for coding convenience----------------
-const { MSG, loader, view, c, ctx, currentMap, deadZone } = G;
-
+const { MSG, loader, view, c, ctx, deadZone } = G;
+var { currentMap } = G
 
 c.width = 320;
 c.height = 180;
 
-
-
-
 //initialize  event listeners-------------------------------------------------
-
-
 
 window.addEventListener('keyup',    function (event) { Key.onKeyup(event); event.preventDefault() }, false);
 window.addEventListener('keydown',  function (event) { Key.onKeydown(event); event.preventDefault() }, false);
 window.addEventListener('blur',     function (event) { paused = true; }, false);
 window.addEventListener('focus',    function (event) { paused = false; }, false);
 
-
 MSG.addEventListener('crossed',  function (event) { player.crossedOver(event) });
-
 
 //load assets, then start game-------------------------------------------------------------
 
-
+//TODO: reorganize so one function loads both maps and images, THEN start, no chains
 loader.loadMapData(maps, init);
 
 function init(){
-    G.world = new World({
-        widthInTiles: loader.tileMaps[currentMap].layers[0].width,
-        heightInTiles: loader.tileMaps[currentMap].layers[0].height,
-        tileSize: 8
-    })
-    G.worldFlipped = new World({
-        widthInTiles: loader.tileMaps[currentMap].layers[1].width,
-        heightInTiles: loader.tileMaps[currentMap].layers[1].height,
-        tileSize: 8
-    })
-    G.worldForeground = new World({
-        widthInTiles: loader.tileMaps[currentMap].layers[2].width,
-        heightInTiles: loader.tileMaps[currentMap].layers[2].height,
-        tileSize: 8
-    })
+    G.world = new World();
+    G.worldFlipped = new World();
+    G.worldForeground = new World();
+    loadMap({map: 'map000', spawnPoint: 'PlayerStart'});
+    // G.world = new World({
+    //     widthInTiles: loader.tileMaps[currentMap].layers[0].width,
+    //     heightInTiles: loader.tileMaps[currentMap].layers[0].height,
+    //     tileSize: 8
+    // })
+    // G.worldFlipped = new World({
+    //     widthInTiles: loader.tileMaps[currentMap].layers[1].width,
+    //     heightInTiles: loader.tileMaps[currentMap].layers[1].height,
+    //     tileSize: 8
+    // })
+    // G.worldForeground = new World({
+    //     widthInTiles: loader.tileMaps[currentMap].layers[2].width,
+    //     heightInTiles: loader.tileMaps[currentMap].layers[2].height,
+    //     tileSize: 8
+    // })
     
-    G.world.data = Uint16Array.from(loader.tileMaps[currentMap].layers[0].data);
+    // G.world.data = Uint16Array.from(loader.tileMaps[currentMap].layers[0].data);
     
-    G.worldFlipped.data = Uint16Array.from(loader.tileMaps[currentMap].layers[1].data);
+    // G.worldFlipped.data = Uint16Array.from(loader.tileMaps[currentMap].layers[1].data);
 
-    G.worldForeground.data = Uint16Array.from(loader.tileMaps[currentMap].layers[2].data);
+    // G.worldForeground.data = Uint16Array.from(loader.tileMaps[currentMap].layers[2].data);
 
     loader.loadImages(images, start);
 
 }
 
-function start(img){
-    
+function start(img){    
+    //img is an array of all image assets. assigned to our (G)ame object here
     G.img = img;
-    const { world, worldFlipped, worldForeground} = G;
-    //create player animation------------------------------------------
-    player.spritesheet = new SpriteSheet({
-        image: img.player,
-        frameWidth: 16,
-        frameHeight: 36,
-        animations: {
-            idleLeft: {
-                frames: 1
-            },
-            idleRight: {
-                frames: 0
-            },
-            walkRight: {
-                frames: '2..9',
-                frameRate: 16
-            },
-            walkLeft: {
-                frames: '10..17',
-                frameRate: 16
-            },
-            fallingLeft:{
-                frames: 20
-            },
-            fallingRight: {
-                frames: 18
-            },
-            airLeft: {
-                frames: 21
-            },
-            airRight: {
-                frames: 19
-            }
 
-        }
-    })
-    //player must have an anim set at start, or player.currentAnimation is null
-    player.play('idleRight');
-    //console.log("playerstart", loader.tileMaps[currentMap].layers[3].objects.find(function(e){return e.name == "PlayerStart"}) )
+    //create player spritesheet and animations, and set a default animation
+    player.init();
+
+    //get player position from first map
     player.pos = loader.tileMaps[currentMap].layers[3].objects.find(function(e){return e.name == "PlayerStart"})
+
+    //Fire it up!
     requestAnimationFrame(frame);
 }
 
@@ -323,7 +287,12 @@ function render(dt){
             }
         }//end column render
     }//end x loop
-    
+    world.portals.forEach(function(e){
+        ctx.fillStyle = 'rgba(0,255,0, 0.25)';
+        ctx.fillRect(e.x-view.x, e.y-view.y, e.width, e.height);
+    })
+    ctx.fillStyle = 'rgba(0,255,0, 0.25)';
+    ctx.fillRect(G.player.rect.left-view.x, G.player.rect.top-view.y, G.player.width, G.player.height);
     
 }//end render
 
@@ -383,12 +352,41 @@ function handleCamera(dt){
         view.y = player.pos.y - deadZone.y 
     }
 
-    // view.x = view.x.clamp(0, world.widthInTiles * world.tileSize - c.width);
-    // view.y = view.y.clamp(0, world.heightInTiles * world.tileSize - c.height);
-
     view.x = clamp(view.x, 0, world.widthInTiles * world.tileSize - c.width);
     view.y = clamp(view.y, 0, world.heightInTiles * world.tileSize - c.height);
     
 }
+
+function loadMap({map, spawnPoint}){
+    let { loader, currentMap, world, worldFlipped, worldForeground } = G;
+    //empty portals array
+    //world.portals=[];
+    currentMap = map;
+    //console.log(currentMap);
+
+    world.widthInTiles = loader.tileMaps[currentMap].layers[0].width,
+    world.heightInTiles= loader.tileMaps[currentMap].layers[0].height,
+
+    worldFlipped.widthInTiles = loader.tileMaps[currentMap].layers[1].width,
+    worldFlipped.heightInTiles= loader.tileMaps[currentMap].layers[1].height,
+
+    worldForeground.widthInTiles = loader.tileMaps[currentMap].layers[2].width,
+    worldForeground.heightInTiles= loader.tileMaps[currentMap].layers[2].height,
+    
+    world.data = Uint16Array.from(loader.tileMaps[currentMap].layers[0].data);
+    worldFlipped.data = Uint16Array.from(loader.tileMaps[currentMap].layers[1].data);
+    worldForeground.data = Uint16Array.from(loader.tileMaps[currentMap].layers[2].data);
+
+    world.portals = loader.tileMaps[currentMap].layers[3].objects.filter(function(e){return e.type == "portal"})
+
+    let spawn = loader.tileMaps[currentMap].layers[3].objects.find(function(e){return e.name == spawnPoint})
+    player.pos.x = spawn.x;
+    player.pos.y = spawn.y;
+    
+    
+    
+};
+
+G.loadMap = loadMap;
 
 
