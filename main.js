@@ -1,6 +1,6 @@
 import Stats from './src/js/stats.module.js';
 import { Key } from './src/js/util.js';
-import { clearScreen } from './src/js/graphics.js'
+import { clearScreen, makeMosaic } from './src/js/graphics.js'
 import World from './src/js/world.js';
 import player from './src/js/player.js';
 import { rndInt, clamp } from './src/js/math.js';
@@ -29,8 +29,13 @@ const maps = [
     //map loader assumes JSON files. TMX maps are are at /rawAssets/maps,  exported maps loaded
     //from this array are located in /src/maps/*.json. 
     'map000',
-    'map001'
+    'map001',
+    'map002'
 ]
+
+const mosaic = makeMosaic();
+mosaic.canvas.id = "mosaic";
+document.body.appendChild(mosaic.canvas);
 
 //initialize and show the FPS/mem use counter
 const stats = new Stats();
@@ -74,29 +79,9 @@ function init(){
     G.world = new World();
     G.worldFlipped = new World();
     G.worldForeground = new World();
+
     loadMap({map: 'map000', spawnPoint: 'PlayerStart'});
-    // G.world = new World({
-    //     widthInTiles: loader.tileMaps[currentMap].layers[0].width,
-    //     heightInTiles: loader.tileMaps[currentMap].layers[0].height,
-    //     tileSize: 8
-    // })
-    // G.worldFlipped = new World({
-    //     widthInTiles: loader.tileMaps[currentMap].layers[1].width,
-    //     heightInTiles: loader.tileMaps[currentMap].layers[1].height,
-    //     tileSize: 8
-    // })
-    // G.worldForeground = new World({
-    //     widthInTiles: loader.tileMaps[currentMap].layers[2].width,
-    //     heightInTiles: loader.tileMaps[currentMap].layers[2].height,
-    //     tileSize: 8
-    // })
-    
-    // G.world.data = Uint16Array.from(loader.tileMaps[currentMap].layers[0].data);
-    
-    // G.worldFlipped.data = Uint16Array.from(loader.tileMaps[currentMap].layers[1].data);
-
-    // G.worldForeground.data = Uint16Array.from(loader.tileMaps[currentMap].layers[2].data);
-
+   
     loader.loadImages(images, start);
 
 }

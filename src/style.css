@@ -8,6 +8,7 @@ body {
 
 #c {
     display: block;
+    position: absolute;
     background-color: black;
     margin: 0 auto;
     width: 1280px;
@@ -15,4 +16,9 @@ body {
     image-rendering: pixelated;
     image-rendering: crisp-edges;
 
+}
+
+#mosaic {
+    position: absolute;
+    mix-blend-mode: overlay;
 }

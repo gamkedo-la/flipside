@@ -59,14 +59,14 @@ export function makeMosaic(){ //totally stealing from deepnight here.
 
         for(var h = 0; h <= 180; h++){
 
-            ctx.fillStyle = "#e0e0e0";
-            ctx.fillRect(w*scale, h*scale, 2, 2);
+            ctx.fillStyle = "#505050";
+            ctx.fillRect(w*scale, h*scale, 4, 4);
 
-            ctx.fillStyle = "#707070";
-            ctx.fillRect(w*scale, h*scale + 2, 1, 1);
+            ctx.fillStyle = "#808080";
+            ctx.fillRect(w*scale+1, h*scale, 3, 3);
 
-            ctx.fillStyle = "#f8f8f8";
-            ctx.fillRect(w*scale + 2, h*scale, 1, 1);
+            ctx.fillStyle = "#A0A0A0";
+            ctx.fillRect(w*scale + 2, h*scale, 2, 2);
 
         }
     }
