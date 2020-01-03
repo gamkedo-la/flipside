@@ -146,7 +146,7 @@ function start(img){
     })
     //player must have an anim set at start, or player.currentAnimation is null
     player.play('idleRight');
-    console.log("playerstart", loader.tileMaps[currentMap].layers[3].objects.find(function(e){return e.name == "PlayerStart"}) )
+    //console.log("playerstart", loader.tileMaps[currentMap].layers[3].objects.find(function(e){return e.name == "PlayerStart"}) )
     player.pos = loader.tileMaps[currentMap].layers[3].objects.find(function(e){return e.name == "PlayerStart"})
     requestAnimationFrame(frame);
 }
@@ -202,6 +202,7 @@ function update(dt){
 
 function render(dt){
     let {world, worldFlipped, worldForeground, img } = G;
+    
     //draw all the things
     clearScreen('black');
 
@@ -229,10 +230,10 @@ function render(dt){
                 tileSheetHeight = 16,
                 tileSheetWidth = 16;
                 if(gid > 0)gid-=1;
-                if(gidFlipped > 0)gid -=1;
+                if(gidFlipped > 0)gidFlipped -=1;
 
                 
-            if(!worldFlipped.data[flatIndex])
+            if(!gidFlipped)
             {
                 //todo: abtract out into tile draw function, maybe? -flipped and rotated tiles? 
             ctx.drawImage(
@@ -246,6 +247,7 @@ function render(dt){
                 world.tileSize, world.tileSize
                 );
             }
+            
             
             //---additional rendering for pockets of Flip in the map
             if(worldFlipped.data[flatIndex]){
@@ -279,11 +281,11 @@ function render(dt){
                     )
                 ctx.restore();
             }//end flip render
- 
-        }//end row render
+
+        }//end column render
         
-    }//end column render
-    
+    }//end x loop 
+
    
     //render player;
     //TODO: abstract away tile rendering, allow for rendering in front of player?
@@ -296,8 +298,34 @@ function render(dt){
         height: 36
 
     })
+
+    //render foreground tiles if any in front of player-----------------------------------
+    for(let i = rx0; i < rx1; i++){
+        for(let j = ry0; j < ry1; j++){
+            let drawX =     Math.floor(i*8 - view.x),
+                drawY =     Math.floor(j*8 - view.y),
+                flatIndex = j * world.widthInTiles + i,
+                gidFore = worldForeground.data[flatIndex],
+                tileSheetHeight = 16,
+                tileSheetWidth = 16;
+            if(gidFore > 0)gidFore -=1;
+            if(worldForeground.data[flatIndex]){
+            ctx.drawImage(
+                img.tiles,
+                gidFore%tileSheetHeight * world.tileSize,
+                Math.floor(gidFore/tileSheetWidth) * world.tileSize,
+                world.tileSize,
+                world.tileSize,
+                drawX,
+                drawY,
+                world.tileSize, world.tileSize
+                );
+            }
+        }//end column render
+    }//end x loop
     
-}
+    
+}//end render
 
 function handleInput(dt){
 
