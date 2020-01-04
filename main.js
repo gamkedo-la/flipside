@@ -3,10 +3,10 @@ import { Key } from './src/js/util.js';
 import { clearScreen, makeMosaic } from './src/js/graphics.js'
 import World from './src/js/world.js';
 import player from './src/js/player.js';
-import { rndInt, clamp } from './src/js/math.js';
+import { rndInt, clamp, rndFloat } from './src/js/math.js';
 import AssetLoader from './src/js/AssetLoader.js';
 import Signal from './src/js/Signal.js';
-
+import Particle from './src/js/particle.js';
 
 //one global (G)ame object to rule them all
 window.G = {};
@@ -32,7 +32,7 @@ const maps = [
     'map001',
     'map002'
 ]
-
+//for that tasty deepnight pixel mosaic overlay effect
 const mosaic = makeMosaic();
 mosaic.canvas.id = "mosaic";
 document.body.appendChild(mosaic.canvas);
@@ -49,6 +49,10 @@ G.ctx = G.c.getContext('2d');
 G.view = {
     x: 0, y: 0, w: G.c.width, h: G.c.height
 }
+
+G.particles = [];
+
+window.particles = G.particles;
 
 G.deadZone = {
     x: 60, y: 60
@@ -138,11 +142,34 @@ function update(dt){
     //update all the things
     elapsed += dt;
     frameCount ++;
+
+    G.particles.push(new Particle({
+        x: player.pos.x+rndFloat(-6, 6),
+        y: player.pos.y,
+        vx: -player.vx/400,
+        vy: rndFloat(-0.5, -2),
+        color: 10,
+    }) );
     
+    let bgparticleCount = 10;
+    while(bgparticleCount--){
+        G.particles.push(new Particle({
+            x: rndFloat(view.x, view.x+c.width),
+            y: rndFloat(view.y, view.y+c.height),
+            vx: -player.vx/400,
+            vy: rndFloat(-0.5, -2),
+            width: 1,
+            height: rndInt(1,4),
+            color: 29,
+        }) );  
+    }
     handleCamera(dt);
 
     handleInput(dt);
 
+    G.particles.forEach(function(particle){
+        particle.update();
+    })
     player.update(dt, G.world, G.worldFlipped);
     //Key needs updated so justReleased queue gets emptied at end of frame
     Key.update();
@@ -222,7 +249,7 @@ function render(dt){
                 ctx.drawImage(
                     img.aap64,
                     0,
-                    45,
+                    29,
                     1,
                     1,
                     drawX,
@@ -273,12 +300,17 @@ function render(dt){
             }
         }//end column render
     }//end x loop
+    G.particles.forEach(function(particle){
+        particle.draw();
+    })
+    //debug render stuffs-------------------------------------------------------------------------------
     world.portals.forEach(function(e){
         ctx.fillStyle = 'rgba(0,255,0, 0.25)';
         ctx.fillRect(e.x-view.x, e.y-view.y, e.width, e.height);
     })
     ctx.fillStyle = 'rgba(0,255,0, 0.25)';
     ctx.fillRect(G.player.rect.left-view.x, G.player.rect.top-view.y, G.player.width, G.player.height);
+    //end debug render-----------------------------------------------------------------------------------
     
 }//end render
 

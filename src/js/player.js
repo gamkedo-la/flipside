@@ -1,6 +1,7 @@
 import { clamp } from './math.js';
 import SpriteSheet from './spritesheet.js';
 import Animation from './animation.js';
+import Particle from './particle.js';
 
 const Player = {
     spritesheet:{},
@@ -89,9 +90,22 @@ Player.update = function update(dt, world, worldFlipped){
     
     //testing dynamic map stuffs. press X to knock a box-shaped hole in the world around you
     if(this.input.carveWorld){
-        let tpos = world.pixelToTileGrid(this.pos)
-        tpos.x -= 2; tpos.y -= 2;
-        worldFlipped.tileFillRect({tx:tpos.x, ty:tpos.y, width: 4, height: 4, value: 0})
+        //let tpos = world.pixelToTileGrid(this.pos)
+        //tpos.x -= 2; tpos.y -= 2;
+        //worldFlipped.tileFillRect({tx:tpos.x, ty:tpos.y, width: 4, height: 4, value: 0})
+        let gunLeft = this.pos.x - 6;
+        let gunRight = this.pos.x + 6;
+        let gunYoffset = -1;
+        G.particles.push(new Particle({
+            x: this.facingLeft ? gunLeft : gunRight,
+            y: this.pos.y + gunYoffset,
+            vx: this.facingLeft ? -5: 5,
+            vy: 0,
+            color: 22,
+            width: 3, 
+            height: 3,
+            life: 50
+        }))
     }
 
     if(this.inTheFlip){
@@ -118,7 +132,7 @@ Player.update = function update(dt, world, worldFlipped){
 
     world.portals.forEach(function(portal){
         if(self.rectCollision(portal) ){
-            console.log('entered portal');
+            //console.log('entered portal');
             let destinationMap = portal.properties.find(function(prop){return prop.name == 'destinationMap'}).value;
             let destinationSpawn = portal.properties.find(function(prop){return prop.name == 'destinationSpawn'}).value;
             console.log(destinationMap, destinationSpawn);
