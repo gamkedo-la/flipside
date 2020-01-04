@@ -21,4 +21,13 @@ body {
 #mosaic {
     position: absolute;
     mix-blend-mode: overlay;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+
+}
+
+canvas {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
 }
