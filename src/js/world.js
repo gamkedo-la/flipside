@@ -124,10 +124,4 @@ World.prototype.tileFillCircle = function tileFillCircle(params = {
     }
 }
 
-World.prototype.loadMap = function loadMap(params = {
-
-}){
-    
-}
-
 export default World;

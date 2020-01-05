@@ -191,7 +191,22 @@ function update(dt){
             particle.color = 27;
             if(particle.type == 'bullet'){
                 G.worldFlipped.data[flippedIndex] = 0;
-                particle.kill();
+                let splodeCount = 3;
+            while(--splodeCount){
+                //console.log('making splode')
+                G.particles.push(new Particle({
+                    x: particle.pos.x,
+                    y: particle.pos.y,
+                    vx: -particle.vx/5 + rndFloat(-0.5,0.5),
+                    vy: rndFloat(-3, 3),
+                    life: 10,
+                    color: 26,
+                    width: 1,
+                    height: 1,
+                    type: 'bg'
+                }))
+            }
+            particle.life = 0;
             }
         }
         particle.update();
@@ -291,17 +306,8 @@ function render(dt){
                 tileSheetWidth = 16;
             if(gidFore > 0)gidFore -=1;
             if(worldForeground.data[flatIndex]){
-            ctx.drawImage(
-                img.tiles,
-                gidFore%tileSheetHeight * world.tileSize,
-                Math.floor(gidFore/tileSheetWidth) * world.tileSize,
-                world.tileSize,
-                world.tileSize,
-                drawX,
-                drawY,
-                world.tileSize, world.tileSize
-                );
-            }
+                drawTile({x: drawX, y: drawY}, worldForeground, gidFore);
+             }
         }//end column render
     }//end x loop
     G.particles.forEach(function(particle){

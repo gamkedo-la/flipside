@@ -154,7 +154,6 @@ Player.update = function update(dt, world, worldFlipped){
     })
 }
 
-
 Player.inTheFlipPhysics = function inTheFlipPhysics(dt, world, worldFlipped){
     this.gravity = this.physicsFlip.gravity;
     this.friction = this.physicsFlip.friction;
@@ -253,12 +252,12 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
     this.vy = clamp(this.vy, -this.maxVel.y, this.maxVel.y);
         
     this.pos.x = this.pos.x + (dt * this.vx);
-    if( this.tileCollisionCheck(world, this.collideIndex) ){
+    if(this.tileCollisionCheck(world, this.collideIndex) ){
         this.pos.x = this.prevX;
         this.vx = 0;
     }
     this.pos.y = this.pos.y + (dt * this.vy);
-    if( this.tileCollisionCheck(world, this.collideIndex) ){
+    if(this.tileCollisionCheck(world, this.collideIndex) ){
         this.vy =0;
         this.jumping = false;
         this.falling = false;
