@@ -26,15 +26,15 @@ World.prototype.getIndexAtPosition = function getIndexAtPosition(pos={tx:0, ty:0
 }
 
 World.prototype.pixelToTileIndex = function pixelToTileIndex(params = {x:0, y:0}){
-    let tx = Math.floor(params.x / this.tileSize);
-    let ty = Math.floor(params.y / this.tileSize);
+    let tx = Math.round(params.x / this.tileSize);
+    let ty = Math.round(params.y / this.tileSize);
     return this.getIndexAtPosition({tx: tx, ty: ty});
 }
 
 World.prototype.pixelToTileGrid = function pixelToTileGrid(params = {x:0, y:0}){
     return {
-            x: Math.floor(params.x / this.tileSize),
-            y: Math.floor(params.y / this.tileSize)
+            x: Math.round(params.x / this.tileSize),
+            y: Math.round(params.y / this.tileSize)
             }
 }
 

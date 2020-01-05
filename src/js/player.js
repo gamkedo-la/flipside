@@ -1,6 +1,6 @@
 import { clamp } from './math.js';
 import SpriteSheet from './spritesheet.js';
-import Animation from './animation.js';
+import { rndFloat } from './math.js';
 import Particle from './particle.js';
 
 const Player = {
@@ -28,7 +28,7 @@ const Player = {
 
 
     maxVel: {
-        x: 190,
+        x: 150,
         y: 260,
     },
 
@@ -57,7 +57,7 @@ const Player = {
     },
 
     physicsNormal: {
-        maxVel: { x: 190, y: 260 },
+        maxVel: { x: 150, y: 260 },
         accel: 10,
         jumpVel: 1200,
         gravity: 10,
@@ -87,12 +87,20 @@ Player.update = function update(dt, world, worldFlipped){
     this.rect.left = this.pos.x - this.width/2;
     this.rect.right = this.pos.x + this.width/2;
 
+    if(this.inTheFlip){
+        G.particles.push(new Particle({
+            x: this.pos.x+rndFloat(-6, 6),
+            y: this.pos.y,
+            vx: -this.vx/400,
+            vy: rndFloat(-0.5, -2),
+            color: 10,
+        }) );
+    }
+
     
     //testing dynamic map stuffs. press X to knock a box-shaped hole in the world around you
     if(this.input.carveWorld){
-        //let tpos = world.pixelToTileGrid(this.pos)
-        //tpos.x -= 2; tpos.y -= 2;
-        //worldFlipped.tileFillRect({tx:tpos.x, ty:tpos.y, width: 4, height: 4, value: 0})
+        
         let gunLeft = this.pos.x - 6;
         let gunRight = this.pos.x + 6;
         let gunYoffset = -1;
@@ -104,7 +112,8 @@ Player.update = function update(dt, world, worldFlipped){
             color: 22,
             width: 3, 
             height: 3,
-            life: 50
+            life: 50,
+            type: 'bullet'
         }))
     }
 

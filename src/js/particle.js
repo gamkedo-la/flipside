@@ -1,5 +1,5 @@
 import { inView } from './util.js'
-const Particle = function Particle({x,y,vx,vy,color=22,width=1,height=1, life = 40}={}){
+const Particle = function Particle({x,y,vx,vy,color=22,width=1,height=1, life = 40, type='particle'}={}){
     this.pos = {x: x, y: y};
     this.oldPos = {x: 0, y: 0};
     this.width = width;
@@ -8,6 +8,7 @@ const Particle = function Particle({x,y,vx,vy,color=22,width=1,height=1, life = 
     this.vy = vy;
     this.life = life;
     this.color = color;
+    this.type = type;
 
     return this;
 }
@@ -46,6 +47,7 @@ Particle.prototype.update = function update(world){
 }
 
 Particle.prototype.kill = function kill(){        
+   
    G.particles.splice( G.particles.indexOf(this), 1 );
 }
 

@@ -1,6 +1,6 @@
 import Stats from './src/js/stats.module.js';
 import { Key } from './src/js/util.js';
-import { clearScreen, makeMosaic } from './src/js/graphics.js'
+import { clearScreen, makeMosaic, drawTile } from './src/js/graphics.js'
 import World from './src/js/world.js';
 import player from './src/js/player.js';
 import { rndInt, clamp, rndFloat } from './src/js/math.js';
@@ -10,6 +10,29 @@ import Particle from './src/js/particle.js';
 
 //one global (G)ame object to rule them all
 window.G = {};
+
+
+
+//initialize and show the FPS/mem use counter
+const stats = new Stats();
+stats.showPanel( 1 ); // 0: fps, 1: ms, 2: mb, 3+: custom
+document.body.appendChild( stats.dom );
+
+//canvas init and other data init---------------------------------------------
+G.c=document.getElementById("c");
+G.ctx = G.c.getContext('2d');
+
+G.view = {
+    x: 0, y: 0, w: G.c.width, h: G.c.height
+}
+
+G.particles = [];
+
+G.deadZone = {
+    x: 60, y: 60
+}
+
+G.tileSheetSize = { height: 16, width: 16 }
 
 G.MSG = new Signal();
 G.loader = new AssetLoader();
@@ -37,29 +60,8 @@ const mosaic = makeMosaic();
 mosaic.canvas.id = "mosaic";
 document.body.appendChild(mosaic.canvas);
 
-//initialize and show the FPS/mem use counter
-const stats = new Stats();
-stats.showPanel( 1 ); // 0: fps, 1: ms, 2: mb, 3+: custom
-document.body.appendChild( stats.dom );
-
-//get our canvas from the document. for convenience these are global
-G.c=document.getElementById("c");
-G.ctx = G.c.getContext('2d');
-
-G.view = {
-    x: 0, y: 0, w: G.c.width, h: G.c.height
-}
-
-G.particles = [];
-
-window.particles = G.particles;
-
-G.deadZone = {
-    x: 60, y: 60
-}
-
 //destructure out of global game object for coding convenience----------------
-const { MSG, loader, view, c, ctx, deadZone } = G;
+const { MSG, loader, view, c, ctx, deadZone, tileSheetSize } = G;
 var { currentMap } = G
 
 c.width = 320;
@@ -142,14 +144,6 @@ function update(dt){
     //update all the things
     elapsed += dt;
     frameCount ++;
-
-    G.particles.push(new Particle({
-        x: player.pos.x+rndFloat(-6, 6),
-        y: player.pos.y,
-        vx: -player.vx/400,
-        vy: rndFloat(-0.5, -2),
-        color: 10,
-    }) );
     
     let bgparticleCount = 10;
     while(bgparticleCount--){
@@ -161,6 +155,7 @@ function update(dt){
             width: 1,
             height: rndInt(1,4),
             color: 29,
+            type: 'bg'
         }) );  
     }
     handleCamera(dt);
@@ -168,6 +163,31 @@ function update(dt){
     handleInput(dt);
 
     G.particles.forEach(function(particle){
+        if(G.world.data[G.world.pixelToTileIndex(particle.pos)] > 128 && particle.type == 'bullet'){
+           
+            let splodeCount = 3;
+            while(--splodeCount){
+                //console.log('making splode')
+                G.particles.push(new Particle({
+                    x: Math.round(particle.pos.x/8)*8,
+                    y: particle.pos.y,
+                    vx: -particle.vx/5 + rndFloat(-0.5,0.5),
+                    vy: rndFloat(-3, 3),
+                    life: 10,
+                    color: 8,
+                    width: 1,
+                    height: 1,
+                    type: 'bg'
+                }))
+            }
+            particle.life = 0;
+        }
+        if(G.worldFlipped.data[G.world.pixelToTileIndex(particle.pos)]){
+            particle.vx *= 0.9;
+            particle.vy *= 0.9;
+            particle.vx += rndFloat(-.2, .2)
+            particle.color = 27;
+        }
         particle.update();
     })
     player.update(dt, G.world, G.worldFlipped);
@@ -177,8 +197,7 @@ function update(dt){
 }
 
 function render(dt){
-    let {world, worldFlipped, worldForeground, img } = G;
-    
+    let {world, worldFlipped, worldForeground, img, particles } = G;
     //draw all the things
     clearScreen('black');
 
@@ -202,28 +221,15 @@ function render(dt){
                 drawY =     Math.floor(j*8 - view.y),
                 flatIndex = j * world.widthInTiles + i,
                 gid = world.data[flatIndex],
-                gidFlipped = worldFlipped[flatIndex],
-                tileSheetHeight = 16,
-                tileSheetWidth = 16;
+                gidFlipped = worldFlipped[flatIndex];
+
                 if(gid > 0)gid-=1;
                 if(gidFlipped > 0)gidFlipped -=1;
 
                 
-            if(!gidFlipped)
-            {
-                //todo: abtract out into tile draw function, maybe? -flipped and rotated tiles? 
-            ctx.drawImage(
-                img.tiles,
-                gid%tileSheetHeight * world.tileSize,
-                Math.floor(gid/tileSheetWidth) * world.tileSize,
-                world.tileSize,
-                world.tileSize,
-                drawX,
-                drawY,
-                world.tileSize, world.tileSize
-                );
+            if(!gidFlipped){
+                drawTile({x:drawX, y:drawY}, world, gid);
             }
-            
             
             //---additional rendering for pockets of Flip in the map
             if(worldFlipped.data[flatIndex]){
@@ -233,23 +239,15 @@ function render(dt){
                 if(frameCount % rndInt(20,60) > 0){
                     modX = 0; modY = 0;
                 }
-                ctx.drawImage(
-                    img.tiles,
-                    gid%tileSheetHeight * world.tileSize,
-                    Math.floor(gid/tileSheetWidth) * world.tileSize,
-                    world.tileSize,
-                    world.tileSize,
-                    drawX+modX,
-                    drawY+modY,
-                    world.tileSize, world.tileSize
-                    );
+                drawTile({x: drawX + modX, y: drawY + modY}, world, gid);
+                
                 //draw a dark color blended over top to create the darkened effect
                 ctx.save();
                 ctx.globalCompositeOperation = 'difference';
                 ctx.drawImage(
                     img.aap64,
                     0,
-                    29,
+                    28,
                     1,
                     1,
                     drawX,
@@ -301,8 +299,13 @@ function render(dt){
         }//end column render
     }//end x loop
     G.particles.forEach(function(particle){
-        particle.draw();
+        if(particle.type == 'bg'){
+            if(world.data[world.pixelToTileIndex(particle.pos)] < 128){
+                particle.draw();
+            }
+        }else particle.draw();
     })
+    /*
     //debug render stuffs-------------------------------------------------------------------------------
     world.portals.forEach(function(e){
         ctx.fillStyle = 'rgba(0,255,0, 0.25)';
@@ -311,8 +314,11 @@ function render(dt){
     ctx.fillStyle = 'rgba(0,255,0, 0.25)';
     ctx.fillRect(G.player.rect.left-view.x, G.player.rect.top-view.y, G.player.width, G.player.height);
     //end debug render-----------------------------------------------------------------------------------
+    */
     
 }//end render
+
+//update systems---------------------------------------------------------------------
 
 function handleInput(dt){
 
@@ -404,7 +410,6 @@ function loadMap({map, spawnPoint}){
     
     
 };
-
-G.loadMap = loadMap;
+G.loadMap = loadMap
 
 

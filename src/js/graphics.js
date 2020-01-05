@@ -75,6 +75,20 @@ export function makeMosaic(){ //totally stealing from deepnight here.
 
 }
 
+export function drawTile(pos, world, gid){
+        let {img, ctx, tileSheetSize} = G
+        ctx.drawImage(
+            img.tiles,
+            gid%tileSheetSize.height * world.tileSize,
+            Math.floor(gid/tileSheetSize.width) * world.tileSize,
+            world.tileSize,
+            world.tileSize,
+            pos.x,
+            pos.y,
+            world.tileSize, world.tileSize
+            );
+}
+
 export const colors = [
     
 ]
