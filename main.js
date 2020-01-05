@@ -144,7 +144,7 @@ function update(dt){
     //update all the things
     elapsed += dt;
     frameCount ++;
-    
+
     let bgparticleCount = 10;
     while(bgparticleCount--){
         G.particles.push(new Particle({
@@ -182,11 +182,17 @@ function update(dt){
             }
             particle.life = 0;
         }
-        if(G.worldFlipped.data[G.world.pixelToTileIndex(particle.pos)]){
+        var flippedIndex = G.world.pixelToTileIndex(particle.pos)
+        var flippedGID = G.worldFlipped.data[flippedIndex]
+        if(flippedGID){
             particle.vx *= 0.9;
             particle.vy *= 0.9;
             particle.vx += rndFloat(-.2, .2)
             particle.color = 27;
+            if(particle.type == 'bullet'){
+                G.worldFlipped.data[flippedIndex] = 0;
+                particle.kill();
+            }
         }
         particle.update();
     })

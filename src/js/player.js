@@ -88,13 +88,17 @@ Player.update = function update(dt, world, worldFlipped){
     this.rect.right = this.pos.x + this.width/2;
 
     if(this.inTheFlip){
-        G.particles.push(new Particle({
-            x: this.pos.x+rndFloat(-6, 6),
-            y: this.pos.y,
-            vx: -this.vx/400,
-            vy: rndFloat(-0.5, -2),
-            color: 10,
-        }) );
+        let count = 5;
+        while(--count){
+            G.particles.push(new Particle({
+                x: this.pos.x+rndFloat(-6, 6),
+                y: this.pos.y,
+                vx: -this.vx/400,
+                vy: rndFloat(-0.5, -2),
+                color: 10,
+            }) );
+        }
+        
     }
 
     
