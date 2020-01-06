@@ -1,27 +1,29 @@
 
+//declare sounds here---------------------------------------------------------
 
-//declare sounds----------------------------------
+//----------------------------------------------------------------------------
 
-//------------------------------------------------
-
-let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-let musicBus = audioCtx.createGain();
-let soundEffectsBus = audioCtx.createGain();
-let filterBus = audioCtx.createBiquadFilter();
-let masterBus = audioCtx.createGain();
+//Set up WebAudioAPI nodes----------------------------------------------------
+var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+var musicBus = audioCtx.createGain();
+var soundEffectsBus = audioCtx.createGain();
+var filterBus = audioCtx.createBiquadFilter();
+var masterBus = audioCtx.createGain();
 
 musicBus.connect(filterBus);
 soundEffectsBus.connect(filterBus);
 filterBus.connect(masterBus);
 masterBus.connect(audioCtx.destination);
 
+//Variables-------------------------------------------------------------------
 
 
-let isMuted = false;
+//volume handling-------------------------------------------------------------
+var isMuted = false;
 const VOLUME_INCREMENT = 0.05;
 
-let musicVolume;
-let soundEffectsVolume;
+var musicVolume;
+var soundEffectsVolume;
 try {
 	musicVolume = localStorage.getItem("musicVolume");
 	soundEffectsVolume = localStorage.getItem("soundEffectsVolume");
@@ -56,7 +58,7 @@ function setMusicVolume(amount) {
 	musicBus.gain.linearRampToValueAtTime(musicVolume, audioCtx.currentTime + 0.1);
 }
 
-function setEffectsVolume(amount) {
+function setSoundEffectsVolume(amount) {
 	soundEffectsVolume = amount;
 	if (soundEffectsVolume > 1.0) {
 		soundEffectsVolume = 1.0;
@@ -66,13 +68,74 @@ function setEffectsVolume(amount) {
 	soundEffectsBus.gain.linearRampToValueAtTime(soundEffectsVolume, audioCtx.currentTime + 0.1);
 }
 
+function setVolumeRelative(amount) {
+	setMusicVolume(musicVolume + amount);
+	setSoundEffectsVolume(soundEffectsVolume + amount);
+}
+
 function turnVolumeUp() {
-	setMusicVolume(musicVolume + VOLUME_INCREMENT);
-	setEffectsVolume(soundEffectsVolume + VOLUME_INCREMENT);
+	setVolumeRelative(VOLUME_INCREMENT);
 }
 
 function turnVolumeDown() {
-	setMusicVolume(musicVolume - VOLUME_INCREMENT);
-	setEffectsVolume(soundEffectsVolume - VOLUME_INCREMENT);
+	setVolumeRelative(-VOLUME_INCREMENT);
 }
 
+//Audio playback classes------------------------------------------------------
+function SoundClass(filenameWithPath) {
+	var audioBuffer;
+	loadSample(filenameWithPath, function(buffer){audioBuffer = buffer;});
+	var player;
+	var gainNode = audioCtx.createGain();
+	var pannerNode = audioCtx.createStereoPanner();
+
+	gainNode.connect(pannerNode);
+	pannerNode.connect(soundEffectsBus);
+	
+	this.play = function(panning = 0) {
+		pan = panning;
+		if (pan > 1.0) {
+			pan = 1.0;
+		} else if (pan < -1) {
+			pan = -1;
+		}
+		pannerNode.pan.value = pan;
+
+		player = audioCtx.createBufferSource();
+        player.buffer = audioBuffer;
+        player.start();
+        player.loop = false;
+        player.connect(pannerNode);
+	}
+
+	this.stop = function() {
+		if (player != null;) {
+			player.stop();
+		}
+	}
+
+	this.setMixVolume = function(volume) {
+		var mixVolume = volume;
+		if (mixVolume > 1.0) {
+			mixVolume = 1.0;
+		} else if (mixVolume < 0.0) {
+			mixVolume = 0.0;
+		}
+		gainNode.gain.value = mixVolume;
+	}
+}
+
+//Helper functions------------------------------------------------------------
+function LoadAudioFile(url, callback){
+    var request = new XMLHttpRequest();
+    request.open('GET', url, true);
+    request.responseType = 'arraybuffer';
+    request.onload = function(){
+        var audioData = request.response;
+        audioCtx.decodeAudioData(audioData, function(buffer) {
+            console.log(buffer);
+            callback(buffer);
+        });
+    };
+    request.send();
+}
