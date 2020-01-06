@@ -52,7 +52,7 @@ const images = [
     'tiles',
     'aap64',
     'player',
-    'fontSmall'
+    'smallFont'
 ]
 
 const maps = [
@@ -128,7 +128,7 @@ function start(sounds){
         height: 128,
         characterHeight: 9,
         characterWidth: 6,
-        image: G.img.fontSmall
+        image: G.img.smallFont
         //remaining options are in spriteFont defaults
     })
 
