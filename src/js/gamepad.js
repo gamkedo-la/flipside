@@ -12,6 +12,7 @@ const GamepadSupport = function GamepadKeyboardEventEmulator()
     
     console.log("Gamepad Support is ENABLED. Listening for gamepads...");
     
+    const DEADZONE = 0.05; // was 0.25
     var gamepad = null;
     var gamepad_left = false;
     var gamepad_right = false;
@@ -94,20 +95,20 @@ const GamepadSupport = function GamepadKeyboardEventEmulator()
         if (gamepad)
         {
             //console.log("Gamepad detected: " + gamepad.axes[0] + "," + gamepad.axes[1]);
-            var joystickX = applyDeadzone(gamepad.axes[0], 0.25);
+            var joystickX = applyDeadzone(gamepad.axes[0], DEADZONE);
             gamepad_right = (joystickX > 0);
             gamepad_left = (joystickX < 0);
-            var joystickY = applyDeadzone(gamepad.axes[1], 0.25);
+            var joystickY = applyDeadzone(gamepad.axes[1], DEADZONE);
             gamepad_down = (joystickY > 0);
             gamepad_up = (joystickY < 0);
-            var butt = applyDeadzone(gamepad.buttons[0].value, 0.25);
+            var butt = applyDeadzone(gamepad.buttons[0].value, DEADZONE);
             //gamepad_up = gamepad_up || (butt>0);
             gamepad_a = (butt>0);
-            butt = applyDeadzone(gamepad.buttons[1].value, 0.25);
+            butt = applyDeadzone(gamepad.buttons[1].value, DEADZONE);
             gamepad_b = (butt>0);
-            butt = applyDeadzone(gamepad.buttons[2].value, 0.25);
+            butt = applyDeadzone(gamepad.buttons[2].value, DEADZONE);
             gamepad_x = (butt>0);
-            butt = applyDeadzone(gamepad.buttons[3].value, 0.25);
+            butt = applyDeadzone(gamepad.buttons[3].value, DEADZONE);
             gamepad_y = (butt>0);
             //console.log("Gamepad buttons: A:" + gamepad.buttons[0].value + " B:" + + gamepad.buttons[1].value + " X:" + + gamepad.buttons[2].value + " Y:" + + gamepad.buttons[3].value);
         }
