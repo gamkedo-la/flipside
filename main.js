@@ -1,6 +1,6 @@
 import Stats from './src/js/stats.module.js';
 import { Key } from './src/js/util.js';
-import { clearScreen, makeMosaic, drawTile } from './src/js/graphics.js'
+import { clearScreen, makeMosaic, drawTile, spriteFont } from './src/js/graphics.js'
 import World from './src/js/world.js';
 import player from './src/js/player.js';
 import { rndInt, clamp, rndFloat } from './src/js/math.js';
@@ -51,7 +51,8 @@ const images = [
     //image loader assumes .png and appends it. all images should be in /src/img/.
     'tiles',
     'aap64',
-    'player'
+    'player',
+    'fontSmall'
 ]
 
 const maps = [
@@ -120,6 +121,16 @@ function start(sounds){
     G.loader.sounds = sounds;
     //create player spritesheet and animations, and set a default animation
     player.init();
+
+    //create spriteFont
+    G.gameFont = new spriteFont({
+        width: 255,
+        height: 128,
+        characterHeight: 9,
+        characterWidth: 5,
+        image: G.img.fontSmall
+        //remaining options are in spriteFont defaults
+    })
 
     //get player position from first map
     player.pos = loader.tileMaps[currentMap].layers[3].objects.find(function(e){return e.name == "PlayerStart"})
@@ -349,6 +360,12 @@ function render(dt){
     ctx.fillRect(G.player.rect.left-view.x, G.player.rect.top-view.y, G.player.width, G.player.height);
     //end debug render-----------------------------------------------------------------------------------
     */
+
+    G.gameFont.drawText({
+        textString: 'Testing...123#',
+        pos: {x: 5, y: 5},
+        spacing: 0
+    })
     
 }//end render
 

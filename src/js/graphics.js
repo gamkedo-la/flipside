@@ -94,24 +94,48 @@ export function spriteFont({
     height,  
     characterWidth, 
     characterHeight, 
-    characterString,
+    characterOrderString = `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.!@#"' `,
     image }
     ={}
     ){
         this.width = width;
         this.height = height;
-        this.characterWidth = this.characterWidth;
-        this.characterHeight = this.characterHeight;
+        this.characterWidth = characterWidth;
+        this.characterHeight = characterHeight;
         
         this.widthInCharacters = Math.floor( width / characterWidth );
         this.heightInCharacters = Math.floor( height / characterHeight );
-        this.characterString = characterString;
-        this.image = image
+        this.characterMap = characterOrderString.split("");
+        this.image = image;
 
-}
+        return this;
+    }
 
-export function drawText({textString, spriteFont} = {}){
-    
+spriteFont.prototype.drawText = function drawText({textString, pos={x: 0, y: 0}, spacing=0} = {}){
+    var textStringArray = textString.split("");
+    var self = this;
+
+    textStringArray.forEach(function(character, index, arr){
+        //find index in characterMap
+        let keyIndex = self.characterMap.indexOf(character);
+        //tranform index into x,y coordinates in spritefont texture
+        let spriteX = (keyIndex % self.widthInCharacters) * self.characterWidth;
+        let spriteY = Math.floor( keyIndex / self.widthInCharacters ) * self.characterHeight;
+        //draw
+        //console.log(character);
+        G.ctx.drawImage(
+            self.image,
+            spriteX,
+            spriteY,
+            self.characterWidth,
+            self.characterHeight,
+            pos.x + ( (self.characterWidth + spacing) * index),
+            pos.y,
+            self.characterWidth,
+            self.characterHeight
+        )
+        //console.log(keyIndex);
+    })
 }
 
 export const colors = [
