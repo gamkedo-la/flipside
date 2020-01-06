@@ -98,14 +98,25 @@ function init(){
 
     loadMap({map: 'map000', spawnPoint: 'PlayerStart'});
    
-    loader.loadImages(images, start);
+    loader.loadImages(images, soundInit);
 
 }
 
-function start(img){    
+function soundInit(images){
     //img is an array of all image assets. assigned to our (G)ame object here
-    G.img = img;
+    G.img = images;
 
+    //next we load our soundlist, passing in start as a callback once complete.
+    //soundloader just gives loader the properties,  loadAudioBuffer actually decodes the files and
+    //creates a list of buffers.
+    loader.soundLoader({context: audio.context, urlList: soundList, callback: start});
+    loader.loadAudioBuffer(); 
+}
+
+function start(sounds){    
+    //sounds..
+    G.sounds = sounds;
+    G.loader.sounds = sounds;
     //create player spritesheet and animations, and set a default animation
     player.init();
 

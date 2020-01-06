@@ -57,7 +57,7 @@ AssetLoader.prototype.loadMapData = function loadMapData(tileMapList, done){
 AssetLoader.prototype.soundLoader = function ({context, urlList, callback} = {}) {
     this.context = context;
     this.urlList = urlList;
-    this.onload = callback;
+    this.onSoundsLoaded = callback;
     
     this.loadCount = 0;
   }
@@ -81,7 +81,7 @@ AssetLoader.prototype.soundLoader = function ({context, urlList, callback} = {})
           }
           loader.sounds[key] = buffer;
           if (++loader.loadCount == loader.urlList.length)
-            loader.onload(loader.bufferList);
+            loader.onSoundsLoaded(loader.sounds);
         },
         function(error) {
           console.error('decodeAudioData error', error);
