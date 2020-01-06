@@ -7,11 +7,13 @@ import { rndInt, clamp, rndFloat } from './src/js/math.js';
 import AssetLoader from './src/js/AssetLoader.js';
 import Signal from './src/js/Signal.js';
 import Particle from './src/js/particle.js';
+import GamepadSupport from './src/js/gamepad.js';
 
 //one global (G)ame object to rule them all
 window.G = {};
 
-
+// start the gamepad keyboard event emulator
+G.GamepadSupport = new GamepadSupport();
 
 //initialize and show the FPS/mem use counter
 const stats = new Stats();
