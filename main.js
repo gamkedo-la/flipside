@@ -39,7 +39,8 @@ G.tileSheetSize = { height: 16, width: 16 }
 
 G.MSG = new Signal();
 G.loader = new AssetLoader();
-G.audio = new AudioGlobal();
+
+G.audio = new AudioGlobal(); // FIXME: defer to after the first click/keypress to avoid browser error
 
 G.player = player;
 
