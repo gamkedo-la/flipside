@@ -89,6 +89,9 @@ window.addEventListener('focus',    function (event) { paused = false; }, false)
 
 MSG.addEventListener('crossed',  function (event) { player.crossedOver(event) });
 
+window.addEventListener('click', function(event) { audio.context.resume();
+                                                   audio.init()}, false); //Temporary fix for chrome not strting the audio context until user interaction
+
 //load assets, then start game-------------------------------------------------------------
 
 //TODO: reorganize so one function loads both maps and images, THEN start, no chains
