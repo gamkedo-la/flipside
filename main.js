@@ -5,6 +5,7 @@ import World from './src/js/world.js';
 import player from './src/js/player.js';
 import { rndInt, clamp, rndFloat } from './src/js/math.js';
 import AssetLoader from './src/js/AssetLoader.js';
+import AudioGlobal from './src/js/audio.js';
 import Signal from './src/js/Signal.js';
 import Particle from './src/js/particle.js';
 import GamepadSupport from './src/js/gamepad.js';
@@ -41,6 +42,8 @@ G.loader = new AssetLoader();
 
 G.player = player;
 
+G.audio = new AudioGlobal();
+
 G.currentMap = 'map000'; 
 
 const images = [
@@ -68,7 +71,7 @@ mosaic.canvas.id = "mosaic";
 document.body.appendChild(mosaic.canvas);
 
 //destructure out of global game object for coding convenience----------------
-const { MSG, loader, view, c, ctx, deadZone, tileSheetSize } = G;
+const { MSG, loader, view, c, ctx, deadZone, tileSheetSize, audio } = G;
 var { currentMap } = G
 
 c.width = 320;
