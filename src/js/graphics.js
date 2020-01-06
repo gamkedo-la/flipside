@@ -89,6 +89,28 @@ export function drawTile(pos, world, gid){
             );
 }
 
+export function spriteFont({
+    width, 
+    height,  
+    characterWidth, 
+    characterHeight, 
+    characterString,
+    image }
+    ={}
+    ){
+        this.width = width;
+        this.height = height;
+        this.characterWidth = this.characterWidth;
+        this.characterHeight = this.characterHeight;
+        
+        this.widthInCharacters = Math.floor( width / characterWidth );
+        this.heightInCharacters = Math.floor( height / characterHeight );
+        this.characterString = characterString;
+        this.image = image
+
+}
+
 export const colors = [
     
 ]
+

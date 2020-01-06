@@ -290,7 +290,7 @@ function render(dt){
                 ctx.drawImage(
                     img.aap64,
                     0,
-                    28,
+                    4,
                     1,
                     1,
                     drawX,
