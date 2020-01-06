@@ -110,6 +110,10 @@ export function spriteFont({
 
 }
 
+export function drawText({textString, spriteFont} = {}){
+    
+}
+
 export const colors = [
     
 ]
