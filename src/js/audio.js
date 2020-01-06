@@ -6,7 +6,8 @@ const FILTER_Q_CURVE = [0, 1, 0, 1, 0];
 
 const AudioGlobal = function AudioGlobal() {
 	//Set up WebAudioAPI nodes------------------------------------------------
-	var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+	this.context = new (window.AudioContext || window.webkitAudioContext)();
+	var audioCtx = this.context;
 	var musicBus = audioCtx.createGain();
 	var soundEffectsBus = audioCtx.createGain();
 	var filterBus = audioCtx.createBiquadFilter();
@@ -43,6 +44,7 @@ const AudioGlobal = function AudioGlobal() {
 	musicBus.gain.value = musicVolume;
 	soundEffectsBus.gain.value = soundEffectsVolume;
 }
+
 
 //volume handling functions---------------------------------------------------
 Audio.prototype.toggleMute = function toggleMute() {
