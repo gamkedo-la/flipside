@@ -362,8 +362,13 @@ function render(dt){
     */
 
     G.gameFont.drawText({
-        textString: 'Testing...123#',
+        textString: 'The quick brown fox jumps over the lazy dog',
         pos: {x: 5, y: 5},
+        spacing: 0
+    })
+    G.gameFont.drawText({
+        textString: 'The five boxing wizards jump quickly.',
+        pos: {x: 5, y: 13},
         spacing: 0
     })
     
