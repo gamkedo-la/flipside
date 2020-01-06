@@ -54,4 +54,51 @@ AssetLoader.prototype.loadMapData = function loadMapData(tileMapList, done){
     })
 }
 
+AssetLoader.prototype.soundLoader = function ({context, urlList, callback} = {}) {
+    this.context = context;
+    this.urlList = urlList;
+    this.onload = callback;
+    
+    this.loadCount = 0;
+  }
+  
+  AssetLoader.prototype.loadBuffer = function(url, key) {
+    // Load buffer asynchronously
+    var request = new XMLHttpRequest();
+    request.open("GET", url, true);
+    request.responseType = "arraybuffer";
+  
+    var loader = this;
+  
+    request.onload = function() {
+      // Asynchronously decode the audio file data in request.response
+      loader.context.decodeAudioData(
+        request.response,
+        function(buffer) {
+          if (!buffer) {
+            alert('error decoding file data: ' + url);
+            return;
+          }
+          loader.sounds[key] = buffer;
+          if (++loader.loadCount == loader.urlList.length)
+            loader.onload(loader.bufferList);
+        },
+        function(error) {
+          console.error('decodeAudioData error', error);
+        }
+      );
+    }
+  
+    request.onerror = function() {
+      alert('SoundLoader: XHR error');
+    }
+  
+    request.send();
+  }
+    AssetLoader.prototype.loadAudioBuffer = function() {
+    for (var i = 0; i < this.urlList.length; ++i)
+    this.loadBuffer(this.urlList[i].url, this.urlList[i].name);
+  }
+  
+
 export default AssetLoader

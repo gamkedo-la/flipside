@@ -57,6 +57,11 @@ const maps = [
     'map001',
     'map002'
 ]
+ //note these sounds don't exist yet, this is an example of the format AssetLoader.soundLoader expects
+const soundList = [
+    { name: "pewpew", url:"./src/snd/pewpew.mp3" },
+    { name: "jump", url:"./src/snd/jump.mp3" }
+]
 //for that tasty deepnight pixel mosaic overlay effect
 const mosaic = makeMosaic();
 mosaic.canvas.id = "mosaic";
