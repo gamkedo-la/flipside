@@ -43,6 +43,11 @@ function toggleMute() {
 	masterBus.gain.linearRampToValueAtTime(!isMuted, audioCtx.currentTime + 0.03);
 }
 
+function setMute(onOff) {
+	isMuted = onOff;
+	masterBus.gain.linearRampToValueAtTime(onOff, audioCtx.currentTime + 0.03);
+}
+
 function setMusicVolume(amount) {
 	musicVolume = amount;
 	if (musicVolume > 1.0) {
@@ -77,7 +82,7 @@ function turnVolumeDown() {
 }
 
 //Audio playback classes------------------------------------------------------
-function playSound(buffer, rate = 1, pan = 0, vol = 1) {
+function playSound(buffer, rate = 1, pan = 0, vol = 1, loop = false) {
 	var source = audioCtx.createBufferSource();
 	var gainNode = audioCtx.createGain();
 	var panNode = audioCtx.createStereoPanner();
@@ -89,16 +94,16 @@ function playSound(buffer, rate = 1, pan = 0, vol = 1) {
 	source.buffer = buffer;
 
 	source.playbackRate.value = rate;
-	source.loop = false;
+	source.loop = loop;
 	gainNode.gain.value = vol;
 	panNode.pan.value = pan;
 	source.start();
 
-	return {volume: gainNode, sound: source};
+	return {volume: gainNode, pan: panNode, sound: source};
 }
 
 //Helper functions------------------------------------------------------------
-function getRandomValue(min = 0.7, max =  1){
+function getRandomValue(min = 0.8, max =  1){
 	let randomValue = Math.random() * (max - min) + min;
-	return randomValue.toFixed(2);
+	return randomValue.toFixed(3);
 }
