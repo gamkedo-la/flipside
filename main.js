@@ -39,10 +39,10 @@ G.tileSheetSize = { height: 16, width: 16 }
 
 G.MSG = new Signal();
 G.loader = new AssetLoader();
+G.audio = new AudioGlobal();
 
 G.player = player;
 
-G.audio = new AudioGlobal();
 
 G.currentMap = 'map000'; 
 
@@ -62,8 +62,8 @@ const maps = [
 ]
  //note these sounds don't exist yet, this is an example of the format AssetLoader.soundLoader expects
 const soundList = [
-    { name: "pewpew", url:"./src/snd/pewpew.mp3" },
-    { name: "jump", url:"./src/snd/jump.mp3" }
+    { name: "test1", url:"./src/snd/test1.mp3" },
+    { name: "test2", url:"./src/snd/test2.mp3" }
 ]
 //for that tasty deepnight pixel mosaic overlay effect
 const mosaic = makeMosaic();
@@ -71,7 +71,7 @@ mosaic.canvas.id = "mosaic";
 document.body.appendChild(mosaic.canvas);
 
 //destructure out of global game object for coding convenience----------------
-const { MSG, loader, view, c, ctx, deadZone, tileSheetSize, audio } = G;
+const { MSG, loader, audio, view, c, ctx, deadZone, tileSheetSize } = G;
 var { currentMap } = G
 
 c.width = 320;
@@ -379,7 +379,18 @@ function handleInput(dt){
     if(Key.justReleased(Key.x)){
         player.input.carveWorld = false;
     }
-   
+
+
+    if(Key.justReleased(Key.m)){
+        audio.toggleMute();
+    }
+    if(Key.justReleased(Key.COMMA)){
+        audio.turnVolumeDown();
+    }
+    if(Key.justReleased(Key.PERIOD)){
+        audio.turnVolumeUP();
+    }
+
 }
 
 function handleCamera(dt){

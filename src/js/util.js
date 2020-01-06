@@ -13,6 +13,8 @@ export const Key = {
     TWO: 50,
     THREE: 51,
     FOUR: 52,
+    COMMA: 188,
+    PERIOD: 190,
     a: 65,
     c: 67,
     w: 87,
@@ -27,6 +29,7 @@ export const Key = {
     j: 74,
     k: 75,
     l: 76,
+    m: 77,
 
     isDown(keyCode) {
         return this._pressed[keyCode];
