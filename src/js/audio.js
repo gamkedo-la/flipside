@@ -11,7 +11,10 @@ filterBus.connect(masterBus);
 masterBus.connect(audioCtx.destination);
 
 //Variables-------------------------------------------------------------------
-
+const FILTER_MIN = 500;
+const FILTER_MAX = 20000;
+const FILTER_TRANSITION_TIME = 1;
+const FILTER_Q_CURVE = [0, 1, 0, 1, 0];
 
 //volume handling-------------------------------------------------------------
 var isMuted = false;
@@ -106,4 +109,17 @@ function playSound(buffer, rate = 1, pan = 0, vol = 1, loop = false) {
 function getRandomValue(min = 0.8, max =  1){
 	let randomValue = Math.random() * (max - min) + min;
 	return randomValue.toFixed(3);
+}
+
+//Gameplay functions----------------------------------------------------------
+function audioTransitionInToFlipside() {
+	filterBus.BiquadFilterNode.frequency.linearRampToValueAtTime(FILTER_MAX, audioCtx.currentTime + 0.01);
+	filterBus.BiquadFilterNode.frequency.linearRampToValueAtTime(FILTER_MIN, audioCtx.currentTime + FILTER_TRANSITION_TIME);
+	filterBus.BiquadFilterNode.q.setValueCurveAtTime(FILTER_Q_CURVE, audioCtx.currentTime, FILTER_TRANSITION_TIME);
+}
+
+function audioTransitionOutOfFlipside() {
+	filterBus.BiquadFilterNode.frequency.linearRampToValueAtTime(FILTER_MIN, audioCtx.currentTime + 0.01);
+	filterBus.BiquadFilterNode.frequency.linearRampToValueAtTime(FILTER_MAX, audioCtx.currentTime + FILTER_TRANSITION_TIME);
+	filterBus.BiquadFilterNode.q.setValueCurveAtTime(FILTER_Q_CURVE, audioCtx.currentTime, FILTER_TRANSITION_TIME);
 }
