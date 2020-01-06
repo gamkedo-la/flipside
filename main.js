@@ -127,7 +127,7 @@ function start(sounds){
         width: 255,
         height: 128,
         characterHeight: 9,
-        characterWidth: 5,
+        characterWidth: 6,
         image: G.img.fontSmall
         //remaining options are in spriteFont defaults
     })
