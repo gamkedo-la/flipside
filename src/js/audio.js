@@ -1,8 +1,3 @@
-
-//declare sounds here---------------------------------------------------------
-
-//----------------------------------------------------------------------------
-
 //Set up WebAudioAPI nodes----------------------------------------------------
 var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 var musicBus = audioCtx.createGain();
@@ -45,7 +40,7 @@ soundEffectsBus.gain.value = soundEffectsVolume;
 
 function toggleMute() {
 	isMuted = !isMuted;
-	masterBus.gain.linearRampToValueAtTime(!isMuted, audioCtx.currentTime + 0.1);
+	masterBus.gain.linearRampToValueAtTime(!isMuted, audioCtx.currentTime + 0.03);
 }
 
 function setMusicVolume(amount) {
@@ -55,7 +50,7 @@ function setMusicVolume(amount) {
 	} else if (musicVolume < 0.0) {
 		musicVolume = 0.0;
 	}
-	musicBus.gain.linearRampToValueAtTime(musicVolume, audioCtx.currentTime + 0.1);
+	musicBus.gain.linearRampToValueAtTime(musicVolume, audioCtx.currentTime + 0.03);
 }
 
 function setSoundEffectsVolume(amount) {
@@ -65,7 +60,7 @@ function setSoundEffectsVolume(amount) {
 	} else if (soundEffectsVolume < 0.0) {
 		soundEffectsVolume = 0.0;
 	}
-	soundEffectsBus.gain.linearRampToValueAtTime(soundEffectsVolume, audioCtx.currentTime + 0.1);
+	soundEffectsBus.gain.linearRampToValueAtTime(soundEffectsVolume, audioCtx.currentTime + 0.03);
 }
 
 function setVolumeRelative(amount) {
@@ -82,60 +77,28 @@ function turnVolumeDown() {
 }
 
 //Audio playback classes------------------------------------------------------
-function SoundClass(filenameWithPath) {
-	var audioBuffer;
-	loadSample(filenameWithPath, function(buffer){audioBuffer = buffer;});
-	var player;
+function playSound(buffer, rate = 1, pan = 0, vol = 1) {
+	var source = audioCtx.createBufferSource();
 	var gainNode = audioCtx.createGain();
-	var pannerNode = audioCtx.createStereoPanner();
+	var panNode = audioCtx.createStereoPanner();
 
-	gainNode.connect(pannerNode);
-	pannerNode.connect(soundEffectsBus);
-	
-	this.play = function(panning = 0) {
-		pan = panning;
-		if (pan > 1.0) {
-			pan = 1.0;
-		} else if (pan < -1) {
-			pan = -1;
-		}
-		pannerNode.pan.value = pan;
+	source.connect(panNode);
+	panNode.connect(gainNode);
+	gainNode.connect(soundEffectsBus);
 
-		player = audioCtx.createBufferSource();
-        player.buffer = audioBuffer;
-        player.start();
-        player.loop = false;
-        player.connect(pannerNode);
-	}
+	source.buffer = buffer;
 
-	this.stop = function() {
-		if (player != null;) {
-			player.stop();
-		}
-	}
+	source.playbackRate.value = rate;
+	source.loop = false;
+	gainNode.gain.value = vol;
+	panNode.pan.value = pan;
+	source.start();
 
-	this.setMixVolume = function(volume) {
-		var mixVolume = volume;
-		if (mixVolume > 1.0) {
-			mixVolume = 1.0;
-		} else if (mixVolume < 0.0) {
-			mixVolume = 0.0;
-		}
-		gainNode.gain.value = mixVolume;
-	}
+	return {volume: gainNode, sound: source};
 }
 
 //Helper functions------------------------------------------------------------
-function LoadAudioFile(url, callback){
-    var request = new XMLHttpRequest();
-    request.open('GET', url, true);
-    request.responseType = 'arraybuffer';
-    request.onload = function(){
-        var audioData = request.response;
-        audioCtx.decodeAudioData(audioData, function(buffer) {
-            console.log(buffer);
-            callback(buffer);
-        });
-    };
-    request.send();
+function getRandomValue(min = 0.7, max =  1){
+	let randomValue = Math.random() * (max - min) + min;
+	return randomValue.toFixed(2);
 }
