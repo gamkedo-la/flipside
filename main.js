@@ -71,7 +71,7 @@ const soundList = [
 //for that tasty deepnight pixel mosaic overlay effect
 const mosaic = makeMosaic();
 mosaic.canvas.id = "mosaic";
-document.body.appendChild(mosaic.canvas);
+//document.body.appendChild(mosaic.canvas);
 
 //destructure out of global game object for coding convenience----------------
 const { MSG, loader, audio, view, c, ctx, deadZone, tileSheetSize } = G;
