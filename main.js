@@ -103,7 +103,7 @@ window.addEventListener('click', function(event) { audio.context.resume();
 //load assets, then start game-------------------------------------------------------------
 
 //TODO: reorganize so one function loads both maps and images, THEN start, no chains
-loader.loadMapData(maps, init);
+loader.loadInitialMapData('map000', init);
 
 function init(){
     G.world = new World();
@@ -112,13 +112,13 @@ function init(){
 
     loadMap({map: 'map000', spawnPoint: 'PlayerStart'});
    
-    loader.loadImages(images, soundInit);
+    G.img = loader.loadImages(images, soundInit);
 
 }
 
-function soundInit(images){
+function soundInit(){
     //img is an array of all image assets. assigned to our (G)ame object here
-    G.img = images;
+    //G.img = images;
 
     //next we load our soundlist, passing in start as a callback once complete.
     //soundloader just gives loader the properties,  loadAudioBuffer actually decodes the files and
@@ -189,6 +189,7 @@ function update(dt){
     //update all the things
     elapsed += dt;
     frameCount ++;
+
 /*removing background particles, for now-----------------------
     let bgparticleCount = 10;
     while(bgparticleCount--){
@@ -233,7 +234,7 @@ function update(dt){
         if(flippedGID){
             particle.vx *= 0.9;
             particle.vy *= 0.9;
-            particle.vx += rndFloat(-.2, .2)
+            particle.vx += rndFloat(-0.2, 0.2)
             particle.color = 27;
             if(particle.type == 'bullet'){
                 G.worldFlipped.data[flippedIndex] = 0;
@@ -480,14 +481,14 @@ function loadMap({map, spawnPoint}){
     currentMap = map;
     //console.log(currentMap);
 
-    world.widthInTiles = loader.tileMaps[currentMap].layers[0].width,
-    world.heightInTiles= loader.tileMaps[currentMap].layers[0].height,
+    world.widthInTiles = loader.tileMaps[currentMap].layers[0].width;
+    world.heightInTiles= loader.tileMaps[currentMap].layers[0].height;
 
-    worldFlipped.widthInTiles = loader.tileMaps[currentMap].layers[1].width,
-    worldFlipped.heightInTiles= loader.tileMaps[currentMap].layers[1].height,
+    worldFlipped.widthInTiles = loader.tileMaps[currentMap].layers[1].width;
+    worldFlipped.heightInTiles= loader.tileMaps[currentMap].layers[1].height;
 
-    worldForeground.widthInTiles = loader.tileMaps[currentMap].layers[2].width,
-    worldForeground.heightInTiles= loader.tileMaps[currentMap].layers[2].height,
+    worldForeground.widthInTiles = loader.tileMaps[currentMap].layers[2].width;
+    worldForeground.heightInTiles= loader.tileMaps[currentMap].layers[2].height;
     
     world.data = Uint16Array.from(loader.tileMaps[currentMap].layers[0].data);
     worldFlipped.data = Uint16Array.from(loader.tileMaps[currentMap].layers[1].data);
@@ -501,7 +502,7 @@ function loadMap({map, spawnPoint}){
     
     
     
-};
+}
 G.loadMap = loadMap
 
 
