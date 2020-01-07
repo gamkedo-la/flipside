@@ -9,6 +9,7 @@ import AudioGlobal from './src/js/audio.js';
 import Signal from './src/js/Signal.js';
 import Particle from './src/js/particle.js';
 import GamepadSupport from './src/js/gamepad.js';
+import ElectricityRenderer from './src/js/electricity.js';
 
 //one global (G)ame object to rule them all
 window.G = {};
@@ -41,6 +42,7 @@ G.MSG = new Signal();
 G.loader = new AssetLoader();
 
 G.audio = new AudioGlobal(); // FIXME: defer to after the first click/keypress to avoid browser error
+G.lightning = new ElectricityRenderer();
 
 G.player = player;
 
@@ -52,7 +54,8 @@ const images = [
     'tiles',
     'aap64',
     'player',
-    'smallFont'
+    'smallFont',
+    'fx'
 ]
 
 const maps = [
@@ -353,6 +356,21 @@ function render(dt){
             }
         }else particle.draw();
     })
+
+    // TEMP TEST: work in progress electricity bolt line renderer
+    let zapFrom = {
+        //x:player.pos.x-player.width/2-view.x,
+        //y:player.pos.y-player.height/2-view.y
+        x:352-view.x,
+        y:272-view.y
+    }
+    let zapTo = {
+        x:416-view.x,
+        y:272-view.y
+    }
+    G.lightning.drawZap(zapFrom,zapTo);
+
+
     /*
     //debug render stuffs-------------------------------------------------------------------------------
 
