@@ -50,23 +50,23 @@ export function onScreen(position){
 export function makeMosaic(){ //totally stealing from deepnight here.
     var c = document.createElement('canvas');
     var ctx = c.getContext('2d');
-    let scale = 4;
-    c.width = 1280;
+    let scale = 3; //4
+    c.width = 1278;
     c.height = 720;
     ctx.fillStyle = "#808080";
     ctx.fillRect(0,0, c.width, c.height);
-    for(var w = 0; w <= 320; w++){
+    for(var w = 0; w <= 427; w++){ //320
 
-        for(var h = 0; h <= 180; h++){
+        for(var h = 0; h <= 240; h++){ //180
 
             ctx.fillStyle = "#505050";
-            ctx.fillRect(w*scale, h*scale, 4, 4);
+            ctx.fillRect(w*scale, h*scale, 3, 3); //4
 
             ctx.fillStyle = "#808080";
-            ctx.fillRect(w*scale+1, h*scale, 3, 3);
+            ctx.fillRect(w*scale+1, h*scale, 2, 2); //3
 
             ctx.fillStyle = "#A0A0A0";
-            ctx.fillRect(w*scale + 2, h*scale, 2, 2);
+            ctx.fillRect(w*scale + 2, h*scale, 1, 1); //2
 
         }
     }

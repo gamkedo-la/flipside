@@ -77,8 +77,13 @@ document.body.appendChild(mosaic.canvas);
 const { MSG, loader, audio, view, c, ctx, deadZone, tileSheetSize } = G;
 var { currentMap } = G
 
-c.width = 320;
-c.height = 180;
+//deciding on scale. 3x pixels:
+c.width = 427;
+c.height = 240;
+
+//or 4x pixels
+// c.width = 320;
+// c.height = 180;
 
 //initialize  event listeners-------------------------------------------------
 
@@ -181,7 +186,7 @@ function update(dt){
     //update all the things
     elapsed += dt;
     frameCount ++;
-
+/*removing background particles, for now-----------------------
     let bgparticleCount = 10;
     while(bgparticleCount--){
         G.particles.push(new Particle({
@@ -195,6 +200,7 @@ function update(dt){
             type: 'bg'
         }) );  
     }
+*/
     handleCamera(dt);
 
     handleInput(dt);
@@ -303,14 +309,7 @@ function render(dt){
                 ctx.save();
                 ctx.globalCompositeOperation = 'difference';
                 ctx.drawImage(
-                    img.aap64,
-                    0,
-                    4,
-                    1,
-                    1,
-                    drawX,
-                    drawY,
-                    world.tileSize, world.tileSize
+                    img.aap64, 0, 4, 1, 1, drawX, drawY, world.tileSize, world.tileSize
                     )
                 ctx.restore();
             }//end flip render
@@ -356,14 +355,13 @@ function render(dt){
     })
     /*
     //debug render stuffs-------------------------------------------------------------------------------
+
     world.portals.forEach(function(e){
         ctx.fillStyle = 'rgba(0,255,0, 0.25)';
         ctx.fillRect(e.x-view.x, e.y-view.y, e.width, e.height);
     })
     ctx.fillStyle = 'rgba(0,255,0, 0.25)';
     ctx.fillRect(G.player.rect.left-view.x, G.player.rect.top-view.y, G.player.width, G.player.height);
-    //end debug render-----------------------------------------------------------------------------------
-    */
 
     G.gameFont.drawText({
         textString: 'The quick brown fox jumps over the lazy dog',
@@ -375,6 +373,11 @@ function render(dt){
         pos: {x: 5, y: 13},
         spacing: 0
     })
+
+    //end debug render-----------------------------------------------------------------------------------
+    */
+
+    
     
 }//end render
 
