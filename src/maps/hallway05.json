@@ -4,7 +4,7 @@
      "export":
         {
          "format":"json",
-         "target":"map002.json"
+         "target":"hallway05.json"
         }
     },
  "height":40,
@@ -88,7 +88,7 @@
                         {
                          "name":"destinationSpawn",
                          "type":"string",
-                         "value":"enterRight"
+                         "value":"enterMidRight"
                         }],
                  "rotation":0,
                  "type":"portal",
@@ -105,7 +105,7 @@
                         {
                          "name":"destinationMap",
                          "type":"string",
-                         "value":"map001"
+                         "value":"hill05"
                         }, 
                         {
                          "name":"destinationSpawn",

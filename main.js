@@ -60,7 +60,22 @@ const maps = [
     //from this array are located in /src/maps/*.json. 
     'map000',
     'map001',
-    'map002'
+    'map002',
+    'hallway01',
+    'hallway02',
+    'hallway03',
+    'hallway04',
+    'hallway05',
+    'hallway06',
+    'hill01',
+    'hill02',
+    'hill03',
+    'hill04',
+    'hill05',
+    'hill06',
+    'pit00'
+
+
 ]
  //note these sounds don't exist yet, this is an example of the format AssetLoader.soundLoader expects
 const soundList = [
@@ -377,6 +392,12 @@ function render(dt){
     //end debug render-----------------------------------------------------------------------------------
     */
 
+   G.gameFont.drawText({
+    textString: `${G.currentMap}, x ${Math.round(player.pos.x)}, y ${Math.round(player.pos.y)}`,
+    pos: {x: 4, y: 224},
+    spacing: 0
+})
+
     
     
 }//end render
@@ -481,7 +502,7 @@ function loadMap({map, spawnPoint}){
     player.pos.x = spawn.x;
     player.pos.y = spawn.y;
     
-    
+    G.currentMap = map;
     
 };
 G.loadMap = loadMap

@@ -4,7 +4,7 @@
      "export":
         {
          "format":"json",
-         "target":"map002.json"
+         "target":"hallway01.json"
         }
     },
  "height":40,
@@ -72,7 +72,7 @@
                  "type":"spawnPoint",
                  "visible":true,
                  "width":0,
-                 "x":51.8105,
+                 "x":65.3021731080036,
                  "y":146.318
                 }, 
                 {
@@ -83,7 +83,7 @@
                         {
                          "name":"destinationMap",
                          "type":"string",
-                         "value":"map000"
+                         "value":"hill02"
                         }, 
                         {
                          "name":"destinationSpawn",
@@ -105,12 +105,12 @@
                         {
                          "name":"destinationMap",
                          "type":"string",
-                         "value":"map001"
+                         "value":"map000"
                         }, 
                         {
                          "name":"destinationSpawn",
                          "type":"string",
-                         "value":"enterLeft"
+                         "value":"enterMidLeft"
                         }],
                  "rotation":0,
                  "type":"portal",

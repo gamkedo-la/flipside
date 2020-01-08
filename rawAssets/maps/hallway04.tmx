@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.2" tiledversion="2019.12.11" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="70" height="40" tilewidth="8" tileheight="8" infinite="0" nextlayerid="5" nextobjectid="8">
  <editorsettings>
-  <export target="../../src/maps/map002.json" format="json"/>
+  <export target="../../src/maps/hallway04.json" format="json"/>
  </editorsettings>
  <tileset firstgid="1" source="tiles.tsx"/>
  <layer id="1" name="Map" width="70" height="40">
@@ -145,13 +145,13 @@
   </object>
   <object id="5" name="exitLeft" type="portal" x="-21.3558" y="105.985" width="45.3333" height="60.6667">
    <properties>
-    <property name="destinationMap" value="map000"/>
-    <property name="destinationSpawn" value="enterRight"/>
+    <property name="destinationMap" value="map001"/>
+    <property name="destinationSpawn" value="enterTopRight"/>
    </properties>
   </object>
   <object id="6" name="exitRight" type="portal" x="534.523" y="106.349" width="45.3333" height="60.6667">
    <properties>
-    <property name="destinationMap" value="map001"/>
+    <property name="destinationMap" value="hill04"/>
     <property name="destinationSpawn" value="enterLeft"/>
    </properties>
   </object>

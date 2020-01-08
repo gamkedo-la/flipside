@@ -4,7 +4,7 @@
      "export":
         {
          "format":"json",
-         "target":"map002.json"
+         "target":"..\/..\/rawAssets\/maps"
         }
     },
  "height":40,
@@ -83,7 +83,7 @@
                         {
                          "name":"destinationMap",
                          "type":"string",
-                         "value":"map000"
+                         "value":"hill03"
                         }, 
                         {
                          "name":"destinationSpawn",
@@ -105,12 +105,12 @@
                         {
                          "name":"destinationMap",
                          "type":"string",
-                         "value":"map001"
+                         "value":"map000"
                         }, 
                         {
                          "name":"destinationSpawn",
                          "type":"string",
-                         "value":"enterLeft"
+                         "value":"enterLowerLeft"
                         }],
                  "rotation":0,
                  "type":"portal",
