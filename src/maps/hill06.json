@@ -1,13 +1,4 @@
-{ "compressionlevel":0,
- "editorsettings":
-    {
-     "export":
-        {
-         "format":"json",
-         "target":"hill06.json"
-        }
-    },
- "height":40,
+{ "height":40,
  "infinite":false,
  "layers":[
         {
@@ -105,7 +96,7 @@
                         {
                          "name":"destinationMap",
                          "type":"string",
-                         "value":"hallway06"
+                         "value":"pit00"
                         }, 
                         {
                          "name":"destinationSpawn",
@@ -129,7 +120,7 @@
  "nextobjectid":8,
  "orientation":"orthogonal",
  "renderorder":"right-down",
- "tiledversion":"2019.12.11",
+ "tiledversion":"1.2.0",
  "tileheight":8,
  "tilesets":[
         {

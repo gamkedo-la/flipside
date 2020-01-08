@@ -70,13 +70,14 @@ AssetLoader.prototype.loadInitialMapData = function loadInitialMapData(initialMa
         self.loadFile(`src/maps/${initialMap}.json`, function(response){
           result[initialMap] = JSON.parse(response);
           didLoad = true;
-          self.loadConnectedMapData(result[initialMap], function(){});
+          
           return onload();
       })
 }
 
-AssetLoader.prototype.loadConnectedMapData = function loadConnectedMapData(currentMap, done) {
+AssetLoader.prototype.loadConnectedMapData = function loadConnectedMapData(map, done) {
   const self = this;
+  const currentMap = self.tileMaps[map];
 
   const portals = currentMap.layers[3].objects;
   const connectedMaps = [];
@@ -87,7 +88,8 @@ AssetLoader.prototype.loadConnectedMapData = function loadConnectedMapData(curre
     }
   }
 
-  const loadedMaps = Object.keys(self.tileMaps);
+  let loadedMaps = Object.keys(self.tileMaps);
+  loadedMaps = self.unloadDistantMapData(loadedMaps, map, connectedMaps);
 
   for(let connectedMap of connectedMaps) {
     let alreadyLoaded = false;
@@ -104,6 +106,31 @@ AssetLoader.prototype.loadConnectedMapData = function loadConnectedMapData(curre
       })
     }
   }
+
+  done();
+}
+
+AssetLoader.prototype.unloadDistantMapData = function unloadDistantMapData(loadedMaps, currentMap, connectedMaps) {
+  const self = this;
+  for(let i = loadedMaps.length - 1; i >= 0; i--) {
+    const thisOldMap = loadedMaps[i];
+    if(thisOldMap == currentMap) continue;//current map should already be loaded and should stay that way
+
+    let shouldKeepIt = false;
+    for(let newMap of connectedMaps) {
+      if(thisOldMap == newMap) {
+        shouldKeepIt = true;
+        break;
+      }
+    }
+
+    if(!shouldKeepIt) {
+      loadedMaps.splice(i, 1);
+      delete self.tileMaps[thisOldMap];
+    }
+  }
+
+  return loadedMaps;
 }
 
 AssetLoader.prototype.soundLoader = function ({context, urlList, callback} = {}) {

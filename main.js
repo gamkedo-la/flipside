@@ -472,6 +472,8 @@ function loadMap({map, spawnPoint}){
     currentMap = map;
     //console.log(currentMap);
 
+    loader.loadConnectedMapData(map, function(){});
+
     world.widthInTiles = loader.tileMaps[currentMap].layers[0].width;
     world.heightInTiles= loader.tileMaps[currentMap].layers[0].height;
 
@@ -485,9 +487,9 @@ function loadMap({map, spawnPoint}){
     worldFlipped.data = Uint16Array.from(loader.tileMaps[currentMap].layers[1].data);
     worldForeground.data = Uint16Array.from(loader.tileMaps[currentMap].layers[2].data);
 
-    world.portals = loader.tileMaps[currentMap].layers[3].objects.filter(function(e){return e.type == "portal"})
+    world.portals = loader.tileMaps[currentMap].layers[3].objects.filter(function(e){return e.type == "portal"});
 
-    let spawn = loader.tileMaps[currentMap].layers[3].objects.find(function(e){return e.name == spawnPoint})
+    let spawn = loader.tileMaps[currentMap].layers[3].objects.find(function(e){return e.name == spawnPoint});
     player.pos.x = spawn.x;
     player.pos.y = spawn.y;
     
