@@ -3,7 +3,7 @@ import { Key } from './src/js/util.js';
 import { clearScreen, makeMosaic, drawTile, spriteFont } from './src/js/graphics.js'
 import World from './src/js/world.js';
 import player from './src/js/player.js';
-import { rndInt, clamp, rndFloat } from './src/js/math.js';
+import { rndInt, clamp, rndFloat, range } from './src/js/math.js';
 import AssetLoader from './src/js/AssetLoader.js';
 import AudioGlobal from './src/js/audio.js';
 import Signal from './src/js/Signal.js';
@@ -89,7 +89,7 @@ const soundList = [
 //for that tasty deepnight pixel mosaic overlay effect
 const mosaic = makeMosaic();
 mosaic.canvas.id = "mosaic";
-//document.body.appendChild(mosaic.canvas);
+document.body.appendChild(mosaic.canvas);
 
 //destructure out of global game object for coding convenience----------------
 const { MSG, loader, audio, view, c, ctx, deadZone, tileSheetSize } = G;
@@ -374,50 +374,19 @@ function render(dt){
     })
 
     // TEMP TEST: work in progress electricity bolt line renderer
-    let zapFrom = {
-        x:player.pos.x+8-player.width/2-view.x,
-        y:player.pos.y+16-player.height/2-view.y
-        //x:352-view.x,
-        //y:272-view.y
-    }
-    let zapTo = {
-        x:400-view.x,
-        y:272-view.y
-    }
-    G.lightning.drawZap(zapFrom,zapTo);
-
-
-    /*
-    //debug render stuffs-------------------------------------------------------------------------------
-
-    world.portals.forEach(function(e){
-        ctx.fillStyle = 'rgba(0,255,0, 0.25)';
-        ctx.fillRect(e.x-view.x, e.y-view.y, e.width, e.height);
-    })
-    ctx.fillStyle = 'rgba(0,255,0, 0.25)';
-    ctx.fillRect(G.player.rect.left-view.x, G.player.rect.top-view.y, G.player.width, G.player.height);
-
-    G.gameFont.drawText({
-        textString: 'The quick brown fox jumps over the lazy dog',
-        pos: {x: 5, y: 5},
-        spacing: 0
-    })
-    G.gameFont.drawText({
-        textString: 'The five boxing wizards jump quickly.',
-        pos: {x: 5, y: 13},
-        spacing: 0
-    })
-
-    //end debug render-----------------------------------------------------------------------------------
-    */
-
-   G.gameFont.drawText({
-    textString: `${G.currentMap}, x ${Math.round(player.pos.x)}, y ${Math.round(player.pos.y)}`,
-    pos: {x: 4, y: 224},
-    spacing: 0
-})
-
-    
+    // let zapFrom = {
+    //     x:player.pos.x+8-player.width/2-view.x,
+    //     y:player.pos.y+16-player.height/2-view.y
+    //     //x:352-view.x,
+    //     //y:272-view.y
+    // }
+    // let zapTo = {
+    //     x:400-view.x,
+    //     y:272-view.y
+    // }
+    // G.lightning.drawZap(zapFrom,zapTo);
+    UIRender();
+    debugRender();
     
 }//end render
 
@@ -526,4 +495,64 @@ function loadMap({map, spawnPoint}){
 }
 G.loadMap = loadMap
 
+function debugRender(){
+    /*
+    //debug render stuffs-------------------------------------------------------------------------------
+    
+    world.portals.forEach(function(e){
+        ctx.fillStyle = 'rgba(0,255,0, 0.25)';
+        ctx.fillRect(e.x-view.x, e.y-view.y, e.width, e.height);
+    })
+    ctx.fillStyle = 'rgba(0,255,0, 0.25)';
+    ctx.fillRect(G.player.rect.left-view.x, G.player.rect.top-view.y, G.player.width, G.player.height);
+
+    G.gameFont.drawText({
+        textString: 'The quick brown fox jumps over the lazy dog',
+        pos: {x: 5, y: 5},
+        spacing: 0
+    })
+    G.gameFont.drawText({
+        textString: 'The five boxing wizards jump quickly.',
+        pos: {x: 5, y: 13},
+        spacing: 0
+    })
+
+    
+    */
+    ctx.fillStyle='rgba(0,0,0,0.6)';
+    ctx.fillRect(0,228,427,12)
+   G.gameFont.drawText({
+    textString: `${G.currentMap}, x ${Math.round(player.pos.x)}, y ${Math.round(player.pos.y)}, vy${G.player.vy.toFixed(3)}`,
+    pos: {x: 4, y: 230},
+    spacing: 0
+    //end debug render-----------------------------------------------------------------------------------
+})
+}
+
+function UIRender(){
+    let healthBarLocation   = {x: 4, y: 4},
+        healthBarDimensions = {w: 50, h: 8},
+        healthBarPadding    = 1,
+        healthBarDrawWidth  = range(G.player.health, 0, G.player.maxHealth, 0, healthBarDimensions.w-healthBarPadding*2);
+    console.log();
+    ctx.fillStyle = '#777';
+    ctx.fillRect(healthBarLocation.x, healthBarLocation.y, healthBarDimensions.w, healthBarDimensions.h);
+    ctx.fillStyle = '#444';
+    ctx.fillRect(
+            healthBarLocation.x + healthBarPadding,
+            healthBarLocation.y+healthBarPadding,
+            healthBarDimensions.w-healthBarPadding*2,
+            healthBarDimensions.h-healthBarPadding*2
+            );
+    //test by setting lower than full
+    //G.player.health = 75;
+    ctx.fillStyle = '#4f0'
+    ctx.fillRect(
+        healthBarLocation.x + healthBarPadding,
+        healthBarLocation.y+healthBarPadding,
+        healthBarDrawWidth,
+        healthBarDimensions.h-healthBarPadding*2
+        );
+    
+}
 

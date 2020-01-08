@@ -25,17 +25,17 @@ const Player = {
 
     width: 12,
     height: 36,
-
+    
+    health: 100,
+    maxHealth: 100,
 
     maxVel: {
         x: 150,
         y: 260,
     },
 
-    dx: 0,
-    dy: 0,
     vx: 0, 
-    vy: 7,
+    vy: 10,
     
     friction: 0.7,
 
@@ -258,6 +258,7 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
     }
     this.pos.y = this.pos.y + (dt * this.vy);
     if(this.tileCollisionCheck(world, this.collideIndex) ){
+        if(this.vy > 260){G.player.health-=5}
         this.vy =0;
         this.jumping = false;
         this.falling = false;
