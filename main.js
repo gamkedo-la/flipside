@@ -374,17 +374,18 @@ function render(dt){
     })
 
     // TEMP TEST: work in progress electricity bolt line renderer
-    // let zapFrom = {
-    //     x:player.pos.x+8-player.width/2-view.x,
-    //     y:player.pos.y+16-player.height/2-view.y
-    //     //x:352-view.x,
-    //     //y:272-view.y
-    // }
-    // let zapTo = {
-    //     x:400-view.x,
-    //     y:272-view.y
-    // }
-    // G.lightning.drawZap(zapFrom,zapTo);
+    let zapFrom = {
+        x:player.pos.x+8-player.width/2-view.x,
+        y:player.pos.y+16-player.height/2-view.y
+        //x:352-view.x,
+        //y:272-view.y
+    }
+    let zapTo = {
+        x:400-view.x,
+        y:272-view.y
+    }
+    G.lightning.drawZap(zapFrom,zapTo);
+    
     UIRender();
     debugRender();
     
