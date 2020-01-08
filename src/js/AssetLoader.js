@@ -13,8 +13,8 @@ AssetLoader.prototype.loadImages = function loadImages(names, callback) {
         onload = function() {
             if(--count == 0){
                 this.images = result;
-                callback(result);
-            };
+                callback();
+            }
         }
     
     for(n = 0 ; n < names.length ; n++) {
@@ -24,11 +24,14 @@ AssetLoader.prototype.loadImages = function loadImages(names, callback) {
         result[name].src = "src/img/" + name + ".png";
     }
     
+    return result;
 }
 
 AssetLoader.prototype.loadFile = function loadFile(filePath, done){
     let xhr = new XMLHttpRequest();
-    xhr.onload = function () { return done(this.responseText) }
+    xhr.onload = function () { 
+      return done(this.responseText) 
+    }
     xhr.open("GET", filePath, true);
     xhr.send();
 }
@@ -43,15 +46,64 @@ AssetLoader.prototype.loadMapData = function loadMapData(tileMapList, done){
             if(--count == 0){
                 self.tileMaps = result;
                 done(result);
-            };
+            }
         }
     tileMapList.forEach(function(file){
         self.loadFile(`src/maps/${file}.json`, function(response){
             result[file] = JSON.parse(response);
             return onload();
         })
-        
     })
+}
+
+AssetLoader.prototype.loadInitialMapData = function loadInitialMapData(initialMap, done){
+        var result = {};
+        var self = this;
+        var didLoad = false;
+        onload = function() {
+          if(didLoad) {//FIXME Don't know why onload gets called before self.loadFile returns
+            self.tileMaps = result;
+            done(result);  
+          }
+        }
+
+        self.loadFile(`src/maps/${initialMap}.json`, function(response){
+          result[initialMap] = JSON.parse(response);
+          didLoad = true;
+          self.loadConnectedMapData(result[initialMap], function(){});
+          return onload();
+      })
+}
+
+AssetLoader.prototype.loadConnectedMapData = function loadConnectedMapData(currentMap, done) {
+  const self = this;
+
+  const portals = currentMap.layers[3].objects;
+  const connectedMaps = [];
+  for(let portal of portals) {
+    const portalName = portal.name;
+    if( portalName.startsWith('exit')) {
+      connectedMaps.push(portal.properties[0].value);
+    }
+  }
+
+  const loadedMaps = Object.keys(self.tileMaps);
+
+  for(let connectedMap of connectedMaps) {
+    let alreadyLoaded = false;
+    for(let loaded of loadedMaps) {
+      if(connectedMap == loaded) {
+        alreadyLoaded = true;
+        break;
+      }
+    }
+
+    if(!alreadyLoaded) {
+      self.loadFile(`src/maps/${connectedMap}.json`, function(response){
+        self.tileMaps[connectedMap] = JSON.parse(response);
+      })
+    }
+  }
 }
 
 AssetLoader.prototype.soundLoader = function ({context, urlList, callback} = {}) {
