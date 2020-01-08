@@ -374,12 +374,7 @@ function render(dt){
     })
 
     // TEMP TEST: work in progress electricity bolt line renderer
-    G.lightning.drawZap(
-            { x:300+Math.cos(performance.now()*0.0015)*20-view.x,
-            y:380+Math.cos(performance.now()*0.00051)*20-view.y}, 
-            { x:360+Math.cos(performance.now()*0.0033)*20-view.x,
-            y:420+Math.cos(performance.now()*0.0022)*20-view.y }
-        );
+    G.lightning.stressTest();
     
     UIRender();
     debugRender();

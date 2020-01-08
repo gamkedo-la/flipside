@@ -1,6 +1,31 @@
 
 const ElectricityRenderer = function ElectricityRenderer()
 {
+    this.stressTest = function() {
+        let tmp = performance.now();
+        this.drawZap(
+            { x:300+Math.cos(tmp*0.0015)*32-G.view.x,
+            y:380+Math.cos(tmp*0.0005)*32-G.view.y}, 
+            { x:360+Math.cos(tmp*0.003)*32-G.view.x,
+            y:420+Math.cos(tmp*0.002)*32-G.view.y });
+        this.drawZap(
+            { x:200+Math.cos(tmp*0.0015)*32-G.view.x,
+            y:280+Math.cos(tmp*0.0005)*32-G.view.y}, 
+            { x:160+Math.cos(tmp*0.003)*32-G.view.x,
+            y:320+Math.cos(tmp*0.002)*32-G.view.y });
+        this.drawZap(
+            { x:400+Math.cos(tmp*0.0015)*32-G.view.x,
+            y:420+Math.cos(tmp*0.0005)*32-G.view.y}, 
+            { x:560+Math.cos(tmp*0.003)*32-G.view.x,
+            y:420+Math.cos(tmp*0.002)*32-G.view.y });
+        this.drawZap(
+            { x:200+Math.cos(tmp*0.0015)*32-G.view.x,
+            y:580+Math.cos(tmp*0.0005)*32-G.view.y}, 
+            { x:260+Math.cos(tmp*0.003)*32-G.view.x,
+            y:520+Math.cos(tmp*0.002)*32-G.view.y });
+    
+    }
+    
     // multi-line electricity effect
     this.drawZap = function(startPos,endPos) {
         this.bolt(startPos,endPos,1,3,10,"rgba(255,255,255,0.5)");
