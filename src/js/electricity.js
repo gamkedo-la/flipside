@@ -3,8 +3,9 @@ const ElectricityRenderer = function ElectricityRenderer()
 {
     // multi-line electricity effect
     this.drawZap = function(startPos,endPos) {
-        this.bolt(startPos,endPos,2,3,10,"rgba(255,255,255,1)");
-        this.bolt(startPos,endPos,1,6,10,"rgba(0,255,255,1)");
+        this.bolt(startPos,endPos,1,3,10,"rgba(255,255,255,0.5)");
+        this.bolt(startPos,endPos,1,6,10,"rgba(0,255,255,0.5)");
+        this.bolt(startPos,endPos,1,6,10,"rgba(0,255,255,0.5)");
         //this.bolt(startPos,endPos,1,4,20,"rgba(0,0,255)");
     }
     
