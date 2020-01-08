@@ -102,7 +102,7 @@ Player.update = function update(dt, world, worldFlipped){
     }
 
     
-    //testing dynamic map stuffs. press X to knock a box-shaped hole in the world around you
+    //fire gun
     if(this.input.carveWorld){
         
         let gunLeft = this.pos.x - 6;
