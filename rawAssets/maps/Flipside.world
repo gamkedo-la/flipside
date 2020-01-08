@@ -1,0 +1,75 @@
+{
+    "maps": [
+        {
+            "fileName": "map000.tmx",
+            "x": 0,
+            "y": 0
+        },
+        {
+            "fileName": "pit00.tmx",
+            "x": 130,
+            "y": -370
+        },
+        {
+            "fileName": "hallway01.tmx",
+            "x": -590,
+            "y": -250
+        },
+        {
+            "fileName": "hallway02.tmx",
+            "x": -590,
+            "y": 100
+        },
+        {
+            "fileName": "hallway03.tmx",
+            "x": -590,
+            "y": 450
+        },
+        {
+            "fileName": "hallway04.tmx",
+            "x": 750,
+            "y": -250
+        },
+        {
+            "fileName": "hallway05.tmx",
+            "x": 750,
+            "y": 100
+        },
+        {
+            "fileName": "hallway06.tmx",
+            "x": 750,
+            "y": 450
+        },
+        {
+            "fileName": "hill01.tmx",
+            "x": -1180,
+            "y": -350
+        },
+        {
+            "fileName": "hill02.tmx",
+            "x": -1180,
+            "y": 0
+        },
+        {
+            "fileName": "hill03.tmx",
+            "x": -1180,
+            "y": 350
+        },
+        {
+            "fileName": "hill04.tmx",
+            "x": 1350,
+            "y": -350
+        },
+        {
+            "fileName": "hill05.tmx",
+            "x": 1350,
+            "y": 0
+        },
+        {
+            "fileName": "hill06.tmx",
+            "x": 1350,
+            "y": 350
+        }
+    ],
+    "type": "world"
+}
