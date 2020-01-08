@@ -382,7 +382,7 @@ function render(dt){
     }
     let zapTo = {
         x:400-view.x,
-        y:272-view.y
+        y:400-view.y
     }
     G.lightning.drawZap(zapFrom,zapTo);
 
