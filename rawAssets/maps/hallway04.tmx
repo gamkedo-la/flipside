@@ -145,7 +145,7 @@
   </object>
   <object id="5" name="exitLeft" type="portal" x="-21.3558" y="105.985" width="45.3333" height="60.6667">
    <properties>
-    <property name="destinationMap" value="map001"/>
+    <property name="destinationMap" value="map000"/>
     <property name="destinationSpawn" value="enterTopRight"/>
    </properties>
   </object>

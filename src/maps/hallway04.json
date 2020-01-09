@@ -1,10 +1,10 @@
-{ "compressionlevel":0,
+{ "compressionlevel":-1,
  "editorsettings":
     {
      "export":
         {
          "format":"json",
-         "target":"..\/..\/rawAssets\/maps"
+         "target":"hallway04.json"
         }
     },
  "height":40,
@@ -83,7 +83,7 @@
                         {
                          "name":"destinationMap",
                          "type":"string",
-                         "value":"map001"
+                         "value":"map000"
                         }, 
                         {
                          "name":"destinationSpawn",
