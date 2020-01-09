@@ -23,8 +23,8 @@ const Player = {
         bottom: 0
     },
 
-    width: 12,
-    height: 36,
+    width: 10,
+    height: 34,
     
     health: 100,
     maxHealth: 100,
@@ -386,7 +386,7 @@ Player.rectCollision = function(body) {
 Player.hurt = function(params){
     this.health -= params.amount; 
     this.vx = -this.vx * 3;
-    this.vy -= 100;
+    this.vy = -this.vy * 3;
     ; 
 }
 
