@@ -374,7 +374,14 @@ function render(dt){
     })
 
     // TEMP TEST: work in progress electricity bolt line renderer
-    G.lightning.stressTest();
+    //G.lightning.stressTest();
+    world.lightningSpawners.forEach(function(e){
+        let x1 = e.x - G.view.x + rndInt(0, e.width);
+        let y1 = e.y - G.view.y;
+        let x0 = e.x - G.view.x + rndInt(0, e.width);
+        let y0 = e.y + e.height - G.view.y;
+        G.lightning.drawZap({x: x0, y: y0}, {x: x1, y: y1})
+    })
     
     UIRender();
     debugRender();
@@ -478,6 +485,7 @@ function loadMap({map, spawnPoint}){
     worldForeground.data = Uint16Array.from(loader.tileMaps[currentMap].layers[2].data);
 
     world.portals = loader.tileMaps[currentMap].layers[3].objects.filter(function(e){return e.type == "portal"});
+    world.lightningSpawners = loader.tileMaps[currentMap].layers[3].objects.filter(function(e){return e.type == "lightningBox"});
 
     let spawn = loader.tileMaps[currentMap].layers[3].objects.find(function(e){return e.name == spawnPoint});
     player.pos.x = spawn.x;
