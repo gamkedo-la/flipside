@@ -23,6 +23,7 @@ stats.showPanel( 1 ); // 0: fps, 1: ms, 2: mb, 3+: custom
 document.body.appendChild( stats.dom );
 
 //canvas init and other data init---------------------------------------------
+G.debugEvents = [];
 G.c=document.getElementById("c");
 G.ctx = G.c.getContext('2d');
 
@@ -92,7 +93,7 @@ mosaic.canvas.id = "mosaic";
 document.body.appendChild(mosaic.canvas);
 
 //destructure out of global game object for coding convenience----------------
-const { MSG, loader, audio, view, c, ctx, deadZone, tileSheetSize } = G;
+const { loader, audio, view, c, ctx, deadZone } = G;
 var { currentMap } = G
 
 //deciding on scale. 3x pixels:
@@ -110,7 +111,6 @@ window.addEventListener('keydown',  function (event) { Key.onKeydown(event); eve
 window.addEventListener('blur',     function (event) { paused = true; }, false);
 window.addEventListener('focus',    function (event) { paused = false; }, false);
 
-MSG.addEventListener('crossed',  function (event) { player.crossedOver(event) });
 
 window.addEventListener('click', function(event) { audio.context.resume();
                                                    audio.init()}, false); //Temporary fix for chrome not strting the audio context until user interaction
@@ -273,7 +273,7 @@ function update(dt){
         }
         particle.update();
     })
-    player.update(dt, G.world, G.worldFlipped);
+    player.update(dt, G.world, G.worldFlipped, G.worldForeground);
     //Key needs updated so justReleased queue gets emptied at end of frame
     Key.update();
     
@@ -490,36 +490,26 @@ G.loadMap = loadMap
 
 function debugRender(){
     /*
-    //debug render stuffs-------------------------------------------------------------------------------
-    
     world.portals.forEach(function(e){
         ctx.fillStyle = 'rgba(0,255,0, 0.25)';
         ctx.fillRect(e.x-view.x, e.y-view.y, e.width, e.height);
     })
     ctx.fillStyle = 'rgba(0,255,0, 0.25)';
     ctx.fillRect(G.player.rect.left-view.x, G.player.rect.top-view.y, G.player.width, G.player.height);
-
-    G.gameFont.drawText({
-        textString: 'The quick brown fox jumps over the lazy dog',
-        pos: {x: 5, y: 5},
-        spacing: 0
-    })
-    G.gameFont.drawText({
-        textString: 'The five boxing wizards jump quickly.',
-        pos: {x: 5, y: 13},
-        spacing: 0
-    })
-
-    
     */
+
     ctx.fillStyle='rgba(0,0,0,0.6)';
     ctx.fillRect(0,228,427,12)
    G.gameFont.drawText({
     textString: `${G.currentMap}, x ${Math.round(player.pos.x)}, y ${Math.round(player.pos.y)}, vy${G.player.vy.toFixed(3)}`,
     pos: {x: 4, y: 230},
     spacing: 0
-    //end debug render-----------------------------------------------------------------------------------
-})
+    })
+
+    G.debugEvents.forEach(function(e){
+        eval(e);
+    })
+    G.debugEvents = [];
 }
 
 function UIRender(){
@@ -527,7 +517,6 @@ function UIRender(){
         healthBarDimensions = {w: 50, h: 8},
         healthBarPadding    = 1,
         healthBarDrawWidth  = range(G.player.health, 0, G.player.maxHealth, 0, healthBarDimensions.w-healthBarPadding*2);
-    console.log();
     ctx.fillStyle = '#777';
     ctx.fillRect(healthBarLocation.x, healthBarLocation.y, healthBarDimensions.w, healthBarDimensions.h);
     ctx.fillStyle = '#444';

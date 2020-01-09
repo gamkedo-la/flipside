@@ -73,7 +73,7 @@ const Player = {
     }
 }
 
-Player.update = function update(dt, world, worldFlipped){
+Player.update = function update(dt, world, worldFlipped, worldForeground){
     this.world = world;
     const { MSG } = G;
 
@@ -88,17 +88,7 @@ Player.update = function update(dt, world, worldFlipped){
     this.rect.right = this.pos.x + this.width/2;
 
     if(this.inTheFlip){
-        let count = 5;
-        while(--count){
-            G.particles.push(new Particle({
-                x: this.pos.x+rndFloat(-6, 6),
-                y: this.pos.y,
-                vx: -this.vx/400,
-                vy: rndFloat(-0.5, -2),
-                color: 10,
-            }) );
-        }
-        
+   
     }
 
     
@@ -120,6 +110,10 @@ Player.update = function update(dt, world, worldFlipped){
             type: 'bullet'
         }))
     }
+
+    if(this.tileCollisionCheck(worldForeground, function(tile){ return tile >=113 && tile <= 113+8; } )) {
+        MSG.dispatch("hurt", {amount: 1, type: 'groundHazard', x: this.pos.x, y: this.pos.y});
+    };
 
     if(this.inTheFlip){
         this.inTheFlipPhysics(dt, world, worldFlipped);
@@ -258,7 +252,6 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
     }
     this.pos.y = this.pos.y + (dt * this.vy);
     if(this.tileCollisionCheck(world, this.collideIndex) ){
-        if(this.vy > 260){G.player.health-=5}
         this.vy =0;
         this.jumping = false;
         this.falling = false;
@@ -268,7 +261,7 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
 }
 
 
-Player.tileCollisionCheck = function tileCollisionCheck(world, tileId){
+Player.tileCollisionCheck = function tileCollisionCheck(world, tileCheck){
     //update body edges
     this.rect.top = this.pos.y - this.height/2;
     this.rect.bottom = this.pos.y + this.height/2;
@@ -280,11 +273,19 @@ Player.tileCollisionCheck = function tileCollisionCheck(world, tileId){
         topTile =       Math.floor(this.rect.top / world.tileSize),
         bottomTile =    Math.floor(this.rect.bottom / world.tileSize)
         //collision = false;
-
+    
     for(let i = leftTile; i <=rightTile; i++){
         for(let j = topTile; j<= bottomTile; j++){
             let tile = world.getTileAtPosition({tx: i, ty: j})
-            if(tile >= tileId){
+
+            G.debugEvents.push(
+            `G.ctx.fillStyle = 'rgba(255,255,0,0.15)';
+            G.ctx.fillRect(${i}*8-G.view.x, ${j}*8-G.view.y, 8,8)`);
+
+            if(typeof tileCheck === "function"){
+                if(tileCheck(tile)){return true};
+            }
+            else if(tile >= tileCheck){
                 return true;
             }
         }
@@ -323,7 +324,7 @@ Player.play = function play(animationName){
 }
 
 Player.init = function init(){
-    let { img } = G;
+    let { img, MSG } = G;
     this.spritesheet = new SpriteSheet({
         image: img.player,
         frameWidth: 16,
@@ -361,6 +362,11 @@ Player.init = function init(){
     //player must have an anim set at start, or player.currentAnimation is null
     this.play('idleRight');
 
+    //player events------------------------------------------------------------
+    MSG.addEventListener('crossed',     function (event) {      G.player.crossedOver(event) });
+    MSG.addEventListener('hurt',        function (event) {      G.player.hurt(event.detail) });
+
+
 }
 
 Player.rectCollision = function(body) {
@@ -376,5 +382,12 @@ Player.rectCollision = function(body) {
         top < this.rect.bottom
       );
   }
+
+Player.hurt = function(params){
+    this.health -= params.amount; 
+    this.vx = -this.vx * 3;
+    this.vy -= 100;
+    ; 
+}
 
 export default Player
