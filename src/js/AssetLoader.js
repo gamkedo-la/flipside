@@ -2,6 +2,7 @@ const AssetLoader = function AssetLoader(){
     this.images = {};
     this.tileMaps = {};
     this.sounds = {};
+    this.mapWorker = {};
     return this;
 }
 AssetLoader.prototype.loadImages = function loadImages(names, callback) {
@@ -36,7 +37,7 @@ AssetLoader.prototype.loadFile = function loadFile(filePath, done){
     xhr.send();
 }
 
-AssetLoader.prototype.loadMapData = function loadMapData(tileMapList, done){
+/*AssetLoader.prototype.loadMapData = function loadMapData(tileMapList, done){
         var n,
         name,
         result = {},
@@ -54,9 +55,9 @@ AssetLoader.prototype.loadMapData = function loadMapData(tileMapList, done){
             return onload();
         })
     })
-}
+}*/
 
-AssetLoader.prototype.loadInitialMapData = function loadInitialMapData(initialMap, done){
+AssetLoader.prototype.loadInitialMapData = function loadInitialMapData(initialMap, done) {
         var result = {};
         var self = this;
         var didLoad = false;
@@ -76,61 +77,14 @@ AssetLoader.prototype.loadInitialMapData = function loadInitialMapData(initialMa
 }
 
 AssetLoader.prototype.loadConnectedMapData = function loadConnectedMapData(map, done) {
+  this.mapWorker = new Worker('src/js/mapLoader.js');
   const self = this;
-  const currentMap = self.tileMaps[map];
 
-  const portals = currentMap.layers[3].objects;
-  const connectedMaps = [];
-  for(let portal of portals) {
-    const portalName = portal.name;
-    if( portalName.startsWith('exit')) {
-      connectedMaps.push(portal.properties[0].value);
-    }
+  this.mapWorker.postMessage({map:self.tileMaps, mapName:map});
+
+  this.mapWorker.onmessage = function(message) {
+    self.tileMaps = message.data;
   }
-
-  let loadedMaps = Object.keys(self.tileMaps);
-  loadedMaps = self.unloadDistantMapData(loadedMaps, map, connectedMaps);
-
-  for(let connectedMap of connectedMaps) {
-    let alreadyLoaded = false;
-    for(let loaded of loadedMaps) {
-      if(connectedMap == loaded) {
-        alreadyLoaded = true;
-        break;
-      }
-    }
-
-    if(!alreadyLoaded) {
-      self.loadFile(`src/maps/${connectedMap}.json`, function(response){
-        self.tileMaps[connectedMap] = JSON.parse(response);
-      })
-    }
-  }
-
-  done();
-}
-
-AssetLoader.prototype.unloadDistantMapData = function unloadDistantMapData(loadedMaps, currentMap, connectedMaps) {
-  const self = this;
-  for(let i = loadedMaps.length - 1; i >= 0; i--) {
-    const thisOldMap = loadedMaps[i];
-    if(thisOldMap == currentMap) continue;//current map should already be loaded and should stay that way
-
-    let shouldKeepIt = false;
-    for(let newMap of connectedMaps) {
-      if(thisOldMap == newMap) {
-        shouldKeepIt = true;
-        break;
-      }
-    }
-
-    if(!shouldKeepIt) {
-      loadedMaps.splice(i, 1);
-      delete self.tileMaps[thisOldMap];
-    }
-  }
-
-  return loadedMaps;
 }
 
 AssetLoader.prototype.soundLoader = function ({context, urlList, callback} = {}) {
