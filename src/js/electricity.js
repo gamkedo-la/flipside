@@ -1,3 +1,7 @@
+import Particle from './particle.js'; // used by sparks
+import { rndInt, rndFloat, range } from './math.js';
+
+const SPARK_CHANCE = 0.25; // if >0 ends of line occasionally spark
 
 const ElectricityRenderer = function ElectricityRenderer()
 {
@@ -36,11 +40,29 @@ const ElectricityRenderer = function ElectricityRenderer()
         this.bolt(startPos,endPos,1,3,20,"rgba(0,190,255,1)");
         this.bolt(startPos,endPos,1,5,20,"rgba(0,190,255,1)");
         this.bolt(startPos,endPos,1,6,20,"rgba(0,128,255,1)");
-        
+        if (SPARK_CHANCE>0 && Math.random()<SPARK_CHANCE) this.spark(startPos.x,startPos.y);
+        if (SPARK_CHANCE>0 && Math.random()<SPARK_CHANCE) this.spark(endPos.x,endPos.y);
         G.ctx.restore();
         //this.bolt(startPos,endPos,1,4,20,"rgba(0,0,255)");
     }
-    
+
+    this.spark = function(x,y) {
+        // particles already accounts for camera position
+        x += G.view.x;
+        y += G.view.y;
+        G.particles.push(new Particle({
+            x: x,
+            y: y,
+            vx: Math.random()*4-2,
+            vy: Math.random()*4-2,
+            color: rndInt(16,22), // blue to white
+            width: 1, 
+            height: 1,
+            life: 10,
+            type: 'particle'
+        })) ;       
+    }
+
     // canvas line drawing version, looks better
     this.bolt = function(startPos,endPos,width=1,chaos=6,numChunks=10,rgba="rgba(0,255,255)") {
         let {img, ctx, tileSheetSize} = G;
