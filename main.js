@@ -10,6 +10,7 @@ import Signal from './src/js/Signal.js';
 import Particle from './src/js/particle.js';
 import GamepadSupport from './src/js/gamepad.js';
 import ElectricityRenderer from './src/js/electricity.js';
+import RetroBuffer from './src/js/RetroBuffer.js';
 
 //one global (G)ame object to rule them all
 window.G = {};
@@ -86,6 +87,12 @@ const soundList = [
     { name: "test2", url:"./src/snd/test2.mp3" },
     { name: "testMusic1", url:"./src/snd/stebsScaryFlipside(2).mp3" }
 ]
+//retro buffer, for no AA lines, circles, indexed-color raster drawing;
+G.rb = new RetroBuffer({width: 427, height: 240});
+G.rb.c.id="retrobuffer";
+//document.body.appendChild(G.rb.c);
+
+
 //for that tasty deepnight pixel mosaic overlay effect
 const mosaic = makeMosaic();
 mosaic.canvas.id = "mosaic";
@@ -275,10 +282,11 @@ function update(dt){
 }
 
 function render(dt){
-    let {world, worldFlipped, worldForeground, img, particles } = G;
+    let {world, worldFlipped, worldForeground, img, particles, rb } = G;
     //draw all the things
 
     clearScreen('black');
+    rb.clear(0);
     //render background parallax
     var parallaxImage = img[world.parallax0];
     //console.log(parallaxImage);
@@ -391,6 +399,8 @@ function render(dt){
         G.lightning.drawZap({x: x0, y: y0}, {x: x1, y: y1})
     })
 
+    rb.fillRect(0,0,100,100,50);
+    rb.render();
     UIRender();
     debugRender();
 
@@ -472,11 +482,9 @@ function handleCamera(dt){
 
 function loadMap({map, spawnPoint}){
     let { loader, currentMap, world, worldFlipped, worldForeground } = G;
-    //empty portals array
-    //world.portals=[];
+    
     currentMap = map;
-    //console.log(currentMap);
-
+    
     loader.loadConnectedMapData(map, function(){});
 
     world.widthInTiles = loader.tileMaps[currentMap].layers[0].width;

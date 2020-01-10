@@ -21,6 +21,21 @@ body {
 
 }
 
+#retrobuffer {
+    background-color: rgba(0,0,0,0);
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: black;
+    margin: 0 auto;
+    width: 1278px;
+    height: 720px;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+}
+
 #mosaic {
     position: absolute;
     left: 50%;
