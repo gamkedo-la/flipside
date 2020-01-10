@@ -56,7 +56,8 @@ const images = [
     'aap64',
     'player',
     'smallFont',
-    'fx'
+    'fx',
+    'labCaveWall'
 ]
 
 const maps = [
@@ -79,7 +80,7 @@ const maps = [
     'hill06',
     'pit00'
 ]
- //note these sounds don't exist yet, this is an example of the format AssetLoader.soundLoader expects
+ //sounds list!---------------------------------------------------------------
 const soundList = [
     { name: "test1", url:"./src/snd/test1.mp3" },
     { name: "test2", url:"./src/snd/test2.mp3" },
@@ -276,7 +277,23 @@ function update(dt){
 function render(dt){
     let {world, worldFlipped, worldForeground, img, particles } = G;
     //draw all the things
+
     clearScreen('black');
+    //render background parallax
+    var parallaxImage = img[world.parallax0];
+    //console.log(parallaxImage);
+    var bgWidth = parallaxImage.width;
+    var bgHeight = parallaxImage.height;
+    let bgPadding = 1; 
+    let bgTileWidth = Math.round( c.width / bgWidth ) + bgPadding * 2;
+    let bgTileHeight = Math.round( c.height / bgHeight ) + bgPadding * 2;
+    //console.log(bgTileWidth, bgTileHeight);
+    for(let i = -bgPadding; i <= bgTileWidth; i++){
+        for (let j = -bgPadding; j <= bgTileHeight; j++){
+            let x = i * bgWidth, y = j * bgHeight;
+            ctx.drawImage(parallaxImage, x,y);
+        }
+    }
 
     //setup vars for render optimization. we only want to render tiles that would be visible in viewport.
     //tilepad is to prevent 'blinking' at partial tile overlap at edges of screen.
@@ -300,9 +317,8 @@ function render(dt){
                 gid = world.data[flatIndex],
                 gidFlipped = worldFlipped[flatIndex];
 
-                if(gid > 0)gid-=1;
-                if(gidFlipped > 0)gidFlipped -=1;
-
+                gid-=1;
+                gidFlipped -=1;
 
             if(!gidFlipped){
                 drawTile({x:drawX, y:drawY}, world, gid);
@@ -369,6 +385,7 @@ function render(dt){
 
     // TEMP TEST: work in progress electricity bolt line renderer
     //G.lightning.stressTest();
+
     world.lightningSpawners.forEach(function(e){
         let x1 = e.x - G.view.x + rndInt(0, e.width);
         let y1 = e.y - G.view.y;
@@ -480,6 +497,7 @@ function loadMap({map, spawnPoint}){
 
     world.portals = loader.tileMaps[currentMap].layers[3].objects.filter(function(e){return e.type == "portal"});
     world.lightningSpawners = loader.tileMaps[currentMap].layers[3].objects.filter(function(e){return e.type == "lightningBox"});
+    world.parallax0 = loader.tileMaps[currentMap].properties.find(function(e){return e.name = 'Parallax0' }).value;
 
     let spawn = loader.tileMaps[currentMap].layers[3].objects.find(function(e){return e.name == spawnPoint});
     player.pos.x = spawn.x;

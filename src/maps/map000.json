@@ -331,8 +331,14 @@
          "y":0
         }],
  "nextlayerid":6,
- "nextobjectid":36,
+ "nextobjectid":38,
  "orientation":"orthogonal",
+ "properties":[
+        {
+         "name":"Parallax0",
+         "type":"string",
+         "value":"labCaveWall"
+        }],
  "renderorder":"right-down",
  "tiledversion":"2019.12.11",
  "tileheight":8,

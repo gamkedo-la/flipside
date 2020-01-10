@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="2019.12.11" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="90" height="70" tilewidth="8" tileheight="8" infinite="0" backgroundcolor="#28283c" nextlayerid="6" nextobjectid="36">
+<map version="1.2" tiledversion="2019.12.11" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="90" height="70" tilewidth="8" tileheight="8" infinite="0" backgroundcolor="#28283c" nextlayerid="6" nextobjectid="38">
  <editorsettings>
   <export target="../../src/maps/map000.json" format="json"/>
  </editorsettings>
+ <properties>
+  <property name="Parallax0" value="labCaveWall"/>
+ </properties>
  <tileset firstgid="1" source="tiles.tsx"/>
  <layer id="1" name="Map" width="90" height="70">
   <data encoding="csv">

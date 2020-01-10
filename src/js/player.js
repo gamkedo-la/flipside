@@ -278,9 +278,9 @@ Player.tileCollisionCheck = function tileCollisionCheck(world, tileCheck){
         for(let j = topTile; j<= bottomTile; j++){
             let tile = world.getTileAtPosition({tx: i, ty: j})
 
-            G.debugEvents.push(
-            `G.ctx.fillStyle = 'rgba(255,255,0,0.15)';
-            G.ctx.fillRect(${i}*8-G.view.x, ${j}*8-G.view.y, 8,8)`);
+            // G.debugEvents.push(
+            // `G.ctx.fillStyle = 'rgba(255,255,0,0.15)';
+            // G.ctx.fillRect(${i}*8-G.view.x, ${j}*8-G.view.y, 8,8)`);
 
             if(typeof tileCheck === "function"){
                 if(tileCheck(tile)){return true};
