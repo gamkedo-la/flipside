@@ -349,15 +349,12 @@ function render(dt){
 
 
     //render player;
-    //TODO: abstract away tile rendering, allow for rendering in front of player?
     ctx.fillStyle = player.color;
-    //ctx.fillRect(Math.floor(player.pos.x-player.width/2-view.x), Math.floor(player.pos.y-player.height/2-view.y), player.width, player.height)
     player.currentAnimation.render({
         x: Math.floor(player.pos.x-player.width/2-view.x),
         y: Math.floor(player.pos.y-player.height/2-view.y),
         width: 16,
         height: 36
-
     })
 
     //render foreground tiles if any in front of player-----------------------------------
@@ -497,7 +494,11 @@ function loadMap({map, spawnPoint}){
 
     world.portals = loader.tileMaps[currentMap].layers[3].objects.filter(function(e){return e.type == "portal"});
     world.lightningSpawners = loader.tileMaps[currentMap].layers[3].objects.filter(function(e){return e.type == "lightningBox"});
-    world.parallax0 = loader.tileMaps[currentMap].properties.find(function(e){return e.name = 'Parallax0' }).value;
+
+    if(loader.tileMaps[currentMap].properties){
+        world.parallax0 = loader.tileMaps[currentMap].properties.find(function(e){return e.name = 'Parallax0' }).value;
+    }
+    
 
     let spawn = loader.tileMaps[currentMap].layers[3].objects.find(function(e){return e.name == spawnPoint});
     player.pos.x = spawn.x;
