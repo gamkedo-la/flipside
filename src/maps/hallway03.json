@@ -118,6 +118,17 @@
                  "width":45.3333,
                  "x":534.523,
                  "y":106.349
+                }, 
+                {
+                 "height":64,
+                 "id":8,
+                 "name":"",
+                 "rotation":0,
+                 "type":"lightningBox",
+                 "visible":true,
+                 "width":280,
+                 "x":104,
+                 "y":104
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -126,7 +137,7 @@
          "y":0
         }],
  "nextlayerid":5,
- "nextobjectid":8,
+ "nextobjectid":9,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"2019.12.11",

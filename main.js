@@ -78,8 +78,6 @@ const maps = [
     'hill05',
     'hill06',
     'pit00'
-
-
 ]
  //note these sounds don't exist yet, this is an example of the format AssetLoader.soundLoader expects
 const soundList = [
@@ -96,13 +94,8 @@ document.body.appendChild(mosaic.canvas);
 const { loader, audio, view, c, ctx, deadZone } = G;
 var { currentMap } = G
 
-//deciding on scale. 3x pixels:
 c.width = 427;
 c.height = 240;
-
-//or 4x pixels
-// c.width = 320;
-// c.height = 180;
 
 //initialize  event listeners-------------------------------------------------
 
