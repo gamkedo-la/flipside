@@ -48,7 +48,7 @@ G.lightning = new ElectricityRenderer();
 G.player = player;
 
 
-G.currentMap = 'map000'; 
+G.currentMap = 'map000';
 
 const images = [
     //image loader assumes .png and appends it. all images should be in /src/img/.
@@ -61,7 +61,7 @@ const images = [
 
 const maps = [
     //map loader assumes JSON files. TMX maps are are at /rawAssets/maps,  exported maps loaded
-    //from this array are located in /src/maps/*.json. 
+    //from this array are located in /src/maps/*.json.
     'map000',
     'map001',
     'map002',
@@ -83,7 +83,7 @@ const maps = [
 const soundList = [
     { name: "test1", url:"./src/snd/test1.mp3" },
     { name: "test2", url:"./src/snd/test2.mp3" },
-    { name: "testMusic1", url:"./src/snd/stebsScaryFlipside.mp3" }
+    { name: "testMusic1", url:"./src/snd/stebsScaryFlipside(2).mp3" }
 ]
 //for that tasty deepnight pixel mosaic overlay effect
 const mosaic = makeMosaic();
@@ -119,7 +119,7 @@ function init(){
     G.worldForeground = new World();
 
     loadMap({map: 'map000', spawnPoint: 'PlayerStart'});
-   
+
     G.img = loader.loadImages(images, soundInit);
 
 }
@@ -132,10 +132,10 @@ function soundInit(){
     //soundloader just gives loader the properties,  loadAudioBuffer actually decodes the files and
     //creates a list of buffers.
     loader.soundLoader({context: audio.context, urlList: soundList, callback: start});
-    loader.loadAudioBuffer(); 
+    loader.loadAudioBuffer();
 }
 
-function start(sounds){    
+function start(sounds){
     //sounds..
     G.sounds = sounds;
     G.loader.sounds = sounds;
@@ -157,6 +157,7 @@ function start(sounds){
 
     //Fire it up!
     requestAnimationFrame(frame);
+    G.audio.playMusic(G.sounds.testMusic1);
 }
 
 //game loop--------------------------------------------------------------------
@@ -186,7 +187,7 @@ function frame(){
 
     //we pass dt to render to lerp if necessary
     render(dt);
-    last = now; 
+    last = now;
     stats.end();
     requestAnimationFrame(frame);
 }
@@ -210,7 +211,7 @@ function update(dt){
             height: rndInt(1,4),
             color: 29,
             type: 'bg'
-        }) );  
+        }) );
     }
 */
     handleCamera(dt);
@@ -219,7 +220,7 @@ function update(dt){
 
     G.particles.forEach(function(particle){
         if(G.world.data[G.world.pixelToTileIndex(particle.pos)] > 128 && particle.type == 'bullet'){
-           
+
             let splodeCount = 3;
             while(--splodeCount){
                 //console.log('making splode')
@@ -269,7 +270,7 @@ function update(dt){
     player.update(dt, G.world, G.worldFlipped, G.worldForeground);
     //Key needs updated so justReleased queue gets emptied at end of frame
     Key.update();
-    
+
 }
 
 function render(dt){
@@ -287,7 +288,7 @@ function render(dt){
         ry0 = view.y / world.tileSize - tilePad | 0,
         ry1 = (view.y + c.height)/world.tileSize + tilePad | 0;
 
-    //tile render loop! render order is columns.  
+    //tile render loop! render order is columns.
     //for each column( i )
     for(let i = rx0; i < rx1; i++){
         //render all tiles in the column
@@ -302,11 +303,11 @@ function render(dt){
                 if(gid > 0)gid-=1;
                 if(gidFlipped > 0)gidFlipped -=1;
 
-                
+
             if(!gidFlipped){
                 drawTile({x:drawX, y:drawY}, world, gid);
             }
-            
+
             //---additional rendering for pockets of Flip in the map
             if(worldFlipped.data[flatIndex]){
                 //modify the draw position at random intervals between 20 and 60 ticks for glitchy effect
@@ -316,7 +317,7 @@ function render(dt){
                     modX = 0; modY = 0;
                 }
                 drawTile({x: drawX + modX, y: drawY + modY}, world, gid);
-                
+
                 //draw a dark color blended over top to create the darkened effect
                 ctx.save();
                 ctx.globalCompositeOperation = 'difference';
@@ -327,10 +328,10 @@ function render(dt){
             }//end flip render
 
         }//end column render
-        
-    }//end x loop 
 
-   
+    }//end x loop
+
+
     //render player;
     //TODO: abstract away tile rendering, allow for rendering in front of player?
     ctx.fillStyle = player.color;
@@ -375,10 +376,10 @@ function render(dt){
         let y0 = e.y + e.height - G.view.y;
         G.lightning.drawZap({x: x0, y: y0}, {x: x1, y: y1})
     })
-    
+
     UIRender();
     debugRender();
-    
+
 }//end render
 
 //update systems---------------------------------------------------------------------
@@ -403,7 +404,7 @@ function handleInput(dt){
     if(Key.isDown(Key.z)){
         player.input.jump = true;
     }
-    
+
 
     if(Key.justReleased(Key.LEFT)){
         player.input.left = false;
@@ -447,12 +448,12 @@ function handleCamera(dt){
         view.y = player.pos.y -(view.h - deadZone.y)
     }
     if(player.pos.y - deadZone.y < view.y){
-        view.y = player.pos.y - deadZone.y 
+        view.y = player.pos.y - deadZone.y
     }
 
     view.x = clamp(view.x, 0, world.widthInTiles * world.tileSize - c.width);
     view.y = clamp(view.y, 0, world.heightInTiles * world.tileSize - c.height);
-    
+
 }
 
 function loadMap({map, spawnPoint}){
@@ -472,7 +473,7 @@ function loadMap({map, spawnPoint}){
 
     worldForeground.widthInTiles = loader.tileMaps[currentMap].layers[2].width;
     worldForeground.heightInTiles= loader.tileMaps[currentMap].layers[2].height;
-    
+
     world.data = Uint16Array.from(loader.tileMaps[currentMap].layers[0].data);
     worldFlipped.data = Uint16Array.from(loader.tileMaps[currentMap].layers[1].data);
     worldForeground.data = Uint16Array.from(loader.tileMaps[currentMap].layers[2].data);
@@ -483,9 +484,9 @@ function loadMap({map, spawnPoint}){
     let spawn = loader.tileMaps[currentMap].layers[3].objects.find(function(e){return e.name == spawnPoint});
     player.pos.x = spawn.x;
     player.pos.y = spawn.y;
-    
+
     G.currentMap = map;
-    
+
 }
 G.loadMap = loadMap
 
@@ -536,6 +537,5 @@ function UIRender(){
         healthBarDrawWidth,
         healthBarDimensions.h-healthBarPadding*2
         );
-    
-}
 
+}
