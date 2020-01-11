@@ -519,8 +519,12 @@ G.loadMap = loadMap
 
 function debugRender(){
     
-    G.rb.rect(G.player.rect.left-G.view.x, G.player.rect.top-G.view.y, G.player.width, G.player.height, 22);
-
+    let rx = G.player.rect.left-G.view.x,
+        ry = G.player.rect.top-G.view.y;
+    G.rb.rect(rx, ry, G.player.width, G.player.height, 22);
+    
+    G.ctx.fillStyle = "rgba(0,128,0,0.5)"
+    G.ctx.fillRect(rx, ry, G.player.width, G.player.height)
 
     ctx.fillStyle='rgba(0,0,0,0.6)';
     ctx.fillRect(0,228,427,12)
