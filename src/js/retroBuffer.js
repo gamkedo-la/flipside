@@ -7,11 +7,6 @@ function RetroBuffer({width, height}={}){
 
   this.SCREEN = 0;
 
-
-  //Cantelope's dweet/codegolf shorthands
-  //this.S=Math.sin;
-  //this.C=Math.cos;
-
   //relative drawing position and pencolor, for drawing functions that require it.
   this.cursorX = 0;
   this.cursorY = 0;
@@ -37,7 +32,6 @@ function RetroBuffer({width, height}={}){
 
   this.colors =
   [
-  0x00000000,
   0xff080606,
   0xff131014,
   0xff25173B,
@@ -111,11 +105,7 @@ function RetroBuffer({width, height}={}){
   this.pal =            [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,
                     32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64];
 
-  //paldrk =          [0,0,1,2,3,4,5,6,6,10,11,12,13,14,2,2,15,16,17,18,22,20,23,24,25,26,2,2,27,28,31,13]
-
   this.ctx.imageSmoothingEnabled = false;
-  //this.ctx.mozImageSmoothingEnabled = false;
-
 
   this.imageData =   this.ctx.getImageData(0, 0, this.WIDTH, this.HEIGHT),
   this.buf =             new ArrayBuffer(this.imageData.data.length),
@@ -133,12 +123,12 @@ RetroBuffer.prototype.clear = function clear(color = 0){
 }
 
 RetroBuffer.prototype.pset = function pset(x=cursorX, y=cursorY, color=cursorColor) { //an index from colors[], 0-63
-  x = x|0;
-  y = y|0;
-  color = color|0;
-  if(x < 1 | x > this.WIDTH-1) return;
-  if(y < 1 | y > this.HEIGHT-1) return;
-  this.ram[this.renderTarget + y * this.WIDTH + x] = color;
+  
+  
+  if(x < 0 | x > this.WIDTH) return;
+  if(y < 0 | y > this.HEIGHT) return;
+  this.ram[this.renderTarget + (y|0) * this.WIDTH + (x|0)] = color|0;
+  //this.ctx.drawImage(G.img.aap64, 0, color, 1, 1, x, y, 1, 1);
 }
 
 RetroBuffer.prototype.pget = function pget(x=cursorX, y=cursorY, page=0){
@@ -273,8 +263,8 @@ RetroBuffer.prototype.fillRect = function fillRect(x, y, w=16, h=16, color=curso
   let
   x1 = x|0,
   y1 = y|0,
-  x2 = (x+w)|0,
-  y2 = (y+h)|0;
+  x2 = ( (x+w)|0 )-1,
+  y2 = ((y+h)|0 )-1;
   color = color|0;
 
   var i = Math.abs(y2 - y1);
@@ -289,17 +279,7 @@ RetroBuffer.prototype.fillRect = function fillRect(x, y, w=16, h=16, color=curso
   this.line(x1,y2, x2, y2, color);
 }
 
-RetroBuffer.prototype.cRect = function cRect(x,y,w,h,c,color=cursorColor){
-  x = x|0;
-  y = y|0;
-  w = w|0;
-  h = h|0;
-  c = c|0;
-  color = color|0;
-  for(let i = 0; i <= c; i++){
-    fillRect(x+i,y-i,w-i*2,h+i*2,color);
-  }
-}
+
 
 RetroBuffer.prototype.outline = function outline(renderSource, renderTarget, color=cursorColor, color2=color, color3=color, color4=color){
 
@@ -455,16 +435,17 @@ RetroBuffer.prototype.render = function render() {
   var i = this.PAGESIZE;  // display is first page of ram
 
   while (i--) {
-    this.data[i] = this.colors[this.pal[this.ram[i]]];
-  }
-  
-  this.imageData.data.set(this.buf8);
-  var self = this;
-  createImageBitmap(this.imageData).then(function(img){
-    self.ctx.drawImage(img,0,0);
-  })
+    /*
+    data is 32bit view of final screen buffer
+    for each pixel on screen, we look up it's color and assign it
+    */
+   if(i > 0) this.data[i] = this.colors[this.pal[this.ram[i]]];
 
-  //this.ctx.putImageData(this.imageData, 0, 0);
+  }
+
+  this.imageData.data.set(this.buf8);
+
+  this.ctx.putImageData(this.imageData, 0, 0);
 
 }
 

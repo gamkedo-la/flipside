@@ -90,7 +90,7 @@ const soundList = [
 //retro buffer, for no AA lines, circles, indexed-color raster drawing;
 G.rb = new RetroBuffer({width: 427, height: 240});
 G.rb.c.id="retrobuffer";
-//document.body.appendChild(G.rb.c);
+document.body.appendChild(G.rb.c);
 
 
 //for that tasty deepnight pixel mosaic overlay effect
@@ -286,7 +286,7 @@ function render(dt){
     //draw all the things
 
     clearScreen('black');
-    rb.clear(0);
+    rb.clear(64);
     //render background parallax
     var parallaxImage = img[world.parallax0];
     //console.log(parallaxImage);
@@ -399,10 +399,10 @@ function render(dt){
         G.lightning.drawZap({x: x0, y: y0}, {x: x1, y: y1})
     })
 
-    rb.fillRect(0,0,100,100,50);
-    rb.render();
+    
     UIRender();
     debugRender();
+    rb.render();
 
 }//end render
 
@@ -518,14 +518,9 @@ function loadMap({map, spawnPoint}){
 G.loadMap = loadMap
 
 function debugRender(){
-    /*
-    world.portals.forEach(function(e){
-        ctx.fillStyle = 'rgba(0,255,0, 0.25)';
-        ctx.fillRect(e.x-view.x, e.y-view.y, e.width, e.height);
-    })
-    ctx.fillStyle = 'rgba(0,255,0, 0.25)';
-    ctx.fillRect(G.player.rect.left-view.x, G.player.rect.top-view.y, G.player.width, G.player.height);
-    */
+    
+    G.rb.rect(G.player.rect.left-G.view.x, G.player.rect.top-G.view.y, G.player.width, G.player.height, 22);
+
 
     ctx.fillStyle='rgba(0,0,0,0.6)';
     ctx.fillRect(0,228,427,12)
