@@ -287,6 +287,7 @@ function render(dt){
 
     clearScreen('black');
     rb.clear(64);
+
     //render background parallax
     var parallaxImage = img[world.parallax0];
     //console.log(parallaxImage);
@@ -392,11 +393,20 @@ function render(dt){
     //G.lightning.stressTest();
 
     world.lightningSpawners.forEach(function(e){
-        let x1 = e.x - G.view.x + rndInt(0, e.width);
-        let y1 = e.y - G.view.y;
-        let x0 = e.x - G.view.x + rndInt(0, e.width);
-        let y0 = e.y + e.height - G.view.y;
-        G.lightning.drawZap({x: x0, y: y0}, {x: x1, y: y1})
+        if(e.width > e.height){
+            let x1 = e.x - G.view.x;
+            let y1 = e.y - G.view.y + rndInt(0, e.height);
+            let x0 = e.x  + e.width - G.view.x;
+            let y0 = e.y - G.view.y + rndInt(0, e.height);
+            G.lightning.drawZap({x: x0, y: y0}, {x: x1, y: y1})
+        } else {
+            let x1 = e.x - G.view.x + rndInt(0, e.width);
+            let y1 = e.y - G.view.y;
+            let x0 = e.x - G.view.x + rndInt(0, e.width);
+            let y0 = e.y + e.height - G.view.y;
+            G.lightning.drawZap({x: x0, y: y0}, {x: x1, y: y1})
+        }
+        
     })
 
     
@@ -519,21 +529,9 @@ G.loadMap = loadMap
 
 function debugRender(){
     
-    let rx = G.player.rect.left- (G.view.x|0),
-        ry = G.player.rect.top- (G.view.y|0);
-
-    
-    G.rb.rect(rx, ry, G.player.width, G.player.height, 22);
-    G.rb.pset(rx, ry, 5);
-    G.ctx.fillStyle = "rgba(0,128,0,0.5)"
-    G.ctx.fillRect(rx, ry, G.player.width, G.player.height)
-
-    //grey box behind bottom debug trext
     ctx.fillStyle='rgba(0,0,0,0.6)';
     ctx.fillRect(0,228,427,12)
-    //drawing a line with retrobuffer (rb) to confirm unmodified screen coords line up
-    
-    G.rb.rect(250,10,10,10,22);
+
     G.gameFont.drawText({
     textString: `${G.currentMap}, x ${Math.round(player.pos.x)}, y ${Math.round(player.pos.y)}, vy${G.player.vy.toFixed(3)}`,
     pos: {x: 4, y: 230},
