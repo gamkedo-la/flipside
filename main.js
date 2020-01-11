@@ -248,14 +248,15 @@ function update(dt){
         }
         var flippedIndex = G.world.pixelToTileIndex(particle.pos)
         var flippedGID = G.worldFlipped.data[flippedIndex]
-        if(flippedGID){
+        if(flippedGID == 3){
             particle.vx *= 0.9;
             particle.vy *= 0.9;
             particle.vx += rndFloat(-0.2, 0.2)
             particle.color = 27;
             if(particle.type == 'bullet'){
-                G.worldFlipped.data[flippedIndex] = 0;
-                let splodeCount = 3;
+                //magic number is amount of ticks before it returns to being flipspace
+                G.worldFlipped.data[flippedIndex]+=G.player.flipRemovedCooldown+rndInt(-20, 20);
+                let splodeCount = 6;
             while(--splodeCount){
                 //console.log('making splode')
                 G.particles.push(new Particle({
@@ -275,6 +276,16 @@ function update(dt){
         }
         particle.update();
     })
+    //flip healing routine--------------------------------
+    for(let i = 0; i < G.worldFlipped.data.length; i++){
+        let tile = G.worldFlipped.data[i];
+        //if(tile <= 3) ;
+
+        if(tile > 3){
+            G.worldFlipped.data[i] = tile-1;
+        }
+    }
+
     player.update(dt, G.world, G.worldFlipped, G.worldForeground);
     //Key needs updated so justReleased queue gets emptied at end of frame
     Key.update();
@@ -334,7 +345,7 @@ function render(dt){
             }
 
             //---additional rendering for pockets of Flip in the map
-            if(worldFlipped.data[flatIndex]){
+            if(worldFlipped.data[flatIndex] == 3){
                 //modify the draw position at random intervals between 20 and 60 ticks for glitchy effect
                 let modX = rndInt(-1,1);
                 let modY = rndInt(-1,1);

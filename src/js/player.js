@@ -29,8 +29,10 @@ const Player = {
     health: 100,
     maxHealth: 100,
 
+    flipRemovedCooldown: 180,
+
     maxVel: {
-        x: 150,
+        x: 130,
         y: 260,
     },
 
@@ -57,7 +59,7 @@ const Player = {
     },
 
     physicsNormal: {
-        maxVel: { x: 150, y: 260 },
+        maxVel: { x: 130, y: 260 },
         accel: 10,
         jumpVel: 1200,
         gravity: 10,
@@ -123,7 +125,7 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
 
 
     //---flipped world checks
-    if( this.tileCollisionCheck(worldFlipped, 2) ){
+    if( this.tileCollisionCheck(worldFlipped, function(tile){return tile == 3}) ){
         if(!this.inTheFlip){
             MSG.dispatch('crossed');
             this.inTheFlip = true;
