@@ -113,8 +113,7 @@ window.addEventListener('blur',     function (event) { paused = true; }, false);
 window.addEventListener('focus',    function (event) { paused = false; }, false);
 
 
-window.addEventListener('click', function(event) { audio.context.resume();
-                                                   audio.init()}, false); //Temporary fix for chrome not strting the audio context until user interaction
+window.addEventListener('click', function(event) { audio.context.resume();}, false); //Temporary fix for chrome not strting the audio context until user interaction
 
 //load assets, then start game-------------------------------------------------------------
 
@@ -464,7 +463,7 @@ function handleInput(dt){
         audio.turnVolumeDown();
     }
     if(Key.justReleased(Key.PERIOD)){
-        audio.turnVolumeUP();
+        audio.turnVolumeUp();
     }
 
 }

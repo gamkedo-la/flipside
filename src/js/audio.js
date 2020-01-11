@@ -3,12 +3,13 @@ const FILTER_MIN = 300;
 const FILTER_MAX = 20000;
 const FILTER_TRANSITION_TIME = 1;
 const FILTER_Q_CURVE = [0, 1, 0, 1, 0];
-const VOLUME_INCREMENT = 0.05;
+const VOLUME_INCREMENT = 0.1;
 const CROSSFADE_TIME = 0.25;
 
 const AudioGlobal = function AudioGlobal() {
 
-var initialized, audioCtx, musicBus, soundEffectsBus, filterBus, masterBus;
+var initialized = false;
+var audioCtx, musicBus, soundEffectsBus, filterBus, masterBus;
 var isMuted;
 var musicVolume;
 var soundEffectsVolume;
@@ -16,6 +17,8 @@ var currentMusicTrack;
 
 //--//Set up WebAudioAPI nodes------------------------------------------------
     this.init = function() {
+		if (initialized) return;
+
         console.log("Initializing Audio...");
         // note: this causes a browser error if user has not interacted w page yet    
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -25,7 +28,6 @@ var currentMusicTrack;
         filterBus = audioCtx.createBiquadFilter();
         masterBus = audioCtx.createGain();
 
-        isMuted = false;
         musicVolume = 0.7;
         soundEffectsVolume = 0.7;
         // try {
@@ -46,22 +48,22 @@ var currentMusicTrack;
         filterBus.connect(masterBus);
         masterBus.connect(audioCtx.destination);
 
-        initialized = true;
+	    initialized = true;
     }
 
 //--//volume handling functions-----------------------------------------------
 	this.toggleMute = function() {
         if (!initialized) return;
 
-		isMuted = !isMuted;
-		masterBus.gain.linearRampToValueAtTime(!isMuted, audioCtx.currentTime + 0.03);
+		var newVol = (masterBus.gain.value === 0 ? 1 : 0);
+		masterBus.gain.linearRampToValueAtTime(newVol, audioCtx.currentTime + 0.03);
 	}
 
-	this.setMute = function(onOff) {
+	this.setMute = function(tOrF) {
         if (!initialized) return;
 
-		isMuted = onOff;
-		masterBus.gain.linearRampToValueAtTime(onOff, audioCtx.currentTime + 0.03);
+		var newVol = (tOrF === false ? 1 : 0);
+		masterBus.gain.linearRampToValueAtTime(newVol, audioCtx.currentTime + 0.03);
 	}
 
 	this.setMusicVolume = function(amount) {
