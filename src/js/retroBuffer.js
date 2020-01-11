@@ -2,7 +2,7 @@ function RetroBuffer({width, height}={}){
 
   this.WIDTH =     width;
   this.HEIGHT =    height;
-  this.PAGESIZE = this.WIDTH*  this.HEIGHT;
+  this.PAGESIZE = this.WIDTH *  this.HEIGHT;
   this.PAGES = 2;
 
   this.SCREEN = 0;
@@ -18,6 +18,8 @@ function RetroBuffer({width, height}={}){
 
 
   this.c =               document.createElement('canvas');
+  this.c.width = 427;
+  this.c.height = 240;
   this.ctx =             this.c.getContext('2d');
   this.renderTarget =    0x00000;
   this.renderSource =    this.PAGESIZE; //buffer is ahead one screen's worth of pixels

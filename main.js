@@ -519,16 +519,22 @@ G.loadMap = loadMap
 
 function debugRender(){
     
-    let rx = G.player.rect.left-G.view.x,
-        ry = G.player.rect.top-G.view.y;
-    G.rb.rect(rx, ry, G.player.width, G.player.height, 22);
+    let rx = G.player.rect.left- (G.view.x|0),
+        ry = G.player.rect.top- (G.view.y|0);
+
     
+    G.rb.rect(rx, ry, G.player.width, G.player.height, 22);
+    G.rb.pset(rx, ry, 5);
     G.ctx.fillStyle = "rgba(0,128,0,0.5)"
     G.ctx.fillRect(rx, ry, G.player.width, G.player.height)
 
+    //grey box behind bottom debug trext
     ctx.fillStyle='rgba(0,0,0,0.6)';
     ctx.fillRect(0,228,427,12)
-   G.gameFont.drawText({
+    //drawing a line with retrobuffer (rb) to confirm unmodified screen coords line up
+    
+    G.rb.rect(250,10,10,10,22);
+    G.gameFont.drawText({
     textString: `${G.currentMap}, x ${Math.round(player.pos.x)}, y ${Math.round(player.pos.y)}, vy${G.player.vy.toFixed(3)}`,
     pos: {x: 4, y: 230},
     spacing: 0
