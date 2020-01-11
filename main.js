@@ -10,7 +10,7 @@ import Signal from './src/js/Signal.js';
 import Particle from './src/js/particle.js';
 import GamepadSupport from './src/js/gamepad.js';
 import ElectricityRenderer from './src/js/electricity.js';
-import RetroBuffer from './src/js/RetroBuffer.js';
+import RetroBuffer from './src/js/retroBuffer.js';
 
 //one global (G)ame object to rule them all
 window.G = {};
