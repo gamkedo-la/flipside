@@ -357,7 +357,7 @@ function render(dt){
                 ctx.save();
                 ctx.globalCompositeOperation = 'difference';
                 ctx.drawImage(
-                    img.aap64, 0, 4, 1, 1, drawX, drawY, world.tileSize, world.tileSize
+                    img.aap64, 0, 3, 1, 1, drawX, drawY, world.tileSize, world.tileSize
                     )
                 ctx.restore();
             }//end flip render

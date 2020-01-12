@@ -96,23 +96,7 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
 
     
     //fire gun
-    if(this.input.carveWorld){
-        
-        let gunLeft = this.pos.x - 6;
-        let gunRight = this.pos.x + 6;
-        let gunYoffset = -1;
-        G.particles.push(new Particle({
-            x: this.facingLeft ? gunLeft : gunRight,
-            y: this.pos.y + gunYoffset,
-            vx: this.facingLeft ? -5: 5,
-            vy: 0,
-            color: 22,
-            width: 3, 
-            height: 3,
-            life: 50,
-            type: 'bullet'
-        }))
-    }
+   
 
     if(this.tileCollisionCheck(worldForeground, function(tile){ return tile >=113 && tile <= 113+8; } )) {
         MSG.dispatch("hurt", {amount: 1, type: 'groundHazard', x: this.pos.x, y: this.pos.y});
@@ -131,13 +115,13 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
             if(!this.inTheFlip){
                 MSG.dispatch('crossed');
                 this.inTheFlip = true;
-                G.audio.enterFlipside();
+                //G.audio.enterFlipside();
             }
     }else{
         if(this.inTheFlip){
             MSG.dispatch('crossed');
             this.inTheFlip = false;
-            G.audio.exitFlipside();
+            //G.audio.exitFlipside();
         }
     }
     var self = this;
@@ -159,16 +143,46 @@ Player.inTheFlipPhysics = function inTheFlipPhysics(dt, world, worldFlipped){
     this.accel = this.physicsFlip.accel;
     this.jumpVel = this.physicsFlip.jumpVel;
 
+    if(this.input.carveWorld){
+        
+        let gunLeft = this.pos.x - 6;
+        let gunRight = this.pos.x + 6;
+        let gunYoffset = -1;
+        G.particles.push(new Particle({
+            x: this.pos.x,
+            y: this.pos.y,
+            vx: -this.vx/50,
+            vy: -this.vy/50,
+            color: 22,
+            width: 3, 
+            height: 3,
+            life: 50,
+            type: 'background'
+        }))
+        if(this.input.down){
+            this.vy += this.accel;
+        }
+        if(this.input.up){
+            this.vy -= this.accel;
+        }
+        if(this.input.left){
+            this.vx -= this.accel;
+        }
+        if(this.input.right){
+            this.vx += this.accel;
+        }
+    }
+
     if(this.vy < 0){
         this.falling = true;
     }
 
-    if(this.input.left ){
-        this.vx -= this.accel;
-    }
-    else if(this.input.right ){
-        this.vx += this.accel;
-    }
+    // if(this.input.left ){
+    //     this.vx -= this.accel;
+    // }
+    // else if(this.input.right ){
+    //     this.vx += this.accel;
+    // }
     else{this.vx *= this.friction}
 
     if(this.input.jump && !this.jumping){
@@ -205,6 +219,24 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
     this.maxVel = this.physicsNormal.maxVel;
     this.accel = this.physicsNormal.accel;
     this.jumpVel = this.physicsNormal.jumpVel;
+
+    if(this.input.carveWorld){
+        
+        let gunLeft = this.pos.x - 6;
+        let gunRight = this.pos.x + 6;
+        let gunYoffset = -1;
+        G.particles.push(new Particle({
+            x: this.facingLeft ? gunLeft : gunRight,
+            y: this.pos.y + gunYoffset,
+            vx: this.facingLeft ? -5: 5,
+            vy: 0,
+            color: 22,
+            width: 3, 
+            height: 3,
+            life: 50,
+            type: 'bullet'
+        }))
+    }
 
     this.facingLeft ? this.play('idleLeft') : this.play('idleRight');
     if(this.vy < 0){
