@@ -21,7 +21,7 @@ let sx = this.pos.x - view.x;
 let sy = this.pos.y - view.y;
 
 if(inView(this.pos)){
-    if(this.type = 'jetbubble'){
+    if(this.type == 'jetBubble'){
         G.rb.circle(sx, sy, this.life/3, this.color);
     }
     else{
