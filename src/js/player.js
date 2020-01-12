@@ -115,13 +115,13 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
             if(!this.inTheFlip){
                 MSG.dispatch('crossed');
                 this.inTheFlip = true;
-                //G.audio.enterFlipside();
+                G.audio.enterFlipside();
             }
     }else{
         if(this.inTheFlip){
             MSG.dispatch('crossed');
             this.inTheFlip = false;
-            //G.audio.exitFlipside();
+            G.audio.exitFlipside();
         }
     }
     var self = this;
