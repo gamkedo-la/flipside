@@ -48,6 +48,7 @@ const Player = {
     jumping: false,
     inTheFlip: false,
     crossing: false,
+    submergedInFlip: false,
     
     input: {
         left: false,
@@ -119,26 +120,27 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
 
     if(this.inTheFlip){
         this.inTheFlipPhysics(dt, world, worldFlipped);
+        
     }else{
         this.normalPhysics(dt, world, worldFlipped)
     }
 
 
     //---flipped world checks
-    if( this.tileCollisionCheck(worldFlipped, function(tile){return tile == 3}) ){
-        if(!this.inTheFlip){
-            MSG.dispatch('crossed');
-            this.inTheFlip = true;
-        }
-        
-    } else {
+    if( this.withinCheck(worldFlipped, function(tile){return tile == 3}) ){
+            if(!this.inTheFlip){
+                MSG.dispatch('crossed');
+                this.inTheFlip = true;
+                G.audio.enterFlipside();
+            }
+    }else{
         if(this.inTheFlip){
             MSG.dispatch('crossed');
             this.inTheFlip = false;
+            G.audio.exitFlipside();
         }
     }
-    let self = this;
-
+    var self = this;
     world.portals.forEach(function(portal){
         if(self.rectCollision(portal) ){
             //console.log('entered portal');
@@ -294,6 +296,30 @@ Player.tileCollisionCheck = function tileCollisionCheck(world, tileCheck){
     }
 }
 
+Player.withinCheck = function tileCollisionCheck(world, tileCheck){
+    //update body edges
+    this.rect.top = this.pos.y - this.height/2;
+    this.rect.bottom = this.pos.y + this.height/2;
+    this.rect.left = this.pos.x - this.width/2;
+    this.rect.right = this.pos.x + this.width/2;
+
+    let leftTile =      Math.floor(this.rect.left / world.tileSize),
+        rightTile =     Math.floor(this.rect.right / world.tileSize),
+        topTile =       Math.floor(this.rect.top / world.tileSize),
+        bottomTile =    Math.floor(this.rect.bottom / world.tileSize)
+        //collision = false;
+    
+    for(let i = leftTile; i <=rightTile; i++){
+        for(let j = topTile; j<= bottomTile; j++){
+            let tile = world.getTileAtPosition({tx: i, ty: j})
+
+                if(!tileCheck(tile)){return false};
+            }
+            
+        }
+        return true;
+    }
+
 Player.getTiles = function getTiles(world){
     this.rect.top = this.pos.y - this.height/2;
     this.rect.bottom = this.pos.y + this.height/2;
@@ -315,7 +341,6 @@ Player.getTiles = function getTiles(world){
 
 Player.crossedOver = function crossedOver(event){
     console.log('crossed over');
-    //this.color = 'white';
 }
 
 Player.play = function play(animationName){
