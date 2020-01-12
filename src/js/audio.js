@@ -1,5 +1,5 @@
 //Constants-------------------------------------------------------------------
-const FILTER_MIN = 300;
+const FILTER_MIN = 400;
 const FILTER_MAX = 20000;
 const FILTER_TRANSITION_TIME = 1;
 const FILTER_Q_CURVE = [0, 1, 0, 1, 0];
@@ -160,17 +160,17 @@ var currentMusicTrack;
 	this.enterFlipside = function() {
         if (!initialized) return;
 
-		filterBus.frequency.linearRampToValueAtTime(FILTER_MAX, audioCtx.currentTime + 0.01);
-		filterBus.frequency.linearRampToValueAtTime(FILTER_MIN, audioCtx.currentTime + FILTER_TRANSITION_TIME);
-		filterBus.Q.setValueCurveAtTime(FILTER_Q_CURVE, audioCtx.currentTime, FILTER_TRANSITION_TIME);
+		filterBus.frequency.cancelScheduledValues(audioCtx.currentTime);
+		filterBus.frequency.linearRampToValueAtTime(FILTER_MAX/2, audioCtx.currentTime + 0.01);
+		filterBus.frequency.linearRampToValueAtTime(FILTER_MIN, audioCtx.currentTime + FILTER_TRANSITION_TIME/2);
 	}
 
 	this.exitFlipside = function() {
         if (!initialized) return;
 
+		filterBus.frequency.cancelScheduledValues(audioCtx.currentTime);
 		filterBus.frequency.linearRampToValueAtTime(FILTER_MIN, audioCtx.currentTime + 0.01);
-		filterBus.frequency.linearRampToValueAtTime(FILTER_MAX, audioCtx.currentTime + FILTER_TRANSITION_TIME);
-		filterBus.Q.setValueCurveAtTime(FILTER_Q_CURVE, audioCtx.currentTime, FILTER_TRANSITION_TIME);
+		filterBus.frequency.linearRampToValueAtTime(FILTER_MAX, audioCtx.currentTime + FILTER_TRANSITION_TIME*2);
 	}
 
     this.init(); // FIXME: defer until after a user interation!
