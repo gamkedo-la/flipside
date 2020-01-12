@@ -504,6 +504,10 @@ function loadMap({map, spawnPoint}){
     let { loader, currentMap, world, worldFlipped, worldForeground } = G;
     
     currentMap = map;
+
+    if(!loader.mapIsLoaded(map)) {
+        loader.loadInitialMapData(map, function(){});
+    }
     
     loader.loadConnectedMapData(map, function(){});
 

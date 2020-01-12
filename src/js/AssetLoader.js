@@ -57,6 +57,17 @@ AssetLoader.prototype.loadFile = function loadFile(filePath, done){
     })
 }*/
 
+AssetLoader.prototype.mapIsLoaded = function mapIsLoaded(map) {
+  const loadedMaps = Object.keys(this.tileMaps);
+  for(let loadedMap of loadedMaps) {
+    if(loadedMap == map) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 AssetLoader.prototype.loadInitialMapData = function loadInitialMapData(initialMap, done) {
         var result = {};
         var self = this;
