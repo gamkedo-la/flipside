@@ -30,6 +30,7 @@ export const Key = {
     k: 75,
     l: 76,
     m: 77,
+    o: 79,
 
     isDown(keyCode) {
         return this._pressed[keyCode];

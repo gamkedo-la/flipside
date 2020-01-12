@@ -430,39 +430,39 @@ function render(dt){
 
 function handleInput(dt){
 
-    if(Key.isDown(Key.LEFT)){
+    if(Key.isDown(Key.LEFT) || Key.isDown(Key.a)){
         player.input.left = true;
     }
-    else if(Key.isDown(Key.RIGHT)){
+    else if(Key.isDown(Key.RIGHT) || Key.isDown(Key.d)){
         player.input.right = true;
     }
-    if(Key.isDown(Key.DOWN)){
+    if(Key.isDown(Key.DOWN) || Key.isDown(Key.s)){
         player.input.down = true;
     }
-    else if(Key.isDown(Key.UP)){
+    else if(Key.isDown(Key.UP) || Key.isDown(Key.w)){
         player.input.up = true;
     }
-    if(Key.isDown(Key.x)){
+    if(Key.isDown(Key.x) || Key.isDown(Key.o)){
         player.input.carveWorld = true;
     }
-    if(Key.isDown(Key.z)){
+    if(Key.isDown(Key.z) || Key.isDown(Key.p)){
         player.input.jump = true;
     }
 
 
-    if(Key.justReleased(Key.LEFT)){
+    if(Key.justReleased(Key.LEFT) || Key.justReleased(Key.a)){
         player.input.left = false;
     }
-    if(Key.justReleased(Key.RIGHT)){
+    if(Key.justReleased(Key.RIGHT) || Key.justReleased(Key.d)){
         player.input.right = false;
     }
-    if(Key.justReleased(Key.UP)){
+    if(Key.justReleased(Key.UP) || Key.justReleased(Key.w)){
         player.input.up = false;
     }
-    if(Key.justReleased(Key.DOWN)){
+    if(Key.justReleased(Key.DOWN) || Key.justReleased(Key.s)){
         player.input.down = false;
     }
-    if(Key.justReleased(Key.x)){
+    if(Key.justReleased(Key.x) || Key.justReleased(Key.o)){
         player.input.carveWorld = false;
     }
 
