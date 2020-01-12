@@ -210,13 +210,13 @@ RetroBuffer.prototype.circle = function circle(xm=cursorX, ym=cursorY, r=5, colo
   var x = -r, y = 0, err = 2 - 2 * r;
   /* II. Quadrant */
   do {
-    pset(xm - x, ym + y, color);
+    this.pset(xm - x, ym + y, color);
     /*   I. Quadrant */
-    pset(xm - y, ym - x, color);
+    this.pset(xm - y, ym - x, color);
     /*  II. Quadrant */
-    pset(xm + x, ym - y, color);
+    this.pset(xm + x, ym - y, color);
     /* III. Quadrant */
-    pset(xm + y, ym + x, color);
+    this.pset(xm + y, ym + x, color);
     /*  IV. Quadrant */
     r = err;
     if (r <= y) err += ++y * 2 + 1;
@@ -238,8 +238,8 @@ RetroBuffer.prototype.fillCircle = function fillCircle(xm, ym, r=5, color=cursor
   var x = -r, y = 0, err = 2 - 2 * r;
   /* II. Quadrant */
   do {
-    line(xm-x, ym-y, xm+x, ym-y, color);
-    line(xm-x, ym+y, xm+x, ym+y, color);
+    this.line(xm-x, ym-y, xm+x, ym-y, color);
+    this.line(xm-x, ym+y, xm+x, ym+y, color);
     r = err;
     if (r <= y) err += ++y * 2 + 1;
     if (r > x || err > y) err += ++x * 2 + 1;

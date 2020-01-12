@@ -21,18 +21,12 @@ let sx = this.pos.x - view.x;
 let sy = this.pos.y - view.y;
 
 if(inView(this.pos)){
-    // ctx.drawImage(
-    //     G.img.aap64,
-    //     0,
-    //     this.color,
-    //     1,
-    //     1,
-    //     Math.round(sx),
-    //     Math.round(sy),
-    //     this.width,
-    //     this.height
-    // )
-    G.rb.fillRect(sx, sy, this.width, this.height, this.color);
+    if(this.type = 'jetbubble'){
+        G.rb.circle(sx, sy, this.life/3, this.color);
+    }
+    else{
+        G.rb.fillRect(sx, sy, this.width, this.height, this.color);
+    }
 }
     
 }

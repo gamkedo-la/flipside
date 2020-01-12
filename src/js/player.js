@@ -157,7 +157,7 @@ Player.inTheFlipPhysics = function inTheFlipPhysics(dt, world, worldFlipped){
             width: 3, 
             height: 3,
             life: 50,
-            type: 'background'
+            type: 'jetBubble'
         }))
         if(this.input.down){
             this.vy += this.accel;
