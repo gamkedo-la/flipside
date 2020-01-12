@@ -506,11 +506,35 @@ function loadMap({map, spawnPoint}){
     currentMap = map;
 
     if(!loader.mapIsLoaded(map)) {
-        loader.loadInitialMapData(map, function(){});
+        loader.loadInitialMapData(map, loadFromConsole, spawnPoint);
+        return;//can't continue with this function until the map is loaded
     }
     
     loader.loadConnectedMapData(map, function(){});
 
+    updateWorldData(world, worldFlipped, worldForeground, currentMap);
+
+    movePlayerToSpawnPoint(currentMap, spawnPoint);
+
+    G.currentMap = map;
+}
+G.loadMap = loadMap
+
+function loadFromConsole(loadedMap, spawnPoint) {
+    let { loader, currentMap, world, worldFlipped, worldForeground } = G;
+    let map = Object.keys(loadedMap)[0];
+    currentMap = map;
+    
+    loader.loadConnectedMapData(map, function(){});
+
+    updateWorldData(world, worldFlipped, worldForeground, currentMap);
+
+    movePlayerToSpawnPoint(currentMap, spawnPoint);
+
+    G.currentMap = map;
+}
+
+function updateWorldData(world, worldFlipped, worldForeground, currentMap) {
     world.widthInTiles = loader.tileMaps[currentMap].layers[0].width;
     world.heightInTiles= loader.tileMaps[currentMap].layers[0].height;
 
@@ -530,16 +554,13 @@ function loadMap({map, spawnPoint}){
     if(loader.tileMaps[currentMap].properties){
         world.parallax0 = loader.tileMaps[currentMap].properties.find(function(e){return e.name = 'Parallax0' }).value;
     }
-    
+}
 
+function movePlayerToSpawnPoint(currentMap, spawnPoint) {
     let spawn = loader.tileMaps[currentMap].layers[3].objects.find(function(e){return e.name == spawnPoint});
     player.pos.x = spawn.x;
     player.pos.y = spawn.y;
-
-    G.currentMap = map;
-
 }
-G.loadMap = loadMap
 
 function debugRender(){
     

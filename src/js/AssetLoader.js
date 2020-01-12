@@ -68,14 +68,14 @@ AssetLoader.prototype.mapIsLoaded = function mapIsLoaded(map) {
   return false;
 }
 
-AssetLoader.prototype.loadInitialMapData = function loadInitialMapData(initialMap, done) {
+AssetLoader.prototype.loadInitialMapData = function loadInitialMapData(initialMap, done, spawnPoint = null) {
         var result = {};
         var self = this;
         var didLoad = false;
         onload = function() {
           if(didLoad) {//FIXME Don't know why onload gets called before self.loadFile returns
             self.tileMaps = result;
-            done(result);  
+            done(result, spawnPoint);  
           }
         }
 
