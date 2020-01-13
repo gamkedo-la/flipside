@@ -278,9 +278,22 @@ function update(dt){
     //flip healing routine--------------------------------
     for(let i = 0; i < G.worldFlipped.data.length; i++){
         let tile = G.worldFlipped.data[i];
-        //if(tile <= 3) ;
-
+        if(tile <= 3) ;
+        // if(G.worldFlipped.data[i-1]==0){
+        //     G.particles.push(new Particle({
+        //         x: i % (c.width/8),
+        //         y: Math.floor(i/(c.width/8)),
+        //         vx: rndFloat(-0.5,0.5),
+        //         vy: rndFloat(-3, 3),
+        //         life: 10,
+        //         color: 26,
+        //         width: 1,
+        //         height: 1,
+        //         type: 'bg'
+        //     }))
+        // }
         if(tile > 3){
+           
             G.worldFlipped.data[i] = tile-1;
         }
     }
