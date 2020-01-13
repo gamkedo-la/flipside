@@ -1,6 +1,6 @@
 import { clamp } from './math.js';
 import SpriteSheet from './spritesheet.js';
-import { rndFloat } from './math.js';
+import { rndFloat, rndInt } from './math.js';
 import Particle from './particle.js';
 
 const Player = {
@@ -93,14 +93,16 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
     if(this.inTheFlip){
    
     }
-
-    
-    //fire gun
-   
-
+  
+    // dangerous tiles
     if(this.tileCollisionCheck(worldForeground, function(tile){ return tile >=113 && tile <= 113+8; } )) {
         MSG.dispatch("hurt", {amount: 1, type: 'groundHazard', x: this.pos.x, y: this.pos.y});
     };
+
+    // pickups (keys/health etc)
+    //if(this.tileCollisionCheck(worldForeground, function(tile){ return tile == TILE_KEY; } )) {
+    //    MSG.dispatch("pickup", {amount: 1, type: 'key', x: this.pos.x, y: this.pos.y});
+    //};
 
     if(this.inTheFlip){
         this.inTheFlipPhysics(dt, world, worldFlipped);
@@ -213,6 +215,25 @@ Player.inTheFlipPhysics = function inTheFlipPhysics(dt, world, worldFlipped){
 
 }
 
+// emit a poof when the gun is fired
+Player.muzzleFlash = function() {
+    //console.log("Muzzleflash!");
+    let max = rndInt(6,12);
+    for (let i=0; i<max; i++) {
+        G.particles.push(new Particle({
+            x: this.facingLeft?this.pos.x-6:this.pos.x+6, // gunXOffset
+            y: this.pos.y-1, // gunYOffset
+            vx: this.facingLeft?rndFloat(-2,-4):rndFloat(2,4),
+            vy: rndFloat(-2,2),
+            color: rndInt(2,9), // red to yellow
+            width: 3, 
+            height: 3,
+            life: 4,
+            type: 'particle'
+        })) ;   
+    }
+}    
+        
 Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
     this.gravity = this.physicsNormal.gravity;
     this.friction = this.physicsNormal.friction;
@@ -222,6 +243,8 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
 
     if(this.input.carveWorld){
         
+        this.muzzleFlash();
+
         let gunLeft = this.pos.x - 6;
         let gunRight = this.pos.x + 6;
         let gunYoffset = -1;
