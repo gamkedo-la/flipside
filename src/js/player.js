@@ -218,14 +218,29 @@ Player.inTheFlipPhysics = function inTheFlipPhysics(dt, world, worldFlipped){
 // emit a poof when the gun is fired
 Player.muzzleFlash = function() {
     //console.log("Muzzleflash!");
-    let max = rndInt(6,12);
+    let max = rndInt(1,3);
+    // big poof
+    G.particles.push(new Particle({
+        x: rndFloat(-1,1)+(this.facingLeft?this.pos.x-8:this.pos.x+8), // gunXOffset
+        y: rndFloat(-1,1)+(this.pos.y-3), // gunYOffset
+        vx: this.facingLeft?rndFloat(-1,0):rndFloat(0,1),
+        vy: rndFloat(1,1),
+        color: rndInt(7,10), // yellow
+        width: 6, 
+        height: 6,
+        life: 1,
+        type: 'particle'
+    })) ;   
+    
+    max = rndInt(6,12);
+    // small sparks
     for (let i=0; i<max; i++) {
         G.particles.push(new Particle({
             x: this.facingLeft?this.pos.x-6:this.pos.x+6, // gunXOffset
             y: this.pos.y-1, // gunYOffset
             vx: this.facingLeft?rndFloat(-2,-4):rndFloat(2,4),
             vy: rndFloat(-2,2),
-            color: rndInt(2,9), // red to yellow
+            color: rndInt(1,9), // black to red to yellow
             width: 3, 
             height: 3,
             life: 4,
