@@ -57,7 +57,6 @@ const images = [
     'aap64',
     'player',
     'smallFont',
-    'fx',
     'labCaveWall'
 ]
 
