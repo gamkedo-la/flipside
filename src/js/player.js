@@ -291,6 +291,26 @@ Player.muzzleFlash = function() {
     }
 }    
         
+// emit a poof when we hit the ground after falling
+Player.landedFX = function() {
+    console.log("landedFX!");
+    let max = rndInt(4,8);
+    // small sparks
+    for (let i=0; i<max; i++) {
+        G.particles.push(new Particle({
+            x: this.pos.x+4+rndFloat(-2,2),
+            y: this.pos.y+20+rndFloat(-2,-6), // foot offset
+            vx: rndFloat(-0.5,0.5),
+            vy: rndFloat(-0.1,-0.25),
+            color: rndInt(58,63), // sandy dirt color
+            width: 1, 
+            height: 1,
+            life: 20,
+            type: 'particle'
+        })) ;   
+    }
+}    
+
 Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
     this.gravity = this.physicsNormal.gravity;
     this.friction = this.physicsNormal.friction;
@@ -368,6 +388,10 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
     }
     this.pos.y = this.pos.y + (dt * this.vy);
     if(this.tileCollisionCheck(world, this.collideIndex) ){
+        if (this.jumping && this.vy>0) { // did we just stop falling?
+            //console.log("Just landed from a jump!");
+            this.landedFX();
+        }
         this.vy =0;
         this.jumping = false;
         this.falling = false;
