@@ -8,7 +8,7 @@ const Player = {
     currentAnimation:{},
     facingLeft: false,
     collideIndex: 128,
-    color: '#4f0',
+    
     pos: {
         x: 0,
         y: 0,
@@ -31,25 +31,29 @@ const Player = {
 
     flipRemovedCooldown: 180,
 
+    vx: 0, 
+    vy: 10,
+    
+    //vars set by in/out of flipspace functions
+    accel: 0,
+    jumpVel: 0,
+    gravity: 0,
+    friction: 0.7,
     maxVel: {
         x: 130,
         y: 260,
     },
+    //-------------------
 
-    vx: 0, 
-    vy: 10,
-    
-    friction: 0.7,
-
-    accel: 10,
-    jumpVel: 1200,
-    gravity: 10,
     falling: false,
     jumping: false,
+
     inTheFlip: false,
     crossing: false,
     submergedInFlip: false,
-    
+    flipTimer: 0,
+    flipTimeMax: 10000,
+
     input: {
         left: false,
         up: false,
