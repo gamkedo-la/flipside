@@ -58,6 +58,7 @@ const Player = {
 
     hurtCooldown: 0,
     hurtCooldownMax: 60,
+    hurtPush: 40,
 
     flipBar: {
         xOffset: -12,
@@ -109,7 +110,9 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
     
     // dangerous tiles
     if(this.tileCollisionCheck(worldForeground, function(tile){ return tile >=113 && tile <= 113+8; } )) {
-        MSG.dispatch("hurt", {amount: 1, type: 'groundHazard', x: this.pos.x, y: this.pos.y});
+        if(!this.hurtCooldown){
+            MSG.dispatch("hurt", {amount: 1, type: 'groundHazard', x: this.pos.x, y: this.pos.y});
+        }
     };
 
     // pickups (keys/health etc)
@@ -521,10 +524,51 @@ Player.rectCollision = function(body) {
   }
 
 Player.hurt = function(params){
+
+    let hurtParticleCount = 20;
+    while(--hurtParticleCount){
+        G.particles.push(new Particle({
+            x: this.pos.x,
+            y: this.pos.y,
+            vx: -this.vx/50+rndFloat(-5,5),
+            vy: -this.vy/50+rndFloat(-5,5),
+            color: 4,
+            width: 1, 
+            height: 1,
+            life: 20,
+            type: 'blood'
+        }))
+    }
+    
     this.hurtCooldown = this.hurtCooldownMax;
-    this.health -= params.amount; 
-    this.vx = -this.vx * 3;
-    this.vy = -this.vy * 3;
+
+    this.health -= params.amount;
+
+    //if we're moving more left-right than up-down
+    if(Math.abs(this.vx) > Math.abs(this.vy)){
+        //moving right when hit
+        if(this.vx > 0){
+            //push back left
+            this.vx -= this.hurtPush;
+        //moving left when hit
+        }else{
+            //push back right
+            this.vx += this.hurtPush;
+        }
+    }
+    //if we're moving more up-down than left-right
+    else{
+        //moving down when hit
+        if(this.vy > 0){
+            //push back up
+            this.vy -= this.hurtPush;
+        //moving up when hit
+        }else {
+            //push back down
+            this.vy += this.hurtPush
+        }
+    }
+    
     ; 
 }
 
