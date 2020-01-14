@@ -1,6 +1,6 @@
 import { clamp } from './math.js';
 import SpriteSheet from './spritesheet.js';
-import { rndFloat } from './math.js';
+import { rndFloat, rndInt, range } from './math.js';
 import Particle from './particle.js';
 
 const Player = {
@@ -8,7 +8,7 @@ const Player = {
     currentAnimation:{},
     facingLeft: false,
     collideIndex: 128,
-    color: '#4f0',
+    
     pos: {
         x: 0,
         y: 0,
@@ -29,27 +29,44 @@ const Player = {
     health: 100,
     maxHealth: 100,
 
+    //when we shoot flipspace tiles, this is how long before they heal
     flipRemovedCooldown: 180,
-
-    maxVel: {
-        x: 130,
-        y: 260,
-    },
 
     vx: 0, 
     vy: 10,
     
-    friction: 0.7,
+    //vars set by in/out of flipspace physics functions. don't try to set them here
+    accel: 0,
+    jumpVel: 0,
+    gravity: 0,
+    friction: 0,
+    maxVel: {
+        x: 0,
+        y: 0,
+    },
+    //-------------------
 
-    accel: 10,
-    jumpVel: 1200,
-    gravity: 10,
     falling: false,
     jumping: false,
+
     inTheFlip: false,
     crossing: false,
     submergedInFlip: false,
-    
+
+    flipTimer: 0,
+    flipTimeMax: 200,
+
+    hurtCooldown: 0,
+    hurtCooldownMax: 60,
+    hurtPush: 40,
+
+    flipBar: {
+        xOffset: -12,
+        yOffset: -18,
+        width: 40, 
+        height: 4
+    },
+
     input: {
         left: false,
         up: false,
@@ -90,23 +107,32 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
     this.rect.left = this.pos.x - this.width/2;
     this.rect.right = this.pos.x + this.width/2;
 
-    if(this.inTheFlip){
-   
-    }
-
     
-    //fire gun
-   
-
+    // dangerous tiles
     if(this.tileCollisionCheck(worldForeground, function(tile){ return tile >=113 && tile <= 113+8; } )) {
-        MSG.dispatch("hurt", {amount: 1, type: 'groundHazard', x: this.pos.x, y: this.pos.y});
+        if(!this.hurtCooldown){
+            MSG.dispatch("hurt", {amount: 1, type: 'groundHazard', x: this.pos.x, y: this.pos.y});
+        }
     };
+
+    // pickups (keys/health etc)
+    //if(this.tileCollisionCheck(worldForeground, function(tile){ return tile == TILE_KEY; } )) {
+    //    MSG.dispatch("pickup", {amount: 1, type: 'key', x: this.pos.x, y: this.pos.y});
+    //};
+    if(this.hurtCooldown)this.hurtCooldown--;
 
     if(this.inTheFlip){
         this.inTheFlipPhysics(dt, world, worldFlipped);
         
+        if(this.flipTimer){
+            this.flipTimer--;
+        }else{
+            if(!this.hurtCooldown){
+                MSG.dispatch("hurt", {amount: 1, type: 'groundHazard', x: this.pos.x, y: this.pos.y});
+            }  
+        }
     }else{
-        this.normalPhysics(dt, world, worldFlipped)
+        this.normalPhysics(dt, world, worldFlipped);
     }
 
 
@@ -115,6 +141,7 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
             if(!this.inTheFlip){
                 MSG.dispatch('crossed');
                 this.inTheFlip = true;
+                this.flipTimer = this.flipTimeMax;
                 G.audio.enterFlipside();
             }
     }else{
@@ -135,7 +162,24 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
         }
     })
 }
+Player.render = function render(dt, world, worldFlipped, worldForeground){
 
+    if(this.inTheFlip){
+        let x = this.pos.x + this.flipBar.xOffset - G.view.x;
+        let y = this.pos.y + this.flipBar.yOffset - G.view.y;
+        let w = range(this.flipTimer, 0, this.flipTimeMax, 0, this.flipBar.width);
+        let h = this.flipBar.height;
+        G.ctx.fillStyle = "#44F"
+        G.ctx.fillRect(x, y, w, h);
+    }
+
+    this.currentAnimation.render({
+        x: Math.floor(this.pos.x-this.width/2-G.view.x),
+        y: Math.floor(this.pos.y-this.height/2-G.view.y),
+        width: 16,
+        height: 36
+    })
+}
 Player.inTheFlipPhysics = function inTheFlipPhysics(dt, world, worldFlipped){
     this.gravity = this.physicsFlip.gravity;
     this.friction = this.physicsFlip.friction;
@@ -213,6 +257,60 @@ Player.inTheFlipPhysics = function inTheFlipPhysics(dt, world, worldFlipped){
 
 }
 
+// emit a poof when the gun is fired
+Player.muzzleFlash = function() {
+    //console.log("Muzzleflash!");
+    let max = rndInt(1,3);
+    // big poof
+    G.particles.push(new Particle({
+        x: rndFloat(-1,1)+(this.facingLeft?this.pos.x-8:this.pos.x+8), // gunXOffset
+        y: rndFloat(-1,1)+(this.pos.y-3), // gunYOffset
+        vx: this.facingLeft?rndFloat(-1,0):rndFloat(0,1),
+        vy: rndFloat(1,1),
+        color: rndInt(7,10), // yellow
+        width: 6, 
+        height: 6,
+        life: 1,
+        type: 'particle'
+    })) ;   
+    
+    max = rndInt(6,12);
+    // small sparks
+    for (let i=0; i<max; i++) {
+        G.particles.push(new Particle({
+            x: this.facingLeft?this.pos.x-6:this.pos.x+6, // gunXOffset
+            y: this.pos.y-1, // gunYOffset
+            vx: this.facingLeft?rndFloat(-2,-4):rndFloat(2,4),
+            vy: rndFloat(-2,2),
+            color: rndInt(1,9), // black to red to yellow
+            width: 3, 
+            height: 3,
+            life: 4,
+            type: 'particle'
+        })) ;   
+    }
+}    
+        
+// emit a poof when we hit the ground after falling
+Player.landedFX = function() {
+    console.log("landedFX!");
+    let max = rndInt(4,8);
+    // small sparks
+    for (let i=0; i<max; i++) {
+        G.particles.push(new Particle({
+            x: this.pos.x+4+rndFloat(-2,2),
+            y: this.pos.y+20+rndFloat(-2,-6), // foot offset
+            vx: rndFloat(-0.5,0.5),
+            vy: rndFloat(-0.1,-0.25),
+            color: rndInt(58,63), // sandy dirt color
+            width: 1, 
+            height: 1,
+            life: 20,
+            type: 'particle'
+        })) ;   
+    }
+}    
+
 Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
     this.gravity = this.physicsNormal.gravity;
     this.friction = this.physicsNormal.friction;
@@ -222,6 +320,8 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
 
     if(this.input.carveWorld){
         
+        this.muzzleFlash();
+
         let gunLeft = this.pos.x - 6;
         let gunRight = this.pos.x + 6;
         let gunYoffset = -1;
@@ -288,6 +388,10 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
     }
     this.pos.y = this.pos.y + (dt * this.vy);
     if(this.tileCollisionCheck(world, this.collideIndex) ){
+        if (this.jumping && this.vy>0) { // did we just stop falling?
+            //console.log("Just landed from a jump!");
+            this.landedFX();
+        }
         this.vy =0;
         this.jumping = false;
         this.falling = false;
@@ -443,9 +547,51 @@ Player.rectCollision = function(body) {
   }
 
 Player.hurt = function(params){
-    this.health -= params.amount; 
-    this.vx = -this.vx * 3;
-    this.vy = -this.vy * 3;
+
+    let hurtParticleCount = 20;
+    while(--hurtParticleCount){
+        G.particles.push(new Particle({
+            x: this.pos.x,
+            y: this.pos.y,
+            vx: -this.vx/50+rndFloat(-5,5),
+            vy: -this.vy/50+rndFloat(-5,5),
+            color: 4,
+            width: 1, 
+            height: 1,
+            life: 20,
+            type: 'blood'
+        }))
+    }
+    
+    this.hurtCooldown = this.hurtCooldownMax;
+
+    this.health -= params.amount;
+
+    //if we're moving more left-right than up-down
+    if(Math.abs(this.vx) > Math.abs(this.vy)){
+        //moving right when hit
+        if(this.vx > 0){
+            //push back left
+            this.vx -= this.hurtPush;
+        //moving left when hit
+        }else{
+            //push back right
+            this.vx += this.hurtPush;
+        }
+    }
+    //if we're moving more up-down than left-right
+    else{
+        //moving down when hit
+        if(this.vy > 0){
+            //push back up
+            this.vy -= this.hurtPush;
+        //moving up when hit
+        }else {
+            //push back down
+            this.vy += this.hurtPush
+        }
+    }
+    
     ; 
 }
 

@@ -11,6 +11,7 @@ import Particle from './src/js/particle.js';
 import GamepadSupport from './src/js/gamepad.js';
 import ElectricityRenderer from './src/js/electricity.js';
 import RetroBuffer from './src/js/retroBuffer.js';
+import Player from './src/js/player.js';
 
 //one global (G)ame object to rule them all
 window.G = {};
@@ -57,7 +58,6 @@ const images = [
     'aap64',
     'player',
     'smallFont',
-    'fx',
     'labCaveWall'
 ]
 
@@ -382,12 +382,13 @@ function render(dt){
 
     //render player;
     ctx.fillStyle = player.color;
-    player.currentAnimation.render({
-        x: Math.floor(player.pos.x-player.width/2-view.x),
-        y: Math.floor(player.pos.y-player.height/2-view.y),
-        width: 16,
-        height: 36
-    })
+    player.render();
+    // player.currentAnimation.render({
+    //     x: Math.floor(player.pos.x-player.width/2-view.x),
+    //     y: Math.floor(player.pos.y-player.height/2-view.y),
+    //     width: 16,
+    //     height: 36
+    // })
 
     //render foreground tiles if any in front of player-----------------------------------
     for(let i = rx0; i < rx1; i++){

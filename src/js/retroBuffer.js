@@ -409,7 +409,7 @@ RetroBuffer.prototype.fillTriangle = function fillTriangle( x1, y1, x2, y2, x3, 
   }
 }
 
-RetroBuffer.prototype.imageTorRam = function imageToRam(image, address) {
+RetroBuffer.prototype.imageToRam = function imageToRam(image, address) {
 
        //var image = E.smallcanvas.toDataURL("image/png");
         let tempCanvas = document.createElement('canvas');

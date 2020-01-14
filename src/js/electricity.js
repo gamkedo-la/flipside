@@ -5,33 +5,6 @@ const SPARK_CHANCE = 0.25; // if >0 ends of line occasionally spark
 
 const ElectricityRenderer = function ElectricityRenderer()
 {
-    this.stressTest = function() {
-        let tmp = performance.now();
-        
-        this.drawZap(
-            { x:300+Math.cos(tmp*0.0015)*32-G.view.x,
-            y:380+Math.cos(tmp*0.0005)*32-G.view.y}, 
-            { x:360+Math.cos(tmp*0.003)*32-G.view.x,
-            y:420+Math.cos(tmp*0.002)*32-G.view.y });
-        this.drawZap(
-            { x:200+Math.cos(tmp*0.0015)*32-G.view.x,
-            y:280+Math.cos(tmp*0.0005)*32-G.view.y}, 
-            { x:160+Math.cos(tmp*0.003)*32-G.view.x,
-            y:320+Math.cos(tmp*0.002)*32-G.view.y });
-        this.drawZap(
-            { x:400+Math.cos(tmp*0.0015)*32-G.view.x,
-            y:420+Math.cos(tmp*0.0005)*32-G.view.y}, 
-            { x:560+Math.cos(tmp*0.003)*32-G.view.x,
-            y:420+Math.cos(tmp*0.002)*32-G.view.y });
-        this.drawZap(
-            { x:200+Math.cos(tmp*0.0015)*32-G.view.x,
-            y:580+Math.cos(tmp*0.0005)*32-G.view.y}, 
-            { x:260+Math.cos(tmp*0.003)*32-G.view.x,
-            y:520+Math.cos(tmp*0.002)*32-G.view.y });
-       
-    
-    }
-    
     // multi-line electricity effect
     this.drawZap = function(startPos,endPos) {
         G.ctx.save();
@@ -89,6 +62,7 @@ const ElectricityRenderer = function ElectricityRenderer()
     }
 
     // lame tile-based solution, looks bad
+    /*
     this.drawZapUsingSprites = function(startPos,endPos) {
         let {img, ctx, tileSheetSize} = G;
         let sw=8,sh=8,sx=0,sy=0,scount=16,spd=0.01;
@@ -140,6 +114,33 @@ const ElectricityRenderer = function ElectricityRenderer()
           }
         }
       }
+    */
+
+    /*
+    this.stressTest = function() {
+        let tmp = performance.now();
+        this.drawZap(
+            { x:300+Math.cos(tmp*0.0015)*32-G.view.x,
+            y:380+Math.cos(tmp*0.0005)*32-G.view.y}, 
+            { x:360+Math.cos(tmp*0.003)*32-G.view.x,
+            y:420+Math.cos(tmp*0.002)*32-G.view.y });
+        this.drawZap(
+            { x:200+Math.cos(tmp*0.0015)*32-G.view.x,
+            y:280+Math.cos(tmp*0.0005)*32-G.view.y}, 
+            { x:160+Math.cos(tmp*0.003)*32-G.view.x,
+            y:320+Math.cos(tmp*0.002)*32-G.view.y });
+        this.drawZap(
+            { x:400+Math.cos(tmp*0.0015)*32-G.view.x,
+            y:420+Math.cos(tmp*0.0005)*32-G.view.y}, 
+            { x:560+Math.cos(tmp*0.003)*32-G.view.x,
+            y:420+Math.cos(tmp*0.002)*32-G.view.y });
+        this.drawZap(
+            { x:200+Math.cos(tmp*0.0015)*32-G.view.x,
+            y:580+Math.cos(tmp*0.0005)*32-G.view.y}, 
+            { x:260+Math.cos(tmp*0.003)*32-G.view.x,
+            y:520+Math.cos(tmp*0.002)*32-G.view.y });
+    }
+    */
 
 }
 
