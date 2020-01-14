@@ -8,7 +8,7 @@ const World = function World(params={
     this.tileSize = params.tileSize;
     this.data = new Uint16Array(params.widthInTiles * params.heightInTiles);
     this.portals = [];
-    this.spawnPoints = {};
+    this.spawnPoints = [];
     return this;
 }
 

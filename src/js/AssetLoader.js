@@ -2,7 +2,7 @@ const AssetLoader = function AssetLoader(){
     this.images = {};
     this.tileMaps = {};
     this.sounds = {};
-    this.mapWorker = {};
+    this.mapWorker = null;
     return this;
 }
 AssetLoader.prototype.loadImages = function loadImages(names, callback) {
@@ -88,7 +88,10 @@ AssetLoader.prototype.loadInitialMapData = function loadInitialMapData(initialMa
 }
 
 AssetLoader.prototype.loadConnectedMapData = function loadConnectedMapData(map, done) {
-  this.mapWorker = new Worker('src/js/mapLoader.js');
+  if(this.mapWorker == null) {
+    this.mapWorker = new Worker('src/js/mapLoader.js');
+  }
+  
   const self = this;
 
   this.mapWorker.postMessage({map:self.tileMaps, mapName:map});
