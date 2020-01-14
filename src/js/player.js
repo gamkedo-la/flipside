@@ -165,7 +165,6 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
 Player.render = function render(dt, world, worldFlipped, worldForeground){
 
     if(this.inTheFlip){
-        console.log('rendering fliptimer')
         let x = this.pos.x + this.flipBar.xOffset - G.view.x;
         let y = this.pos.y + this.flipBar.yOffset - G.view.y;
         let w = range(this.flipTimer, 0, this.flipTimeMax, 0, this.flipBar.width);
