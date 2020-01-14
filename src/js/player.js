@@ -1,6 +1,6 @@
 import { clamp } from './math.js';
 import SpriteSheet from './spritesheet.js';
-import { rndFloat, rndInt } from './math.js';
+import { rndFloat, rndInt, range } from './math.js';
 import Particle from './particle.js';
 
 const Player = {
@@ -29,19 +29,20 @@ const Player = {
     health: 100,
     maxHealth: 100,
 
+    //when we shoot flipspace tiles, this is how long before they heal
     flipRemovedCooldown: 180,
 
     vx: 0, 
     vy: 10,
     
-    //vars set by in/out of flipspace functions
+    //vars set by in/out of flipspace physics functions. don't try to set them here
     accel: 0,
     jumpVel: 0,
     gravity: 0,
-    friction: 0.7,
+    friction: 0,
     maxVel: {
-        x: 130,
-        y: 260,
+        x: 0,
+        y: 0,
     },
     //-------------------
 
@@ -51,8 +52,19 @@ const Player = {
     inTheFlip: false,
     crossing: false,
     submergedInFlip: false,
+
     flipTimer: 0,
-    flipTimeMax: 10000,
+    flipTimeMax: 200,
+
+    hurtCooldown: 0,
+    hurtCooldownMax: 60,
+
+    flipBar: {
+        xOffset: -12,
+        yOffset: -18,
+        width: 40, 
+        height: 4
+    },
 
     input: {
         left: false,
@@ -94,10 +106,7 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
     this.rect.left = this.pos.x - this.width/2;
     this.rect.right = this.pos.x + this.width/2;
 
-    if(this.inTheFlip){
-   
-    }
-  
+    
     // dangerous tiles
     if(this.tileCollisionCheck(worldForeground, function(tile){ return tile >=113 && tile <= 113+8; } )) {
         MSG.dispatch("hurt", {amount: 1, type: 'groundHazard', x: this.pos.x, y: this.pos.y});
@@ -107,12 +116,20 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
     //if(this.tileCollisionCheck(worldForeground, function(tile){ return tile == TILE_KEY; } )) {
     //    MSG.dispatch("pickup", {amount: 1, type: 'key', x: this.pos.x, y: this.pos.y});
     //};
+    if(this.hurtCooldown)this.hurtCooldown--;
 
     if(this.inTheFlip){
         this.inTheFlipPhysics(dt, world, worldFlipped);
         
+        if(this.flipTimer){
+            this.flipTimer--;
+        }else{
+            if(!this.hurtCooldown){
+                MSG.dispatch("hurt", {amount: 1, type: 'groundHazard', x: this.pos.x, y: this.pos.y});
+            }  
+        }
     }else{
-        this.normalPhysics(dt, world, worldFlipped)
+        this.normalPhysics(dt, world, worldFlipped);
     }
 
 
@@ -121,6 +138,7 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
             if(!this.inTheFlip){
                 MSG.dispatch('crossed');
                 this.inTheFlip = true;
+                this.flipTimer = this.flipTimeMax;
                 G.audio.enterFlipside();
             }
     }else{
@@ -141,7 +159,25 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
         }
     })
 }
+Player.render = function render(dt, world, worldFlipped, worldForeground){
 
+    if(this.inTheFlip){
+        console.log('rendering fliptimer')
+        let x = this.pos.x + this.flipBar.xOffset - G.view.x;
+        let y = this.pos.y + this.flipBar.yOffset - G.view.y;
+        let w = range(this.flipTimer, 0, this.flipTimeMax, 0, this.flipBar.width);
+        let h = this.flipBar.height;
+        G.ctx.fillStyle = "#44F"
+        G.ctx.fillRect(x, y, w, h);
+    }
+
+    this.currentAnimation.render({
+        x: Math.floor(this.pos.x-this.width/2-G.view.x),
+        y: Math.floor(this.pos.y-this.height/2-G.view.y),
+        width: 16,
+        height: 36
+    })
+}
 Player.inTheFlipPhysics = function inTheFlipPhysics(dt, world, worldFlipped){
     this.gravity = this.physicsFlip.gravity;
     this.friction = this.physicsFlip.friction;
@@ -485,6 +521,7 @@ Player.rectCollision = function(body) {
   }
 
 Player.hurt = function(params){
+    this.hurtCooldown = this.hurtCooldownMax;
     this.health -= params.amount; 
     this.vx = -this.vx * 3;
     this.vy = -this.vy * 3;
