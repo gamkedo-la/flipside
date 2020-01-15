@@ -227,16 +227,28 @@ function update(dt){
     handleInput(dt);
 
     G.particles.forEach(function(particle){
-        if(G.world.data[G.world.pixelToTileIndex(particle.pos)] > 128 && particle.type == 'bullet'){
+        if(particle.type == 'bullet'){
 
-            let splodeCount = 3;
-            while(--splodeCount){
+            let splodeCount = 1, velX, randX;
+
+            if (particle.life <= 0) {
+                splodeCount = 6;
+                velX = 0;
+                randX = 1.5;
+            } else if (G.world.data[G.world.pixelToTileIndex(particle.pos)] > 128) {
+                splodeCount = 3;
+                velX = -particle.vx/5;
+                randX = 0.5;
+                particle.life = 0;
+            }
+
+             while(--splodeCount){
                 //console.log('making splode')
                 G.particles.push(new Particle({
                     x: Math.round(particle.pos.x/8)*8,
                     y: particle.pos.y,
-                    vx: -particle.vx/5 + rndFloat(-0.5,0.5),
-                    vy: rndFloat(-3, 3),
+                    vx: velX + rndFloat(-randX, randX),
+                    vy: rndFloat(-2, 2),
                     life: 10,
                     color: 8,
                     width: 1,
@@ -244,7 +256,6 @@ function update(dt){
                     type: 'bg'
                 }))
             }
-            particle.life = 0;
         }
         var flippedIndex = G.world.pixelToTileIndex(particle.pos)
         var flippedGID = G.worldFlipped.data[flippedIndex]
