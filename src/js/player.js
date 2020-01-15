@@ -76,7 +76,9 @@ const Player = {
         right: false, 
         down: false,
         jump: false,
-        carveWorld: false
+        carveWorld: false,
+        addWorld: false,
+
     },
 
     physicsNormal: {
@@ -119,9 +121,10 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
     };
 
     // pickups (keys/health etc)
-    //if(this.tileCollisionCheck(worldForeground, function(tile){ return tile == TILE_KEY; } )) {
+    // if(this.tileCollisionCheck(worldForeground, function(tile){ return tile == TILE_KEY; } )) {
     //    MSG.dispatch("pickup", {amount: 1, type: 'key', x: this.pos.x, y: this.pos.y});
-    //};
+    // };
+
     if(this.hurtCooldown)this.hurtCooldown--;
 
     if(this.inTheFlip){
@@ -516,6 +519,14 @@ Player.play = function play(animationName){
 
 Player.init = function init(){
     let { img, MSG } = G;
+
+    //player events listeners------------------------------------------------------------
+    MSG.addEventListener('crossed',     function (event) { G.player.crossedOver(event.detail) });
+    MSG.addEventListener('hurt',        function (event) { G.player.hurt(event.detail)        });
+    MSG.addEventListener('died',        function (event) { G.player.died(event.detail)        });
+    MSG.addEventListener('pickup',      function (event) { G.player.pickup(event.detail)      });
+
+
     this.spritesheet = new SpriteSheet({
         image: img.player,
         frameWidth: 16,
@@ -553,11 +564,7 @@ Player.init = function init(){
     //player must have an anim set at start, or player.currentAnimation is null
     this.play('idleRight');
 
-    //player events listeners------------------------------------------------------------
-    MSG.addEventListener('crossed',     function (event) {      G.player.crossedOver(event.detail) });
-    MSG.addEventListener('hurt',        function (event) {      G.player.hurt(event.detail) });
-    MSG.addEventListener('died',        function (event) {      G.player.died(event.detail) });
-
+    
 
 }
 
@@ -638,6 +645,10 @@ Player.died = function(params){
     //G.loadFromConsole('map000', 'PlayerStart');
     this.health = this.maxHealth;
     G.Records.playerStats.totals.deaths++;
+}
+
+Player.pickup = function(params){
+    
 }
 
 export default Player
