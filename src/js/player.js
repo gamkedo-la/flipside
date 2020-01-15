@@ -128,11 +128,15 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
             this.flipTimer--;
         }else{
             if(!this.hurtCooldown){
-                MSG.dispatch("hurt", {amount: 1, type: 'groundHazard', x: this.pos.x, y: this.pos.y});
+                MSG.dispatch("hurt", {amount: 10, type: 'flipSpace', x: this.pos.x, y: this.pos.y});
             }  
         }
     }else{
         this.normalPhysics(dt, world, worldFlipped);
+    }
+
+    if(this.health < 0){
+        MSG.dispatch("died", {x: this.pos.x, y: this.pos.y});
     }
 
 
@@ -475,10 +479,6 @@ Player.getTiles = function getTiles(world){
     }
 }
 
-Player.crossedOver = function crossedOver(event){
-    console.log('crossed over');
-}
-
 Player.play = function play(animationName){
     this.currentAnimation = this.spritesheet.animations[animationName];
     if (!this.currentAnimation.loop){
@@ -525,9 +525,10 @@ Player.init = function init(){
     //player must have an anim set at start, or player.currentAnimation is null
     this.play('idleRight');
 
-    //player events------------------------------------------------------------
-    MSG.addEventListener('crossed',     function (event) {      G.player.crossedOver(event) });
+    //player events listeners------------------------------------------------------------
+    MSG.addEventListener('crossed',     function (event) {      G.player.crossedOver(event.detail) });
     MSG.addEventListener('hurt',        function (event) {      G.player.hurt(event.detail) });
+    MSG.addEventListener('died',        function (event) {      G.player.died(event.detail) });
 
 
 }
@@ -545,6 +546,13 @@ Player.rectCollision = function(body) {
         top < this.rect.bottom
       );
   }
+
+
+//player event handlers------------------------------------------------------------
+
+Player.crossedOver = function crossedOver(event){
+    console.log('crossed over');
+}
 
 Player.hurt = function(params){
 
@@ -593,6 +601,15 @@ Player.hurt = function(params){
     }
     
     ; 
+}
+
+Player.died = function(params){
+    console.log('dead');
+    G.loadMap({map:'map000', spawnPoint:'PlayerStart'});
+    // G.movePlayerToSpawnPoint('map000', 'PlayerStart');
+    //G.loadFromConsole('map000', 'PlayerStart');
+    this.health = this.maxHealth;
+    G.Records.playerStats.totals.deaths++;
 }
 
 export default Player

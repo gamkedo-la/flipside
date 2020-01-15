@@ -11,7 +11,7 @@ import Particle from './src/js/particle.js';
 import GamepadSupport from './src/js/gamepad.js';
 import ElectricityRenderer from './src/js/electricity.js';
 import RetroBuffer from './src/js/retroBuffer.js';
-import Player from './src/js/player.js';
+import Records from './src/js/records.js';
 
 //one global (G)ame object to rule them all
 window.G = {};
@@ -43,6 +43,7 @@ G.tileSheetSize = { height: 16, width: 16 }
 
 G.MSG = new Signal();
 G.loader = new AssetLoader();
+G.Records = new Records();
 
 G.audio = new AudioGlobal(); // FIXME: defer to after the first click/keypress to avoid browser error
 G.lightning = new ElectricityRenderer();
@@ -278,20 +279,9 @@ function update(dt){
     //flip healing routine--------------------------------
     for(let i = 0; i < G.worldFlipped.data.length; i++){
         let tile = G.worldFlipped.data[i];
-        if(tile <= 3) ;
-        // if(G.worldFlipped.data[i-1]==0){
-        //     G.particles.push(new Particle({
-        //         x: i % (c.width/8),
-        //         y: Math.floor(i/(c.width/8)),
-        //         vx: rndFloat(-0.5,0.5),
-        //         vy: rndFloat(-3, 3),
-        //         life: 10,
-        //         color: 26,
-        //         width: 1,
-        //         height: 1,
-        //         type: 'bg'
-        //     }))
-        // }
+        if(tile <= 3){
+        
+        }
         if(tile > 3){
            
             G.worldFlipped.data[i] = tile-1;
@@ -547,6 +537,7 @@ function loadFromConsole(loadedMap, spawnPoint) {
 
     G.currentMap = map;
 }
+G.loadFromConsole = loadFromConsole
 
 function updateWorldData(world, worldFlipped, worldForeground, currentMap) {
     world.widthInTiles = loader.tileMaps[currentMap].layers[0].width;
@@ -575,6 +566,8 @@ function movePlayerToSpawnPoint(currentMap, spawnPoint) {
     player.pos.x = spawn.x;
     player.pos.y = spawn.y;
 }
+G.movePlayerToSpawnPoint = movePlayerToSpawnPoint
+
 
 function debugRender(){
     
