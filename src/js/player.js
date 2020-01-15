@@ -60,6 +60,9 @@ const Player = {
     hurtCooldownMax: 60,
     hurtPush: 40,
 
+    gunCooldown: 0,
+    gunCooldownMax: 12,
+
     flipBar: {
         xOffset: -12,
         yOffset: -18,
@@ -323,8 +326,8 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
     this.accel = this.physicsNormal.accel;
     this.jumpVel = this.physicsNormal.jumpVel;
 
-    if(this.input.carveWorld){
-        
+    if(this.input.carveWorld && !this.gunCooldown){ //fire gun
+        this.gunCooldown = this.gunCooldownMax;
         this.muzzleFlash();
 
         let gunLeft = this.pos.x - 6;
@@ -341,6 +344,8 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
             life: 50,
             type: 'bullet'
         }))
+    } else if (this.gunCooldown) {
+        this.gunCooldown--;
     }
 
     this.facingLeft ? this.play('idleLeft') : this.play('idleRight');
