@@ -77,9 +77,9 @@ const Player = {
     },
 
     physicsNormal: {
-        maxVel: { x: 130, y: 260 },
+        maxVel: { x: 130, y: 270 },
         accel: 10,
-        jumpVel: 1200,
+        jumpVel: 1300,
         gravity: 10,
         friction: 0.7
     },
@@ -259,6 +259,7 @@ Player.inTheFlipPhysics = function inTheFlipPhysics(dt, world, worldFlipped){
         this.pos.y = this.prevY;
     }
 
+
 }
 
 // emit a poof when the gun is fired
@@ -344,7 +345,7 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
 
     this.facingLeft ? this.play('idleLeft') : this.play('idleRight');
     if(this.vy < 0){
-        this.falling = true;
+        //this.falling = true;
         this.facingLeft ? this.play('airLeft') : this.play('airRight');
     }
     if(this.vy > 0){
@@ -390,7 +391,18 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         this.pos.x = this.prevX;
         this.vx = 0;
     }
+
     this.pos.y = this.pos.y + (dt * this.vy);
+    if(G.world.pixelToTileID({x:this.prevX, y: (this.prevY+this.height/2)})!=97 && this.prevY < this.pos.y){
+        if(G.world.pixelToTileID({x:this.pos.x, y: (this.pos.y+this.height/2) })==97){
+        console.log('cloud');
+        this.falling = false;
+        this.jumping = false;
+        this.vy = 0;
+        this.pos.y = this.prevY;
+        }
+        
+    }
     if(this.tileCollisionCheck(world, this.collideIndex) ){
         if (this.jumping && this.vy>0) { // did we just stop falling?
             //console.log("Just landed from a jump!");
@@ -401,8 +413,12 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         this.falling = false;
         this.pos.y = this.prevY;
     }
+    
+        
+        
 
 }
+
 
 
 Player.tileCollisionCheck = function tileCollisionCheck(world, tileCheck){

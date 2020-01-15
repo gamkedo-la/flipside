@@ -25,6 +25,10 @@ World.prototype.getIndexAtPosition = function getIndexAtPosition(pos={tx:0, ty:0
     return this.widthInTiles*pos.ty + pos.tx;
 }
 
+World.prototype.pixelToTileID = function pixelToTileID(params = {x:0, y:0}){
+    return this.data[this.pixelToTileIndex(params)];
+}
+
 World.prototype.pixelToTileIndex = function pixelToTileIndex(params = {x:0, y:0}){
     let tx = Math.round(params.x / this.tileSize);
     let ty = Math.round(params.y / this.tileSize);
