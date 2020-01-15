@@ -1,5 +1,5 @@
 { "backgroundcolor":"#28283c",
- "compressionlevel":-1,
+ "compressionlevel":0,
  "editorsettings":
     {
      "export":
@@ -354,8 +354,8 @@
                  "type":"lightningBox",
                  "visible":true,
                  "width":2.33333,
-                 "x":1075.67,
-                 "y":1144.3
+                 "x":1106.67,
+                 "y":1152.3
                 }],
          "opacity":1,
          "type":"objectgroup",
