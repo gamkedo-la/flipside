@@ -161,7 +161,7 @@ function start(sounds){
     })
 
     //get player position from first map
-    player.pos = loader.tileMaps[currentMap].layers[3].objects.find(function(e){return e.name == "PlayerStart"})
+    //player.pos = loader.tileMaps[currentMap].layers[3].objects.find(function(e){return e.name == "PlayerStart"})
 
     //Fire it up!
     requestAnimationFrame(frame);
@@ -537,7 +537,6 @@ function loadFromConsole(loadedMap, spawnPoint) {
 
     G.currentMap = map;
 }
-G.loadFromConsole = loadFromConsole
 
 function updateWorldData(world, worldFlipped, worldForeground, currentMap) {
     world.widthInTiles = loader.tileMaps[currentMap].layers[0].width;
