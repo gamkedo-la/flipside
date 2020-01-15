@@ -316,7 +316,7 @@ Player.landedFX = function() {
             type: 'particle'
         })) ;   
     }
-}    
+}
 
 Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
     this.gravity = this.physicsNormal.gravity;
@@ -411,14 +411,14 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
             if (this.vy > 0) { // did we just stop falling?
                 //console.log("Just landed from a jump!");
                 this.jumping = false;
-                this.falling = false;
                 this.landedFX();
                 
             } else if (this.vy < 0) {
                 //console.log('ceiling');
             }
-        } 
-        
+        }
+
+        this.falling = false;
         this.vy = 0;
         this.pos.y = this.prevY;
     }
