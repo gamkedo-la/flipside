@@ -162,6 +162,7 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
         }
     }
     var self = this;
+    //check exits for overlap------------------------
     world.portals.forEach(function(portal){
         if(self.rectCollision(portal) ){
             //console.log('entered portal');
@@ -169,6 +170,18 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
             let destinationSpawn = portal.properties.find(function(prop){return prop.name == 'destinationSpawn'}).value;
             console.log(destinationMap, destinationSpawn);
             G.loadMap({map: destinationMap, spawnPoint: destinationSpawn });
+        }
+    })
+
+    //check onscreen objects-----------
+    world.objects.filter(function(obj){return obj.onScreen }).forEach(function(obj, i, arr){
+        if(self.rectCollision({x:obj.x, y:obj.y, width: 8, height: 8}) ){
+            MSG.dispatch('pickup', {
+                name: obj.name,
+                amount: obj.properties.find((e)=>{return e.name=='amount'}).value,
+                x: obj.x, y: obj.y
+            })
+            world.objects.splice(i, 1);
         }
     })
 }
@@ -641,14 +654,28 @@ Player.hurt = function(params){
 Player.died = function(params){
     console.log('dead');
     G.loadMap({map:'map000', spawnPoint:'PlayerStart'});
-    // G.movePlayerToSpawnPoint('map000', 'PlayerStart');
-    //G.loadFromConsole('map000', 'PlayerStart');
     this.health = this.maxHealth;
     G.Records.playerStats.totals.deaths++;
+    G.Records.resetSession();
 }
 
 Player.pickup = function(params){
-    
+    console.log(params);
+    G.Records.playerStats.totals.nanitesCollected+=params.amount
+    let particles = 40;
+    while(--particles){
+        G.particles.push(new Particle({
+            x: params.x,
+            y: params.y,
+            vx: rndFloat(-5,5),
+            vy: rndFloat(-5,10),
+            color: 12,
+            width: 1, 
+            height: 1,
+            life: 30,
+            type: 'particle'
+        }))
+    }
 }
 
 export default Player

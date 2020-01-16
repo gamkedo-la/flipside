@@ -1,5 +1,5 @@
 import Stats from './src/js/stats.module.js';
-import { Key } from './src/js/util.js';
+import { Key, inView } from './src/js/util.js';
 import { clearScreen, makeMosaic, drawTile, spriteFont } from './src/js/graphics.js'
 import World from './src/js/world.js';
 import player from './src/js/player.js';
@@ -380,17 +380,25 @@ function render(dt){
 
     }//end x loop
 
+    //render objects layer -including pickups and enemies
+    G.world.objects.forEach(function(obj){
+        //console.log(obj);
+        let drawX = obj.x - view.x;
+        let drawY = obj.y - view.y;
+        if(inView({x:obj.x, y:obj.y})){
+            obj.onScreen = true; 
+            drawTile(
+                {x: drawX, y: drawY},
+                world,
+                obj.gid-1
+            )
+        }else{obj.onScreen = false;}
+    })
 
     //render player;
     ctx.fillStyle = player.color;
     player.render();
-    // player.currentAnimation.render({
-    //     x: Math.floor(player.pos.x-player.width/2-view.x),
-    //     y: Math.floor(player.pos.y-player.height/2-view.y),
-    //     width: 16,
-    //     height: 36
-    // })
-
+    
     //render foreground tiles if any in front of player-----------------------------------
     for(let i = rx0; i < rx1; i++){
         for(let j = ry0; j < ry1; j++){
@@ -565,6 +573,8 @@ function updateWorldData(world, worldFlipped, worldForeground, currentMap) {
 
     world.portals = loader.tileMaps[currentMap].layers[3].objects.filter(function(e){return e.type == "portal"});
     world.lightningSpawners = loader.tileMaps[currentMap].layers[3].objects.filter(function(e){return e.type == "lightningBox"});
+
+    world.objects = loader.tileMaps[currentMap].layers[4].objects
 
     if(loader.tileMaps[currentMap].properties){
         world.parallax0 = loader.tileMaps[currentMap].properties.find(function(e){return e.name = 'Parallax0' }).value;
