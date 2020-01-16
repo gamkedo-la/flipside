@@ -547,8 +547,8 @@ Player.init = function init(){
 
     this.spritesheet = new SpriteSheet({
         image: img.player,
-        frameWidth: 16,
-        frameHeight: 36,
+        frameWidth: 50,
+        frameHeight: 49,
         animations: {
             idleLeft: {
                 frames: 1
