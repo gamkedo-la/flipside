@@ -58,6 +58,7 @@ const images = [
     'tiles',
     'aap64',
     'player',
+    'playerRight',
     'smallFont',
     'labCaveWall'
 ]

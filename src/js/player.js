@@ -5,6 +5,7 @@ import Particle from './particle.js';
 
 const Player = {
     spritesheet:{},
+    SpritesheetV2:{},
     currentAnimation:{},
     facingLeft: false,
     collideIndex: 128,
@@ -524,7 +525,11 @@ Player.getTiles = function getTiles(world){
 }
 
 Player.play = function play(animationName){
-    this.currentAnimation = this.spritesheet.animations[animationName];
+    if(!this.spritesheetV2.animations[animationName]){
+        this.currentAnimation = this.spritesheet.animations[animationName];
+    } else {
+        this.currentAnimation = this.spritesheetV2.animations[animationName];
+    }
     if (!this.currentAnimation.loop){
         this.currentAnimation.reset();
     }
@@ -572,6 +577,17 @@ Player.init = function init(){
                 frames: 19
             }
 
+        }
+    })
+
+    this.spritesheetV2 = new SpriteSheet({
+        image: img.playerRight,
+        frameWidth: 50,
+        frameHeight: 49,
+        animations: {
+            idleRight: {
+                frames: 0
+            }
         }
     })
     //player must have an anim set at start, or player.currentAnimation is null
