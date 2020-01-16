@@ -65,22 +65,17 @@ const images = [
 const maps = [
     //map loader assumes JSON files. TMX maps are are at /rawAssets/maps,  exported maps loaded
     //from this array are located in /src/maps/*.json.
-    'map000',
-    'map001',
-    'map002',
-    'hallway01',
-    'hallway02',
-    'hallway03',
-    'hallway04',
-    'hallway05',
-    'hallway06',
-    'hill01',
-    'hill02',
-    'hill03',
-    'hill04',
-    'hill05',
-    'hill06',
-    'pit00'
+    'room01',
+    'room02',
+    'room03',
+    'room04',
+    'room05',
+    'room06',
+    'room07',
+    'room08',
+    'room09',
+    'room10',
+    
 ]
  //sounds list!---------------------------------------------------------------
 const soundList = [
@@ -119,14 +114,14 @@ window.addEventListener('click', function(event) { audio.context.resume();}, fal
 //load assets, then start game-------------------------------------------------------------
 
 //TODO: reorganize so one function loads both maps and images, THEN start, no chains
-loader.loadInitialMapData('map000', init);
+loader.loadInitialMapData('room01', init);
 
 function init(){
     G.world = new World();
     G.worldFlipped = new World();
     G.worldForeground = new World();
 
-    loadMap({map: 'map000', spawnPoint: 'PlayerStart'});
+    loadMap({map: 'room01', spawnPoint: 'PlayerStart'});
 
     G.img = loader.loadImages(images, soundInit);
 

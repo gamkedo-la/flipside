@@ -1,74 +1,54 @@
 {
     "maps": [
         {
-            "fileName": "map000.tmx",
+            "fileName": "room01.tmx",
             "x": 0,
             "y": 0
         },
         {
-            "fileName": "pit00.tmx",
-            "x": 130,
-            "y": -370
+            "fileName": "room02.tmx",
+            "x": 0,
+            "y": -800
         },
         {
-            "fileName": "hallway01.tmx",
-            "x": -590,
-            "y": -250
+            "fileName": "room03.tmx",
+            "x": 800,
+            "y": -800
         },
         {
-            "fileName": "hallway02.tmx",
-            "x": -590,
-            "y": 100
-        },
-        {
-            "fileName": "hallway03.tmx",
-            "x": -590,
-            "y": 450
-        },
-        {
-            "fileName": "hallway04.tmx",
-            "x": 750,
-            "y": -250
-        },
-        {
-            "fileName": "hallway05.tmx",
-            "x": 750,
-            "y": 100
-        },
-        {
-            "fileName": "hallway06.tmx",
-            "x": 750,
-            "y": 450
-        },
-        {
-            "fileName": "hill01.tmx",
-            "x": -1180,
-            "y": -350
-        },
-        {
-            "fileName": "hill02.tmx",
-            "x": -1180,
+            "fileName": "room04.tmx",
+            "x": 800,
             "y": 0
         },
         {
-            "fileName": "hill03.tmx",
-            "x": -1180,
-            "y": 350
+            "fileName": "room05.tmx",
+            "x": 800,
+            "y": 800
         },
         {
-            "fileName": "hill04.tmx",
-            "x": 1350,
-            "y": -350
+            "fileName": "room06.tmx",
+            "x": 0,
+            "y": 800
         },
         {
-            "fileName": "hill05.tmx",
-            "x": 1350,
+            "fileName": "room07.tmx",
+            "x": -800,
+            "y": 800
+        },
+        {
+            "fileName": "room08.tmx",
+            "x": -800,
             "y": 0
         },
         {
-            "fileName": "hill06.tmx",
-            "x": 1350,
-            "y": 350
+            "fileName": "room09.tmx",
+            "x": -800,
+            "y": -800
+        },
+        {
+            "fileName": "room10.tmx",
+            "x": 0,
+            "y": 1600
         }
     ],
     "type": "world"
