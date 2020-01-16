@@ -71,6 +71,12 @@ const Player = {
         height: 4
     },
 
+    gunOffset: {
+        leftX: -10,
+        rightX: 25,
+        y:-5
+    },
+
     input: {
         left: false,
         up: false,
@@ -288,8 +294,8 @@ Player.muzzleFlash = function() {
     let max = rndInt(1,3);
     // big poof
     G.particles.push(new Particle({
-        x: rndFloat(-1,1)+(this.facingLeft?this.pos.x-8:this.pos.x+8), // gunXOffset
-        y: rndFloat(-1,1)+(this.pos.y-3), // gunYOffset
+        x: rndFloat(-1,1)+(this.facingLeft ? this.pos.x+this.gunOffset.leftX : this.pos.x+this.gunOffset.rightX), // gunXOffset
+        y: rndFloat(-1,1)+(this.pos.y + this.gunOffset.y), // gunYOffset
         vx: this.facingLeft?rndFloat(-1,0):rndFloat(0,1),
         vy: rndFloat(1,1),
         color: rndInt(7,10), // yellow
@@ -303,8 +309,8 @@ Player.muzzleFlash = function() {
     // small sparks
     for (let i=0; i<max; i++) {
         G.particles.push(new Particle({
-            x: this.facingLeft?this.pos.x-6:this.pos.x+6, // gunXOffset
-            y: this.pos.y-1, // gunYOffset
+            x: this.facingLeft ? this.pos.x+this.gunOffset.leftX : this.pos.x+this.gunOffset.rightX, // gunXOffset
+            y: this.pos.y+this.gunOffset.y, // gunYOffset
             vx: this.facingLeft?rndFloat(-2,-4):rndFloat(2,4),
             vy: rndFloat(-2,2),
             color: rndInt(1,9), // black to red to yellow
@@ -347,11 +353,9 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         this.gunCooldown = this.gunCooldownMax;
         this.muzzleFlash();
 
-        let gunLeft = this.pos.x - 6;
-        let gunRight = this.pos.x + 6;
-        let gunYoffset = -1;
+        let gunYoffset = -4;
         G.particles.push(new Particle({
-            x: this.facingLeft ? gunLeft : gunRight,
+            x: this.facingLeft ? this.pos.x+this.gunOffset.leftX : this.pos.x+this.gunOffset.rightX,
             y: this.pos.y + gunYoffset,
             vx: this.facingLeft ? -5: 5,
             vy: 0,
@@ -365,7 +369,9 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         this.gunCooldown--;
     }
 
-    this.facingLeft ? this.play('idleLeft') : this.play('idleRight');
+    if(Math.abs(this.vx) < 0.9){
+        this.facingLeft ? this.play('idleLeft') : this.play('idleRight');
+    }
     if(this.vy < 0){
         //this.falling = true;
         this.facingLeft ? this.play('airLeft') : this.play('airRight');
@@ -374,11 +380,11 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         this.falling = true;
         this.facingLeft ? this.play('fallingLeft') : this.play('fallingRight');
     }
-    if(this.vx < 0 && this.input.left && !this.falling){
+    if(this.vx < -1 && this.input.left && !this.falling){
         this.facingLeft = true;
         this.play('walkLeft');
     }
-    if(this.vx > 0 && this.input.right && !this.falling){
+    if(this.vx > 1 && this.input.right && !this.falling){
         this.facingLeft = false;
         this.play('walkRight');
     }
@@ -551,10 +557,12 @@ Player.init = function init(){
         frameHeight: 45,
         animations: {
             idleLeft: {
-                frames: '22..28'
+                frames: '23..28',
+                frameRate: 16
             },
             idleRight: {
-                frames: '15..21'
+                frames: '16..21',
+                frameRate: 16
             },
             walkRight: {
                 frames: '0..7',
