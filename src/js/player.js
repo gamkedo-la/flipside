@@ -199,9 +199,9 @@ Player.render = function render(dt, world, worldFlipped, worldForeground){
 
     this.currentAnimation.render({
         x: Math.floor(this.pos.x-this.width/2-G.view.x),
-        y: Math.floor(this.pos.y-this.height/2-G.view.y),
-        width: 16,
-        height: 36
+        y: Math.floor(this.pos.y-this.height/2-G.view.y-6),
+        width: 31,
+        height: 45
     })
 }
 Player.inTheFlipPhysics = function inTheFlipPhysics(dt, world, worldFlipped){
@@ -525,11 +525,11 @@ Player.getTiles = function getTiles(world){
 }
 
 Player.play = function play(animationName){
-    if(!this.spritesheetV2.animations[animationName]){
+    // if(!this.spritesheetV2.animations[animationName]){
         this.currentAnimation = this.spritesheet.animations[animationName];
-    } else {
-        this.currentAnimation = this.spritesheetV2.animations[animationName];
-    }
+    // } else {
+    //     this.currentAnimation = this.spritesheetV2.animations[animationName];
+    // }
     if (!this.currentAnimation.loop){
         this.currentAnimation.reset();
     }
@@ -547,49 +547,49 @@ Player.init = function init(){
 
     this.spritesheet = new SpriteSheet({
         image: img.player,
-        frameWidth: 16,
-        frameHeight: 36,
+        frameWidth: 31,
+        frameHeight: 45,
         animations: {
             idleLeft: {
-                frames: 1
+                frames: '22..28'
             },
             idleRight: {
-                frames: 0
+                frames: '15..21'
             },
             walkRight: {
-                frames: '2..9',
+                frames: '0..7',
                 frameRate: 16
             },
             walkLeft: {
-                frames: '10..17',
+                frames: '8..14',
                 frameRate: 16
             },
             fallingLeft:{
-                frames: 20
+                frames: 22
             },
             fallingRight: {
-                frames: 18
+                frames: 15
             },
             airLeft: {
-                frames: 21
+                frames: 22
             },
             airRight: {
-                frames: 19
+                frames: 15
             }
 
         }
     })
 
-    this.spritesheetV2 = new SpriteSheet({
-        image: img.playerRight,
-        frameWidth: 50,
-        frameHeight: 49,
-        animations: {
-            idleRight: {
-                frames: 0
-            }
-        }
-    })
+    // this.spritesheetV2 = new SpriteSheet({
+    //     image: img.playerRight,
+    //     frameWidth: 50,
+    //     frameHeight: 49,
+    //     animations: {
+    //         idleRight: {
+    //             frames: 0
+    //         }
+    //     }
+    // })
     //player must have an anim set at start, or player.currentAnimation is null
     this.play('idleRight');
 
