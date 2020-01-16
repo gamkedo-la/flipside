@@ -24,8 +24,8 @@ const Player = {
         bottom: 0
     },
 
-    width: 10,
-    height: 34,
+    width: 18,
+    height: 41,
     
     health: 100,
     maxHealth: 100,
@@ -204,8 +204,8 @@ Player.render = function render(dt, world, worldFlipped, worldForeground){
     }
 
     this.currentAnimation.render({
-        x: Math.floor(this.pos.x-this.width/2-G.view.x),
-        y: Math.floor(this.pos.y-this.height/2-G.view.y-6),
+        x: Math.floor(this.pos.x-this.width/2-G.view.x)-4,
+        y: Math.floor(this.pos.y-this.height/2-G.view.y-3),
         width: 31,
         height: 45
     })
@@ -372,11 +372,11 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
     if(Math.abs(this.vx) < 0.9){
         this.facingLeft ? this.play('idleLeft') : this.play('idleRight');
     }
-    if(this.vy < 0){
+    if(this.vy < 0.5){
         //this.falling = true;
         this.facingLeft ? this.play('airLeft') : this.play('airRight');
     }
-    if(this.vy > 0){
+    if(this.vy > 0.5){
         this.falling = true;
         this.facingLeft ? this.play('fallingLeft') : this.play('fallingRight');
     }
@@ -419,10 +419,10 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         this.pos.x = this.prevX;
         this.vx = 0;
     }
-
+    //one-way platforms------------------------------------------------------------------------------------
     this.pos.y = this.pos.y + (dt * this.vy);
-    if(G.world.pixelToTileID({x:this.prevX, y: (this.prevY+this.height/2)})!=97 && this.prevY < this.pos.y){
-        if(G.world.pixelToTileID({x:this.pos.x, y: (this.pos.y+this.height/2) })==97){
+    if(this.prevY < this.pos.y){
+        if(G.world.pixelToTileID({x:this.pos.x, y: (this.pos.y+this.height/2)-3 })==97){
         console.log('cloud');
         this.falling = false;
         this.jumping = false;
@@ -431,6 +431,7 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         }
         
     }
+    //------------------------------------------------------------------------------------
 
     if(this.tileCollisionCheck(world, this.collideIndex) ){
         if (this.jumping) {
@@ -453,8 +454,6 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         
 
 }
-
-
 
 Player.tileCollisionCheck = function tileCollisionCheck(world, tileCheck){
     //update body edges
@@ -677,7 +676,7 @@ Player.hurt = function(params){
 
 Player.died = function(params){
     console.log('dead');
-    G.loadMap({map:'map000', spawnPoint:'PlayerStart'});
+    G.loadMap({map:'room01', spawnPoint:'PlayerStart'});
     this.health = this.maxHealth;
     G.Records.playerStats.totals.deaths++;
     G.Records.resetSession();
