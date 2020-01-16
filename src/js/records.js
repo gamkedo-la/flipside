@@ -23,6 +23,8 @@ const Records = function Records()
         },
         
     }
+   
+    return this;
 }
 
 Records.resetSession = function resetSession(){
