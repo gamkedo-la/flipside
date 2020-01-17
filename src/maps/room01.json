@@ -239,6 +239,42 @@
                  "width":8,
                  "x":632,
                  "y":344
+                }, 
+                {
+                 "gid":9,
+                 "height":8,
+                 "id":77,
+                 "name":"Flipbat",
+                 "properties":[
+                        {
+                         "name":"pathHeightInTiles",
+                         "type":"int",
+                         "value":4
+                        }],
+                 "rotation":0,
+                 "type":"flipbat",
+                 "visible":true,
+                 "width":8,
+                 "x":680,
+                 "y":360
+                }, 
+                {
+                 "gid":9,
+                 "height":8,
+                 "id":78,
+                 "name":"Flipbat",
+                 "properties":[
+                        {
+                         "name":"pathHeightInTiles",
+                         "type":"int",
+                         "value":6
+                        }],
+                 "rotation":0,
+                 "type":"flipbat",
+                 "visible":true,
+                 "width":8,
+                 "x":648,
+                 "y":376
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -247,7 +283,7 @@
          "y":0
         }],
  "nextlayerid":7,
- "nextobjectid":77,
+ "nextobjectid":79,
  "orientation":"orthogonal",
  "properties":[
         {

@@ -16,6 +16,9 @@ const FlipBat = function FlipBat({pos, height}={}){
     return this;
 }
 FlipBat.prototype.update = function update(dt){
+
+    this.currentAnimation.update(dt);
+    
     this.pos.x = lerp(this.start.x, this.target.x, Math.sin(performance.now()*this.speed));
     this.pos.y = lerp(this.start.y, this.target.y, Math.sin(performance.now()*this.speed));
     this.rect = {
@@ -50,7 +53,8 @@ FlipBat.prototype.init = function init(){
         frameHeight: 29,
         animations: {
             idle: {
-                frames: '0',
+                frames: '0..3',
+                frameRate: 16
             }
         }
     })
