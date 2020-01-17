@@ -73,8 +73,8 @@ const Player = {
     },
 
     gunOffset: {
-        leftX: -10,
-        rightX: 25,
+        leftX: -19,
+        rightX: 18,
         y:-5
     },
 

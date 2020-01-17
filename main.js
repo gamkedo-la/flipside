@@ -85,11 +85,11 @@ const soundList = [
     { name: "test2", url:"./src/snd/test2.mp3" },
     { name: "testMusic1", url:"./src/snd/stebsScaryFlipside(2).mp3" }
 ]
+
 //retro buffer, for no AA lines, circles, indexed-color raster drawing;
 G.rb = new RetroBuffer({width: 427, height: 240});
 G.rb.c.id="retrobuffer";
 document.body.appendChild(G.rb.c);
-
 
 //for that tasty deepnight pixel mosaic overlay effect
 const mosaic = makeMosaic();

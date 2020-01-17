@@ -10,14 +10,21 @@ const FlipBat = function FlipBat({pos, height}={}){
 }
 FlipBat.prototype.update = function update(dt){
     this.pos.x = lerp(this.start.x, this.target.x, Math.sin(performance.now()));
-    this.pos.y = lerp(this.start.y, this.target.y, Math.sin(performancy.now()));
+    this.pos.y = lerp(this.start.y, this.target.y, Math.sin(performance.now()));
 }
 
 FlipBat.prototype.render = function render(dt){
-
+    
 }
 
-FlipBad.prototype.init = function init(){
+FlipBat.prototype.play = function play(animationName){
+    this.currentAnimation = this.spritesheet.animations[animationName];
+    if (!this.currentAnimation.loop){
+        this.currentAnimation.reset();
+    }
+}
+
+FlipBat.prototype.init = function init(){
     let { img } = G;
 
     this.spritesheet = new SpriteSheet({
