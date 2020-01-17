@@ -12,7 +12,7 @@ import GamepadSupport from './src/js/gamepad.js';
 import ElectricityRenderer from './src/js/electricity.js';
 import RetroBuffer from './src/js/retroBuffer.js';
 import Records from './src/js/records.js';
-import FlipBat from '/src/js/flipbat.js';
+import FlipBat from './src/js/flipbat.js';
 
 //one global (G)ame object to rule them all
 window.G = {};
@@ -96,6 +96,11 @@ document.body.appendChild(G.rb.c);
 const mosaic = makeMosaic();
 mosaic.canvas.id = "mosaic";
 document.body.appendChild(mosaic.canvas);
+
+// inverted mosaic bevel during flipspace
+const mosaicFlipped = makeMosaic(true);
+mosaicFlipped.canvas.id = "mosaicFlipped";
+document.body.appendChild(mosaicFlipped.canvas);
 
 //destructure out of global game object for coding convenience----------------
 const { loader, audio, view, c, ctx, deadZone } = G;
