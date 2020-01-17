@@ -320,20 +320,20 @@
 </data>
  </layer>
  <objectgroup id="3" name="effects and spawns">
-  <object id="22" name="enterTop" type="spawnPoint" x="388.195" y="84.676">
+  <object id="22" name="enterTop" type="spawnPoint" x="384" y="72">
    <point/>
   </object>
-  <object id="23" name="enterLeft" type="spawnPoint" x="68.3327" y="433.333">
+  <object id="23" name="enterLeft" type="spawnPoint" x="64" y="416">
    <point/>
   </object>
-  <object id="24" name="exitTop" type="portal" x="288.435" y="-3.912" width="207.333" height="36.6667">
+  <object id="24" name="exitTop" type="portal" x="288.435" y="-3.912" width="207.333" height="11.912">
    <properties>
     <property name="destinationMap" value="room04"/>
     <property name="destinationSpawn" value="enterBottom"/>
    </properties>
   </object>
   <object id="33" type="lightningBox" x="566.374" y="659.02" width="74.4733" height="3.32826"/>
-  <object id="51" name="exitLeft" type="portal" x="2.33335" y="375.667" width="45.3333" height="60.6667">
+  <object id="51" name="exitLeft" type="portal" x="0" y="368" width="13.6667" height="72">
    <properties>
     <property name="destinationMap" value="room06"/>
     <property name="destinationSpawn" value="enterRight"/>

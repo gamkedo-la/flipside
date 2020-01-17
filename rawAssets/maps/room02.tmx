@@ -332,11 +332,11 @@
   <object id="22" name="enterTop" type="spawnPoint" x="389.528" y="26.676">
    <point/>
   </object>
-  <object id="23" name="enterLeft" type="spawnPoint" x="73.666" y="416">
+  <object id="23" name="enterLeft" type="spawnPoint" x="40" y="416">
    <point/>
   </object>
   <object id="33" type="lightningBox" x="566.374" y="659.02" width="74.4733" height="3.32826"/>
-  <object id="51" name="exitLeft" type="portal" x="2.33335" y="375.667" width="45.3333" height="60.6667">
+  <object id="51" name="exitLeft" type="portal" x="2.33335" y="368" width="13.6667" height="72">
    <properties>
     <property name="destinationMap" value="room09"/>
     <property name="destinationSpawn" value="enterRight"/>

@@ -60,7 +60,8 @@ const images = [
     'player',
     'playerRight',
     'smallFont',
-    'labCaveWall'
+    'labCaveWall',
+    'EnemyTinyflyer'
 ]
 
 const maps = [
@@ -110,7 +111,7 @@ window.addEventListener('blur',     function (event) { paused = true; }, false);
 window.addEventListener('focus',    function (event) { paused = false; }, false);
 
 
-window.addEventListener('click', function(event) { audio.context.resume();}, false); //Temporary fix for chrome not strting the audio context until user interaction
+window.addEventListener('click', function(event) { audio.context.resume(); }, false); //Temporary fix for chrome not strting the audio context until user interaction
 
 //load assets, then start game-------------------------------------------------------------
 
@@ -129,8 +130,6 @@ function init(){
 }
 
 function soundInit(){
-    //img is an array of all image assets. assigned to our (G)ame object here
-    //G.img = images;
 
     //next we load our soundlist, passing in start as a callback once complete.
     //soundloader just gives loader the properties,  loadAudioBuffer actually decodes the files and
@@ -377,19 +376,19 @@ function render(dt){
     }//end x loop
 
     //render objects layer -including pickups and enemies
-    G.world.objects.forEach(function(obj){
-        //console.log(obj);
-        let drawX = obj.x - view.x;
-        let drawY = obj.y - view.y;
-        if(inView({x:obj.x, y:obj.y})){
-            obj.onScreen = true; 
-            drawTile(
-                {x: drawX, y: drawY},
-                world,
-                obj.gid-1
-            )
-        }else{obj.onScreen = false;}
-    })
+    // G.world.objects.forEach(function(obj){
+    //     //console.log(obj);
+    //     let drawX = obj.x - view.x;
+    //     let drawY = obj.y - view.y;
+    //     if(inView({x:obj.x, y:obj.y})){
+    //         obj.onScreen = true; 
+    //         drawTile(
+    //             {x: drawX, y: drawY},
+    //             world,
+    //             obj.gid-1
+    //         )
+    //     }else{obj.onScreen = false;}
+    // })
 
     //render player;
     ctx.fillStyle = player.color;

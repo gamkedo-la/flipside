@@ -48,6 +48,7 @@ const Player = {
     //-------------------
 
     falling: false,
+    fallthru: false,
     jumping: false,
 
     inTheFlip: false,
@@ -107,6 +108,7 @@ const Player = {
 
 Player.update = function update(dt, world, worldFlipped, worldForeground){
     this.world = world;
+    this.fallthru = false;
     const { MSG } = G;
 
     this.currentAnimation.update(dt);
@@ -183,11 +185,13 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
     //check onscreen objects-----------
     world.objects.filter(function(obj){return obj.onScreen }).forEach(function(obj, i, arr){
         if(self.rectCollision({x:obj.x, y:obj.y, width: 8, height: 8}) ){
-            MSG.dispatch('pickup', {
-                name: obj.name,
-                amount: obj.properties.find((e)=>{return e.name=='amount'}).value,
-                x: obj.x, y: obj.y
-            })
+            if(obj.type == 'pickup'){
+                MSG.dispatch('pickup', {
+                    name: obj.name,
+                    amount: obj.properties.find((e)=>{return e.name=='amount'}).value,
+                    x: obj.x, y: obj.y
+                })
+            }
             world.objects.splice(i, 1);
         }
     })
@@ -399,9 +403,17 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
     else{this.vx *= this.friction}
 
     if(this.input.jump && !this.jumping){
-        this.vy = -this.jumpVel
-        this.jumping = true;
-          this.input.jump = false; 
+        if(this.input.down){
+            this.fallthru = true;
+            this.jumping = true;
+            this.input.jump = false;
+            this.pos.y+=5;
+        } else {
+            this.vy = -this.jumpVel
+            this.jumping = true;
+            this.input.jump = false; 
+        }
+        
     }
     else{
         this.vy += this.gravity;
@@ -411,6 +423,9 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         this.input.jump = false;
     }
 
+    
+    
+
     this.vx = clamp(this.vx, -this.maxVel.x, this.maxVel.x);
     this.vy = clamp(this.vy, -this.maxVel.y, this.maxVel.y);
         
@@ -419,9 +434,14 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         this.pos.x = this.prevX;
         this.vx = 0;
     }
-    //one-way platforms------------------------------------------------------------------------------------
+
     this.pos.y = this.pos.y + (dt * this.vy);
-    if(this.prevY < this.pos.y){
+
+    //one-way platforms------------------------------------------------------------------------------------
+    
+    
+
+    if(!this.fallthru && this.prevY < this.pos.y){
         if(G.world.pixelToTileID({x:this.pos.x, y: (this.pos.y+this.height/2)-3 })==97){
         console.log('cloud');
         this.falling = false;
@@ -429,8 +449,9 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         this.vy = 0;
         this.pos.y = this.prevY;
         }
-        
-    }
+    } 
+    
+    
     //------------------------------------------------------------------------------------
 
     if(this.tileCollisionCheck(world, this.collideIndex) ){

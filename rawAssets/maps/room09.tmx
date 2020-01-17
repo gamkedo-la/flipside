@@ -320,10 +320,10 @@
 </data>
  </layer>
  <objectgroup id="3" name="effects and spawns">
-  <object id="9" name="enterRight" type="spawnPoint" x="722.051" y="431.524">
+  <object id="9" name="enterRight" type="spawnPoint" x="760" y="408">
    <point/>
   </object>
-  <object id="13" name="exitRight" type="portal" x="757.207" y="382.563" width="45.3333" height="60.6667">
+  <object id="13" name="exitRight" type="portal" x="792" y="368" width="10.5403" height="75.2297">
    <properties>
     <property name="destinationMap" value="room02"/>
     <property name="destinationSpawn" value="enterLeft"/>

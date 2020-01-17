@@ -339,7 +339,7 @@
     <property name="destinationSpawn" value="enterRight"/>
    </properties>
   </object>
-  <object id="53" name="exitBottom" type="portal" x="288.334" y="762.667" width="207.333" height="36.6667">
+  <object id="53" name="exitBottom" type="portal" x="288.334" y="784" width="207.333" height="15.3337">
    <properties>
     <property name="destinationMap" value="room05"/>
     <property name="destinationSpawn" value="enterTop"/>
