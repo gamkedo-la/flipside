@@ -12,6 +12,7 @@ import GamepadSupport from './src/js/gamepad.js';
 import ElectricityRenderer from './src/js/electricity.js';
 import RetroBuffer from './src/js/retroBuffer.js';
 import Records from './src/js/records.js';
+import FlipBat from '/src/js/flipbat.js';
 
 //one global (G)ame object to rule them all
 window.G = {};
@@ -119,14 +120,13 @@ window.addEventListener('click', function(event) { audio.context.resume(); }, fa
 loader.loadInitialMapData('room01', init);
 
 function init(){
+    G.img = loader.loadImages(images, soundInit);
+
     G.world = new World();
     G.worldFlipped = new World();
     G.worldForeground = new World();
 
-    loadMap({map: 'room01', spawnPoint: 'PlayerStart'});
-
-    G.img = loader.loadImages(images, soundInit);
-
+    
 }
 
 function soundInit(){
@@ -134,6 +134,7 @@ function soundInit(){
     //next we load our soundlist, passing in start as a callback once complete.
     //soundloader just gives loader the properties,  loadAudioBuffer actually decodes the files and
     //creates a list of buffers.
+    loadMap({map: 'room01', spawnPoint: 'PlayerStart'});
     loader.soundLoader({context: audio.context, urlList: soundList, callback: start});
     loader.loadAudioBuffer();
 }
@@ -202,21 +203,6 @@ function update(dt){
     elapsed += dt;
     frameCount ++;
 
-/*removing background particles, for now-----------------------
-    let bgparticleCount = 10;
-    while(bgparticleCount--){
-        G.particles.push(new Particle({
-            x: rndFloat(view.x, view.x+c.width),
-            y: rndFloat(view.y, view.y+c.height),
-            vx: -player.vx/400,
-            vy: rndFloat(-0.5, -2),
-            width: 1,
-            height: rndInt(1,4),
-            color: 29,
-            type: 'bg'
-        }) );
-    }
-*/
     handleCamera(dt);
 
     handleInput(dt);
@@ -282,6 +268,7 @@ function update(dt){
         }
         particle.update();
     })
+
     //flip healing routine--------------------------------
     for(let i = 0; i < G.worldFlipped.data.length; i++){
         let tile = G.worldFlipped.data[i];
@@ -293,6 +280,7 @@ function update(dt){
             G.worldFlipped.data[i] = tile-1;
         }
     }
+    G.world.entities.forEach(function(e){e.update()});
 
     player.update(dt, G.world, G.worldFlipped, G.worldForeground);
     //Key needs updated so justReleased queue gets emptied at end of frame
@@ -390,8 +378,13 @@ function render(dt){
     //     }else{obj.onScreen = false;}
     // })
 
-    //render player;
-    ctx.fillStyle = player.color;
+    //render AABB's, including pickups and baddies
+    G.world.entities.forEach(function(e){
+        if(inView(e.pos)){
+            e.render();
+        }
+    });
+     //render player; 
     player.render();
     
     //render foreground tiles if any in front of player-----------------------------------
@@ -569,11 +562,26 @@ function updateWorldData(world, worldFlipped, worldForeground, currentMap) {
     world.portals = loader.tileMaps[currentMap].layers[3].objects.filter(function(e){return e.type == "portal"});
     world.lightningSpawners = loader.tileMaps[currentMap].layers[3].objects.filter(function(e){return e.type == "lightningBox"});
 
-    world.objects = loader.tileMaps[currentMap].layers[4].objects
+    world.entities = processWorldObjects(loader.tileMaps[currentMap].layers[4].objects);
+    //world.objects = loader.tileMaps[currentMap].layers[4].objects
 
     if(loader.tileMaps[currentMap].properties){
         world.parallax0 = loader.tileMaps[currentMap].properties.find(function(e){return e.name = 'Parallax0' }).value;
     }
+}
+
+function processWorldObjects(objects){
+    let results = [];
+    objects.forEach(function(obj){
+        switch(obj.type){
+            case "flipbat": {
+                console.log(obj);
+                let height = obj.properties.find(function(e){return e.name == 'pathHeightInTiles'}).value;
+                results.push(new FlipBat({pos:{x: obj.x, y: obj.y}, height: height }).init());
+            }
+        }
+    })
+    return results;
 }
 
 function movePlayerToSpawnPoint(currentMap, spawnPoint) {
@@ -581,7 +589,6 @@ function movePlayerToSpawnPoint(currentMap, spawnPoint) {
     player.pos.x = spawn.x;
     player.pos.y = spawn.y;
 }
-G.movePlayerToSpawnPoint = movePlayerToSpawnPoint
 
 
 function debugRender(){

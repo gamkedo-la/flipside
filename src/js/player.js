@@ -183,18 +183,18 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
     })
 
     //check onscreen objects-----------
-    world.objects.filter(function(obj){return obj.onScreen }).forEach(function(obj, i, arr){
-        if(self.rectCollision({x:obj.x, y:obj.y, width: 8, height: 8}) ){
-            if(obj.type == 'pickup'){
-                MSG.dispatch('pickup', {
-                    name: obj.name,
-                    amount: obj.properties.find((e)=>{return e.name=='amount'}).value,
-                    x: obj.x, y: obj.y
-                })
-            }
-            world.objects.splice(i, 1);
-        }
-    })
+    // world.objects.filter(function(obj){return obj.onScreen }).forEach(function(obj, i, arr){
+    //     if(self.rectCollision({x:obj.x, y:obj.y, width: 8, height: 8}) ){
+    //         if(obj.type == 'pickup'){
+    //             MSG.dispatch('pickup', {
+    //                 name: obj.name,
+    //                 amount: obj.properties.find((e)=>{return e.name=='amount'}).value,
+    //                 x: obj.x, y: obj.y
+    //             })
+    //         }
+    //         world.objects.splice(i, 1);
+    //     }
+    // })
 }
 Player.render = function render(dt, world, worldFlipped, worldForeground){
 
