@@ -9,6 +9,12 @@ const Particle = function Particle({x,y,vx,vy,color=22,width=1,height=1, life = 
     this.life = life;
     this.color = color;
     this.type = type;
+    this.rect = {
+        left: 0,
+        top: 0,
+        right: 0,
+        bottom: 0
+    }
 
     return this;
 }
@@ -36,6 +42,12 @@ Particle.prototype.update = function update(world){
     this.oldPos = this.pos;
     this.pos.x += this.vx;
     this.pos.y += this.vy;
+    this.rect = {
+        top: this.pos.y - this.height/2,
+        left: this.pos.x - this.width/2,
+        right: this.pos.x + this.width/2,
+        bottom: this.pos.y + this.height/2
+    }
     
     if(this.life < 0)this.kill();
     

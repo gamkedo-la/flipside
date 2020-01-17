@@ -59,11 +59,11 @@ const Player = {
     flipTimeMax: 200,
 
     hurtCooldown: 0,
-    hurtCooldownMax: 60,
+    hurtCooldownMax: 180,
     hurtPush: 40,
 
     gunCooldown: 0,
-    gunCooldownMax: 12,
+    gunCooldownMax: 7,
 
     flipBar: {
         xOffset: -12,
@@ -142,9 +142,7 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
         if(this.flipTimer){
             this.flipTimer--;
         }else{
-            if(!this.hurtCooldown){
                 MSG.dispatch("hurt", {amount: 10, type: 'flipSpace', x: this.pos.x, y: this.pos.y});
-            }  
         }
     }else{
         this.normalPhysics(dt, world, worldFlipped);
@@ -648,52 +646,52 @@ Player.crossedOver = function crossedOver(event){
 
 Player.hurt = function(params){
 
-    let hurtParticleCount = 20;
-    while(--hurtParticleCount){
-        G.particles.push(new Particle({
-            x: this.pos.x,
-            y: this.pos.y,
-            vx: -this.vx/50+rndFloat(-5,5),
-            vy: -this.vy/50+rndFloat(-5,5),
-            color: 4,
-            width: 1, 
-            height: 1,
-            life: 20,
-            type: 'blood'
-        }))
-    }
-    
-    this.hurtCooldown = this.hurtCooldownMax;
-
-    this.health -= params.amount;
-
-    //if we're moving more left-right than up-down
-    if(Math.abs(this.vx) > Math.abs(this.vy)){
-        //moving right when hit
-        if(this.vx > 0){
-            //push back left
-            this.vx -= this.hurtPush;
-        //moving left when hit
-        }else{
-            //push back right
-            this.vx += this.hurtPush;
+    if(!this.hurtCooldown){
+        let hurtParticleCount = 20;
+        while(--hurtParticleCount){
+            G.particles.push(new Particle({
+                x: this.pos.x,
+                y: this.pos.y,
+                vx: -this.vx/50+rndFloat(-2,2),
+                vy: -this.vy/50+rndFloat(-2,2),
+                color: 4,
+                width: 2, 
+                height: 2,
+                life: 20,
+                type: 'blood'
+            }))
         }
-    }
-    //if we're moving more up-down than left-right
-    else{
-        //moving down when hit
-        if(this.vy > 0){
-            //push back up
-            this.vy -= this.hurtPush;
-        //moving up when hit
-        }else {
-            //push back down
-            this.vy += this.hurtPush
+
+        this.hurtCooldown = this.hurtCooldownMax;
+        this.health -= params.amount;
+        //if we're moving more left-right than up-down
+        if(Math.abs(this.vx) > Math.abs(this.vy)){
+            //moving right when hit
+            if(this.vx > 0){
+                //push back left
+                this.vx -= this.hurtPush;
+            //moving left when hit
+            }else{
+                //push back right
+                this.vx += this.hurtPush;
+            }
         }
-    }
-    
-    ; 
-}
+        //if we're moving more up-down than left-right
+        else{
+            //moving down when hit
+            if(this.vy > 0){
+                //push back up
+                this.vy -= this.hurtPush;
+            //moving up when hit
+            }else {
+                //push back down
+                this.vy += this.hurtPush
+            }
+        }
+
+    }//end cooldown check
+
+}//end player.hurt
 
 Player.died = function(params){
     console.log('dead');

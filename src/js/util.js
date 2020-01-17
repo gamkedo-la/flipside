@@ -80,6 +80,26 @@ export function inView(pos){
                screenY < G.c.height)
 }
 
+export function rectCollision(rect1, rect2) {
+    
+    //console.log(this.pos.x);
+    return (
+        rect1.left < rect2.right &&
+        rect2.left < rect1.right &&
+        rect1.top < rect2.bottom &&
+        rect2.top < rect1.bottom
+      );
+
+      /*
+      return (
+        this.rect.left < right &&
+        left < this.rect.right &&
+        this.rect.top < bottom &&
+        top < this.rect.bottom
+      );
+      */
+  }
+
     
 
    

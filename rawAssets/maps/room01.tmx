@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="2019.12.11" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="100" height="100" tilewidth="8" tileheight="8" infinite="0" backgroundcolor="#28283c" nextlayerid="7" nextobjectid="79">
+<map version="1.2" tiledversion="2019.12.11" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="100" height="100" tilewidth="8" tileheight="8" infinite="0" backgroundcolor="#28283c" nextlayerid="7" nextobjectid="87">
  <editorsettings>
   <export target="../../src/maps/room01.json" format="json"/>
  </editorsettings>
@@ -369,10 +369,50 @@
   </object>
   <object id="77" name="Flipbat" type="flipbat" gid="9" x="680" y="360" width="8" height="8">
    <properties>
-    <property name="pathHeightInTiles" type="int" value="4"/>
+    <property name="pathHeightInTiles" type="int" value="2"/>
    </properties>
   </object>
-  <object id="78" name="Flipbat" type="flipbat" gid="9" x="648" y="376" width="8" height="8">
+  <object id="78" name="Flipbat" type="flipbat" gid="9" x="576" y="344" width="8" height="8">
+   <properties>
+    <property name="pathHeightInTiles" type="int" value="6"/>
+   </properties>
+  </object>
+  <object id="79" name="Flipbat" type="flipbat" gid="9" x="648" y="368" width="8" height="8">
+   <properties>
+    <property name="pathHeightInTiles" type="int" value="6"/>
+   </properties>
+  </object>
+  <object id="80" name="Flipbat" type="flipbat" gid="9" x="496" y="360" width="8" height="8">
+   <properties>
+    <property name="pathHeightInTiles" type="int" value="6"/>
+   </properties>
+  </object>
+  <object id="81" name="Flipbat" type="flipbat" gid="9" x="472" y="448" width="8" height="8">
+   <properties>
+    <property name="pathHeightInTiles" type="int" value="6"/>
+   </properties>
+  </object>
+  <object id="82" name="Flipbat" type="flipbat" gid="9" x="344" y="256" width="8" height="8">
+   <properties>
+    <property name="pathHeightInTiles" type="int" value="6"/>
+   </properties>
+  </object>
+  <object id="83" name="Flipbat" type="flipbat" gid="9" x="344" y="360" width="8" height="8">
+   <properties>
+    <property name="pathHeightInTiles" type="int" value="6"/>
+   </properties>
+  </object>
+  <object id="84" name="Flipbat" type="flipbat" gid="9" x="392" y="304" width="8" height="8">
+   <properties>
+    <property name="pathHeightInTiles" type="int" value="6"/>
+   </properties>
+  </object>
+  <object id="85" name="Flipbat" type="flipbat" gid="9" x="504" y="256" width="8" height="8">
+   <properties>
+    <property name="pathHeightInTiles" type="int" value="6"/>
+   </properties>
+  </object>
+  <object id="86" name="Flipbat" type="flipbat" gid="9" x="344" y="456" width="8" height="8">
    <properties>
     <property name="pathHeightInTiles" type="int" value="6"/>
    </properties>
