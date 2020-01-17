@@ -35,7 +35,7 @@ body {
     image-rendering: crisp-edges;
 }
 
-#mosaic {
+#mosaic, #mosaicFlipped {
     position: absolute;
     left: 50%;
     top: 50%;
@@ -43,5 +43,8 @@ body {
     mix-blend-mode: overlay;
     image-rendering: pixelated;
     image-rendering: crisp-edges;
+}
 
+#mosaicFlipped {
+    display:none;
 }
