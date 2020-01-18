@@ -5,7 +5,6 @@ import Particle from './particle.js';
 
 const Player = {
     spritesheet:{},
-    SpritesheetV2:{},
     currentAnimation:{},
     facingLeft: false,
 
@@ -15,7 +14,6 @@ const Player = {
     cloudTilesStartIndex: 977,
     cloudTilesEndIndex: 992,
 
-    
     pos: {
         x: 0,
         y: 0,
@@ -69,7 +67,7 @@ const Player = {
     hurtPush: 40,
 
     gunCooldown: 0,
-    gunCooldownMax: 7,
+    gunCooldownMax: 5,
 
     flipBar: {
         xOffset: -12,

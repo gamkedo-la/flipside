@@ -227,7 +227,7 @@ function update(dt){
                 splodeCount = 6;
                 velX = 0;
                 randX = 1.5;
-            } else if (G.world.data[G.world.pixelToTileIndex(particle.pos)] > 128) {
+            } else if (G.world.data[G.world.pixelToTileIndex(particle.pos)] > G.player.collideIndex) {
                 splodeCount = 3;
                 velX = -particle.vx/5;
                 randX = 0.5;
@@ -258,7 +258,14 @@ function update(dt){
             particle.color = 27;
             if(particle.type == 'bullet'){
                 //magic number is amount of ticks before it returns to being flipspace
-                G.worldFlipped.data[flippedIndex]+=G.player.flipRemovedCooldown+rndInt(-20, 20);
+                G.worldFlipped.tileFillCircle({
+                    tx: Math.floor(particle.pos.x/8),
+                    ty: Math.floor(particle.pos.y/8),
+                    radius: 2,
+                    value: G.player.flipRemovedCooldown+rndInt(-20,20)
+                })
+                
+               // G.worldFlipped.data[flippedIndex]+=G.player.flipRemovedCooldown+rndInt(-20, 20);
                 let splodeCount = 6;
             while(--splodeCount){
                 //console.log('making splode')
@@ -363,9 +370,9 @@ function render(dt){
 
                 //draw a dark color blended over top to create the darkened effect
                 ctx.save();
-                ctx.globalCompositeOperation = 'difference';
+                ctx.globalCompositeOperation = 'overlay';
                 ctx.drawImage(
-                    img.aap64, 0, 3, 1, 1, drawX, drawY, world.tileSize, world.tileSize
+                    img.aap64, 0, rndInt(26,28), 1, 1, drawX, drawY, world.tileSize, world.tileSize
                     )
                 ctx.restore();
             }//end flip render
