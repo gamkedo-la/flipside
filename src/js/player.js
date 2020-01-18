@@ -665,7 +665,7 @@ Player.flipMosaic = function() {
     } else {
         // normal deepnight pixel bevels
         mosaic.canvas.style.display = 'block';
-        mosaicFlipped.canvas.style.display = 'true';
+        mosaicFlipped.canvas.style.display = 'none';
     }
 }
 
