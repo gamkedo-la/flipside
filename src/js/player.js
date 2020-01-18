@@ -110,6 +110,11 @@ const Player = {
     }
 }
 
+Player.onCrossed = function() {
+    console.log("Player crossed over!");
+
+}
+
 Player.update = function update(dt, world, worldFlipped, worldForeground){
     this.world = world;
     this.fallthru = false;
@@ -165,12 +170,14 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
                 this.inTheFlip = true;
                 this.flipTimer = this.flipTimeMax;
                 G.audio.enterFlipside();
+                this.flipMosaic();
             }
     }else{
         if(this.inTheFlip){
             MSG.dispatch('crossed');
             this.inTheFlip = false;
             G.audio.exitFlipside();
+            this.flipMosaic();
         }
     }
     var self = this;
@@ -647,8 +654,17 @@ Player.rectCollision = function(body) {
 
 //player event handlers------------------------------------------------------------
 
-Player.crossedOver = function crossedOver(event){
-    console.log('crossed over');
+Player.flipMosaic = function() {
+    if (!mosaic || !mosaicFlipped) return;
+    if (this.inTheFlip) {
+        // inverted deepnight pixel bevels
+        mosaic.canvas.style.display = 'none';
+        mosaicFlipped.canvas.style.display = 'block';
+    } else {
+        // normal deepnight pixel bevels
+        mosaic.canvas.style.display = 'block';
+        mosaicFlipped.canvas.style.display = 'none';
+    }
 }
 
 Player.hurt = function(params){
