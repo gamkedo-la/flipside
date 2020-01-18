@@ -8,7 +8,13 @@ const Player = {
     SpritesheetV2:{},
     currentAnimation:{},
     facingLeft: false,
-    collideIndex: 128,
+
+    collideIndex: 1009,
+    hazardTilesStartIndex: 113,
+    hazardTilesEndIndex: 120,
+    cloudTilesStartIndex: 977,
+    cloudTilesEndIndex: 992,
+
     
     pos: {
         x: 0,
@@ -123,7 +129,8 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
 
     
     // dangerous tiles
-    if(this.tileCollisionCheck(worldForeground, function(tile){ return tile >=113 && tile <= 113+8; } )) {
+    var self = this;
+    if(this.tileCollisionCheck(world, function(tile){ return tile >=self.hazardTilesStartIndex && tile <= self.hazardTilesEndIndex; } )) {
         if(!this.hurtCooldown){
             MSG.dispatch("hurt", {amount: 1, type: 'groundHazard', x: this.pos.x, y: this.pos.y});
         }
@@ -440,7 +447,8 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
     
 
     if(!this.fallthru && this.prevY < this.pos.y){
-        if(G.world.pixelToTileID({x:this.pos.x, y: (this.pos.y+this.height/2)-3 })==97){
+        let gid = G.world.pixelToTileID({x:this.pos.x, y: (this.pos.y+this.height/2)-3 })
+        if(gid > this.cloudTilesStartIndex && gid < this.cloudTilesEndIndex){
         console.log('cloud');
         this.falling = false;
         this.jumping = false;
