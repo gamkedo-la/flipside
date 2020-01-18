@@ -179,6 +179,7 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
             let destinationSpawn = portal.properties.find(function(prop){return prop.name == 'destinationSpawn'}).value;
             console.log(destinationMap, destinationSpawn);
             G.loadMap({map: destinationMap, spawnPoint: destinationSpawn });
+            G.saver.save(G.gameKey);
         }
     })
 

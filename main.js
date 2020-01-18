@@ -13,6 +13,7 @@ import ElectricityRenderer from './src/js/electricity.js';
 import RetroBuffer from './src/js/retroBuffer.js';
 import Records from './src/js/records.js';
 import FlipBat from './src/js/flipbat.js';
+import GameSaver from './src/js/GameSaver.js';
 
 //one global (G)ame object to rule them all
 window.G = {};
@@ -48,11 +49,14 @@ G.Records = new Records();
 
 G.audio = new AudioGlobal(); // FIXME: defer to after the first click/keypress to avoid browser error
 G.lightning = new ElectricityRenderer();
+G.saver = new GameSaver();
+G.gameKey = 'game1';//TODO: User input to decide which game save to load
+G.savedGame = G.saver.getSavedGame(G.gameKey);
 
 G.player = player;
+G.player.maxHealth = G.savedGame.maxHealth;
 
-
-G.currentMap = 'map000';
+G.currentMap = G.savedGame.map;
 
 const images = [
     //image loader assumes .png and appends it. all images should be in /src/img/.
@@ -122,7 +126,7 @@ window.addEventListener('click', function(event) { audio.context.resume(); }, fa
 //load assets, then start game-------------------------------------------------------------
 
 //TODO: reorganize so one function loads both maps and images, THEN start, no chains
-loader.loadInitialMapData('room01', init);
+loader.loadInitialMapData(G.currentMap, init);
 
 function init(){
     G.img = loader.loadImages(images, soundInit);
@@ -139,7 +143,7 @@ function soundInit(){
     //next we load our soundlist, passing in start as a callback once complete.
     //soundloader just gives loader the properties,  loadAudioBuffer actually decodes the files and
     //creates a list of buffers.
-    loadMap({map: 'room01', spawnPoint: 'PlayerStart'});
+    loadMap({map: G.currentMap, spawnPoint: G.savedGame.spawnPoint});
     loader.soundLoader({context: audio.context, urlList: soundList, callback: start});
     loader.loadAudioBuffer();
 }
@@ -565,6 +569,7 @@ function updateWorldData(world, worldFlipped, worldForeground, currentMap) {
     worldForeground.data = Uint16Array.from(loader.tileMaps[currentMap].layers[2].data);
 
     world.portals = loader.tileMaps[currentMap].layers[3].objects.filter(function(e){return e.type == "portal"});
+    world.spawnPoints = loader.tileMaps[currentMap].layers[3].objects.filter(function(e){return e.type == "spawnPoint"});
     world.lightningSpawners = loader.tileMaps[currentMap].layers[3].objects.filter(function(e){return e.type == "lightningBox"});
 
     world.entities = processWorldObjects(loader.tileMaps[currentMap].layers[4].objects);
@@ -590,9 +595,14 @@ function processWorldObjects(objects){
 }
 
 function movePlayerToSpawnPoint(currentMap, spawnPoint) {
-    let spawn = loader.tileMaps[currentMap].layers[3].objects.find(function(e){return e.name == spawnPoint});
-    player.pos.x = spawn.x;
-    player.pos.y = spawn.y;
+    if(spawnPoint.x == undefined) {
+        let spawn = loader.tileMaps[currentMap].layers[3].objects.find(function(e){return e.name == spawnPoint});
+        player.pos.x = spawn.x;
+        player.pos.y = spawn.y;    
+    } else {
+        player.pos.x = spawnPoint.x;
+        player.pos.y = spawnPoint.y;
+    }
 }
 
 

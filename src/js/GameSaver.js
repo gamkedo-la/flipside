@@ -15,7 +15,7 @@ const GameSaver = function GameSaver() {
     }
 
     this.GameSaveObject = function GameSaveObject() {
-        this.map = "map000";
+        this.map = 'room01';
         this.spawnPoint = "PlayerStart";
         this.maxHealth = 100;
 
@@ -34,7 +34,7 @@ GameSaver.prototype.getSavedGame = function getSavedGame(game) {
             this.saves[game] = JSON.parse(window.localStorage.getItem(`flipside-${game}`));
             if(this.saves[game] == undefined) {
                 this.saves[game] = new this.GameSaveObject();
-                window.localStorage.setItem(game, JSON.stringify(this.saves[game]));
+                window.localStorage.setItem(`flipside-${game}`, JSON.stringify(this.saves[game]));
             }
         } 
     } 
