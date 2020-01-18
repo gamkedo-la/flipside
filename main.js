@@ -15,6 +15,8 @@ import Records from './src/js/records.js';
 import FlipBat from './src/js/flipbat.js';
 import GameSaver from './src/js/GameSaver.js';
 
+const invertedMosaicEffectEnabled = false;
+
 //one global (G)ame object to rule them all
 window.G = {};
 
@@ -105,10 +107,12 @@ document.body.appendChild(mosaic.canvas);
 G.mosaic = mosaic;
 
 // inverted mosaic bevel during flipspace
-const mosaicFlipped = makeMosaic(true);
-mosaicFlipped.canvas.id = "mosaicFlipped";
-document.body.appendChild(mosaicFlipped.canvas);
-G.mosaicFlipped = mosaicFlipped;
+if (invertedMosaicEffectEnabled) {
+    const mosaicFlipped = makeMosaic(true);
+    mosaicFlipped.canvas.id = "mosaicFlipped";
+    document.body.appendChild(mosaicFlipped.canvas);
+    G.mosaicFlipped = mosaicFlipped;
+}
 
 //destructure out of global game object for coding convenience----------------
 const { loader, audio, view, c, ctx, deadZone } = G;

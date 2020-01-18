@@ -650,7 +650,7 @@ Player.rectCollision = function(body) {
 //player event handlers------------------------------------------------------------
 
 Player.flipMosaic = function() {
-    //if (!mosaic || !mosaicFlipped) return;
+    if (!G.mosaicFlipped) return; // might not be enabled
     if (this.inTheFlip) {
         // inverted deepnight pixel bevels
         G.mosaic.canvas.style.display = 'none';
