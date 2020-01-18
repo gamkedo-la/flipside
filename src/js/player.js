@@ -699,6 +699,7 @@ Player.died = function(params){
     G.loadMap({map:'room01', spawnPoint:'PlayerStart'});
     this.health = this.maxHealth;
     G.Records.playerStats.totals.deaths++;
+    console.log(`Steps: ${G.Records.playerStats.totals.stepsTaken}, and Deaths: ${G.Records.playerStats.totals.deaths}`)
     G.Records.resetSession();
 }
 

@@ -27,7 +27,7 @@ const Records = function Records()
     return this;
 }
 
-Records.resetSession = function resetSession(){
+Records.prototype.resetSession = function resetSession(){
     //reset currentLife stats, rollover numbers to totals if necessary
 }
 

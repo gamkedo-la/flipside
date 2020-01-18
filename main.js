@@ -45,7 +45,7 @@ G.tileSheetSize = { height: 16, width: 16 }
 
 G.MSG = new Signal();
 G.loader = new AssetLoader();
-G.Records = new Records();
+//G.Records = new Records();
 
 G.audio = new AudioGlobal(); // FIXME: defer to after the first click/keypress to avoid browser error
 G.lightning = new ElectricityRenderer();
@@ -55,6 +55,7 @@ G.savedGame = G.saver.getSavedGame(G.gameKey);
 
 G.player = player;
 G.player.maxHealth = G.savedGame.maxHealth;
+G.Records = G.savedGame.Records;
 
 G.currentMap = G.savedGame.map;
 
