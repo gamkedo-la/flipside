@@ -1,8 +1,12 @@
 //Persistence Helper
+import Records from './records.js';
+
 const GameSaver = function GameSaver() {
     this.storageAllowed = true;
+    this.version = 0.1;
+    this.persistedVersion;
     try {
-        let version = window.localStorage.getItem('flipside-version');
+        this.persistedVersion = parseFloat(window.localStorage.getItem('flipside-version'));
     } catch (error) {
         console.log("Saving game state requires local storage.  Please enable it and reload the game.");
         this.storageAllowed = false;
@@ -15,9 +19,11 @@ const GameSaver = function GameSaver() {
     }
 
     this.GameSaveObject = function GameSaveObject() {
-        this.map = "map000";
+        //Add additional properties to save to this default object
+        this.map = 'room01';
         this.spawnPoint = "PlayerStart";
         this.maxHealth = 100;
+        this.Records = new Records();
 
         return this;
     }
@@ -25,7 +31,6 @@ const GameSaver = function GameSaver() {
 
 GameSaver.prototype.getSavedGame = function getSavedGame(game) {
     if(this.saves[game] === undefined) {
-//    if(this.saves[game] == undefined) {
         console.error(`Game Save: ${game} does not exist`);
         return this.saves.game1 = new this.GameSaveObject();
     } else if(this.saves[game] == null) {
@@ -34,7 +39,26 @@ GameSaver.prototype.getSavedGame = function getSavedGame(game) {
             this.saves[game] = JSON.parse(window.localStorage.getItem(`flipside-${game}`));
             if(this.saves[game] == undefined) {
                 this.saves[game] = new this.GameSaveObject();
-                window.localStorage.setItem(game, JSON.stringify(this.saves[game]));
+                window.localStorage.setItem(`flipside-${game}`, JSON.stringify(this.saves[game]));
+            } else {
+                //saved game existed on file, functions are not serialized, 
+                //Need to create new Records object (which has these functions
+                //and replace its data with retrieved data
+
+                const newRecordsObj = new Records();
+                if((this.persistedVersion == undefined) ||
+                   (this.persistedVersion == null) ||
+                   (isNaN(this.persistedVersion)) ||
+                   (this.persistedVersion < this.version)) {
+                    window.localStorage.setItem('flipside-version', `${this.version}`);
+                } else {
+                    const recordKeys = Object.keys(this.saves[game].Records);
+                    for(let key of recordKeys) {
+                        newRecordsObj[key] = this.saves[game].Records[key];
+                    }
+                }
+                
+                this.saves[game].Records = newRecordsObj;
             }
         } 
     } 
@@ -44,7 +68,7 @@ GameSaver.prototype.getSavedGame = function getSavedGame(game) {
 
 GameSaver.prototype.save = function save(game) {
     try {
-        let version = window.localStorage.getItem('flipside-version');
+        this.persistedVersion = parseFloat(window.localStorage.getItem('flipside-version'));
         this.storageAllowed = true;
     } catch (error) {
         console.log("Saving the game requires access to local storage, please enable it and try again.");
@@ -53,9 +77,11 @@ GameSaver.prototype.save = function save(game) {
     }
 
     const thisGame = this.getSavedGame(game);
+    //Add properties which are saved for the game here.
     thisGame.map = G.currentMap;
     thisGame.spawnPoint = G.world.spawnPoints[0];
     thisGame.maxHealth = G.player.maxHealth;
+    thisGame.Records = G.Records;
 
     const gameString = JSON.stringify(thisGame);
     window.localStorage.setItem(`flipside-${game}`, gameString);
