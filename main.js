@@ -67,7 +67,8 @@ const images = [
     'playerRight',
     'smallFont',
     'labCaveWall',
-    'EnemyTinyflyer'
+    'EnemyTinyflyer',
+    'flipSpace'
 ]
 
 const maps = [
@@ -346,11 +347,13 @@ function render(dt){
         //render all tiles in the column
         for(let j = ry0; j < ry1; j++){
 
-            let drawX =     Math.floor(i*8 - view.x),
+            var drawX =     Math.floor(i*8 - view.x),
                 drawY =     Math.floor(j*8 - view.y),
                 flatIndex = j * world.widthInTiles + i,
+                
                 gid = world.data[flatIndex],
                 gidFlipped = worldFlipped[flatIndex];
+
 
                 gid-=1;
                 gidFlipped -=1;
@@ -376,26 +379,41 @@ function render(dt){
                     img.aap64, 0, rndInt(26,28), 1, 1, drawX, drawY, world.tileSize, world.tileSize
                     )
                 ctx.restore();
+
+                //perimeter effects
+
+                let Ngid = worldFlipped.data[flatIndex - world.widthInTiles],
+                    Sgid = worldFlipped.data[flatIndex + world.widthInTiles],
+                    Egid = worldFlipped.data[flatIndex + 1],
+                    Wgid = worldFlipped.data[flatIndex -1];
+                    //console.log(Ngid, Sgid, Egid, Wgid);
+                if(Ngid != 3){
+                    ctx.drawImage(
+                        img.flipSpace, 8*rndInt(0,15), 0, 8, 8, drawX, drawY-8, world.tileSize, world.tileSize
+                        )
+                }
+                if(Sgid != 3){
+                    ctx.drawImage(
+                        img.flipSpace, 8*rndInt(0,15), 8, 8, 8, drawX, drawY+8, world.tileSize, world.tileSize
+                        )
+                }
+                if(Wgid != 3){
+                    ctx.drawImage(
+                        img.flipSpace, 8*rndInt(0,15), 24, 8, 8, drawX-8, drawY, world.tileSize, world.tileSize
+                        )
+                }
+                if(Egid != 3){
+                    ctx.drawImage(
+                        img.flipSpace, 8*rndInt(0,15), 16, 8, 8, drawX+8, drawY, world.tileSize, world.tileSize
+                        )
+                }
+
+                
             }//end flip render
 
         }//end column render
 
     }//end x loop
-
-    //render objects layer -including pickups and enemies
-    // G.world.objects.forEach(function(obj){
-    //     //console.log(obj);
-    //     let drawX = obj.x - view.x;
-    //     let drawY = obj.y - view.y;
-    //     if(inView({x:obj.x, y:obj.y})){
-    //         obj.onScreen = true; 
-    //         drawTile(
-    //             {x: drawX, y: drawY},
-    //             world,
-    //             obj.gid-1
-    //         )
-    //     }else{obj.onScreen = false;}
-    // })
 
     //render AABB's, including pickups and baddies
     G.world.entities.forEach(function(e){
@@ -658,5 +676,9 @@ function UIRender(){
         healthBarDrawWidth,
         healthBarDimensions.h-healthBarPadding*2
         );
+
+}
+
+function flipSpaceRender(){
 
 }
