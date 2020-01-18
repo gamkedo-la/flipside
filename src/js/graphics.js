@@ -47,7 +47,7 @@ export function onScreen(position){
   
 }
 
-export function makeMosaic(){ //totally stealing from deepnight here.
+export function makeMosaic(flipped=false){ //totally stealing from deepnight here.
     var c = document.createElement('canvas');
     var ctx = c.getContext('2d');
     let scale = 3; //4
@@ -59,13 +59,13 @@ export function makeMosaic(){ //totally stealing from deepnight here.
 
         for(var h = 0; h <= 240; h++){ //180
 
-            ctx.fillStyle = "#505050";
+            ctx.fillStyle = flipped?"#A0A0A0":"#505050";
             ctx.fillRect(w*scale, h*scale, 3, 3); //4
 
-            ctx.fillStyle = "#808080";
+            ctx.fillStyle =  flipped?"#A08050":"#808080";
             ctx.fillRect(w*scale+1, h*scale, 2, 2); //3
 
-            ctx.fillStyle = "#A0A0A0";
+            ctx.fillStyle = flipped?"#505050":"#A0A0A0";
             ctx.fillRect(w*scale + 2, h*scale, 1, 1); //2
 
         }
