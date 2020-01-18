@@ -215,6 +215,7 @@ function update(dt){
     handleCamera(dt);
 
     handleInput(dt);
+    G.bullets = G.particles.filter(function(particle){return particle.type=='bullet'});
 
     G.particles.forEach(function(particle){
         if(particle.type == 'bullet'){

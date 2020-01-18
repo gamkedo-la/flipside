@@ -249,7 +249,7 @@
                         {
                          "name":"pathHeightInTiles",
                          "type":"int",
-                         "value":4
+                         "value":2
                         }],
                  "rotation":0,
                  "type":"flipbat",
@@ -273,8 +273,152 @@
                  "type":"flipbat",
                  "visible":true,
                  "width":8,
+                 "x":576,
+                 "y":344
+                }, 
+                {
+                 "gid":9,
+                 "height":8,
+                 "id":79,
+                 "name":"Flipbat",
+                 "properties":[
+                        {
+                         "name":"pathHeightInTiles",
+                         "type":"int",
+                         "value":6
+                        }],
+                 "rotation":0,
+                 "type":"flipbat",
+                 "visible":true,
+                 "width":8,
                  "x":648,
-                 "y":376
+                 "y":368
+                }, 
+                {
+                 "gid":9,
+                 "height":8,
+                 "id":80,
+                 "name":"Flipbat",
+                 "properties":[
+                        {
+                         "name":"pathHeightInTiles",
+                         "type":"int",
+                         "value":6
+                        }],
+                 "rotation":0,
+                 "type":"flipbat",
+                 "visible":true,
+                 "width":8,
+                 "x":496,
+                 "y":360
+                }, 
+                {
+                 "gid":9,
+                 "height":8,
+                 "id":81,
+                 "name":"Flipbat",
+                 "properties":[
+                        {
+                         "name":"pathHeightInTiles",
+                         "type":"int",
+                         "value":6
+                        }],
+                 "rotation":0,
+                 "type":"flipbat",
+                 "visible":true,
+                 "width":8,
+                 "x":472,
+                 "y":448
+                }, 
+                {
+                 "gid":9,
+                 "height":8,
+                 "id":82,
+                 "name":"Flipbat",
+                 "properties":[
+                        {
+                         "name":"pathHeightInTiles",
+                         "type":"int",
+                         "value":6
+                        }],
+                 "rotation":0,
+                 "type":"flipbat",
+                 "visible":true,
+                 "width":8,
+                 "x":344,
+                 "y":256
+                }, 
+                {
+                 "gid":9,
+                 "height":8,
+                 "id":83,
+                 "name":"Flipbat",
+                 "properties":[
+                        {
+                         "name":"pathHeightInTiles",
+                         "type":"int",
+                         "value":6
+                        }],
+                 "rotation":0,
+                 "type":"flipbat",
+                 "visible":true,
+                 "width":8,
+                 "x":344,
+                 "y":360
+                }, 
+                {
+                 "gid":9,
+                 "height":8,
+                 "id":84,
+                 "name":"Flipbat",
+                 "properties":[
+                        {
+                         "name":"pathHeightInTiles",
+                         "type":"int",
+                         "value":6
+                        }],
+                 "rotation":0,
+                 "type":"flipbat",
+                 "visible":true,
+                 "width":8,
+                 "x":392,
+                 "y":304
+                }, 
+                {
+                 "gid":9,
+                 "height":8,
+                 "id":85,
+                 "name":"Flipbat",
+                 "properties":[
+                        {
+                         "name":"pathHeightInTiles",
+                         "type":"int",
+                         "value":6
+                        }],
+                 "rotation":0,
+                 "type":"flipbat",
+                 "visible":true,
+                 "width":8,
+                 "x":504,
+                 "y":256
+                }, 
+                {
+                 "gid":9,
+                 "height":8,
+                 "id":86,
+                 "name":"Flipbat",
+                 "properties":[
+                        {
+                         "name":"pathHeightInTiles",
+                         "type":"int",
+                         "value":6
+                        }],
+                 "rotation":0,
+                 "type":"flipbat",
+                 "visible":true,
+                 "width":8,
+                 "x":344,
+                 "y":456
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -283,7 +427,7 @@
          "y":0
         }],
  "nextlayerid":7,
- "nextobjectid":79,
+ "nextobjectid":87,
  "orientation":"orthogonal",
  "properties":[
         {
