@@ -110,10 +110,7 @@ const Player = {
     }
 }
 
-Player.onCrossed = function() {
-    console.log("Player crossed over!");
 
-}
 
 Player.update = function update(dt, world, worldFlipped, worldForeground){
     this.world = world;
@@ -744,4 +741,9 @@ Player.pickup = function(params){
     }
 }
 
+Player.crossedOver = function() {
+    console.log("Player crossed over!");
+}
+
+//----------------------------------------------------------------------------------
 export default Player
