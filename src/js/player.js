@@ -131,9 +131,7 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
     // dangerous tiles
     var self = this;
     if(this.tileCollisionCheck(world, function(tile){ return tile >=self.hazardTilesStartIndex && tile <= self.hazardTilesEndIndex; } )) {
-        if(!this.hurtCooldown){
             MSG.dispatch("hurt", {amount: 1, type: 'groundHazard', x: this.pos.x, y: this.pos.y});
-        }
     };
 
     // pickups (keys/health etc)
@@ -652,15 +650,15 @@ Player.rectCollision = function(body) {
 //player event handlers------------------------------------------------------------
 
 Player.flipMosaic = function() {
-    if (!mosaic || !mosaicFlipped) return;
+    //if (!mosaic || !mosaicFlipped) return;
     if (this.inTheFlip) {
         // inverted deepnight pixel bevels
-        mosaic.canvas.style.display = 'none';
-        mosaicFlipped.canvas.style.display = 'block';
+        G.mosaic.canvas.style.display = 'none';
+        G.mosaicFlipped.canvas.style.display = 'block';
     } else {
         // normal deepnight pixel bevels
-        mosaic.canvas.style.display = 'block';
-        mosaicFlipped.canvas.style.display = 'none';
+        G.mosaic.canvas.style.display = 'block';
+        G.mosaicFlipped.canvas.style.display = 'none';
     }
 }
 

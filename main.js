@@ -101,11 +101,13 @@ document.body.appendChild(G.rb.c);
 const mosaic = makeMosaic();
 mosaic.canvas.id = "mosaic";
 document.body.appendChild(mosaic.canvas);
+G.mosaic = mosaic;
 
 // inverted mosaic bevel during flipspace
 const mosaicFlipped = makeMosaic(true);
 mosaicFlipped.canvas.id = "mosaicFlipped";
 document.body.appendChild(mosaicFlipped.canvas);
+G.mosaicFlipped = mosaicFlipped;
 
 //destructure out of global game object for coding convenience----------------
 const { loader, audio, view, c, ctx, deadZone } = G;
@@ -126,7 +128,6 @@ window.addEventListener('click', function(event) { audio.context.resume(); }, fa
 
 //load assets, then start game-------------------------------------------------------------
 
-//TODO: reorganize so one function loads both maps and images, THEN start, no chains
 loader.loadInitialMapData(G.currentMap, init);
 
 function init(){
@@ -594,7 +595,7 @@ function processWorldObjects(objects){
     objects.forEach(function(obj){
         switch(obj.type){
             case "flipbat": {
-                console.log(obj);
+                //console.log(obj);
                 let height = obj.properties.find(function(e){return e.name == 'pathHeightInTiles'}).value;
                 results.push(new FlipBat({pos:{x: obj.x, y: obj.y}, height: height }).init());
             }
