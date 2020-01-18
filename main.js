@@ -389,22 +389,22 @@ function render(dt){
                     //console.log(Ngid, Sgid, Egid, Wgid);
                 if(Ngid != 3){
                     ctx.drawImage(
-                        img.flipSpace, 8*rndInt(0,15), 0, 8, 8, drawX, drawY-8, world.tileSize, world.tileSize
+                        img.flipSpace, 8*rndInt(0,15), 8, 8, 8, drawX, drawY, world.tileSize, world.tileSize
                         )
                 }
                 if(Sgid != 3){
                     ctx.drawImage(
-                        img.flipSpace, 8*rndInt(0,15), 8, 8, 8, drawX, drawY+8, world.tileSize, world.tileSize
+                        img.flipSpace, 8*rndInt(0,15), 0, 8, 8, drawX, drawY, world.tileSize, world.tileSize
                         )
                 }
                 if(Wgid != 3){
                     ctx.drawImage(
-                        img.flipSpace, 8*rndInt(0,15), 24, 8, 8, drawX-8, drawY, world.tileSize, world.tileSize
+                        img.flipSpace, 8*rndInt(0,15), 16, 8, 8, drawX, drawY, world.tileSize, world.tileSize
                         )
                 }
                 if(Egid != 3){
                     ctx.drawImage(
-                        img.flipSpace, 8*rndInt(0,15), 16, 8, 8, drawX+8, drawY, world.tileSize, world.tileSize
+                        img.flipSpace, 8*rndInt(0,15), 24, 8, 8, drawX, drawY, world.tileSize, world.tileSize
                         )
                 }
 
