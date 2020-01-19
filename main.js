@@ -71,7 +71,7 @@ const images = [
     'smallFont',
     'labCaveWall',
     'EnemyTinyflyer',
-    'RoboTank',
+    'EnemyRoboTank',
     'flipSpace'
 ]
 
