@@ -527,7 +527,7 @@ function handleInput(dt){
     if(Key.isDown(Key.c)){
         player.input.secondaryFire = true;
     }
-    if(Key.isDown(Key.z) || Key.isDown(Key.p)){
+    if(Key.isDown(Key.z) || Key.isDown(Key.p) || Key.isDown(Key.SPACE)){
         player.input.jump = true;
     }
 
