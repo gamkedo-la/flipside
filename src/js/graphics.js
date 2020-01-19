@@ -62,7 +62,7 @@ export function makeMosaic(flipped=false){ //totally stealing from deepnight her
             ctx.fillStyle = flipped?"#A0A0A0":"#505050";
             ctx.fillRect(w*scale, h*scale, 3, 3); //4
 
-            ctx.fillStyle =  flipped?"#A08050":"#808080";
+            ctx.fillStyle =  "#808080"; //flipped?"#A08050":"#808080"; // tint?
             ctx.fillRect(w*scale+1, h*scale, 2, 2); //3
 
             ctx.fillStyle = flipped?"#505050":"#A0A0A0";
