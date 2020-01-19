@@ -13,7 +13,7 @@ import ElectricityRenderer from './src/js/electricity.js';
 import RetroBuffer from './src/js/retroBuffer.js';
 import Records from './src/js/records.js';
 import FlipBat from './src/js/flipbat.js';
-import RoboTank from './src/js/flipbat.js';
+import RoboTank from './src/js/robotank.js';
 import GameSaver from './src/js/GameSaver.js';
 
 const invertedMosaicEffectEnabled = false;
@@ -71,6 +71,7 @@ const images = [
     'smallFont',
     'labCaveWall',
     'EnemyTinyflyer',
+    'RoboTank',
     'flipSpace'
 ]
 
@@ -656,8 +657,8 @@ function processWorldObjects(objects){
                 results.push(new FlipBat({pos:{x: obj.x, y: obj.y}, height: height }).init());
             break;
             case "robotank":
-                console.log("Spawning a robotank!");
-                results.push(new RoboTank({pos:{x: obj.x, y: obj.y}}).init());
+                //console.log("Spawning a robotank at " +obj.x.toFixed(1)+','+obj.y.toFixed(1));
+                results.push(new RoboTank({pos:{x: obj.x, y: obj.y}}).init()); // fixme init() is never called?
             break;
         }
     })
