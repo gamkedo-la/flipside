@@ -101,13 +101,13 @@ document.body.appendChild(G.rb.c);
 //for that tasty deepnight pixel mosaic overlay effect
 const mosaic = makeMosaic();
 mosaic.canvas.id = "mosaic";
-document.body.appendChild(mosaic.canvas);
+//document.body.appendChild(mosaic.canvas);
 G.mosaic = mosaic;
 
 // inverted mosaic bevel during flipspace
 const mosaicFlipped = makeMosaic(true);
 mosaicFlipped.canvas.id = "mosaicFlipped";
-document.body.appendChild(mosaicFlipped.canvas);
+//document.body.appendChild(mosaicFlipped.canvas);
 G.mosaicFlipped = mosaicFlipped;
 
 //destructure out of global game object for coding convenience----------------
