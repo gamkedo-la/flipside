@@ -13,6 +13,7 @@ import ElectricityRenderer from './src/js/electricity.js';
 import RetroBuffer from './src/js/retroBuffer.js';
 import Records from './src/js/records.js';
 import FlipBat from './src/js/flipbat.js';
+import RoboTank from './src/js/flipbat.js';
 import GameSaver from './src/js/GameSaver.js';
 
 const invertedMosaicEffectEnabled = false;
@@ -649,11 +650,15 @@ function processWorldObjects(objects){
     let results = [];
     objects.forEach(function(obj){
         switch(obj.type){
-            case "flipbat": {
+            case "flipbat":
                 //console.log(obj);
                 let height = obj.properties.find(function(e){return e.name == 'pathHeightInTiles'}).value;
                 results.push(new FlipBat({pos:{x: obj.x, y: obj.y}, height: height }).init());
-            }
+            break;
+            case "robotank":
+                console.log("Spawning a robotank!");
+                results.push(new RoboTank({pos:{x: obj.x, y: obj.y}}).init());
+            break;
         }
     })
     return results;
