@@ -103,7 +103,7 @@ document.body.appendChild(G.rb.c);
 //for that tasty deepnight pixel mosaic overlay effect
 const mosaic = makeMosaic();
 mosaic.canvas.id = "mosaic";
-//document.body.appendChild(mosaic.canvas);
+document.body.appendChild(mosaic.canvas);
 G.mosaic = mosaic;
 
 // inverted mosaic bevel during flipspace
