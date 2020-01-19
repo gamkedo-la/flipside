@@ -88,8 +88,8 @@ const Player = {
         right: false, 
         down: false,
         jump: false,
-        carveWorld: false,
-        addWorld: false,
+        primaryFire: false,
+        secondaryFire: false,
 
     },
 
@@ -227,7 +227,7 @@ Player.inTheFlipPhysics = function inTheFlipPhysics(dt, world, worldFlipped){
     this.accel = this.physicsFlip.accel;
     this.jumpVel = this.physicsFlip.jumpVel;
 
-    if(this.input.carveWorld){
+    if(this.input.primaryFire){
         
         let gunLeft = this.pos.x - 6;
         let gunRight = this.pos.x + 6;
@@ -255,6 +255,14 @@ Player.inTheFlipPhysics = function inTheFlipPhysics(dt, world, worldFlipped){
         if(this.input.right){
             this.vx += this.accel;
         }
+    }
+    if(this.input.secondaryFire && !this.gunCooldown){ 
+        worldFlipped.tileFillCircle({
+            tx: Math.floor(this.pos.x/8),
+            ty: Math.floor(this.pos.y/8),
+            radius: 8,
+            value: 3
+        })
     }
 
     if(this.vy < 0){
@@ -359,7 +367,7 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
     this.accel = this.physicsNormal.accel;
     this.jumpVel = this.physicsNormal.jumpVel;
 
-    if(this.input.carveWorld && !this.gunCooldown){ //fire gun
+    if(this.input.primaryFire && !this.gunCooldown){ //fire gun
         this.gunCooldown = this.gunCooldownMax;
         this.muzzleFlash();
 
@@ -374,6 +382,27 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
             height: 3,
             life: 50,
             type: 'bullet'
+        }))
+    } else if (this.gunCooldown) {
+        this.gunCooldown--;
+    }
+
+    //---add flipspace fun
+    if(this.input.secondaryFire && !this.gunCooldown){ //fire gun
+        this.gunCooldown = this.gunCooldownMax;
+        this.muzzleFlash();
+
+        let gunYoffset = -4;
+        G.particles.push(new Particle({
+            x: this.facingLeft ? this.pos.x+this.gunOffset.leftX : this.pos.x+this.gunOffset.rightX,
+            y: this.pos.y + gunYoffset,
+            vx: this.facingLeft ? -5: 5,
+            vy: 0,
+            color: 26,
+            width: 3, 
+            height: 3,
+            life: 50,
+            type: 'bulletFlipped'
         }))
     } else if (this.gunCooldown) {
         this.gunCooldown--;

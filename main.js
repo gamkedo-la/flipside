@@ -269,7 +269,34 @@ function update(dt){
                     ty: Math.floor(particle.pos.y/8),
                     radius: 2,
                     value: G.player.flipRemovedCooldown+rndInt(-20,20)
-                })
+                })  
+                
+               // G.worldFlipped.data[flippedIndex]+=G.player.flipRemovedCooldown+rndInt(-20, 20);
+                let splodeCount = 6;
+            while(--splodeCount){
+                //console.log('making splode')
+                G.particles.push(new Particle({
+                    x: particle.pos.x,
+                    y: particle.pos.y,
+                    vx: -particle.vx/5 + rndFloat(-0.5,0.5),
+                    vy: rndFloat(-3, 3),
+                    life: 10,
+                    color: 26,
+                    width: 1,
+                    height: 1,
+                    type: 'bg'
+                }))
+            }
+            particle.life = 0;
+            }
+            if(particle.type == 'bulletFlipped'){
+                //magic number is amount of ticks before it returns to being flipspace
+                G.worldFlipped.tileFillCircle({
+                    tx: Math.floor(particle.pos.x/8),
+                    ty: Math.floor(particle.pos.y/8),
+                    radius: 2,
+                    value: 3
+                })  
                 
                // G.worldFlipped.data[flippedIndex]+=G.player.flipRemovedCooldown+rndInt(-20, 20);
                 let splodeCount = 6;
@@ -495,7 +522,10 @@ function handleInput(dt){
         player.input.up = true;
     }
     if(Key.isDown(Key.x) || Key.isDown(Key.o)){
-        player.input.carveWorld = true;
+        player.input.primaryFire = true;
+    }
+    if(Key.isDown(Key.c)){
+        player.input.secondaryFire = true;
     }
     if(Key.isDown(Key.z) || Key.isDown(Key.p)){
         player.input.jump = true;
@@ -515,7 +545,10 @@ function handleInput(dt){
         player.input.down = false;
     }
     if(Key.justReleased(Key.x) || Key.justReleased(Key.o)){
-        player.input.carveWorld = false;
+        player.input.primaryFire = false;
+    }
+    if(Key.justReleased(Key.c)){
+        player.input.secondaryFire = false;
     }
 
 
