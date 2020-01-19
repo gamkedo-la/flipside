@@ -479,7 +479,7 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
     if(!this.fallthru && this.prevY < this.pos.y){
         let gid = G.world.pixelToTileID({x:this.pos.x, y: (this.pos.y+this.height/2)-3 })
         if(gid > this.cloudTilesStartIndex && gid < this.cloudTilesEndIndex){
-        console.log('cloud');
+        //console.log('cloud');
         this.falling = false;
         this.jumping = false;
         this.vy = 0;
