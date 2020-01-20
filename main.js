@@ -13,6 +13,7 @@ import ElectricityRenderer from './src/js/electricity.js';
 import RetroBuffer from './src/js/retroBuffer.js';
 import Records from './src/js/records.js';
 import FlipBat from './src/js/flipbat.js';
+import FlipPig from './src/js/flippig.js';
 import RoboTank from './src/js/robotank.js';
 import GameSaver from './src/js/GameSaver.js';
 
@@ -71,6 +72,7 @@ const images = [
     'smallFont',
     'labCaveWall',
     'EnemyTinyflyer',
+    'EnemyTinycrawler',
     'EnemyRoboTank',
     'flipSpace'
 ]
@@ -655,6 +657,10 @@ function processWorldObjects(objects){
                 //console.log(obj);
                 let height = obj.properties.find(function(e){return e.name == 'pathHeightInTiles'}).value;
                 results.push(new FlipBat({pos:{x: obj.x, y: obj.y}, height: height }).init());
+            break;
+            case "flippig":
+//                let height = obj.properties.find(function(e){return e.name == 'pathHeightInTiles'}).value;
+                results.push(new FlipPig({pos:{x: obj.x, y: obj.y}}).init());
             break;
             case "robotank":
                 //console.log("Spawning a robotank at " +obj.x.toFixed(1)+','+obj.y.toFixed(1));
