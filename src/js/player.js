@@ -407,17 +407,22 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
     } else if (this.gunCooldown) {
         this.gunCooldown--;
     }
-
-    if(Math.abs(this.vx) < 0.9){
-        this.facingLeft ? this.play('idleLeft') : this.play('idleRight');
-    }
-    if(this.vy < 0.5){
+    this.inAir = false;
+    this.falling = false;
+    
+    if(this.vy < 0.5 && this.vy != 0){
         //this.falling = true;
+        console.log("in Air!")
+        this.inAir = true;
         this.facingLeft ? this.play('airLeft') : this.play('airRight');
     }
     if(this.vy > 0.5){
         this.falling = true;
         this.facingLeft ? this.play('fallingLeft') : this.play('fallingRight');
+        console.log("Falling!!")
+    }
+    if(Math.abs(this.vx) < 0.9 && !this.inAir && !this.falling){
+        this.facingLeft ? this.play('idleLeft') : this.play('idleRight');
     }
     if(this.vx < -1 && this.input.left && !this.falling){
         this.facingLeft = true;
@@ -632,13 +637,13 @@ Player.init = function init(){
                 frames: 22
             },
             fallingRight: {
-                frames: 15
+                frames: 30
             },
             airLeft: {
                 frames: 22
             },
             airRight: {
-                frames: 15
+                frames: 29
             }
 
         }
