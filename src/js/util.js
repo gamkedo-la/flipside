@@ -100,6 +100,11 @@ export function rectCollision(rect1, rect2) {
       */
   }
 
+export function oscillate(input, min, max)
+{
+    let range = max - min ;
+    return min + Math.abs(((input + range) % (range * 2)) - range);
+}
     
 
    

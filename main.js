@@ -193,8 +193,8 @@ function start(sounds){
 var     dt      = 0,
         last    = performance.now(),
         elapsed = 0,
-        frameCount = 0,
         step    = 1/60; //60 frames per second.
+        G.frameCount = 0;
 
 var     now,
         paused = false;
@@ -225,7 +225,7 @@ function frame(){
 function update(dt){
     //update all the things
     elapsed += dt;
-    frameCount ++;
+    G.frameCount ++;
 
     handleCamera(dt);
 
@@ -339,7 +339,7 @@ function update(dt){
             G.worldFlipped.data[i] = tile-1;
         }
     }
-    G.world.entities.forEach(function(e){e.update()});
+    G.world.entities.forEach(function(e){e.update(dt)});
 
     player.update(dt, G.world, G.worldFlipped, G.worldForeground);
     //Key needs updated so justReleased queue gets emptied at end of frame
@@ -399,29 +399,6 @@ function render(dt){
 
             if(worldFlipped.data[flatIndex] == 3){
                 drawTile({x:drawX, y:drawY}, world, gid, `tiles${rndInt(26,28)}`);
-            }else{
-                drawTile({x:drawX, y:drawY}, world, gid);
-            }
-
-            //---additional rendering for pockets of Flip in the map
-            if(worldFlipped.data[flatIndex] == 3){
-                //modify the draw position at random intervals between 20 and 60 ticks for glitchy effect
-                // let modX = rndInt(-1,1);
-                // let modY = rndInt(-1,1);
-                // if(frameCount % rndInt(20,60) > 0){
-                //     modX = 0; modY = 0;
-                // }
-                // drawTile({x: drawX + modX, y: drawY + modY}, world, gid);
-
-                // //draw a dark color blended over top to create the darkened effect
-                // ctx.save();
-                // ctx.globalCompositeOperation = 'overlay';
-                // ctx.drawImage(
-                //     img.aap64, 0, rndInt(26,28), 1, 1, drawX, drawY, world.tileSize, world.tileSize
-                //     )
-                // ctx.restore();
-
-                //perimeter effects
 
                 let Ngid = worldFlipped.data[flatIndex - world.widthInTiles],
                     Sgid = worldFlipped.data[flatIndex + world.widthInTiles],
@@ -448,9 +425,10 @@ function render(dt){
                         img.flipSpace, 8*rndInt(0,15), 24, 8, 8, drawX, drawY, world.tileSize, world.tileSize
                         )
                 }
-
-                
-            }//end flip render
+            }else{
+                //normalspace tile draw
+                drawTile({x:drawX, y:drawY}, world, gid);
+            }
 
         }//end column render
 

@@ -1,4 +1,4 @@
-import { lerp, rectCollision } from "./util.js";
+import { lerp, rectCollision, oscillate } from "./util.js";
 import { rndFloat, rndInt, range } from "./math.js";
 import SpriteSheet from './spritesheet.js';
 import Particle from './particle.js'
@@ -6,18 +6,21 @@ import Player from "./player.js";
 
 
 //FlipBat will patrol from pos1 to pos2 and back again, thats it! No chase behavior. 
+const MAX_SPEED = 500;
 const FlipBat = function FlipBat({pos, height}={}){
     this.start = pos;
     this.currentAnimation = 'idle';
     this.target = {x: pos.x, y: pos.y + height * 8}
-    this.pos = {x: 0, y: 0};
-    this.speed = 0.001;
+    this.pos = {x: pos.x, y: pos.y};
+    this.speed = 30;
     this.width = 12;
     this.height = 12;
     this.rect = {};
     this.health = 4;
     this.healthMax = 4;
     this.drawOffset = {x: -7, y: -13}
+    this.lerpAmount = 0;
+    this.movingDown = true
 
     this.healthBar = {
         xOffset: -8,
@@ -30,11 +33,15 @@ const FlipBat = function FlipBat({pos, height}={}){
 
 FlipBat.prototype.update = function update(dt){
 
-    this.currentAnimation.update(dt);
+    this.currentAnimation.update();
 
-    this.pos.x = lerp(this.start.x, this.target.x, Math.sin(performance.now()*this.speed));
-    this.pos.y = lerp(this.start.y, this.target.y, Math.sin(performance.now()*this.speed));
+    this.pos.y = this.pos.y + (this.movingDown ? this.speed*dt : -this.speed*dt);
 
+    if(this.pos.y >= this.target.y || this.pos.y <= this.start.y){
+        this.movingDown = !this.movingDown;
+    }
+
+    
     this.rect = {
         top: this.pos.y - this.width/2,
         left: this.pos.x - this.height/2,
