@@ -8,6 +8,7 @@ import Player from "./player.js";
 
 const ROBOTANK_W = 32;
 const ROBOTANK_H = 26;
+const ROBO_SPEED = 0.25;
 
 // patrols the area near pos, back and forth horizontally
 const RoboTank = function RoboTank({pos}={}){
@@ -46,25 +47,48 @@ function canWalkLeft(pos,world) {
     // a bit in front of me and a bit down
     let tileNum = world.getTileAtPosition(tilePos);
     console.log('canWalkLeft '+pos.x.toFixed(1)+','+pos.y.toFixed(1)+' sees tile ' + tileNum);
-    
+
+  
     return (tileNum>0);
 
+}
+
+RoboTank.prototype.canWalkForward = function() {
+    let xofs = this.goingLeft ? 3 : -3; // tiles to look ahead
+    let yofs = 0;
+    let tilePos = {};
+    tilePos.tx = Math.round(this.pos.x / G.world.tileSize) + xofs; // in front of
+    tilePos.ty = Math.round(this.pos.y / G.world.tileSize) + yofs; // and below
+    // a bit in front of me and a bit down
+    let tileNum = G.world.getTileAtPosition(tilePos);
+    console.log('canWalkForward '+this.pos.x.toFixed(1)+','+this.pos.y.toFixed(1)+' says tile '+tilePos.tx+','+tilePos.ty+' is #' + tileNum);
+    this.debugX = tilePos.tx * G.world.tileSize - G.view.x;
+    this.debugY = tilePos.ty * G.world.tileSize - G.view.y;
+    this.debugC = tileNum > 0 ? 10 : 20;
+    //G.rb.fillRect(x,y,w,h,c)
+    return (tileNum>0);
 }
 
 RoboTank.prototype.update = function update(dt){
 
     this.currentAnimation.update(dt);
 
-    /*
-    if (canWalkLeft(this.pos,G.world)) {
-        //console.log('can walk left');
-    } else {
-        //console.log('cannot walk left');
+    // pos isn't updated after world spawn
+    if (this.pos.x==0 && this.pos.y==0) {
+        this.pos = this.start;
     }
-    */
+
+    // simple ai - follow with fall avoidance
+    this.goingLeft = G.player.pos.x > this.pos.x; // try to move toward the player
+
+    // ultra simplistic movement for now
+    if (this.canWalkForward()) {
+        this.pos.x += this.goingLeft ? ROBO_SPEED : -ROBO_SPEED;
+    }
     
-    this.pos.x = Math.round(lerp(this.start.x, this.target.x, Math.sin(performance.now()*this.speed)));
-    this.pos.y = Math.round(lerp(this.start.y, this.target.y, Math.sin(performance.now()*this.speed)));
+    // oscillate like a sin wave if player not nearby
+    //this.pos.x = Math.round(lerp(this.start.x, this.target.x, Math.sin(performance.now()*this.speed)));
+    //this.pos.y = Math.round(lerp(this.start.y, this.target.y, Math.sin(performance.now()*this.speed)));
 
     this.rect = {
         top: this.pos.y - this.width/2,
@@ -99,7 +123,10 @@ RoboTank.prototype.update = function update(dt){
     }
 
     // look at player
-    G.player.pos.x < this.pos.x ? this.play('idleRight') : this.play('idleLeft');
+    // G.player.pos.x < this.pos.x ? this.play('idleRight') : this.play('idleLeft');
+
+    // look in direction of movement
+    this.goingLeft ? this.play('idleLeft') : this.play('idleRight');
 
     if(!this.health){ this.kill(); }
 
@@ -121,7 +148,9 @@ RoboTank.prototype.render = function render(dt){
         y: Math.floor(this.pos.y-this.height/2-G.view.y + this.drawOffset.y),
         width: ROBOTANK_W,
         height: ROBOTANK_H
-    })
+    });
+
+    if (this.debugC) G.rb.fillRect(this.debugX,this.debugY,G.world.tileSize,G.world.tileSize,this.debugC);
 }
 
 RoboTank.prototype.play = function play(animationName){
