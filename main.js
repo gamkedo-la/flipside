@@ -1,6 +1,6 @@
 import Stats from './src/js/stats.module.js';
 import { Key, inView } from './src/js/util.js';
-import { clearScreen, makeMosaic, drawTile, spriteFont } from './src/js/graphics.js'
+import { clearScreen, makeMosaic, drawTile, spriteFont, preRenderBlendedSprite } from './src/js/graphics.js'
 import World from './src/js/world.js';
 import player from './src/js/player.js';
 import { rndInt, clamp, rndFloat, range } from './src/js/math.js';
@@ -176,8 +176,12 @@ function start(sounds){
         //remaining options are in spriteFont defaults
     })
 
-    //get player position from first map
-    //player.pos = loader.tileMaps[currentMap].layers[3].objects.find(function(e){return e.name == "PlayerStart"})
+    //create prerendered tile effects
+    //numbers appended to the image name, as in tiles26, represents a color index from the AAP64 palette.
+    //here' we're pre-rendering the tilesheet with a color overlay,
+    // to be used to render the flipspace effect, as an optimization.
+    G.img.tiles26 = preRenderBlendedSprite({img:G.img.tiles, blendmode:'overlay', color:"rgba(232, 106, 115, 1)"});
+    G.img.tiles27 = preRenderBlendedSprite({img:G.img.tiles, blendmode:'overlay', color:"rgba(188, 74, 155, 1)"});
 
     //Fire it up!
     requestAnimationFrame(frame);
@@ -393,27 +397,29 @@ function render(dt){
                 gid-=1;
                 gidFlipped -=1;
 
-            if(!gidFlipped){
+            if(worldFlipped.data[flatIndex] == 3){
+                drawTile({x:drawX, y:drawY}, world, gid, `tiles${rndInt(26,28)}`);
+            }else{
                 drawTile({x:drawX, y:drawY}, world, gid);
             }
 
             //---additional rendering for pockets of Flip in the map
             if(worldFlipped.data[flatIndex] == 3){
                 //modify the draw position at random intervals between 20 and 60 ticks for glitchy effect
-                let modX = rndInt(-1,1);
-                let modY = rndInt(-1,1);
-                if(frameCount % rndInt(20,60) > 0){
-                    modX = 0; modY = 0;
-                }
-                drawTile({x: drawX + modX, y: drawY + modY}, world, gid);
+                // let modX = rndInt(-1,1);
+                // let modY = rndInt(-1,1);
+                // if(frameCount % rndInt(20,60) > 0){
+                //     modX = 0; modY = 0;
+                // }
+                // drawTile({x: drawX + modX, y: drawY + modY}, world, gid);
 
-                //draw a dark color blended over top to create the darkened effect
-                ctx.save();
-                ctx.globalCompositeOperation = 'overlay';
-                ctx.drawImage(
-                    img.aap64, 0, rndInt(26,28), 1, 1, drawX, drawY, world.tileSize, world.tileSize
-                    )
-                ctx.restore();
+                // //draw a dark color blended over top to create the darkened effect
+                // ctx.save();
+                // ctx.globalCompositeOperation = 'overlay';
+                // ctx.drawImage(
+                //     img.aap64, 0, rndInt(26,28), 1, 1, drawX, drawY, world.tileSize, world.tileSize
+                //     )
+                // ctx.restore();
 
                 //perimeter effects
 

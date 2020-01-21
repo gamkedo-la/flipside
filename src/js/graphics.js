@@ -75,10 +75,10 @@ export function makeMosaic(flipped=false){ //totally stealing from deepnight her
 
 }
 
-export function drawTile(pos, world, gid){
+export function drawTile(pos, world, gid, tileset='tiles'){
         let {img, ctx, tileSheetSize} = G
         ctx.drawImage(
-            img.tiles,
+            img[tileset],
             gid%tileSheetSize.height * world.tileSize,
             Math.floor(gid/tileSheetSize.width) * world.tileSize,
             world.tileSize,
@@ -136,6 +136,33 @@ spriteFont.prototype.drawText = function drawText({textString, pos={x: 0, y: 0},
         )
         //console.log(keyIndex);
     })
+}
+
+export function preRenderBlendedSprite({img, blendmode, color}={}){
+    var stencilCanvas = document.createElement('canvas');
+    stencilCanvas.width = img.width;
+    stencilCanvas.height = img.height;
+    var stencilCTX = stencilCanvas.getContext('2d');
+    stencilCTX.drawImage(img, 0,0);
+    //set composite mode to stencil, we want to fillbucket with color but preserve alpha
+    stencilCTX.globalCompositeOperation = 'source-atop';
+    //fillRect over entire stencilcanvas
+    stencilCTX.fillStyle = color;
+    stencilCTX.fillRect(0,0,stencilCanvas.width, stencilCanvas.height);
+
+    var blendedCanvas = document.createElement('canvas')
+    blendedCanvas.width = img.width;
+    blendedCanvas.height = img.height;
+    var blendedCTX = blendedCanvas.getContext('2d');
+    blendedCTX.drawImage(img, 0,0);
+    //set composite mode to blendmode
+    blendedCTX.globalCompositeOperation = blendmode;
+    //draw fillbucket'd canvas overtop
+    blendedCTX.drawImage(stencilCanvas, 0, 0);
+
+    
+    //return blendedCanvas
+    return blendedCanvas; 
 }
 
 export const colors = [
