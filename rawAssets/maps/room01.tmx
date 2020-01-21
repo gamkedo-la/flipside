@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="2019.12.11" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="1000" height="120" tilewidth="8" tileheight="8" infinite="0" backgroundcolor="#28283c" nextlayerid="9" nextobjectid="121">
+<map version="1.2" tiledversion="2019.12.11" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="1000" height="120" tilewidth="8" tileheight="8" infinite="0" backgroundcolor="#28283c" nextlayerid="9" nextobjectid="132">
  <editorsettings>
   <export target="../../src/maps/room01.json" format="json"/>
  </editorsettings>
@@ -429,172 +429,47 @@
   </object>
  </objectgroup>
  <objectgroup id="6" name="game objects">
-  <object id="86" name="RoboTank" type="robotank" gid="10" x="3296.04" y="521" width="8" height="8">
+  <object id="87" name="Flipbat" type="flipbat" gid="10" x="3231.45" y="671.273" width="8" height="8">
    <properties>
     <property name="pathHeightInTiles" type="int" value="2"/>
    </properties>
   </object>
-  <object id="87" name="Flipbat" type="flipbat" gid="10" x="3232" y="672" width="8" height="8">
+  <object id="124" name="Flippig" type="flippig" gid="11" x="3280.25" y="751.75" width="8" height="8">
    <properties>
-    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="20"/>
    </properties>
   </object>
-  <object id="88" name="Flipbat" type="flipbat" gid="10" x="3063.48" y="96.513" width="8" height="8">
+  <object id="125" name="Flippig" type="flippig" gid="11" x="3176.18" y="695.636" width="8" height="8">
    <properties>
-    <property name="pathHeightInTiles" type="int" value="10"/>
+    <property name="pathWidthInTiles" type="int" value="10"/>
    </properties>
   </object>
-  <object id="89" name="Flipbat" type="flipbat" gid="10" x="3176" y="632" width="8" height="8">
+  <object id="126" name="Flippig" type="flippig" gid="11" x="3216" y="623.636" width="8" height="8">
    <properties>
-    <property name="pathHeightInTiles" type="int" value="19"/>
+    <property name="pathWidthInTiles" type="int" value="1"/>
    </properties>
   </object>
-  <object id="90" name="Flipbat" type="flipbat" gid="10" x="3288" y="664" width="8" height="8">
+  <object id="127" name="Flippig" type="flippig" gid="11" x="3288" y="624" width="8" height="8">
    <properties>
-    <property name="pathHeightInTiles" type="int" value="1"/>
+    <property name="pathWidthInTiles" type="int" value="3"/>
    </properties>
   </object>
-  <object id="92" name="NaniteCluster" type="nanitecluster" gid="8" x="3679.07" y="586.526" width="8" height="8">
+  <object id="128" name="Flippig" type="flippig" gid="11" x="3256.18" y="647.818" width="8" height="8">
    <properties>
-    <property name="amount" type="int" value="40"/>
+    <property name="pathWidthInTiles" type="int" value="3"/>
    </properties>
   </object>
-  <object id="93" name="Flipbat" type="flipbat" gid="10" x="3271.58" y="626.445" width="8" height="8">
-   <properties>
-    <property name="pathHeightInTiles" type="int" value="10"/>
-   </properties>
-  </object>
-  <object id="94" name="Flipbat" type="flipbat" gid="10" x="3150.04" y="726.906" width="8" height="8">
-   <properties>
-    <property name="pathHeightInTiles" type="int" value="1"/>
-   </properties>
-  </object>
-  <object id="95" name="Flipbat" type="flipbat" gid="10" x="2889.38" y="708.877" width="8" height="8">
-   <properties>
-    <property name="pathHeightInTiles" type="int" value="3"/>
-   </properties>
-  </object>
-  <object id="96" name="Flipbat" type="flipbat" gid="10" x="2982.51" y="710.295" width="8" height="8">
-   <properties>
-    <property name="pathHeightInTiles" type="int" value="1"/>
-   </properties>
-  </object>
-  <object id="97" name="Flippig" type="flippig" gid="10" x="3326.67" y="430.667" width="8" height="8">
+  <object id="129" name="Flipbat" type="flipbat" gid="10" x="3281.64" y="682.364" width="8" height="8">
    <properties>
     <property name="pathHeightInTiles" type="int" value="2"/>
    </properties>
   </object>
-  <object id="98" name="Flippig" type="flippig" gid="10" x="3564.82" y="695.957" width="8" height="8">
+  <object id="130" name="Flipbat" type="flipbat" gid="10" x="3308.73" y="670.364" width="8" height="8">
    <properties>
     <property name="pathHeightInTiles" type="int" value="2"/>
    </properties>
   </object>
-  <object id="99" name="Flippig" type="flippig" gid="10" x="3544.72" y="695.679" width="8" height="8">
-   <properties>
-    <property name="pathHeightInTiles" type="int" value="2"/>
-   </properties>
-  </object>
-  <object id="100" name="Flippig" type="flippig" gid="10" x="3608.07" y="695.88" width="8" height="8">
-   <properties>
-    <property name="pathHeightInTiles" type="int" value="2"/>
-   </properties>
-  </object>
-  <object id="101" name="Flippig" type="flippig" gid="10" x="3631.32" y="695.679" width="8" height="8">
-   <properties>
-    <property name="pathHeightInTiles" type="int" value="2"/>
-   </properties>
-  </object>
-  <object id="102" name="Flippig" type="flippig" gid="10" x="3619.7" y="695.479" width="8" height="8">
-   <properties>
-    <property name="pathHeightInTiles" type="int" value="2"/>
-   </properties>
-  </object>
-  <object id="103" name="Flippig" type="flippig" gid="10" x="3648.37" y="695.679" width="8" height="8">
-   <properties>
-    <property name="pathHeightInTiles" type="int" value="2"/>
-   </properties>
-  </object>
-  <object id="104" name="Flippig" type="flippig" gid="10" x="3587.02" y="751.213" width="8" height="8">
-   <properties>
-    <property name="pathHeightInTiles" type="int" value="2"/>
-   </properties>
-  </object>
-  <object id="105" name="Flippig" type="flippig" gid="10" x="3558.75" y="751.613" width="8" height="8">
-   <properties>
-    <property name="pathHeightInTiles" type="int" value="2"/>
-   </properties>
-  </object>
-  <object id="106" name="Flippig" type="flippig" gid="10" x="3520.66" y="751.012" width="8" height="8">
-   <properties>
-    <property name="pathHeightInTiles" type="int" value="2"/>
-   </properties>
-  </object>
-  <object id="107" name="Flipbat" type="flipbat" gid="10" x="2946.88" y="709.512" width="8" height="8">
-   <properties>
-    <property name="pathHeightInTiles" type="int" value="3"/>
-   </properties>
-  </object>
-  <object id="108" name="Flipbat" type="flipbat" gid="10" x="2917.61" y="708.911" width="8" height="8">
-   <properties>
-    <property name="pathHeightInTiles" type="int" value="3"/>
-   </properties>
-  </object>
-  <object id="109" name="Flippig" type="flippig" gid="10" x="4135.56" y="749.625" width="8" height="8">
-   <properties>
-    <property name="pathHeightInTiles" type="int" value="2"/>
-   </properties>
-  </object>
-  <object id="110" name="Flippig" type="flippig" gid="10" x="4158.81" y="749.424" width="8" height="8">
-   <properties>
-    <property name="pathHeightInTiles" type="int" value="2"/>
-   </properties>
-  </object>
-  <object id="111" name="Flippig" type="flippig" gid="10" x="4147.19" y="749.224" width="8" height="8">
-   <properties>
-    <property name="pathHeightInTiles" type="int" value="2"/>
-   </properties>
-  </object>
-  <object id="112" name="Flippig" type="flippig" gid="10" x="4175.86" y="749.424" width="8" height="8">
-   <properties>
-    <property name="pathHeightInTiles" type="int" value="2"/>
-   </properties>
-  </object>
-  <object id="113" name="Flippig" type="flippig" gid="10" x="4170.8" y="697.002" width="8" height="8">
-   <properties>
-    <property name="pathHeightInTiles" type="int" value="2"/>
-   </properties>
-  </object>
-  <object id="114" name="Flippig" type="flippig" gid="10" x="4227.8" y="695.632" width="8" height="8">
-   <properties>
-    <property name="pathHeightInTiles" type="int" value="2"/>
-   </properties>
-  </object>
-  <object id="115" name="Flippig" type="flippig" gid="10" x="4196.8" y="695.933" width="8" height="8">
-   <properties>
-    <property name="pathHeightInTiles" type="int" value="2"/>
-   </properties>
-  </object>
-  <object id="116" name="Flippig" type="flippig" gid="10" x="4258.05" y="695.632" width="8" height="8">
-   <properties>
-    <property name="pathHeightInTiles" type="int" value="2"/>
-   </properties>
-  </object>
-  <object id="117" name="Flippig" type="flippig" gid="10" x="4216.58" y="747.788" width="8" height="8">
-   <properties>
-    <property name="pathHeightInTiles" type="int" value="4"/>
-   </properties>
-  </object>
-  <object id="118" name="Flippig" type="flippig" gid="10" x="4280.09" y="747.754" width="8" height="8">
-   <properties>
-    <property name="pathHeightInTiles" type="int" value="5"/>
-   </properties>
-  </object>
-  <object id="119" name="Flippig" type="flippig" gid="10" x="4251.6" y="747.721" width="8" height="8">
-   <properties>
-    <property name="pathHeightInTiles" type="int" value="2"/>
-   </properties>
-  </object>
-  <object id="120" name="Flippig" type="flippig" gid="10" x="4315.01" y="747.921" width="8" height="8">
+  <object id="131" name="Flipbat" type="flipbat" gid="10" x="3242.73" y="721.273" width="8" height="8">
    <properties>
     <property name="pathHeightInTiles" type="int" value="2"/>
    </properties>

@@ -643,8 +643,8 @@ function processWorldObjects(objects){
                 results.push(new FlipBat({pos:{x: obj.x, y: obj.y}, height: height }).init());
             break;
             case "flippig":
-//                let height = obj.properties.find(function(e){return e.name == 'pathHeightInTiles'}).value;
-                results.push(new FlipPig({pos:{x: obj.x, y: obj.y}}).init());
+                let pathWidth = obj.properties.find(function(e){return e.name == 'pathWidthInTiles'}).value;
+                results.push(new FlipPig({pos:{x: obj.x, y: obj.y}, pathWidth: pathWidth}).init());
             break;
             case "robotank":
                 //console.log("Spawning a robotank at " +obj.x.toFixed(1)+','+obj.y.toFixed(1));

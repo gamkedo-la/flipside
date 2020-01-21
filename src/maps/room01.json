@@ -1,5 +1,5 @@
 { "backgroundcolor":"#28283c",
- "compressionlevel":-1,
+ "compressionlevel":0,
  "editorsettings":
     {
      "export":
@@ -61,8 +61,8 @@
                  "type":"spawnPoint",
                  "visible":true,
                  "width":0,
-                 "x":3030.90699509249,
-                 "y":728.941602365673
+                 "x":3030.91,
+                 "y":728.942
                 }, 
                 {
                  "height":0,
@@ -191,614 +191,164 @@
                 {
                  "gid":10,
                  "height":8,
-                 "id":86,
-                 "name":"RoboTank",
-                 "properties":[
-                        {
-                         "name":"pathHeightInTiles",
-                         "type":"int",
-                         "value":2
-                        }],
-                 "rotation":0,
-                 "type":"robotank",
-                 "visible":true,
-                 "width":8,
-                 "x":3296.04,
-                 "y":521
-                }, 
-                {
-                 "gid":10,
-                 "height":8,
                  "id":87,
                  "name":"Flipbat",
                  "properties":[
                         {
                          "name":"pathHeightInTiles",
                          "type":"int",
-                         "value":3
+                         "value":2
                         }],
                  "rotation":0,
                  "type":"flipbat",
                  "visible":true,
                  "width":8,
-                 "x":3232,
-                 "y":672
+                 "x":3231.45454545455,
+                 "y":671.272727272727
                 }, 
                 {
-                 "gid":10,
+                 "gid":11,
                  "height":8,
-                 "id":88,
-                 "name":"Flipbat",
+                 "id":124,
+                 "name":"Flippig",
                  "properties":[
                         {
-                         "name":"pathHeightInTiles",
+                         "name":"pathWidthInTiles",
+                         "type":"int",
+                         "value":20
+                        }],
+                 "rotation":0,
+                 "type":"flippig",
+                 "visible":true,
+                 "width":8,
+                 "x":3280.25,
+                 "y":751.75
+                }, 
+                {
+                 "gid":11,
+                 "height":8,
+                 "id":125,
+                 "name":"Flippig",
+                 "properties":[
+                        {
+                         "name":"pathWidthInTiles",
                          "type":"int",
                          "value":10
                         }],
                  "rotation":0,
-                 "type":"flipbat",
+                 "type":"flippig",
                  "visible":true,
                  "width":8,
-                 "x":3063.48,
-                 "y":96.513
+                 "x":3176.18181818182,
+                 "y":695.636363636364
                 }, 
                 {
-                 "gid":10,
+                 "gid":11,
                  "height":8,
-                 "id":89,
-                 "name":"Flipbat",
+                 "id":126,
+                 "name":"Flippig",
                  "properties":[
                         {
-                         "name":"pathHeightInTiles",
-                         "type":"int",
-                         "value":19
-                        }],
-                 "rotation":0,
-                 "type":"flipbat",
-                 "visible":true,
-                 "width":8,
-                 "x":3176,
-                 "y":632
-                }, 
-                {
-                 "gid":10,
-                 "height":8,
-                 "id":90,
-                 "name":"Flipbat",
-                 "properties":[
-                        {
-                         "name":"pathHeightInTiles",
+                         "name":"pathWidthInTiles",
                          "type":"int",
                          "value":1
                         }],
                  "rotation":0,
-                 "type":"flipbat",
+                 "type":"flippig",
+                 "visible":true,
+                 "width":8,
+                 "x":3216,
+                 "y":623.636363636364
+                }, 
+                {
+                 "gid":11,
+                 "height":8,
+                 "id":127,
+                 "name":"Flippig",
+                 "properties":[
+                        {
+                         "name":"pathWidthInTiles",
+                         "type":"int",
+                         "value":3
+                        }],
+                 "rotation":0,
+                 "type":"flippig",
                  "visible":true,
                  "width":8,
                  "x":3288,
-                 "y":664
+                 "y":624
                 }, 
                 {
-                 "gid":8,
+                 "gid":11,
                  "height":8,
-                 "id":92,
-                 "name":"NaniteCluster",
+                 "id":128,
+                 "name":"Flippig",
                  "properties":[
                         {
-                         "name":"amount",
-                         "type":"int",
-                         "value":40
-                        }],
-                 "rotation":0,
-                 "type":"nanitecluster",
-                 "visible":true,
-                 "width":8,
-                 "x":3679.07,
-                 "y":586.526
-                }, 
-                {
-                 "gid":10,
-                 "height":8,
-                 "id":93,
-                 "name":"Flipbat",
-                 "properties":[
-                        {
-                         "name":"pathHeightInTiles",
-                         "type":"int",
-                         "value":10
-                        }],
-                 "rotation":0,
-                 "type":"flipbat",
-                 "visible":true,
-                 "width":8,
-                 "x":3271.58,
-                 "y":626.445
-                }, 
-                {
-                 "gid":10,
-                 "height":8,
-                 "id":94,
-                 "name":"Flipbat",
-                 "properties":[
-                        {
-                         "name":"pathHeightInTiles",
-                         "type":"int",
-                         "value":1
-                        }],
-                 "rotation":0,
-                 "type":"flipbat",
-                 "visible":true,
-                 "width":8,
-                 "x":3150.04,
-                 "y":726.906
-                }, 
-                {
-                 "gid":10,
-                 "height":8,
-                 "id":95,
-                 "name":"Flipbat",
-                 "properties":[
-                        {
-                         "name":"pathHeightInTiles",
+                         "name":"pathWidthInTiles",
                          "type":"int",
                          "value":3
                         }],
                  "rotation":0,
-                 "type":"flipbat",
+                 "type":"flippig",
                  "visible":true,
                  "width":8,
-                 "x":2889.37585404972,
-                 "y":708.877478748998
+                 "x":3256.18181818182,
+                 "y":647.818181818182
                 }, 
                 {
                  "gid":10,
                  "height":8,
-                 "id":96,
+                 "id":129,
                  "name":"Flipbat",
                  "properties":[
                         {
                          "name":"pathHeightInTiles",
                          "type":"int",
-                         "value":1
+                         "value":2
                         }],
                  "rotation":0,
                  "type":"flipbat",
                  "visible":true,
                  "width":8,
-                 "x":2982.50696872494,
-                 "y":710.294629510826
+                 "x":3281.63636363636,
+                 "y":682.363636363636
                 }, 
                 {
                  "gid":10,
                  "height":8,
-                 "id":97,
-                 "name":"Flippig",
-                 "properties":[
-                        {
-                         "name":"pathHeightInTiles",
-                         "type":"int",
-                         "value":2
-                        }],
-                 "rotation":0,
-                 "type":"flippig",
-                 "visible":true,
-                 "width":8,
-                 "x":3326.67,
-                 "y":430.667
-                }, 
-                {
-                 "gid":10,
-                 "height":8,
-                 "id":98,
-                 "name":"Flippig",
-                 "properties":[
-                        {
-                         "name":"pathHeightInTiles",
-                         "type":"int",
-                         "value":2
-                        }],
-                 "rotation":0,
-                 "type":"flippig",
-                 "visible":true,
-                 "width":8,
-                 "x":3564.81649648997,
-                 "y":695.956901912183
-                }, 
-                {
-                 "gid":10,
-                 "height":8,
-                 "id":99,
-                 "name":"Flippig",
-                 "properties":[
-                        {
-                         "name":"pathHeightInTiles",
-                         "type":"int",
-                         "value":2
-                        }],
-                 "rotation":0,
-                 "type":"flippig",
-                 "visible":true,
-                 "width":8,
-                 "x":3544.71692060946,
-                 "y":695.679230152366
-                }, 
-                {
-                 "gid":10,
-                 "height":8,
-                 "id":100,
-                 "name":"Flippig",
-                 "properties":[
-                        {
-                         "name":"pathHeightInTiles",
-                         "type":"int",
-                         "value":2
-                        }],
-                 "rotation":0,
-                 "type":"flippig",
-                 "visible":true,
-                 "width":8,
-                 "x":3608.06896551724,
-                 "y":695.879711307137
-                }, 
-                {
-                 "gid":10,
-                 "height":8,
-                 "id":101,
-                 "name":"Flippig",
-                 "properties":[
-                        {
-                         "name":"pathHeightInTiles",
-                         "type":"int",
-                         "value":2
-                        }],
-                 "rotation":0,
-                 "type":"flippig",
-                 "visible":true,
-                 "width":8,
-                 "x":3631.32477947073,
-                 "y":695.679230152366
-                }, 
-                {
-                 "gid":10,
-                 "height":8,
-                 "id":102,
-                 "name":"Flippig",
-                 "properties":[
-                        {
-                         "name":"pathHeightInTiles",
-                         "type":"int",
-                         "value":2
-                        }],
-                 "rotation":0,
-                 "type":"flippig",
-                 "visible":true,
-                 "width":8,
-                 "x":3619.69687249399,
-                 "y":695.478748997594
-                }, 
-                {
-                 "gid":10,
-                 "height":8,
-                 "id":103,
-                 "name":"Flippig",
-                 "properties":[
-                        {
-                         "name":"pathHeightInTiles",
-                         "type":"int",
-                         "value":2
-                        }],
-                 "rotation":0,
-                 "type":"flippig",
-                 "visible":true,
-                 "width":8,
-                 "x":3648.3656776263,
-                 "y":695.679230152366
-                }, 
-                {
-                 "gid":10,
-                 "height":8,
-                 "id":104,
-                 "name":"Flippig",
-                 "properties":[
-                        {
-                         "name":"pathHeightInTiles",
-                         "type":"int",
-                         "value":2
-                        }],
-                 "rotation":0,
-                 "type":"flippig",
-                 "visible":true,
-                 "width":8,
-                 "x":3587.01844426624,
-                 "y":751.212510024058
-                }, 
-                {
-                 "gid":10,
-                 "height":8,
-                 "id":105,
-                 "name":"Flippig",
-                 "properties":[
-                        {
-                         "name":"pathHeightInTiles",
-                         "type":"int",
-                         "value":2
-                        }],
-                 "rotation":0,
-                 "type":"flippig",
-                 "visible":true,
-                 "width":8,
-                 "x":3558.75060144346,
-                 "y":751.613472333601
-                }, 
-                {
-                 "gid":10,
-                 "height":8,
-                 "id":106,
-                 "name":"Flippig",
-                 "properties":[
-                        {
-                         "name":"pathHeightInTiles",
-                         "type":"int",
-                         "value":2
-                        }],
-                 "rotation":0,
-                 "type":"flippig",
-                 "visible":true,
-                 "width":8,
-                 "x":3520.65918203689,
-                 "y":751.012028869286
-                }, 
-                {
-                 "gid":10,
-                 "height":8,
-                 "id":107,
+                 "id":130,
                  "name":"Flipbat",
                  "properties":[
                         {
                          "name":"pathHeightInTiles",
                          "type":"int",
-                         "value":3
+                         "value":2
                         }],
                  "rotation":0,
                  "type":"flipbat",
                  "visible":true,
                  "width":8,
-                 "x":2946.88211708099,
-                 "y":709.512429831596
+                 "x":3308.72727272727,
+                 "y":670.363636363636
                 }, 
                 {
                  "gid":10,
                  "height":8,
-                 "id":108,
+                 "id":131,
                  "name":"Flipbat",
                  "properties":[
                         {
                          "name":"pathHeightInTiles",
                          "type":"int",
-                         "value":3
+                         "value":2
                         }],
                  "rotation":0,
                  "type":"flipbat",
                  "visible":true,
                  "width":8,
-                 "x":2917.61186848436,
-                 "y":708.910986367281
-                }, 
-                {
-                 "gid":10,
-                 "height":8,
-                 "id":109,
-                 "name":"Flippig",
-                 "properties":[
-                        {
-                         "name":"pathHeightInTiles",
-                         "type":"int",
-                         "value":2
-                        }],
-                 "rotation":0,
-                 "type":"flippig",
-                 "visible":true,
-                 "width":8,
-                 "x":4135.55598062145,
-                 "y":749.625157534247
-                }, 
-                {
-                 "gid":10,
-                 "height":8,
-                 "id":110,
-                 "name":"Flippig",
-                 "properties":[
-                        {
-                         "name":"pathHeightInTiles",
-                         "type":"int",
-                         "value":2
-                        }],
-                 "rotation":0,
-                 "type":"flippig",
-                 "visible":true,
-                 "width":8,
-                 "x":4158.80598062145,
-                 "y":749.424157534247
-                }, 
-                {
-                 "gid":10,
-                 "height":8,
-                 "id":111,
-                 "name":"Flippig",
-                 "properties":[
-                        {
-                         "name":"pathHeightInTiles",
-                         "type":"int",
-                         "value":2
-                        }],
-                 "rotation":0,
-                 "type":"flippig",
-                 "visible":true,
-                 "width":8,
-                 "x":4147.18598062145,
-                 "y":749.224157534247
-                }, 
-                {
-                 "gid":10,
-                 "height":8,
-                 "id":112,
-                 "name":"Flippig",
-                 "properties":[
-                        {
-                         "name":"pathHeightInTiles",
-                         "type":"int",
-                         "value":2
-                        }],
-                 "rotation":0,
-                 "type":"flippig",
-                 "visible":true,
-                 "width":8,
-                 "x":4175.85598062145,
-                 "y":749.424157534247
-                }, 
-                {
-                 "gid":10,
-                 "height":8,
-                 "id":113,
-                 "name":"Flippig",
-                 "properties":[
-                        {
-                         "name":"pathHeightInTiles",
-                         "type":"int",
-                         "value":2
-                        }],
-                 "rotation":0,
-                 "type":"flippig",
-                 "visible":true,
-                 "width":8,
-                 "x":4170.80489475443,
-                 "y":697.002371032409
-                }, 
-                {
-                 "gid":10,
-                 "height":8,
-                 "id":114,
-                 "name":"Flippig",
-                 "properties":[
-                        {
-                         "name":"pathHeightInTiles",
-                         "type":"int",
-                         "value":2
-                        }],
-                 "rotation":0,
-                 "type":"flippig",
-                 "visible":true,
-                 "width":8,
-                 "x":4227.80030070164,
-                 "y":695.631975776813
-                }, 
-                {
-                 "gid":10,
-                 "height":8,
-                 "id":115,
-                 "name":"Flippig",
-                 "properties":[
-                        {
-                         "name":"pathHeightInTiles",
-                         "type":"int",
-                         "value":2
-                        }],
-                 "rotation":0,
-                 "type":"flippig",
-                 "visible":true,
-                 "width":8,
-                 "x":4196.80175075175,
-                 "y":695.933145172068
-                }, 
-                {
-                 "gid":10,
-                 "height":8,
-                 "id":116,
-                 "name":"Flippig",
-                 "properties":[
-                        {
-                         "name":"pathHeightInTiles",
-                         "type":"int",
-                         "value":2
-                        }],
-                 "rotation":0,
-                 "type":"flippig",
-                 "visible":true,
-                 "width":8,
-                 "x":4258.04776144337,
-                 "y":695.631975776813
-                }, 
-                {
-                 "gid":10,
-                 "height":8,
-                 "id":117,
-                 "name":"Flippig",
-                 "properties":[
-                        {
-                         "name":"pathHeightInTiles",
-                         "type":"int",
-                         "value":4
-                        }],
-                 "rotation":0,
-                 "type":"flippig",
-                 "visible":true,
-                 "width":8,
-                 "x":4216.57836618777,
-                 "y":747.78753641831
-                }, 
-                {
-                 "gid":10,
-                 "height":8,
-                 "id":118,
-                 "name":"Flippig",
-                 "properties":[
-                        {
-                         "name":"pathHeightInTiles",
-                         "type":"int",
-                         "value":5
-                        }],
-                 "rotation":0,
-                 "type":"flippig",
-                 "visible":true,
-                 "width":8,
-                 "x":4280.0889742733,
-                 "y":747.753592883395
-                }, 
-                {
-                 "gid":10,
-                 "height":8,
-                 "id":119,
-                 "name":"Flippig",
-                 "properties":[
-                        {
-                         "name":"pathHeightInTiles",
-                         "type":"int",
-                         "value":2
-                        }],
-                 "rotation":0,
-                 "type":"flippig",
-                 "visible":true,
-                 "width":8,
-                 "x":4251.5962712997,
-                 "y":747.72064934848
-                }, 
-                {
-                 "gid":10,
-                 "height":8,
-                 "id":120,
-                 "name":"Flippig",
-                 "properties":[
-                        {
-                         "name":"pathHeightInTiles",
-                         "type":"int",
-                         "value":2
-                        }],
-                 "rotation":0,
-                 "type":"flippig",
-                 "visible":true,
-                 "width":8,
-                 "x":4315.01401603742,
-                 "y":747.92064934848
+                 "x":3242.72727272727,
+                 "y":721.272727272727
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -807,7 +357,7 @@
          "y":0
         }],
  "nextlayerid":9,
- "nextobjectid":121,
+ "nextobjectid":132,
  "orientation":"orthogonal",
  "properties":[
         {
