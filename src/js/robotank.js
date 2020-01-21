@@ -63,8 +63,8 @@ RoboTank.prototype.update = function update(dt){
     }
     */
     
-    this.pos.x = lerp(this.start.x, this.target.x, Math.sin(performance.now()*this.speed));
-    this.pos.y = lerp(this.start.y, this.target.y, Math.sin(performance.now()*this.speed));
+    this.pos.x = Math.round(lerp(this.start.x, this.target.x, Math.sin(performance.now()*this.speed)));
+    this.pos.y = Math.round(lerp(this.start.y, this.target.y, Math.sin(performance.now()*this.speed)));
 
     this.rect = {
         top: this.pos.y - this.width/2,
