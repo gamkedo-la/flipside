@@ -10,17 +10,17 @@ const PIG_W = 30;
 const PIG_H = 30;
 
 // patrols the area near pos, back and forth horizontally
-const PIG = function PIG({pos}={}){
+const PIG = function PIG({pos, pathWidth=3}={}){
     this.start = pos;
-    this.currentAnimation = 'idle';
-    this.target = {x: pos.x + 24, y: pos.y }
-    this.pos = {x: 0, y: 0};
-    this.speed = 0.001;
+    this.target = {x: pos.x + pathWidth*8, y: pos.y }
+    this.pos = {x: pos.x, y: pos.y};
+    this.speed = 20;
     this.width = PIG_W;
     this.height = PIG_H;
     this.rect = {};
     this.health = 16;
     this.healthMax = 16;
+    this.movingRight = true;
     
     // FIXME these seems strange
     // xy is foot pos and in tiles that's the bottom of the obj rect
@@ -39,9 +39,13 @@ PIG.prototype.update = function update(dt){
 
     this.currentAnimation.update(dt);
 
-    const oldPosX = this.pos.x;
-    this.pos.x = lerp(this.start.x, this.target.x, Math.sin(performance.now()*this.speed));
-    this.pos.y = lerp(this.start.y, this.target.y, Math.sin(performance.now()*this.speed));
+    //this.po
+
+    this.pos.x = this.pos.x + (this.movingRight ? this.speed*dt : -this.speed*dt);
+
+    if(this.pos.x >= this.target.x || this.pos.x <= this.start.x){
+        this.movingRight = !this.movingRight;
+    }
 
     this.rect = {
         top: this.pos.y - this.width/2,
@@ -75,7 +79,7 @@ PIG.prototype.update = function update(dt){
         G.MSG.dispatch('hurt', {amount: 5});
     }
 
-    oldPosX <= this.pos.x ? this.play('idleRight') : this.play('idleLeft');
+    this.movingRight ? this.play('idleRight') : this.play('idleLeft');
 
     if(!this.health){ this.kill(); }
 

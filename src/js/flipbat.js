@@ -9,7 +9,6 @@ import Player from "./player.js";
 const MAX_SPEED = 500;
 const FlipBat = function FlipBat({pos, height}={}){
     this.start = pos;
-    this.currentAnimation = 'idle';
     this.target = {x: pos.x, y: pos.y + height * 8}
     this.pos = {x: pos.x, y: pos.y};
     this.speed = 30;
@@ -100,6 +99,7 @@ FlipBat.prototype.render = function render(dt){
 
 FlipBat.prototype.play = function play(animationName){
     this.currentAnimation = this.spritesheet.animations[animationName];
+    this.currentAnimation.currentFrame = rndInt(0,4);
     if (!this.currentAnimation.loop){
         this.currentAnimation.reset();
     }
@@ -124,6 +124,8 @@ FlipBat.prototype.init = function init(){
     })
     //must have an anim set at start, or .currentAnimation is null
     this.play('idleLeft');
+    
+    
     
     return this;
 }
