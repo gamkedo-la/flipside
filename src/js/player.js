@@ -424,11 +424,11 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
     if(Math.abs(this.vx) < 0.9 && !this.inAir && !this.falling){
         this.facingLeft ? this.play('idleLeft') : this.play('idleRight');
     }
-    if(this.vx < -1 && this.input.left && !this.falling){
+    if(this.vx < -1 && this.input.left && !this.inAir && !this.falling){
         this.facingLeft = true;
         this.play('walkLeft');
     }
-    if(this.vx > 1 && this.input.right && !this.falling){
+    if(this.vx > 1 && this.input.right && !this.inAir && !this.falling){
         this.facingLeft = false;
         this.play('walkRight');
     }
