@@ -7,7 +7,7 @@ import Particle from './particle.js'
 import Player from "./player.js";
 
 const ROBOTANK_W = 32;
-const ROBOTANK_H = 34;
+const ROBOTANK_H = 26;
 
 // patrols the area near pos, back and forth horizontally
 const RoboTank = function RoboTank({pos}={}){
@@ -23,8 +23,9 @@ const RoboTank = function RoboTank({pos}={}){
     this.healthMax = 16;
     
     // FIXME these seems strange
-    // xy is foot pos and in tiles that's the bottom of the obj rect
-    this.drawOffset = {x: ROBOTANK_W/2-8, y: -ROBOTANK_H/2+8}; 
+    // offset so that in Tiled editor the center of the patrol zone
+    // is the bottom center of the editor obj rect
+    this.drawOffset = {x: ROBOTANK_W/2-8, y: -ROBOTANK_H/2+1}; 
 
     this.healthBar = {
         xOffset: 0,
@@ -35,10 +36,33 @@ const RoboTank = function RoboTank({pos}={}){
     return this;
 }
 
+// can we walk forward?
+// works for any enemy/player/bullet with a .pos
+function canWalkLeft(pos,world) {
+    
+    let tilePos = {};
+    tilePos.tx = Math.round(pos.x / world.tileSize) - 1; // in front of
+    tilePos.ty = Math.round(pos.y / world.tileSize) + 1; // and below
+    // a bit in front of me and a bit down
+    let tileNum = world.getTileAtPosition(tilePos);
+    console.log('canWalkLeft '+pos.x.toFixed(1)+','+pos.y.toFixed(1)+' sees tile ' + tileNum);
+    
+    return (tileNum>0);
+
+}
+
 RoboTank.prototype.update = function update(dt){
 
     this.currentAnimation.update(dt);
 
+    /*
+    if (canWalkLeft(this.pos,G.world)) {
+        //console.log('can walk left');
+    } else {
+        //console.log('cannot walk left');
+    }
+    */
+    
     this.pos.x = lerp(this.start.x, this.target.x, Math.sin(performance.now()*this.speed));
     this.pos.y = lerp(this.start.y, this.target.y, Math.sin(performance.now()*this.speed));
 
@@ -74,7 +98,8 @@ RoboTank.prototype.update = function update(dt){
         G.MSG.dispatch('hurt', {amount: 5});
     }
 
-    G.player.pos.x > this.pos.x ? this.play('idleRight') : this.play('idleLeft');
+    // look at player
+    G.player.pos.x < this.pos.x ? this.play('idleRight') : this.play('idleLeft');
 
     if(!this.health){ this.kill(); }
 
@@ -115,12 +140,12 @@ RoboTank.prototype.init = function init(){
         frameHeight: ROBOTANK_H,
         animations: {
             idleRight: {
-                frames: '0..0',
-                frameRate: 16
+                frames: '0..1',
+                frameRate: 4
             },
             idleLeft: {
-                frames: '0..0',
-                frameRate: 16
+                frames: '2..3',
+                frameRate: 4
             }
         }
     })

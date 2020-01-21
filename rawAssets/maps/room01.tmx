@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="2019.12.11" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="1000" height="120" tilewidth="8" tileheight="8" infinite="0" backgroundcolor="#28283c" nextlayerid="9" nextobjectid="132">
- <editorsettings>
-  <export target="../../src/maps/room01.json" format="json"/>
- </editorsettings>
+<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="1000" height="120" tilewidth="8" tileheight="8" infinite="0" backgroundcolor="#28283c" nextlayerid="9" nextobjectid="133">
  <properties>
   <property name="Parallax0" value="labCaveWall"/>
  </properties>
@@ -472,6 +469,11 @@
   <object id="131" name="Flipbat" type="flipbat" gid="10" x="3242.73" y="721.273" width="8" height="8">
    <properties>
     <property name="pathHeightInTiles" type="int" value="2"/>
+   </properties>
+  </object>
+  <object id="132" name="RoboTank" type="robotank" gid="11" x="2840" y="751" width="8" height="8">
+   <properties>
+    <property name="pathWidthInTiles" type="int" value="10"/>
    </properties>
   </object>
  </objectgroup>

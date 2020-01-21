@@ -1,13 +1,4 @@
 { "backgroundcolor":"#28283c",
- "compressionlevel":0,
- "editorsettings":
-    {
-     "export":
-        {
-         "format":"json",
-         "target":"room01.json"
-        }
-    },
  "height":120,
  "infinite":false,
  "layers":[
@@ -203,8 +194,8 @@
                  "type":"flipbat",
                  "visible":true,
                  "width":8,
-                 "x":3231.45454545455,
-                 "y":671.272727272727
+                 "x":3231.45,
+                 "y":671.273
                 }, 
                 {
                  "gid":11,
@@ -239,8 +230,8 @@
                  "type":"flippig",
                  "visible":true,
                  "width":8,
-                 "x":3176.18181818182,
-                 "y":695.636363636364
+                 "x":3176.18,
+                 "y":695.636
                 }, 
                 {
                  "gid":11,
@@ -258,7 +249,7 @@
                  "visible":true,
                  "width":8,
                  "x":3216,
-                 "y":623.636363636364
+                 "y":623.636
                 }, 
                 {
                  "gid":11,
@@ -293,8 +284,8 @@
                  "type":"flippig",
                  "visible":true,
                  "width":8,
-                 "x":3256.18181818182,
-                 "y":647.818181818182
+                 "x":3256.18,
+                 "y":647.818
                 }, 
                 {
                  "gid":10,
@@ -311,8 +302,8 @@
                  "type":"flipbat",
                  "visible":true,
                  "width":8,
-                 "x":3281.63636363636,
-                 "y":682.363636363636
+                 "x":3281.64,
+                 "y":682.364
                 }, 
                 {
                  "gid":10,
@@ -329,8 +320,8 @@
                  "type":"flipbat",
                  "visible":true,
                  "width":8,
-                 "x":3308.72727272727,
-                 "y":670.363636363636
+                 "x":3308.73,
+                 "y":670.364
                 }, 
                 {
                  "gid":10,
@@ -347,8 +338,26 @@
                  "type":"flipbat",
                  "visible":true,
                  "width":8,
-                 "x":3242.72727272727,
-                 "y":721.272727272727
+                 "x":3242.73,
+                 "y":721.273
+                }, 
+                {
+                 "gid":11,
+                 "height":8,
+                 "id":132,
+                 "name":"RoboTank",
+                 "properties":[
+                        {
+                         "name":"pathWidthInTiles",
+                         "type":"int",
+                         "value":10
+                        }],
+                 "rotation":0,
+                 "type":"robotank",
+                 "visible":true,
+                 "width":8,
+                 "x":2840,
+                 "y":751
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -357,7 +366,7 @@
          "y":0
         }],
  "nextlayerid":9,
- "nextobjectid":132,
+ "nextobjectid":133,
  "orientation":"orthogonal",
  "properties":[
         {
@@ -366,7 +375,7 @@
          "value":"labCaveWall"
         }],
  "renderorder":"right-down",
- "tiledversion":"2019.12.11",
+ "tiledversion":"1.2.4",
  "tileheight":8,
  "tilesets":[
         {
