@@ -134,18 +134,15 @@ FlipBat.prototype.init = function init(){
 
 FlipBat.prototype.kill = function kill(){
     //splodey splode
-    let splodeCount = 10;
+    let splodeCount = 32;
             while(--splodeCount){
                 G.particles.push(new Particle({
-                    x: this.pos.x,
-                    y: this.pos.y,
-                    vx: rndFloat(-1.5, 1.5), 
-                    vy: rndFloat(-0.5, 1.5),
+                    x: this.pos.x+rndInt(-5,5),
+                    y: this.pos.y-10+rndInt(-5,5),
+                    vx: rndFloat(-.3, .3), 
+                    vy: rndFloat(-1, -1.5),
                     life: 15,
-                    color: 27,
-                    width: 2,
-                    height: 2,
-                    type: 'bg'
+                    type: 'enemyDeath'
                 }))
             }
     

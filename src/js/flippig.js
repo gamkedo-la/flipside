@@ -108,7 +108,7 @@ PIG.prototype.render = function render(dt){
         // height: PIG_H
     })
 
-    G.rb.rect(this.rect.left-G.view.x, this.rect.top-G.view.y, this.width, this.height, 11);
+    //G.rb.rect(this.rect.left-G.view.x, this.rect.top-G.view.y, this.width, this.height, 11);
 }
 
 PIG.prototype.play = function play(animationName){
@@ -148,15 +148,15 @@ PIG.prototype.kill = function kill(){
     let splodeCount = 32;
             while(--splodeCount){
                 G.particles.push(new Particle({
-                    x: this.pos.x,
-                    y: this.pos.y,
-                    vx: rndFloat(-1.5, 1.5), 
-                    vy: rndFloat(-0.5, 1.5),
-                    life: 15,
-                    color: 27,
+                    x: this.pos.x+rndInt(-15,15),
+                    y: this.pos.y-10+rndInt(-5,5),
+                    vx: rndFloat(-.3, .3), 
+                    vy: rndFloat(-1, -1.5),
+                    life: 25,
+                    color: 26,
                     width: 2,
                     height: 2,
-                    type: 'bg'
+                    type: 'enemyDeath'
                 }))
             }
     

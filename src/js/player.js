@@ -69,7 +69,7 @@ const Player = {
     hurtPush: 40,
 
     gunCooldown: 0,
-    gunCooldownMax: 5,
+    gunCooldownMax: 11,
 
     bulletVXdefault: 4,
     bulletVX: 4,
@@ -361,7 +361,7 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
 
     if(this.input.up){
         this.aimingUp = true;
-        if(Math.abs(this.vx) < 0.1){this.bulletVX = 0} 
+        if(!this.input.left && !this.input.right){this.bulletVX = 0} 
     } else {
         this.aimingUp = false;
         this.bulletVX = this.bulletVXdefault;
