@@ -86,7 +86,7 @@ RoboTank.prototype.flameThrower = function() {
             width: 2, 
             height: 2,
             life: 20,
-            type: 'particle'
+            type: 'fire'
         })) ;   
     }
 }  
