@@ -55,6 +55,7 @@ const Player = {
     fallthru: false,
     jumping: false,
     crouching: false,
+    aimingUp: false,
 
     inTheFlip: false,
     crossing: false,
@@ -69,6 +70,9 @@ const Player = {
 
     gunCooldown: 0,
     gunCooldownMax: 5,
+
+    bulletVXdefault: 4,
+    bulletVX: 4,
 
     flipBar: {
         xOffset: -12,
@@ -189,19 +193,6 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
         }
     })
 
-    //check onscreen objects-----------
-    // world.objects.filter(function(obj){return obj.onScreen }).forEach(function(obj, i, arr){
-    //     if(self.rectCollision({x:obj.x, y:obj.y, width: 8, height: 8}) ){
-    //         if(obj.type == 'pickup'){
-    //             MSG.dispatch('pickup', {
-    //                 name: obj.name,
-    //                 amount: obj.properties.find((e)=>{return e.name=='amount'}).value,
-    //                 x: obj.x, y: obj.y
-    //             })
-    //         }
-    //         world.objects.splice(i, 1);
-    //     }
-    // })
 }
 Player.render = function render(dt, world, worldFlipped, worldForeground){
 
@@ -368,6 +359,14 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
     this.accel = this.physicsNormal.accel;
     this.jumpVel = this.physicsNormal.jumpVel;
 
+    if(this.input.up){
+        this.aimingUp = true;
+        if(Math.abs(this.vx) < 0.1){this.bulletVX = 0} 
+    } else {
+        this.aimingUp = false;
+        this.bulletVX = this.bulletVXdefault;
+    }
+
     if(this.input.primaryFire && !this.gunCooldown){ //fire gun
         this.gunCooldown = this.gunCooldownMax;
         this.muzzleFlash();
@@ -376,8 +375,8 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         G.particles.push(new Particle({
             x: this.facingLeft ? this.pos.x+this.gunOffset.leftX : this.pos.x+this.gunOffset.rightX,
             y: this.pos.y + gunYoffset,
-            vx: this.facingLeft ? -5: 5,
-            vy: 0,
+            vx:this.facingLeft ? -this.bulletVX : this.bulletVX,
+            vy: this.aimingUp? -this.bulletVXdefault : 0,
             color: 22,
             width: 3, 
             height: 3,
