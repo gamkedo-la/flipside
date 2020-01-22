@@ -11,6 +11,7 @@ const ROBOTANK_H = 26;
 const ROBO_SPEED = 0.25;
 const ROBO_DEBUG = false; // set to true for verbose debug info
 const ROBO_SEEK_DIST = 16; // only seek player if farther away than this
+const ROBO_FIRE_DIST = 64; // shoot at the player if we get closer than this
 
 // patrols the area near pos, back and forth horizontally
 const RoboTank = function RoboTank({pos}={}){
@@ -25,6 +26,7 @@ const RoboTank = function RoboTank({pos}={}){
     this.healthMax = 16;
     this.pos = {x: pos.x, y: pos.y-11}; // put feet where bottom of Tiled icon appears
     this.drawOffset = {x: 4, y: -2}; // center the sprite when rendering
+    this.gunOffset = {leftX: -14, rightX: 20, y: -3}; // where bullets come from
     this.healthBar = {
         xOffset: 0,
         yOffset: -ROBOTANK_H,
@@ -71,6 +73,24 @@ RoboTank.prototype.canWalkForward = function() {
     return !blocked; 
 }
 
+RoboTank.prototype.flameThrower = function() {
+    //console.log("Flame Thrower!");
+    let max = rndInt(6,12);
+    for (let i=0; i<max; i++) {
+        G.particles.push(new Particle({
+            x: this.goingLeft ? this.pos.x+this.gunOffset.rightX : this.pos.x+this.gunOffset.leftX, // gunXOffset
+            y: this.pos.y + this.gunOffset.y, // gunYOffset
+            vx: this.goingLeft?rndFloat(0.5,2):rndFloat(-0.5,-2),
+            vy: rndFloat(-0.25,0.25),
+            color: rndInt(1,9), // black to red to yellow
+            width: 2, 
+            height: 2,
+            life: 20,
+            type: 'particle'
+        })) ;   
+    }
+}  
+
 RoboTank.prototype.update = function update(dt){
 
     this.currentAnimation.update(dt);
@@ -87,6 +107,13 @@ RoboTank.prototype.update = function update(dt){
     // ultra simplistic movement for now
     if (horizDist > ROBO_SEEK_DIST && this.canWalkForward()) {
         this.pos.x += this.goingLeft ? ROBO_SPEED : -ROBO_SPEED;
+    }
+
+    // maybe shoot the player
+    if (horizDist < ROBO_FIRE_DIST) {
+        //if (Math.random()<0.02) {
+            this.flameThrower();
+        //}
     }
     
     // oscillate like a sin wave if player not nearby
