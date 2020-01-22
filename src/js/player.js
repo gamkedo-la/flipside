@@ -54,6 +54,7 @@ const Player = {
     falling: false,
     fallthru: false,
     jumping: false,
+    crouching: false,
 
     inTheFlip: false,
     crossing: false,
@@ -313,7 +314,7 @@ Player.muzzleFlash = function() {
     // big poof
     G.particles.push(new Particle({
         x: rndFloat(-1,1)+(this.facingLeft ? this.pos.x+this.gunOffset.leftX : this.pos.x+this.gunOffset.rightX), // gunXOffset
-        y: rndFloat(-1,1)+(this.pos.y + this.gunOffset.y), // gunYOffset
+        y: rndFloat(-1,1)+(this.pos.y + this.crouching ? 1: -4 ), // gunYOffset
         vx: this.facingLeft?rndFloat(-1,0):rndFloat(0,1),
         vy: rndFloat(1,1),
         color: rndInt(7,10), // yellow
@@ -328,7 +329,7 @@ Player.muzzleFlash = function() {
     for (let i=0; i<max; i++) {
         G.particles.push(new Particle({
             x: this.facingLeft ? this.pos.x+this.gunOffset.leftX : this.pos.x+this.gunOffset.rightX, // gunXOffset
-            y: this.pos.y+this.gunOffset.y, // gunYOffset
+            y: this.pos.y+ this.crouching ? 1 : -4, // gunYOffset
             vx: this.facingLeft?rndFloat(-2,-4):rndFloat(2,4),
             vy: rndFloat(-2,2),
             color: rndInt(1,9), // black to red to yellow
@@ -371,7 +372,7 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         this.gunCooldown = this.gunCooldownMax;
         this.muzzleFlash();
 
-        let gunYoffset = -4;
+        let gunYoffset = this.crouching? 1 : -4;
         G.particles.push(new Particle({
             x: this.facingLeft ? this.pos.x+this.gunOffset.leftX : this.pos.x+this.gunOffset.rightX,
             y: this.pos.y + gunYoffset,
@@ -392,7 +393,7 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         this.gunCooldown = this.gunCooldownMax;
         this.muzzleFlash();
 
-        let gunYoffset = -4;
+        let gunYoffset = this.crouching? 1 : -4;
         G.particles.push(new Particle({
             x: this.facingLeft ? this.pos.x+this.gunOffset.leftX : this.pos.x+this.gunOffset.rightX,
             y: this.pos.y + gunYoffset,
@@ -432,6 +433,14 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         this.facingLeft = false;
         this.play('walkRight');
     }
+
+    if(this.crouching){
+        this.facingLeft ? this.play('crouchLeft') : this.play('crouchRight');
+    }
+
+    if(this.input.down && !this.inAir && !this.falling){
+        this.crouching = true;
+    }else{this.crouching = false}
 
     if(this.input.left ){
         this.vx -= this.accel;
@@ -618,7 +627,7 @@ Player.init = function init(){
         frameHeight: 45,
         animations: {
             idleLeft: {
-                frames: '23..28',
+                frames: '22..27',
                 frameRate: 16
             },
             idleRight: {
@@ -630,20 +639,26 @@ Player.init = function init(){
                 frameRate: 16
             },
             walkLeft: {
-                frames: '8..14',
+                frames: '8..15',
                 frameRate: 16
             },
             fallingLeft:{
-                frames: 22
+                frames: 31
             },
             fallingRight: {
                 frames: 30
             },
             airLeft: {
-                frames: 22
+                frames: 29
             },
             airRight: {
-                frames: 29
+                frames: 28
+            },
+            crouchLeft: {
+                frames: 33
+            },
+            crouchRight: {
+                frames: 32
             }
 
         }
@@ -774,7 +789,20 @@ Player.pickup = function(params){
 }
 
 Player.crossedOver = function() {
-    console.log("Player crossed over!");
+let particles = 10;
+while(--particles){
+    G.particles.push(new Particle({
+        x: this.pos.x,
+        y: this.pos.y,
+        vx: -this.vx/50+rndFloat(-2, 2),
+        vy: -this.vy/50+rndFloat(-2, 2),
+        color: 22,
+        width: 3, 
+        height: 3,
+        life: 40,
+        type: 'crossBubble'
+    }))
+}
 }
 
 //----------------------------------------------------------------------------------
