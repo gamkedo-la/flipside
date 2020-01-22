@@ -87,6 +87,19 @@ const Player = {
         y:-5
     },
 
+    gunOffsetDefault: {
+        leftX: -19,
+        rightX: 18,
+        y:-5
+    },
+
+    gunOffsetUp: {
+        leftX: 0,
+        rightX: 0,
+        y:-10
+    },
+
+
     input: {
         left: false,
         up: false,
@@ -375,8 +388,8 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         G.particles.push(new Particle({
             x: this.facingLeft ? this.pos.x+this.gunOffset.leftX : this.pos.x+this.gunOffset.rightX,
             y: this.pos.y + gunYoffset,
-            vx:this.facingLeft ? -this.bulletVX : this.bulletVX,
-            vy: this.aimingUp? -this.bulletVXdefault : 0,
+            vx:this.facingLeft ? -this.bulletVX + (this.vx/100) : this.bulletVX + (this.vx/100),
+            vy: this.aimingUp ? -this.bulletVXdefault : 0,
             color: 22,
             width: 3, 
             height: 3,
@@ -520,9 +533,6 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         this.pos.y = this.prevY;
     }
     
-        
-        
-
 }
 
 Player.tileCollisionCheck = function tileCollisionCheck(world, tileCheck){

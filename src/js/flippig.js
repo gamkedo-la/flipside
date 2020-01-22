@@ -10,10 +10,10 @@ import Player from "./player.js";
 //const PIG_H = 20;
 
 // patrols the area near pos, back and forth horizontally
-const PIG = function PIG({pos, pathWidth=3}={}){
+const PIG = function PIG({pos, pathWidth=3, source={}}={}){
     this.start = pos;
     this.target = {x: pos.x + pathWidth*8, y: pos.y }
-
+    this.obj = source;
     
     this.speed = 20;
     //width and height are hitbox, not the sprite
@@ -24,11 +24,12 @@ const PIG = function PIG({pos, pathWidth=3}={}){
     this.healthMax = 16;
     this.movingRight = true;
 
+    //Tiled xy is upper-left of tileObject and can't be changed in-editor
+    //modifying actual position here to compensate
     this.pos = {x: pos.x, y: pos.y-6};
     
-    // FIXME these seems strange
-    // xy is foot pos and in tiles that's the bottom of the obj rect
-    //Tiled xy is upper-left of tileObject and can't be changed AFAIK. :(
+    
+    
     this.drawOffset = {x:4, y:-12}; 
 
     this.healthBar = {

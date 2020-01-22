@@ -462,11 +462,11 @@ function render(dt){
         }//end column render
     }//end x loop
     G.particles.forEach(function(particle){
-        if(particle.type == 'bg'){
-            if(world.data[world.pixelToTileIndex(particle.pos)] < 128){
-                particle.draw();
-            }
-        }else particle.draw();
+        
+        if(world.data[world.pixelToTileIndex(particle.pos)] < G.player.collideIndex){
+            particle.draw();
+        }
+        
     })
 
     // TEMP TEST: work in progress electricity bolt line renderer
@@ -647,7 +647,7 @@ function processWorldObjects(objects){
             break;
             case "flippig":
                 let pathWidth = obj.properties.find(function(e){return e.name == 'pathWidthInTiles'}).value;
-                results.push(new FlipPig({pos:{x: obj.x, y: obj.y}, pathWidth: pathWidth}).init());
+                results.push(new FlipPig({pos:{x: obj.x, y: obj.y}, pathWidth: pathWidth, source: obj}).init());
             break;
             case "flipbird":
                 results.push(new FlipBird({pos:{x: obj.x, y: obj.y}}).init());
