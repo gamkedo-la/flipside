@@ -1,5 +1,5 @@
 import { inView } from './util.js'
-import { rndOneFrom, range } from './math.js';
+import { rndOneFrom, range, rndFloat, rndInt } from './math.js';
 const Particle = function Particle({x,y,vx,vy,color=22,width=1,height=1, life = 40, type='particle'}={}){
     this.pos = {x: x, y: y};
     this.oldPos = {x: 0, y: 0};
@@ -48,6 +48,7 @@ Particle.prototype.draw = function draw(){
             case 'fire':
                 let color = range(this.life, 0, 19, 0, 9);
                 G.rb.fillCircle(sx, sy, 2, color );
+                G.rb.pset(sx + rndInt(-2,-2), sy + rndInt(-3,3), color);
                 break;
 
             default:

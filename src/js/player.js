@@ -73,6 +73,7 @@ const Player = {
 
     bulletVXdefault: 4,
     bulletVX: 4,
+    bulletVYdefault: 2.5,
 
     flipBar: {
         xOffset: -12,
@@ -389,7 +390,7 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
             x: this.facingLeft ? this.pos.x+this.gunOffset.leftX : this.pos.x+this.gunOffset.rightX,
             y: this.pos.y + gunYoffset,
             vx:this.facingLeft ? -this.bulletVX + (this.vx/100) : this.bulletVX + (this.vx/100),
-            vy: this.aimingUp ? -this.bulletVXdefault : 0,
+            vy: this.aimingUp ? -this.bulletVYdefault : 0,
             color: 22,
             width: 3, 
             height: 3,
