@@ -314,7 +314,7 @@ Player.muzzleFlash = function() {
     // big poof
     G.particles.push(new Particle({
         x: rndFloat(-1,1)+(this.facingLeft ? this.pos.x+this.gunOffset.leftX : this.pos.x+this.gunOffset.rightX), // gunXOffset
-        y: rndFloat(-1,1)+(this.pos.y + this.gunOffset.y), // gunYOffset
+        y: rndFloat(-1,1)+(this.pos.y + this.crouching ? 1: -4 ), // gunYOffset
         vx: this.facingLeft?rndFloat(-1,0):rndFloat(0,1),
         vy: rndFloat(1,1),
         color: rndInt(7,10), // yellow
@@ -329,7 +329,7 @@ Player.muzzleFlash = function() {
     for (let i=0; i<max; i++) {
         G.particles.push(new Particle({
             x: this.facingLeft ? this.pos.x+this.gunOffset.leftX : this.pos.x+this.gunOffset.rightX, // gunXOffset
-            y: this.pos.y+this.gunOffset.y, // gunYOffset
+            y: this.pos.y+ this.crouching ? 1 : -4, // gunYOffset
             vx: this.facingLeft?rndFloat(-2,-4):rndFloat(2,4),
             vy: rndFloat(-2,2),
             color: rndInt(1,9), // black to red to yellow
