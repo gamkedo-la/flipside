@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.4" orientation="orthogonal" renderorder="right-down" width="1000" height="120" tilewidth="8" tileheight="8" infinite="0" backgroundcolor="#28283c" nextlayerid="9" nextobjectid="133">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="1000" height="120" tilewidth="8" tileheight="8" infinite="0" backgroundcolor="#28283c" nextlayerid="9" nextobjectid="134">
  <properties>
   <property name="Parallax0" value="labCaveWall"/>
  </properties>
@@ -476,5 +476,6 @@
     <property name="pathWidthInTiles" type="int" value="10"/>
    </properties>
   </object>
+  <object id="133" name="Flipbird" type="flipbird" gid="11" x="3235" y="484.333" width="8" height="8"/>
  </objectgroup>
 </map>

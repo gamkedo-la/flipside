@@ -1,4 +1,4 @@
-// PIG - a horizontally patrolling flip creature
+// BIRD - a diving flip creature
 
 import { lerp, rectCollision } from "./util.js";
 import { rndFloat, rndInt, range } from "./math.js";
@@ -6,46 +6,58 @@ import SpriteSheet from './spritesheet.js';
 import Particle from './particle.js'
 import Player from "./player.js";
 
-const PIG_W = 30;
-const PIG_H = 30;
+const BIRD_W = 30;
+const BIRD_H = 30;
 
 // patrols the area near pos, back and forth horizontally
-const PIG = function PIG({pos, pathWidth=3}={}){
+const BIRD = function BIRD({pos}={}){
     this.start = pos;
-    this.target = {x: pos.x + pathWidth*8, y: pos.y }
+    this.target = {x: Player.pos.x, y: Player.pos.y }
     this.pos = {x: pos.x, y: pos.y};
-    this.speed = 20;
-    this.width = PIG_W;
-    this.height = PIG_H;
+    this.vel = {x:0, y:0};
+    this.width = BIRD_W;
+    this.height = BIRD_H;
     this.rect = {};
     this.health = 16;
     this.healthMax = 16;
-    this.movingRight = true;
+    this.isDiving = false;
+    this.gravity = 10;
+    this.attackRange = 6; //in tiles
     
     // FIXME these seems strange
     // xy is foot pos and in tiles that's the bottom of the obj rect
-    this.drawOffset = {x: PIG_W/2-8, y: -PIG_H/2+2}; 
+    this.drawOffset = {x: BIRD_W/2-8, y: -BIRD_H/2+2}; 
 
     this.healthBar = {
         xOffset: 0,
-        yOffset: -PIG_H,
-        width: PIG_W, 
+        yOffset: -BIRD_H,
+        width: BIRD_W, 
         height: 2
     }
     return this;
 }
 
-PIG.prototype.update = function update(dt){
+BIRD.prototype.update = function update(dt){
 
     this.currentAnimation.update(dt);
 
-    //this.po
+    if(this.isDiving) {
+        if(Player.pos.x < this.pos.x) {
+            this.vel.x -= this.gravity/4;
+        } else if(Player.pos.x > this.pos.x) {
+            this.vel.x += this.gravity/4;
+        }
 
-    this.pos.x = this.pos.x + (this.movingRight ? this.speed*dt : -this.speed*dt);
-
-    if(this.pos.x >= this.target.x || this.pos.x <= this.start.x){
-        this.movingRight = !this.movingRight;
+        this.vel.y += this.gravity;
+    } else {
+        const h_distance = Math.abs(Player.pos.x - this.pos.x);
+        if(h_distance < this.attackRange * 8) {
+            this.isDiving = true;
+        }
     }
+
+    this.pos.x = this.pos.x + (this.vel.x * dt);
+    this.pos.y = this.pos.y + (this.vel.y * dt);
 
     this.rect = {
         top: this.pos.y - this.width/2,
@@ -79,15 +91,13 @@ PIG.prototype.update = function update(dt){
         G.MSG.dispatch('hurt', {amount: 5});
     }
 
-    this.movingRight ? this.play('idleRight') : this.play('idleLeft');
+    this.isDiving ? this.play('diving') : this.play('idle');
 
     if(!this.health){ this.kill(); }
-
-
 }
 
-PIG.prototype.render = function render(dt){
-    //console.log("PIG is rendering at "+this.pos.x.toFixed(1)+','+this.pos.y.toFixed(1))
+BIRD.prototype.render = function render(dt){
+    //console.log("BIRD is rendering at "+this.pos.x.toFixed(1)+','+this.pos.y.toFixed(1))
     if(this.health < this.healthMax){
         let fillWidth = range(this.health, 0, this.healthMax, 0, this.healthBar.width);
         G.rb.fillRect(this.pos.x + this.healthBar.xOffset - G.view.x,
@@ -99,44 +109,41 @@ PIG.prototype.render = function render(dt){
     this.currentAnimation.render({
         x: Math.floor(this.pos.x-this.width/2-G.view.x + this.drawOffset.x),
         y: Math.floor(this.pos.y-this.height/2-G.view.y + this.drawOffset.y),
-        width: PIG_W,
-        height: PIG_H
+        width: BIRD_W,
+        height: BIRD_H
     })
 }
 
-PIG.prototype.play = function play(animationName){
+BIRD.prototype.play = function play(animationName){
     this.currentAnimation = this.spritesheet.animations[animationName];
     if (!this.currentAnimation.loop){
         this.currentAnimation.reset();
     }
 }
 
-PIG.prototype.init = function init(){
-
-    //console.log("PIG init...");
+BIRD.prototype.init = function init(){
     this.spritesheet = new SpriteSheet({
-//        image: G.img.EnemyPIG,
-        image: G.img.EnemyTinycrawler,
-        frameWidth: 30,
-        frameHeight: 30,
+        image: G.img.EnemyTinydiver,
+        frameWidth: 18,
+        frameHeight: 27,
         animations: {
-            idleRight: {
-                frames: '8..15',
+            idle: {
+                frames: '0..1',
                 frameRate: 7
             },
-            idleLeft: {
-                frames: '0..7',
+            diving: {
+                frames: '2..3',
                 frameRate: 7
             }
         }
     })
     //must have an anim set at start, or .currentAnimation is null
-    this.play('idleLeft');
+    this.play('idle');
     
     return this;
 }
 
-PIG.prototype.kill = function kill(){
+BIRD.prototype.kill = function kill(){
     //splodey splode
     let splodeCount = 32;
             while(--splodeCount){
@@ -156,4 +163,4 @@ PIG.prototype.kill = function kill(){
     G.world.entities.splice(G.world.entities.indexOf(this), 1);
 }
 
-export default PIG;
+export default BIRD;
