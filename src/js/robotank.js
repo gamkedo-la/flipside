@@ -7,7 +7,7 @@ import Particle from './particle.js'
 import Player from "./player.js";
 
 const ROBOTANK_W = 32;
-const ROBOTANK_H = 26;
+const ROBOTANK_H = 24;
 const ROBO_SPEED = 0.25;
 const ROBO_DEBUG = false; // set to true for verbose debug info
 
@@ -16,8 +16,9 @@ const RoboTank = function RoboTank({pos}={}){
     this.start = pos;
     this.currentAnimation = 'idle';
     this.target = {x: pos.x + 24, y: pos.y }
-    this.pos = {x: 0, y: 0};
+    
     this.speed = 0.001;
+    //width and height are hitbox, not drawsize
     this.width = ROBOTANK_W;
     this.height = ROBOTANK_H;
     this.rect = {};
@@ -27,7 +28,11 @@ const RoboTank = function RoboTank({pos}={}){
     // FIXME these seems strange
     // offset so that in Tiled editor the center of the patrol zone
     // is the bottom center of the editor obj rect
-    this.drawOffset = {x: ROBOTANK_W/2-8, y: -ROBOTANK_H/2}; 
+
+    this.pos = {x: pos.x, y: pos.y-10};
+
+    // Unfortunately this isn't possible. TileObject XY is upperLeft, can't be changed AFAIk. 
+    this.drawOffset = {x: 4, y: -7}; 
 
     this.healthBar = {
         xOffset: 0,
@@ -43,7 +48,7 @@ RoboTank.prototype.canWalkForward = function() {
     
     // how far to look ahead
     let xofs = this.goingLeft ? 2 : -2; // tiles to look ahead
-    let yofs = 0;
+    let yofs = 1;
     let tilePos = {};
     let blocked = false;
     let maxTileIndex = G.player.collideIndex; // FIXME this is a lame way to grab this number
@@ -152,8 +157,8 @@ RoboTank.prototype.render = function render(dt){
     this.currentAnimation.render({
         x: Math.floor(this.pos.x-this.width/2-G.view.x + this.drawOffset.x),
         y: Math.floor(this.pos.y-this.height/2-G.view.y + this.drawOffset.y),
-        width: ROBOTANK_W,
-        height: ROBOTANK_H
+        width: 32,
+        height: 26
     });
 
     G.rb.rect(this.rect.left-G.view.x, this.rect.top-G.view.y, this.width, this.height, 11);

@@ -14,6 +14,7 @@ import RetroBuffer from './src/js/retroBuffer.js';
 import Records from './src/js/records.js';
 import FlipBat from './src/js/flipbat.js';
 import FlipPig from './src/js/flippig.js';
+import FlipBird from './src/js/flipbird.js';
 import RoboTank from './src/js/robotank.js';
 import GameSaver from './src/js/GameSaver.js';
 
@@ -73,6 +74,7 @@ const images = [
     'labCaveWall',
     'EnemyTinyflyer',
     'EnemyTinycrawler',
+    'EnemyTinydiver',
     'EnemyRoboTank',
     'flipSpace'
 ]
@@ -646,6 +648,9 @@ function processWorldObjects(objects){
             case "flippig":
                 let pathWidth = obj.properties.find(function(e){return e.name == 'pathWidthInTiles'}).value;
                 results.push(new FlipPig({pos:{x: obj.x, y: obj.y}, pathWidth: pathWidth}).init());
+            break;
+            case "flipbird":
+                results.push(new FlipBird({pos:{x: obj.x, y: obj.y}}).init());
             break;
             case "robotank":
                 //console.log("Spawning a robotank at " +obj.x.toFixed(1)+','+obj.y.toFixed(1));

@@ -1,4 +1,5 @@
 { "backgroundcolor":"#28283c",
+ "compressionlevel":-1,
  "height":120,
  "infinite":false,
  "layers":[
@@ -358,6 +359,18 @@
                  "width":8,
                  "x":2848,
                  "y":696
+                }, 
+                {
+                 "gid":11,
+                 "height":8,
+                 "id":133,
+                 "name":"Flipbird",
+                 "rotation":0,
+                 "type":"flipbird",
+                 "visible":true,
+                 "width":8,
+                 "x":3235,
+                 "y":484.333333333333
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -366,7 +379,7 @@
          "y":0
         }],
  "nextlayerid":9,
- "nextobjectid":133,
+ "nextobjectid":134,
  "orientation":"orthogonal",
  "properties":[
         {
@@ -375,7 +388,7 @@
          "value":"labCaveWall"
         }],
  "renderorder":"right-down",
- "tiledversion":"1.2.4",
+ "tiledversion":"1.3.1",
  "tileheight":8,
  "tilesets":[
         {
