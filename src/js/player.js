@@ -82,13 +82,13 @@ const Player = {
     },
 
     gunOffset: {
-        leftX: -19,
+        leftX: -15,
         rightX: 18,
         y:-5
     },
 
     gunOffsetDefault: {
-        leftX: -19,
+        leftX: -15,
         rightX: 18,
         y:-5
     },
@@ -384,7 +384,7 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         this.gunCooldown = this.gunCooldownMax;
         this.muzzleFlash();
 
-        let gunYoffset = this.crouching? 1 : -4;
+        let gunYoffset = this.crouching? 7 : -3;
         G.particles.push(new Particle({
             x: this.facingLeft ? this.pos.x+this.gunOffset.leftX : this.pos.x+this.gunOffset.rightX,
             y: this.pos.y + gunYoffset,

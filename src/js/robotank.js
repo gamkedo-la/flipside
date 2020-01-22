@@ -181,18 +181,12 @@ RoboTank.prototype.render = function render(dt){
         height: ROBOTANK_H
     });
 
-<<<<<<< HEAD
-    //G.rb.rect(this.rect.left-G.view.x, this.rect.top-G.view.y, this.width, this.height, 11);
-
-    if (this.debugC) G.rb.fillRect(this.debugX,this.debugY,G.world.tileSize,G.world.tileSize,this.debugC);
-=======
     if (ROBO_DEBUG) {
         // draw collision bbox
         G.rb.rect(this.rect.left-G.view.x, this.rect.top-G.view.y, this.width, this.height, 11);
         // draw "this wall/gap got in my way" tile
         if (this.debugC) G.rb.fillRect(this.debugX,this.debugY,G.world.tileSize,G.world.tileSize,this.debugC);
     }
->>>>>>> 6743164e7ee5177051af377b90a38fcaadbd954d
 }
 
 RoboTank.prototype.play = function play(animationName){
