@@ -9,6 +9,7 @@ import Player from "./player.js";
 const ROBOTANK_W = 32;
 const ROBOTANK_H = 26;
 const ROBO_SPEED = 0.25;
+const ROBO_DEBUG = false; // set to true for verbose debug info
 
 // patrols the area near pos, back and forth horizontally
 const RoboTank = function RoboTank({pos}={}){
@@ -26,7 +27,7 @@ const RoboTank = function RoboTank({pos}={}){
     // FIXME these seems strange
     // offset so that in Tiled editor the center of the patrol zone
     // is the bottom center of the editor obj rect
-    this.drawOffset = {x: ROBOTANK_W/2-8, y: -ROBOTANK_H/2+1}; 
+    this.drawOffset = {x: ROBOTANK_W/2-8, y: -ROBOTANK_H/2}; 
 
     this.healthBar = {
         xOffset: 0,
@@ -38,42 +39,47 @@ const RoboTank = function RoboTank({pos}={}){
 }
 
 // can we walk forward?
-// works for any enemy/player/bullet with a .pos
-function canWalkLeft(pos,world) {
-    
-    let tilePos = {};
-    tilePos.tx = Math.round(pos.x / world.tileSize) - 1; // in front of
-    tilePos.ty = Math.round(pos.y / world.tileSize) + 1; // and below
-    // a bit in front of me and a bit down
-    let tileNum = world.getTileAtPosition(tilePos);
-    console.log('canWalkLeft '+pos.x.toFixed(1)+','+pos.y.toFixed(1)+' sees tile ' + tileNum);
-
-  
-    return (tileNum>0);
-
-}
-
 RoboTank.prototype.canWalkForward = function() {
-    let xofs = this.goingLeft ? 3 : -3; // tiles to look ahead
+    
+    // how far to look ahead
+    let xofs = this.goingLeft ? 2 : -2; // tiles to look ahead
     let yofs = 0;
     let tilePos = {};
+    let blocked = false;
+    let maxTileIndex = G.player.collideIndex; // FIXME this is a lame way to grab this number
+    let tileHit = 0;
+
+    // is there a wall in front of me?
     tilePos.tx = Math.round(this.pos.x / G.world.tileSize) + xofs; // in front of
-    tilePos.ty = Math.round(this.pos.y / G.world.tileSize) + yofs; // and below
-    // a bit in front of me and a bit down
-    let tileNum = G.world.getTileAtPosition(tilePos);
-    console.log('canWalkForward '+this.pos.x.toFixed(1)+','+this.pos.y.toFixed(1)+' says tile '+tilePos.tx+','+tilePos.ty+' is #' + tileNum);
+    tilePos.ty = Math.round(this.pos.y / G.world.tileSize) - 1; // slightly above the foot tile
+    tileHit = G.world.getTileAtPosition(tilePos);
+
+    blocked = (tileHit > maxTileIndex); // it HAS to be air to let us through
+
+    // if there's no wall, let's check the floor to ensure we don't fall off a ledge
+    if (!blocked) { // yet
+        // is there any floor in front of me and a bit down?
+        tilePos.tx = Math.round(this.pos.x / G.world.tileSize) + xofs; // in front of
+        tilePos.ty = Math.round(this.pos.y / G.world.tileSize) + yofs; // and below
+        tileHit = G.world.getTileAtPosition(tilePos);
+        blocked = (tileHit <= maxTileIndex); // as in, it HAS to be solid
+    }
+
+    // highlight the problem
     this.debugX = tilePos.tx * G.world.tileSize - G.view.x;
     this.debugY = tilePos.ty * G.world.tileSize - G.view.y;
-    this.debugC = tileNum > 0 ? 10 : 20;
-    //G.rb.fillRect(x,y,w,h,c)
-    return (tileNum>0);
+    this.debugC = blocked ? 4 : 11; // reddish or greenish
+
+    if (ROBO_DEBUG) console.log('RoboTank debug: canWalkForward '+(blocked?'BLOCKED ':'ok ')+this.pos.x.toFixed(1)+','+this.pos.y.toFixed(1)+' says tile '+tilePos.tx+','+tilePos.ty+' is tile #' + tileHit);
+
+    return !blocked; 
 }
 
 RoboTank.prototype.update = function update(dt){
 
     this.currentAnimation.update(dt);
 
-    // pos isn't updated after world spawn
+    // FIXME: entity pos is 0,0,0 at spawn
     if (this.pos.x==0 && this.pos.y==0) {
         this.pos = this.start;
     }
