@@ -81,7 +81,7 @@ PIG.prototype.update = function update(dt){
 
     this.movingRight ? this.play('idleRight') : this.play('idleLeft');
 
-    if(!this.health){ this.kill(); }
+    if(this.health <=0){ this.kill(); }
 
 
 }

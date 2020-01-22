@@ -75,7 +75,7 @@ FlipBat.prototype.update = function update(dt){
 
     G.player.pos.x > this.pos.x ? this.play('idleRight') : this.play('idleLeft');
 
-    if(!this.health){ this.kill(); }
+    if(this.health <=0){ this.kill(); }
 
 
 }
