@@ -95,6 +95,8 @@ FlipBat.prototype.render = function render(dt){
         width: 22,
         height: 29
     })
+
+    G.rb.rect(this.rect.left-G.view.x, this.rect.top-G.view.y, this.width, this.height, 11);
 }
 
 FlipBat.prototype.play = function play(animationName){

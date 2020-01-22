@@ -96,7 +96,8 @@ const maps = [
 const soundList = [
     { name: "test1", url:"./src/snd/test1.mp3" },
     { name: "test2", url:"./src/snd/test2.mp3" },
-    { name: "testMusic1", url:"./src/snd/stebsScaryFlipside(2).mp3" }
+    //{ name: "testMusic1", url:"./src/snd/stebsScaryFlipside(2).mp3" }
+    { name: "testMusic1", url:"./src/snd/Vanishing.mp3" }
 ]
 
 //retro buffer, for no AA lines, circles, indexed-color raster drawing;
@@ -269,7 +270,7 @@ function update(dt){
             particle.vx *= 0.9;
             particle.vy *= 0.9;
             particle.vx += rndFloat(-0.2, 0.2)
-            particle.color = 27;
+            //particle.color = 27;
             if(particle.type == 'bullet'){
                 //magic number is amount of ticks before it returns to being flipspace
                 G.worldFlipped.tileFillCircle({

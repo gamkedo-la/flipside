@@ -26,16 +26,19 @@ this.oldPos = this.pos
 let sx = this.pos.x - view.x;
 let sy = this.pos.y - view.y;
 
-if(inView(this.pos)){
+if(inView(this.pos))
     if(this.type == 'jetBubble'){
-        G.rb.circle(sx, sy, this.life/3, this.color);
+        G.rb.circle(sx, sy, this.life/3, 27);
+    }
+    if(this.type == 'crossBubble'){
+        G.rb.circle(sx, sy, this.life/4, 26);
     }
     else{
         G.rb.fillRect(sx, sy, this.width, this.height, this.color);
     }
 }
     
-}
+
 
 Particle.prototype.update = function update(world){
     this.life--
