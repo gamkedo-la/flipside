@@ -7,33 +7,24 @@ import Particle from './particle.js'
 import Player from "./player.js";
 
 const ROBOTANK_W = 32;
-const ROBOTANK_H = 24;
+const ROBOTANK_H = 26;
 const ROBO_SPEED = 0.25;
 const ROBO_DEBUG = false; // set to true for verbose debug info
+const ROBO_SEEK_DIST = 16; // only seek player if farther away than this
 
 // patrols the area near pos, back and forth horizontally
 const RoboTank = function RoboTank({pos}={}){
     this.start = pos;
     this.currentAnimation = 'idle';
-    this.target = {x: pos.x + 24, y: pos.y }
-    
+    this.target = {x: pos.x + 24, y: pos.y };
     this.speed = 0.001;
-    //width and height are hitbox, not drawsize
-    this.width = ROBOTANK_W;
+    this.width = ROBOTANK_W; // note: width and height are hitbox, not drawsize
     this.height = ROBOTANK_H;
     this.rect = {};
     this.health = 16;
     this.healthMax = 16;
-    
-    // FIXME these seems strange
-    // offset so that in Tiled editor the center of the patrol zone
-    // is the bottom center of the editor obj rect
-
-    this.pos = {x: pos.x, y: pos.y-10};
-
-    // Unfortunately this isn't possible. TileObject XY is upperLeft, can't be changed AFAIk. 
-    this.drawOffset = {x: 4, y: -7}; 
-
+    this.pos = {x: pos.x, y: pos.y-11}; // put feet where bottom of Tiled icon appears
+    this.drawOffset = {x: 4, y: -2}; // center the sprite when rendering
     this.healthBar = {
         xOffset: 0,
         yOffset: -ROBOTANK_H,
@@ -91,9 +82,10 @@ RoboTank.prototype.update = function update(dt){
 
     // simple ai - follow with fall avoidance
     this.goingLeft = G.player.pos.x > this.pos.x; // try to move toward the player
+    let horizDist = Math.abs(G.player.pos.x - this.pos.x);
 
     // ultra simplistic movement for now
-    if (this.canWalkForward()) {
+    if (horizDist > ROBO_SEEK_DIST && this.canWalkForward()) {
         this.pos.x += this.goingLeft ? ROBO_SPEED : -ROBO_SPEED;
     }
     
@@ -157,13 +149,16 @@ RoboTank.prototype.render = function render(dt){
     this.currentAnimation.render({
         x: Math.floor(this.pos.x-this.width/2-G.view.x + this.drawOffset.x),
         y: Math.floor(this.pos.y-this.height/2-G.view.y + this.drawOffset.y),
-        width: 32,
-        height: 26
+        width: ROBOTANK_W,
+        height: ROBOTANK_H
     });
 
-    G.rb.rect(this.rect.left-G.view.x, this.rect.top-G.view.y, this.width, this.height, 11);
-
-    if (this.debugC) G.rb.fillRect(this.debugX,this.debugY,G.world.tileSize,G.world.tileSize,this.debugC);
+    if (ROBO_DEBUG) {
+        // draw collision bbox
+        G.rb.rect(this.rect.left-G.view.x, this.rect.top-G.view.y, this.width, this.height, 11);
+        // draw "this wall/gap got in my way" tile
+        if (this.debugC) G.rb.fillRect(this.debugX,this.debugY,G.world.tileSize,G.world.tileSize,this.debugC);
+    }
 }
 
 RoboTank.prototype.play = function play(animationName){
