@@ -638,11 +638,11 @@ Player.init = function init(){
         animations: {
             idleLeft: {
                 frames: '22..27',
-                frameRate: 16
+                frameRate: 5
             },
             idleRight: {
                 frames: '16..21',
-                frameRate: 16
+                frameRate: 5
             },
             walkRight: {
                 frames: '0..7',
