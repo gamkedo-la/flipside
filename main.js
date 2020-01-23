@@ -625,6 +625,7 @@ function updateWorldData(world, worldFlipped, worldForeground, currentMap) {
     worldForeground.data = Uint16Array.from(loader.tileMaps[currentMap].layers[2].data);
 
     world.portals = loader.tileMaps[currentMap].layers[3].objects.filter(function(e){return e.type == "portal"});
+    world.doors = loader.tileMaps[currentMap].layers[3].objects.filter(function(e){return e.type == "door"});
     world.spawnPoints = loader.tileMaps[currentMap].layers[3].objects.filter(function(e){return e.type == "spawnPoint"});
     world.lightningSpawners = loader.tileMaps[currentMap].layers[3].objects.filter(function(e){return e.type == "lightningBox"});
 

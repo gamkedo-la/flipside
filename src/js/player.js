@@ -71,6 +71,8 @@ const Player = {
     gunCooldown: 0,
     gunCooldownMax: 11,
 
+    doorCooldown: 0,
+
     bulletVXdefault: 4,
     bulletVX: 4,
     bulletVYdefault: 2.5,
@@ -137,6 +139,8 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
     const { MSG } = G;
 
     this.currentAnimation.update(dt);
+
+    this.doorCooldown--;
     
     this.prevX = this.pos.x;
     this.prevY = this.pos.y;
@@ -206,6 +210,19 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
             G.saver.save(G.gameKey);
         }
     })
+
+    world.doors.forEach(function(door){
+        if(self.rectCollision(door) && self.input.up && self.doorCooldown <= 0){
+            //console.log('entered portal');
+            let destinationMap = door.properties.find(function(prop){return prop.name == 'destinationMap'}).value;
+            let destinationSpawn = door.properties.find(function(prop){return prop.name == 'destinationSpawn'}).value;
+            console.log(destinationMap, destinationSpawn);
+            self.doorCooldown = 60;
+            G.loadMap({map: destinationMap, spawnPoint: destinationSpawn });
+            G.saver.save(G.gameKey);
+        }
+    })
+
 
 }
 Player.render = function render(dt, world, worldFlipped, worldForeground){
