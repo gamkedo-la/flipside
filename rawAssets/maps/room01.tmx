@@ -427,13 +427,13 @@
   <object id="54" name="enterBottom" type="spawnPoint" x="1890.59" y="890.579">
    <point/>
   </object>
-  <object id="133" name="door01" type="door" x="3056.17" y="704.25" width="31.4167" height="47.5">
+  <object id="133" name="exitDoor01" type="door" x="3056.17" y="704.25" width="31.4167" height="47.5">
    <properties>
     <property name="destinationMap" value="room02"/>
     <property name="destinationSpawn" value="enter01"/>
    </properties>
   </object>
-  <object id="134" name="door01" type="spawnPoint" x="3072" y="736.25">
+  <object id="134" name="door01" type="spawnPoint" x="3072" y="735.25">
    <point/>
   </object>
  </objectgroup>
