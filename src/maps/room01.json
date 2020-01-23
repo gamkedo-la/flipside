@@ -178,9 +178,21 @@
                  "y":890.579
                 }, 
                 {
+                 "height":0,
+                 "id":134,
+                 "name":"enter01",
+                 "point":true,
+                 "rotation":0,
+                 "type":"spawnPoint",
+                 "visible":true,
+                 "width":0,
+                 "x":3072.25,
+                 "y":730.583333333333
+                }, 
+                {
                  "height":47.5,
-                 "id":133,
-                 "name":"door01",
+                 "id":136,
+                 "name":"exitDoor01",
                  "properties":[
                         {
                          "name":"destinationMap",
@@ -196,20 +208,8 @@
                  "type":"door",
                  "visible":true,
                  "width":31.4167,
-                 "x":3056.17,
-                 "y":704.25
-                }, 
-                {
-                 "height":0,
-                 "id":134,
-                 "name":"door01",
-                 "point":true,
-                 "rotation":0,
-                 "type":"spawnPoint",
-                 "visible":true,
-                 "width":0,
-                 "x":3072,
-                 "y":736.25
+                 "x":3055.92,
+                 "y":704.083333333333
                 }],
          "opacity":0.9,
          "type":"objectgroup",
@@ -421,7 +421,7 @@
          "y":0
         }],
  "nextlayerid":9,
- "nextobjectid":135,
+ "nextobjectid":137,
  "orientation":"orthogonal",
  "properties":[
         {

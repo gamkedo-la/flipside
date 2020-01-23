@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="2019.12.11" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="1000" height="120" tilewidth="8" tileheight="8" infinite="0" backgroundcolor="#28283c" nextlayerid="9" nextobjectid="135">
+<map version="1.2" tiledversion="2019.12.11" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="1000" height="120" tilewidth="8" tileheight="8" infinite="0" backgroundcolor="#28283c" nextlayerid="9" nextobjectid="137">
  <editorsettings>
   <export target="../../src/maps/room01.json" format="json"/>
  </editorsettings>
@@ -427,14 +427,14 @@
   <object id="54" name="enterBottom" type="spawnPoint" x="1890.59" y="890.579">
    <point/>
   </object>
-  <object id="133" name="exitDoor01" type="door" x="3056.17" y="704.25" width="31.4167" height="47.5">
+  <object id="134" name="enter01" type="spawnPoint" x="3072.25" y="730.583">
+   <point/>
+  </object>
+  <object id="136" name="exitDoor01" type="door" x="3055.92" y="704.083" width="31.4167" height="47.5">
    <properties>
     <property name="destinationMap" value="room02"/>
     <property name="destinationSpawn" value="enter01"/>
    </properties>
-  </object>
-  <object id="134" name="door01" type="spawnPoint" x="3072" y="735.25">
-   <point/>
   </object>
  </objectgroup>
  <objectgroup id="6" name="game objects">
