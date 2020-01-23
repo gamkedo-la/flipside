@@ -138,6 +138,8 @@ window.addEventListener('focus',    function (event) { paused = false; }, false)
 
 window.addEventListener('click', function(event) { audio.context.resume(); }, false); //Temporary fix for chrome not strting the audio context until user interaction
 
+G.MSG.addEventListener('achievement',     function (event) { console.log(`%c ACHIEVEMENT GET: ${event.detail.title}`, 'background: #8F0') });
+
 //load assets, then start game-------------------------------------------------------------
 
 loader.loadInitialMapData(G.currentMap, init);

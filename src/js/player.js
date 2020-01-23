@@ -208,6 +208,7 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
             console.log(destinationMap, destinationSpawn);
             G.loadMap({map: destinationMap, spawnPoint: destinationSpawn });
             G.saver.save(G.gameKey);
+            G.Records.update();
         }
     })
 
@@ -220,6 +221,7 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
             self.doorCooldown = 60;
             G.loadMap({map: destinationMap, spawnPoint: destinationSpawn });
             G.saver.save(G.gameKey);
+            G.Records.update();
         }
     })
 
@@ -456,10 +458,12 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         this.facingLeft ? this.play('idleLeft') : this.play('idleRight');
     }
     if(this.vx < -1 && this.input.left && !this.inAir && !this.falling){
+        G.Records.playerStats.stepsTaken+= 1;
         this.facingLeft = true;
         this.play('walkLeft');
     }
     if(this.vx > 1 && this.input.right && !this.inAir && !this.falling){
+        G.Records.playerStats.stepsTaken+= 1;
         this.facingLeft = false;
         this.play('walkRight');
     }
