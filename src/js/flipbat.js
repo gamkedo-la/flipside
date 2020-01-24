@@ -135,17 +135,24 @@ FlipBat.prototype.init = function init(){
 FlipBat.prototype.kill = function kill(){
     //splodey splode
     let splodeCount = 32;
-            while(--splodeCount){
-                G.particles.push(new Particle({
-                    x: this.pos.x+rndInt(-5,5),
-                    y: this.pos.y-10+rndInt(-5,5),
-                    vx: rndFloat(-.3, .3), 
-                    vy: rndFloat(-1, -1.5),
-                    life: 15,
-                    type: 'enemyDeath'
-                }))
-            }
+    while(--splodeCount){
+        G.particles.push(new Particle({
+            x: this.pos.x+rndInt(-5,5),
+            y: this.pos.y-10+rndInt(-5,5),
+            vx: rndFloat(-.3, .3), 
+            vy: rndFloat(-1, -1.5),
+            life: 15,
+            type: 'enemyDeath'
+        }))
+    }
     
+    G.worldFlipped.tileFillCircle({
+        tx: Math.floor(this.pos.x/8),
+        ty: Math.floor(this.pos.y/8),
+        radius: 6,
+        value: 3
+    }) 
+
     G.world.entities.splice(G.world.entities.indexOf(this), 1);
 }
 
