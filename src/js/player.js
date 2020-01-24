@@ -216,13 +216,15 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
     world.doors.forEach(function(door){
         if(self.rectCollision(door) && self.input.up && self.doorCooldown <= 0){
             //console.log('entered portal');
-            let destinationMap = door.properties.find(function(prop){return prop.name == 'destinationMap'}).value;
-            let destinationSpawn = door.properties.find(function(prop){return prop.name == 'destinationSpawn'}).value;
-            console.log(destinationMap, destinationSpawn);
+            
             self.doorCooldown = 60;
-            var wipe = new Transitioner().start('wipe');
-            //wipe.start('wipe').bind(wipe);
-            G.loadMap({map: destinationMap, spawnPoint: destinationSpawn });
+            var wipe = new Transitioner().start('wipe', function(){
+                let destinationMap = door.properties.find(function(prop){return prop.name == 'destinationMap'}).value;
+                let destinationSpawn = door.properties.find(function(prop){return prop.name == 'destinationSpawn'}).value;
+                console.log(destinationMap, destinationSpawn);
+                G.loadMap({map: destinationMap, spawnPoint: destinationSpawn });
+            });
+            //
             G.saver.save(G.gameKey);
             G.Records.update();
         }

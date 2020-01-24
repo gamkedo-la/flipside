@@ -171,6 +171,7 @@ export function Transitioner() {
     this.transitioningIn = true;
     this.done = false;
     this.type = 'wipe';
+    this.callback = {};
     console.log('transitioner created', this);
 
     this.update = function(dt){
@@ -185,6 +186,7 @@ export function Transitioner() {
                     this.width+=20;
                     console.log(`width: ${this.width}`);
                     if(this.width >= G.c.width){
+                        this.callback();
                         requestAnimationFrame(G.frame);
                         this.transitioningIn = false;
                     }
@@ -221,8 +223,9 @@ export function Transitioner() {
         this.render(dt);
     }
 
-    this.start = function(type){
+    this.start = function(type, callback){
         this.type = type;
+        this.callback = callback;
         this.done = false;
         this.transitioningIn = true;
         G.transitioning = true;
