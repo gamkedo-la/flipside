@@ -4,7 +4,8 @@ import { lerp, rectCollision } from "./util.js";
 import { rndFloat, rndInt, range } from "./math.js";
 import SpriteSheet from './spritesheet.js';
 import Particle from './particle.js'
-import Player from "./player.js";
+import Player from './player.js';
+import { onScreen } from './graphics.js';
 
 const BIRD_W = 30;
 const BIRD_H = 30;
@@ -21,7 +22,7 @@ const BIRD = function BIRD({pos}={}){
     this.health = 16;
     this.healthMax = 16;
     this.isDiving = false;
-    this.gravity = 10;
+    this.gravity = 5;
     this.attackRange = 6; //in tiles
     
     // FIXME these seems strange
@@ -43,16 +44,18 @@ BIRD.prototype.update = function update(dt){
 
     if(this.isDiving) {
         if(Player.pos.x < this.pos.x) {
-            this.vel.x -= this.gravity/4;
+            this.vel.x -= this.gravity/2;
         } else if(Player.pos.x > this.pos.x) {
-            this.vel.x += this.gravity/4;
+            this.vel.x += this.gravity/2;
         }
 
         this.vel.y += this.gravity;
     } else {
-        const h_distance = Math.abs(Player.pos.x - this.pos.x);
-        if(h_distance < this.attackRange * 8) {
-            this.isDiving = true;
+        if((onScreen(this.pos) && (Player.pos.y > this.pos.y))) {
+            const h_distance = Math.abs(Player.pos.x - this.pos.x);
+            if(h_distance < this.attackRange * 8) {
+                this.isDiving = true;
+            }
         }
     }
 
@@ -93,7 +96,7 @@ BIRD.prototype.update = function update(dt){
 
     this.isDiving ? this.play('diving') : this.play('idle');
 
-    if(!this.health){ this.kill(); }
+    if(this.health <= 0){ this.kill(); }
 }
 
 BIRD.prototype.render = function render(dt){

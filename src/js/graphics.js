@@ -30,16 +30,20 @@ export function pset(x,y){
     G.ctx.fillRect(x,y, 1, 1);
 }
 
-export function onScreen(position){
+export function onScreen(position, width = 0, height = 0){
 
     let padding = 50;
     let x = position.x;
     let y = position.y;
     
-    let left =   ((-offset.x-padding-cam.x)/cam.scale);
+/*    let left =   ((-offset.x-padding-cam.x)/cam.scale);
     let top =    ((-offset.y-padding-cam.y)/cam.scale);
     let right =  ((offset.x+padding-cam.x)/cam.scale);
-    let bottom = ((offset.y+padding-cam.y)/cam.scale);
+    let bottom = ((offset.y+padding-cam.y)/cam.scale);*/
+    const left = G.view.x - width;
+    const top = G.view.y - height;
+    const right = G.view.x + G.c.width;
+    const bottom = G.view.y + G.c.height;
 
   return x > left && x < right && y > top && y < bottom
 

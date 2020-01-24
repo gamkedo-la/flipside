@@ -5,3 +5,4 @@ package.json
 .vscode/launch.json
 .DS_Store
 src/.DS_Store
+.vscode/settings.json
