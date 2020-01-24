@@ -1,6 +1,6 @@
 import Stats from './src/js/stats.module.js';
 import { Key, inView } from './src/js/util.js';
-import { clearScreen, makeMosaic, drawTile, spriteFont, preRenderBlendedSprite } from './src/js/graphics.js'
+import { clearScreen, makeMosaic, drawTile, spriteFont, preRenderBlendedSprite, Transitioner } from './src/js/graphics.js'
 import World from './src/js/world.js';
 import player from './src/js/player.js';
 import { rndInt, clamp, rndFloat, range } from './src/js/math.js';
@@ -22,6 +22,8 @@ const invertedMosaicEffectEnabled = false;
 
 //one global (G)ame object to rule them all
 window.G = {};
+G.transitioning = false;
+
 
 // start the gamepad keyboard event emulator
 G.GamepadSupport = new GamepadSupport();
@@ -61,6 +63,7 @@ G.savedGame = G.saver.getSavedGame(G.gameKey);
 G.player = player;
 G.player.maxHealth = G.savedGame.maxHealth;
 G.Records = G.savedGame.Records;
+G.transitioner = new Transitioner();
 
 G.currentMap = G.savedGame.map;
 
@@ -145,13 +148,13 @@ G.MSG.addEventListener('achievement',     function (event) { console.log(`%c ACH
 loader.loadInitialMapData(G.currentMap, init);
 
 function init(){
+
     G.img = loader.loadImages(images, soundInit);
 
     G.world = new World();
     G.worldFlipped = new World();
     G.worldForeground = new World();
 
-    
 }
 
 function soundInit(){
@@ -222,8 +225,14 @@ function frame(){
     render(dt);
     last = now;
     stats.end();
-    requestAnimationFrame(frame);
+
+    if(G.transitioning){
+    }else{
+        requestAnimationFrame(frame);
+    }
+    
 }
+G.frame = frame;
 
 //game loop steps--------------------------------------------------------------------
 

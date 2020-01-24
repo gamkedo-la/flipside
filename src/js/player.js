@@ -2,6 +2,7 @@ import { clamp } from './math.js';
 import SpriteSheet from './spritesheet.js';
 import { rndFloat, rndInt, range } from './math.js';
 import Particle from './particle.js';
+import { Transitioner } from './graphics.js';
 
 const Player = {
     spritesheet:{},
@@ -219,6 +220,8 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
             let destinationSpawn = door.properties.find(function(prop){return prop.name == 'destinationSpawn'}).value;
             console.log(destinationMap, destinationSpawn);
             self.doorCooldown = 60;
+            var wipe = new Transitioner().start('wipe');
+            //wipe.start('wipe').bind(wipe);
             G.loadMap({map: destinationMap, spawnPoint: destinationSpawn });
             G.saver.save(G.gameKey);
             G.Records.update();

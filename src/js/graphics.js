@@ -165,6 +165,73 @@ export function preRenderBlendedSprite({img, blendmode, color}={}){
     return blendedCanvas; 
 }
 
+export function Transitioner() {
+   
+    this.width = 0;
+    this.transitioningIn = true;
+    this.done = false;
+    this.type = 'wipe';
+    console.log('transitioner created', this);
+
+    this.update = function(dt){
+        console.log('transitioner update loop');
+        console.log('this according to update ', this)
+        console.log(`type: ${this.type}`);
+        switch(this.type){
+
+            default:
+
+                if(this.transitioningIn){
+                    this.width+=20;
+                    console.log(`width: ${this.width}`);
+                    if(this.width >= G.c.width){
+                        requestAnimationFrame(G.frame);
+                        this.transitioningIn = false;
+                    }
+                }else{
+                    this.width-=20;
+                    if(this.width <= 0){
+                        this.done = true;
+                        G.transitioning = false;
+                        //requestAnimationFrame(G.frame);
+                        //return;
+                    }
+                }
+            
+        }
+        
+    }
+
+    this.render = function(dt){
+        G.rb.clear(64);
+        switch(this.type){
+            default: 
+            G.rb.fillRect(0,0,this.width,G.c.height,0);
+            
+        }
+        G.rb.render();
+        if(!this.done){
+            requestAnimationFrame(this.frame.bind(this));
+        }else{requestAnimationFrame(G.frame)}
+        
+    }
+
+    this.frame = function(dt){
+        this.update(dt);
+        this.render(dt);
+    }
+
+    this.start = function(type){
+        this.type = type;
+        this.done = false;
+        this.transitioningIn = true;
+        G.transitioning = true;
+        console.log(this);
+        requestAnimationFrame(this.frame.bind(this));
+    }
+
+}//end Transitioner
+
 export const colors = [
     "rgba(6,6,8,1)", //0
     "rgba(20,16,19,1)", //1
