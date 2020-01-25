@@ -7,32 +7,30 @@ import Particle from './particle.js'
 import Player from './player.js';
 import { onScreen } from './graphics.js';
 
-const BIRD_W = 30;
-const BIRD_H = 30;
-
 // patrols the area near pos, back and forth horizontally
 const BIRD = function BIRD({pos}={}){
     this.start = pos;
     this.target = {x: Player.pos.x, y: Player.pos.y }
     this.pos = {x: pos.x, y: pos.y};
     this.vel = {x:0, y:0};
-    this.width = BIRD_W;
-    this.height = BIRD_H;
+    this.width = 18;
+    this.height = 27;
     this.rect = {};
     this.health = 16;
     this.healthMax = 16;
     this.isDiving = false;
     this.gravity = 5;
-    this.attackRange = 6; //in tiles
+    this.attackRange = 4; //in tiles
+    this.collideIndex = 1009;
+    this.hazardTilesStartIndex = 113;
+    this.hazardTilesEndIndex = 120;
     
-    // FIXME these seems strange
-    // xy is foot pos and in tiles that's the bottom of the obj rect
-    this.drawOffset = {x: BIRD_W/2-8, y: -BIRD_H/2+2}; 
+    this.drawOffset = {x: 0, y: 0};
 
     this.healthBar = {
         xOffset: 0,
-        yOffset: -BIRD_H,
-        width: BIRD_W, 
+        yOffset: -this.height,
+        width: this.width, 
         height: 2
     }
     return this;
@@ -44,12 +42,30 @@ BIRD.prototype.update = function update(dt){
 
     if(this.isDiving) {
         if(Player.pos.x < this.pos.x) {
-            this.vel.x -= this.gravity/2;
+            this.vel.x = -this.gravity;
         } else if(Player.pos.x > this.pos.x) {
-            this.vel.x += this.gravity/2;
+            this.vel.x = this.gravity;
+        }
+
+        const prevX = this.pos.x;
+        this.pos.x += this.vel.x * dt;
+        if(this.tileCollisionCheck(G.world, this.collideIndex)) {
+            this.pos.x = prevX;
         }
 
         this.vel.y += this.gravity;
+
+        const prevY = this.pos.y;
+        this.pos.y += this.vel.y * dt;
+        if(this.tileCollisionCheck(G.world, this.collideIndex)) {
+            while(this.tileCollisionCheck(G.world, this.collideIndex)) {
+                this.pos.y--;
+            }
+
+            this.isDiving = false;
+        }
+        
+
     } else {
         if((onScreen(this.pos) && (Player.pos.y > this.pos.y))) {
             const h_distance = Math.abs(Player.pos.x - this.pos.x);
@@ -59,13 +75,10 @@ BIRD.prototype.update = function update(dt){
         }
     }
 
-    this.pos.x = this.pos.x + (this.vel.x * dt);
-    this.pos.y = this.pos.y + (this.vel.y * dt);
-
     this.rect = {
-        top: this.pos.y - this.width/2,
-        left: this.pos.x - this.height/2,
-        right: this.pos.x + this.height/2,
+        top: this.pos.y - this.height/2,
+        left: this.pos.x - this.width/2,
+        right: this.pos.x + this.width/2,
         bottom: this.pos.y + this.height/2
     }
     var self = this;
@@ -100,20 +113,19 @@ BIRD.prototype.update = function update(dt){
 }
 
 BIRD.prototype.render = function render(dt){
-    //console.log("BIRD is rendering at "+this.pos.x.toFixed(1)+','+this.pos.y.toFixed(1))
     if(this.health < this.healthMax){
         let fillWidth = range(this.health, 0, this.healthMax, 0, this.healthBar.width);
         G.rb.fillRect(this.pos.x + this.healthBar.xOffset - G.view.x,
             this.pos.y + this.healthBar.yOffset - G.view.y,
             fillWidth,
             this.healthBar.height,
-            8)
+            8);
     }
     this.currentAnimation.render({
         x: Math.floor(this.pos.x-this.width/2-G.view.x + this.drawOffset.x),
         y: Math.floor(this.pos.y-this.height/2-G.view.y + this.drawOffset.y),
-        width: BIRD_W,
-        height: BIRD_H
+        width: this.width,
+        height: this.height
     })
 }
 
@@ -164,6 +176,31 @@ BIRD.prototype.kill = function kill(){
             }
     
     G.world.entities.splice(G.world.entities.indexOf(this), 1);
+}
+
+BIRD.prototype.tileCollisionCheck = function tileCollisionCheck(world, tileCheck) {
+    //update body edges
+    this.rect.top = this.pos.y - this.height/2;
+    this.rect.bottom = this.pos.y + this.height/2;
+    this.rect.left = this.pos.x - this.width/2;
+    this.rect.right = this.pos.x + this.width/2;
+
+    let leftTile =      Math.floor(this.rect.left / world.tileSize),
+        rightTile =     Math.floor(this.rect.right / world.tileSize),
+        topTile =       Math.floor(this.rect.top / world.tileSize),
+        bottomTile =    Math.floor(this.rect.bottom / world.tileSize)
+    
+    for(let i = leftTile; i <=rightTile; i++){
+        for(let j = topTile; j<= bottomTile; j++){
+            let tile = world.getTileAtPosition({tx: i, ty: j})
+
+            if(tile >= tileCheck){
+                return true;
+            }
+        }
+    }
+
+    return false;
 }
 
 export default BIRD;

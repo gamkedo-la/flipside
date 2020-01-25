@@ -42,9 +42,9 @@ FlipBat.prototype.update = function update(dt){
 
     
     this.rect = {
-        top: this.pos.y - this.width/2,
-        left: this.pos.x - this.height/2,
-        right: this.pos.x + this.height/2,
+        top: this.pos.y - this.height/2,
+        left: this.pos.x - this.width/2,
+        right: this.pos.x + this.width/2,
         bottom: this.pos.y + this.height/2
     }
     var self = this;

@@ -6,9 +6,6 @@ import SpriteSheet from './spritesheet.js';
 import Particle from './particle.js'
 import Player from "./player.js";
 
-//const PIG_W = 30;
-//const PIG_H = 20;
-
 // patrols the area near pos, back and forth horizontally
 const PIG = function PIG({pos, pathWidth=3, source={}}={}){
     this.start = pos;
@@ -54,9 +51,9 @@ PIG.prototype.update = function update(dt){
     }
 
     this.rect = {
-        top: this.pos.y - this.width/2,
-        left: this.pos.x - this.height/2,
-        right: this.pos.x + this.height/2,
+        top: this.pos.y - this.height/2,
+        left: this.pos.x - this.width/2,
+        right: this.pos.x + this.width/2,
         bottom: this.pos.y + this.height/2
     }
     var self = this;
