@@ -72,8 +72,8 @@ export function lerp(v0, v1, t) {
 
 export function inView(pos){
     let screenX = pos.x - G.view.x,
-        screenY = pos.y - G.view.y
-
+        screenY = pos.y - G.view.y,
+        padding = 100;
         return (screenX > 0 &&
                screenX < G.c.width &&
                screenY > 0 &&

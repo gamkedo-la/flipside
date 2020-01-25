@@ -250,6 +250,9 @@ Player.render = function render(dt, world, worldFlipped, worldForeground){
         width: 31,
         height: 45
     })
+    let dX = this.pos.x-G.view.x, dY = this.rect.bottom-G.view.y
+    G.rb.line(dX, dY, dX, dY-3, 11);
+    
 }
 Player.inTheFlipPhysics = function inTheFlipPhysics(dt, world, worldFlipped){
     this.gravity = this.physicsFlip.gravity;
@@ -532,7 +535,7 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
 
     if(!this.fallthru && this.prevY < this.pos.y){
         let gid = G.world.pixelToTileID({x:this.pos.x, y: (this.pos.y+this.height/2)-3 })
-        if(gid > this.cloudTilesStartIndex && gid < this.cloudTilesEndIndex){
+        if(gid >= this.cloudTilesStartIndex && gid <= this.cloudTilesEndIndex){
         //console.log('cloud');
         this.falling = false;
         this.jumping = false;
@@ -549,6 +552,7 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
             if (this.vy > 0) { // did we just stop falling?
                 //console.log("Just landed from a jump!");
                 this.jumping = false;
+                this.falling = false;
                 this.landedFX();
                 
             } else if (this.vy < 0) {

@@ -6,9 +6,8 @@ import Player from "./player.js";
 
 
 const Barricade = function Barricade({pos, height, width}={}){
-    this.start = pos;
-    this.
-        
+    this.pos = pos;
+    this.rect={};
     return this;
 }
 
@@ -17,10 +16,10 @@ Barricade.prototype.update = function update(dt){
     //this.currentAnimation.update();
 
     this.rect = {
-        top: this.pos.y - this.height/2,
-        left: this.pos.x - this.width/2,
-        right: this.pos.x + this.width/2,
-        bottom: this.pos.y + this.height/2
+        top: this.pos.y,
+        left: this.pos.x,
+        right: this.pos.x + this.width,
+        bottom: this.pos.y + this.height
     }
 
     var self = this;
@@ -44,29 +43,10 @@ Barricade.prototype.update = function update(dt){
         }
     });
 
-    G.player.pos.x > this.pos.x ? this.play('idleRight') : this.play('idleLeft');
-
-    if(this.health <=0){ this.kill(); }
-
-
 }
 
 Barricade.prototype.render = function render(dt){
-    if(this.health < this.healthMax){
-        let fillWidth = range(this.health, 0, this.healthMax, 0, this.healthBar.width);
-        G.rb.fillRect(this.pos.x + this.healthBar.xOffset - G.view.x,
-            this.pos.y + this.healthBar.yOffset - G.view.y,
-            fillWidth,
-            this.healthBar.height,
-            8)
-    }
-    this.currentAnimation.render({
-        x: Math.floor(this.pos.x-this.width/2-G.view.x + this.drawOffset.x),
-        y: Math.floor(this.pos.y-this.height/2-G.view.y + this.drawOffset.y),
-        width: this.width,
-        height: this.height
-    })
-
+   
     G.rb.rect(this.rect.left-G.view.x, this.rect.top-G.view.y, this.width, this.height, 11);
 }
 

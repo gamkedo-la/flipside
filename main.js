@@ -16,6 +16,7 @@ import FlipBat from './src/js/flipbat.js';
 import FlipPig from './src/js/flippig.js';
 import FlipBird from './src/js/flipbird.js';
 import RoboTank from './src/js/robotank.js';
+import Barricade from './src/js/Barricade.js';
 import GameSaver from './src/js/GameSaver.js';
 
 const invertedMosaicEffectEnabled = false;
@@ -403,13 +404,11 @@ function render(dt){
             var drawX =     Math.floor(i*8 - view.x),
                 drawY =     Math.floor(j*8 - view.y),
                 flatIndex = j * world.widthInTiles + i,
-                
-                gid = world.data[flatIndex],
-                gidFlipped = worldFlipped[flatIndex];
+                gid = world.data[flatIndex];
 
 
                 gid-=1;
-                gidFlipped -=1;
+                
 
             if(worldFlipped.data[flatIndex] == 3){
                 drawTile({x:drawX, y:drawY}, world, gid, `tiles${rndInt(26,28)}`);
@@ -463,9 +462,8 @@ function render(dt){
             let drawX =     Math.floor(i*8 - view.x),
                 drawY =     Math.floor(j*8 - view.y),
                 flatIndex = j * world.widthInTiles + i,
-                gidFore = worldForeground.data[flatIndex],
-                tileSheetHeight = 16,
-                tileSheetWidth = 16;
+                gidFore = worldForeground.data[flatIndex];
+
             if(gidFore > 0)gidFore -=1;
             if(worldForeground.data[flatIndex]){
                 drawTile({x: drawX, y: drawY}, worldForeground, gidFore);
