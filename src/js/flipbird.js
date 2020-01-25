@@ -19,6 +19,7 @@ const BIRD = function BIRD({pos}={}){
     this.health = 16;
     this.healthMax = 16;
     this.isDiving = false;
+    this.diveCount = 0;
     this.gravity = 5;
     this.attackRange = 4; //in tiles
     this.collideIndex = 1009;
@@ -37,7 +38,6 @@ const BIRD = function BIRD({pos}={}){
 }
 
 BIRD.prototype.update = function update(dt){
-
     this.currentAnimation.update(dt);
 
     if(this.isDiving) {
@@ -55,7 +55,6 @@ BIRD.prototype.update = function update(dt){
 
         this.vel.y += this.gravity;
 
-        const prevY = this.pos.y;
         this.pos.y += this.vel.y * dt;
         if(this.tileCollisionCheck(G.world, this.collideIndex)) {
             while(this.tileCollisionCheck(G.world, this.collideIndex)) {
@@ -63,14 +62,30 @@ BIRD.prototype.update = function update(dt){
             }
 
             this.isDiving = false;
+            
         }
         
-
+        this.diveCount++;
+        if(this.diveCount % 10 == 0) {
+            G.worldFlipped.tileFillCircle({
+                tx: Math.floor(this.pos.x/8),
+                ty: Math.floor(this.pos.y/8),
+                radius: 0.5,
+                value: 3
+            });
+        }
     } else {
         if((onScreen(this.pos) && (Player.pos.y > this.pos.y))) {
             const h_distance = Math.abs(Player.pos.x - this.pos.x);
             if(h_distance < this.attackRange * 8) {
                 this.isDiving = true;
+            }
+        }
+
+        if(this.diveCount > 0) {
+            this.diveCount++;
+            if(this.diveCount > 150) {
+                this.kill();
             }
         }
     }
@@ -161,19 +176,26 @@ BIRD.prototype.init = function init(){
 BIRD.prototype.kill = function kill(){
     //splodey splode
     let splodeCount = 32;
-            while(--splodeCount){
-                G.particles.push(new Particle({
-                    x: this.pos.x,
-                    y: this.pos.y,
-                    vx: rndFloat(-1.5, 1.5), 
-                    vy: rndFloat(-0.5, 1.5),
-                    life: 15,
-                    color: 27,
-                    width: 2,
-                    height: 2,
-                    type: 'bg'
-                }))
-            }
+    while(--splodeCount){
+        G.particles.push(new Particle({
+            x: this.pos.x,
+            y: this.pos.y,
+            vx: rndFloat(-1.5, 1.5), 
+            vy: rndFloat(-0.5, 1.5),
+            life: 15,
+            color: 27,
+            width: 2,
+            height: 2,
+            type: 'bg'
+        }))
+    }
+
+    G.worldFlipped.tileFillCircle({
+        tx: Math.floor(this.pos.x/8),
+        ty: Math.floor(this.pos.y/8),
+        radius: 3,
+        value: 3
+    }) 
     
     G.world.entities.splice(G.world.entities.indexOf(this), 1);
 }
