@@ -18,9 +18,10 @@ const Player = {
     pos: {
         x: 0,
         y: 0,
-        prevX: 0,
-        prevY: 0
     },
+
+    prevX: 0,
+    prevY: 0,
     
     rect: {
         left: 0,

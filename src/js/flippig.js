@@ -106,7 +106,7 @@ PIG.prototype.render = function render(dt){
         // height: PIG_H
     })
 
-    //G.rb.rect(this.rect.left-G.view.x, this.rect.top-G.view.y, this.width, this.height, 11);
+    G.rb.rect(this.rect.left-G.view.x, this.rect.top-G.view.y, this.width, this.height, 11);
 }
 
 PIG.prototype.play = function play(animationName){
