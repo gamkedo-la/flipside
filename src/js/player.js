@@ -532,6 +532,10 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
 
     world.entities.forEach(function(obj){
         if(rectCollision(obj.rect, self.rect)){
+            if(obj.type == 'barricade' && self.input.up){
+                console.log('barricade input recieved');
+                obj.open = true;
+            }
             self.pos.x = self.prevX;
             self.vx = 0;
         }

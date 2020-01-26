@@ -73,11 +73,11 @@ export function lerp(v0, v1, t) {
 export function inView(pos){
     let screenX = pos.x - G.view.x,
         screenY = pos.y - G.view.y,
-        padding = 100;
-        return (screenX > 0 &&
-               screenX < G.c.width &&
-               screenY > 0 &&
-               screenY < G.c.height)
+        padding = 200;
+        return (screenX > -padding &&
+               screenX < (G.c.width + padding) &&
+               screenY > -padding &&
+               screenY < (G.c.height+padding))
 }
 
 export function rectCollision(rect1, rect2) {
