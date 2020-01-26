@@ -16,6 +16,7 @@ import FlipBat from './src/js/flipbat.js';
 import FlipPig from './src/js/flippig.js';
 import FlipBird from './src/js/flipbird.js';
 import RoboTank from './src/js/robotank.js';
+// import Drone from './src/js/drone.js';
 import GameSaver from './src/js/GameSaver.js';
 
 const invertedMosaicEffectEnabled = false;
@@ -650,6 +651,7 @@ function updateWorldData(world, worldFlipped, worldForeground, currentMap) {
 
 function processWorldObjects(objects){
     let results = [];
+    console.log(objects);
     objects.forEach(function(obj){
         switch(obj.type){
             case "flipbat":
