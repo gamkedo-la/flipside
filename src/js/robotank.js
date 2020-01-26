@@ -182,7 +182,7 @@ RoboTank.prototype.render = function render(dt){
     });
 
     if (ROBO_DEBUG) {
-        // draw collision bbox
+        // draw collision box
         G.rb.rect(this.rect.left-G.view.x, this.rect.top-G.view.y, this.width, this.height, 11);
         // draw "this wall/gap got in my way" tile
         if (this.debugC) G.rb.fillRect(this.debugX,this.debugY,G.world.tileSize,G.world.tileSize,this.debugC);
