@@ -640,7 +640,7 @@ function updateWorldData(world, worldFlipped, worldForeground, currentMap) {
 
     world.entities = processWorldObjects(loader.tileMaps[currentMap].layers[4].objects);
     //world.objects = loader.tileMaps[currentMap].layers[4].objects
-
+    
     if(loader.tileMaps[currentMap].properties){
         world.parallax0 = loader.tileMaps[currentMap].properties.find(function(e){return e.name = 'Parallax0' }).value;
     }
@@ -663,9 +663,15 @@ function processWorldObjects(objects){
                 results.push(new FlipBird({pos:{x: obj.x, y: obj.y}}).init());
             break;
             case "robotank":
-                //console.log("Spawning a robotank at " +obj.x.toFixed(1)+','+obj.y.toFixed(1));
-                results.push(new RoboTank({pos:{x: obj.x, y: obj.y}}).init()); // fixme init() is never called?
+                results.push(new RoboTank({pos:{x: obj.x, y: obj.y}}).init()); 
             break;
+            case "barricade":
+                console.log(obj);
+                results.push(new Barricade(obj).init());
+            break;
+            default:
+                //nothing
+            
         }
     })
     return results;

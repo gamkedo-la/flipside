@@ -3,6 +3,7 @@ import SpriteSheet from './spritesheet.js';
 import { rndFloat, rndInt, range } from './math.js';
 import Particle from './particle.js';
 import { Transitioner } from './graphics.js';
+import { rectCollision } from './util.js';
 
 const Player = {
     spritesheet:{},
@@ -230,6 +231,8 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
             G.Records.update();
         }
     })
+
+    
 
 
 }
@@ -517,7 +520,7 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
 
     
     
-
+    var self = this;
     this.vx = clamp(this.vx, -this.maxVel.x, this.maxVel.x);
     this.vy = clamp(this.vy, -this.maxVel.y, this.maxVel.y);
         
@@ -527,7 +530,34 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         this.vx = 0;
     }
 
+    world.entities.forEach(function(obj){
+        if(rectCollision(obj.rect, self.rect)){
+            self.pos.x = self.prevX;
+            self.vx = 0;
+        }
+    })
+
     this.pos.y = this.pos.y + (dt * this.vy);
+
+    // world.entities.forEach(function(obj){
+    //     if(rectCollision(obj.rect, self.rect)){
+    //         if (self.jumping) {
+    //             if (self.vy > 0) { // did we just stop falling?
+    //                 //console.log("Just landed from a jump!");
+    //                 self.jumping = false;
+    //                 self.falling = false;
+    //                 self.landedFX();
+                    
+    //             } else if (self.vy < 0) {
+    //                 //console.log('ceiling');
+    //             }
+    //         }
+    
+    //         //self.falling = false;
+    //         //self.vy = 0;
+    //         self.pos.y = self.prevY;
+    //     }
+    // })
 
     //one-way platforms------------------------------------------------------------------------------------
     

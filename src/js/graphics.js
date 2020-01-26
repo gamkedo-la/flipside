@@ -176,19 +176,15 @@ export function Transitioner() {
     this.done = false;
     this.type = 'wipe';
     this.callback = {};
-    console.log('transitioner created', this);
 
     this.update = function(dt){
-        console.log('transitioner update loop');
-        console.log('this according to update ', this)
-        console.log(`type: ${this.type}`);
+       
         switch(this.type){
 
             default:
 
                 if(this.transitioningIn){
                     this.width+=20;
-                    console.log(`width: ${this.width}`);
                     if(this.width >= G.c.width){
                         this.callback();
                         requestAnimationFrame(G.frame);
@@ -233,7 +229,6 @@ export function Transitioner() {
         this.done = false;
         this.transitioningIn = true;
         G.transitioning = true;
-        console.log(this);
         requestAnimationFrame(this.frame.bind(this));
     }
 

@@ -5,8 +5,11 @@ import Particle from './particle.js'
 import Player from "./player.js";
 
 
-const Barricade = function Barricade({pos, height, width}={}){
-    this.pos = pos;
+const Barricade = function Barricade(obj){
+    this.open = false;
+    this.pos = {x: obj.x, y: obj.y};
+    this.height = obj.height;
+    this.width = obj.width;
     this.rect={};
     return this;
 }
