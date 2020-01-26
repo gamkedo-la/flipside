@@ -24,9 +24,7 @@ const PIG = function PIG({pos, pathWidth=3, source={}}={}){
     //Tiled xy is upper-left of tileObject and can't be changed in-editor
     //modifying actual position here to compensate
     this.pos = {x: pos.x, y: pos.y-6};
-    
-    
-    
+        
     this.drawOffset = {x:4, y:-12}; 
 
     this.healthBar = {
@@ -41,8 +39,6 @@ const PIG = function PIG({pos, pathWidth=3, source={}}={}){
 PIG.prototype.update = function update(dt){
 
     this.currentAnimation.update(dt);
-
-    //this.po
 
     this.pos.x = this.pos.x + (this.movingRight ? this.speed*dt : -this.speed*dt);
 
@@ -117,10 +113,7 @@ PIG.prototype.play = function play(animationName){
 }
 
 PIG.prototype.init = function init(){
-
-    //console.log("PIG init...");
     this.spritesheet = new SpriteSheet({
-//        image: G.img.EnemyPIG,
         image: G.img.EnemyTinycrawler,
         frameWidth: 30,
         frameHeight: 30,
