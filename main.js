@@ -11,12 +11,12 @@ import Particle from './src/js/particle.js';
 import GamepadSupport from './src/js/gamepad.js';
 import ElectricityRenderer from './src/js/electricity.js';
 import RetroBuffer from './src/js/retroBuffer.js';
-import Records from './src/js/records.js';
 import FlipBat from './src/js/flipbat.js';
 import FlipPig from './src/js/flippig.js';
 import FlipBird from './src/js/flipbird.js';
 import RoboTank from './src/js/robotank.js';
 import Barricade from './src/js/Barricade.js';
+import Switch from './src/js/Switch.js';
 // import Drone from './src/js/drone.js';
 import GameSaver from './src/js/GameSaver.js';
 
@@ -671,6 +671,8 @@ function processWorldObjects(objects){
                 console.log(obj);
                 results.push(new Barricade(obj).init());
             break;
+            case "switch":
+                results.push(new Switch(obj).init());
             default:
                 //nothing
             

@@ -203,7 +203,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="3" name="effects and spawns" opacity="0.9">
+ <objectgroup id="3" name="effects and spawns" opacity="0.86">
   <object id="8" name="enter01" type="spawnPoint" x="398.94" y="385.094">
    <point/>
   </object>

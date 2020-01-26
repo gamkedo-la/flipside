@@ -6,7 +6,7 @@ import Player from "./player.js";
 
 
 const Barricade = function Barricade(obj){
-    this.switch = 'switch01';
+    this.name = obj.name;
     this.type = obj.type;
     this.open = false;
     this.startY = obj.y;
@@ -30,6 +30,9 @@ Barricade.prototype.update = function update(dt){
 
     if(this.open && this.pos.y >= this.startY - this.height){
         this.pos.y -= 1;
+    }
+    if(!this.open && this.pos.y != this.startY ){
+        this.pos.y += 1;
     }
 
     var self = this;

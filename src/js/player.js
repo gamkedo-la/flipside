@@ -531,37 +531,26 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
     }
 
     world.entities.forEach(function(obj){
-        if(rectCollision(obj.rect, self.rect)){
-            if(obj.type == 'barricade' && self.input.up){
-                console.log('barricade input recieved');
-                obj.open = true;
+        if(obj.type == 'barricade'){
+            if(rectCollision(obj.rect, self.rect)){
+                console.log(obj);
+                self.pos.x = self.prevX;
+                self.vx = 0;
             }
-            self.pos.x = self.prevX;
-            self.vx = 0;
         }
+        if(obj.type == 'switch'){
+            if(rectCollision(obj.rect, self.rect)){
+                //obj.active = true;
+                console.log(obj);
+            }
+        }
+        
+        
     })
 
     this.pos.y = this.pos.y + (dt * this.vy);
 
-    // world.entities.forEach(function(obj){
-    //     if(rectCollision(obj.rect, self.rect)){
-    //         if (self.jumping) {
-    //             if (self.vy > 0) { // did we just stop falling?
-    //                 //console.log("Just landed from a jump!");
-    //                 self.jumping = false;
-    //                 self.falling = false;
-    //                 self.landedFX();
-                    
-    //             } else if (self.vy < 0) {
-    //                 //console.log('ceiling');
-    //             }
-    //         }
     
-    //         //self.falling = false;
-    //         //self.vy = 0;
-    //         self.pos.y = self.prevY;
-    //     }
-    // })
 
     //one-way platforms------------------------------------------------------------------------------------
     
