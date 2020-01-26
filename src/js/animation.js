@@ -1,4 +1,4 @@
-
+// Dummy Comment Practicing Using Git - Ian
 class Animation {
   constructor({spriteSheet, frames, frameRate, loop = true} = {}) {
 
