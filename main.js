@@ -649,7 +649,7 @@ function updateWorldData(world, worldFlipped, worldForeground, currentMap) {
 
 function processWorldObjects(objects){
     let results = [];
-    console.log(objects);
+    // console.log(objects);
     objects.forEach(function(obj){
         switch(obj.type){
             case "flipbat":
@@ -668,7 +668,7 @@ function processWorldObjects(objects){
                 results.push(new RoboTank({pos:{x: obj.x, y: obj.y}}).init()); 
             break;
             case "barricade":
-                console.log(obj);
+                // console.log(obj);
                 results.push(new Barricade(obj).init());
             break;
             case "switch":

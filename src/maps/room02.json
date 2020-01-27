@@ -113,7 +113,97 @@
          "draworder":"topdown",
          "id":6,
          "name":"game objects",
-         "objects":[],
+         "objects":[
+                {
+                 "gid":11,
+                 "height":8,
+                 "id":141,
+                 "name":"RoboTank",
+                 "properties":[
+                        {
+                         "name":"pathWidthInTiles",
+                         "type":"int",
+                         "value":10
+                        }],
+                 "rotation":0,
+                 "type":"robotank",
+                 "visible":true,
+                 "width":8,
+                 "x":360,
+                 "y":328
+                }, 
+                {
+                 "gid":11,
+                 "height":8,
+                 "id":142,
+                 "name":"Flipbird",
+                 "rotation":0,
+                 "type":"flipbird",
+                 "visible":true,
+                 "width":8,
+                 "x":152,
+                 "y":200
+                }, 
+                {
+                 "gid":11,
+                 "height":8,
+                 "id":143,
+                 "name":"Flipbird",
+                 "rotation":0,
+                 "type":"flipbird",
+                 "visible":true,
+                 "width":8,
+                 "x":224,
+                 "y":240
+                }, 
+                {
+                 "gid":11,
+                 "height":8,
+                 "id":144,
+                 "name":"Flipbird",
+                 "rotation":0,
+                 "type":"flipbird",
+                 "visible":true,
+                 "width":8,
+                 "x":256,
+                 "y":144
+                }, 
+                {
+                 "gid":11,
+                 "height":8,
+                 "id":145,
+                 "name":"Flippig",
+                 "properties":[
+                        {
+                         "name":"pathWidthInTiles",
+                         "type":"int",
+                         "value":4
+                        }],
+                 "rotation":0,
+                 "type":"flippig",
+                 "visible":true,
+                 "width":8,
+                 "x":144,
+                 "y":296
+                }, 
+                {
+                 "gid":11,
+                 "height":8,
+                 "id":146,
+                 "name":"Flippig",
+                 "properties":[
+                        {
+                         "name":"pathWidthInTiles",
+                         "type":"int",
+                         "value":4
+                        }],
+                 "rotation":0,
+                 "type":"flippig",
+                 "visible":true,
+                 "width":8,
+                 "x":256,
+                 "y":296
+                }],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
@@ -121,7 +211,7 @@
          "y":0
         }],
  "nextlayerid":9,
- "nextobjectid":137,
+ "nextobjectid":147,
  "orientation":"orthogonal",
  "properties":[
         {

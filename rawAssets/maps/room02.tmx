@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="2019.12.11" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="74" height="56" tilewidth="8" tileheight="8" infinite="0" backgroundcolor="#28283c" nextlayerid="9" nextobjectid="137">
+<map version="1.2" tiledversion="2019.12.11" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="74" height="56" tilewidth="8" tileheight="8" infinite="0" backgroundcolor="#28283c" nextlayerid="9" nextobjectid="147">
  <editorsettings>
   <export target="../../src/maps/room02.json" format="json"/>
  </editorsettings>
@@ -215,5 +215,24 @@
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="6" name="game objects"/>
+ <objectgroup id="6" name="game objects">
+  <object id="141" name="RoboTank" type="robotank" gid="11" x="360" y="328" width="8" height="8">
+   <properties>
+    <property name="pathWidthInTiles" type="int" value="10"/>
+   </properties>
+  </object>
+  <object id="142" name="Flipbird" type="flipbird" gid="11" x="152" y="200" width="8" height="8"/>
+  <object id="143" name="Flipbird" type="flipbird" gid="11" x="224" y="240" width="8" height="8"/>
+  <object id="144" name="Flipbird" type="flipbird" gid="11" x="256" y="144" width="8" height="8"/>
+  <object id="145" name="Flippig" type="flippig" gid="11" x="144" y="296" width="8" height="8">
+   <properties>
+    <property name="pathWidthInTiles" type="int" value="4"/>
+   </properties>
+  </object>
+  <object id="146" name="Flippig" type="flippig" gid="11" x="256" y="296" width="8" height="8">
+   <properties>
+    <property name="pathWidthInTiles" type="int" value="4"/>
+   </properties>
+  </object>
+ </objectgroup>
 </map>

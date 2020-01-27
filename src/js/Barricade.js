@@ -59,8 +59,8 @@ Barricade.prototype.update = function update(dt){
 }
 
 Barricade.prototype.render = function render(dt){
-   
-    G.rb.rect(this.rect.left-G.view.x, this.rect.top-G.view.y, this.width, this.height, 11);
+    let color = this.open ? 11 : 5
+    G.rb.rect(this.rect.left-G.view.x, this.rect.top-G.view.y, this.width, this.height, color);
 }
 
 Barricade.prototype.play = function play(animationName){

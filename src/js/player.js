@@ -38,7 +38,7 @@ const Player = {
     maxHealth: 100,
 
     //when we shoot flipspace tiles, this is how long before they heal
-    flipRemovedCooldown: 180,
+    flipRemovedCooldown: 240,
 
     vx: 0, 
     vy: 10,
@@ -205,10 +205,9 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
     //check exits for overlap------------------------
     world.portals.forEach(function(portal){
         if(self.rectCollision(portal) ){
-            //console.log('entered portal');
             let destinationMap = portal.properties.find(function(prop){return prop.name == 'destinationMap'}).value;
             let destinationSpawn = portal.properties.find(function(prop){return prop.name == 'destinationSpawn'}).value;
-            console.log(destinationMap, destinationSpawn);
+            // console.log(destinationMap, destinationSpawn);
             G.loadMap({map: destinationMap, spawnPoint: destinationSpawn });
             G.saver.save(G.gameKey);
             G.Records.update();
@@ -379,7 +378,7 @@ Player.muzzleFlash = function() {
         
 // emit a poof when we hit the ground after falling
 Player.landedFX = function() {
-    console.log("landedFX!");
+    // console.log("landedFX!");
     let max = rndInt(4,8);
     // small sparks
     for (let i=0; i<max; i++) {
@@ -457,14 +456,14 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
     
     if(this.vy < 0.5 && this.vy != 0){
         //this.falling = true;
-        console.log("in Air!")
+        // console.log("in Air!")
         this.inAir = true;
         this.facingLeft ? this.play('airLeft') : this.play('airRight');
     }
     if(this.vy > 0.5){
         this.falling = true;
         this.facingLeft ? this.play('fallingLeft') : this.play('fallingRight');
-        console.log("Falling!!")
+        // console.log("Falling!!")
     }
     if(Math.abs(this.vx) < 0.9 && !this.inAir && !this.falling){
         this.facingLeft ? this.play('idleLeft') : this.play('idleRight');
@@ -533,7 +532,7 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
     world.entities.forEach(function(obj){
         if(obj.type == 'barricade'){
             if(rectCollision(obj.rect, self.rect)){
-                console.log(obj);
+                // console.log(obj);
                 self.pos.x = self.prevX;
                 self.vx = 0;
             }
@@ -541,7 +540,7 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         if(obj.type == 'switch'){
             if(rectCollision(obj.rect, self.rect)){
                 //obj.active = true;
-                console.log(obj);
+                // console.log(obj);
             }
         }
         
