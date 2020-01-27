@@ -25,6 +25,11 @@ const BIRD = function BIRD({pos}={}){
     this.collideIndex = 1009;
     this.hazardTilesStartIndex = 113;
     this.hazardTilesEndIndex = 120;
+
+    this.wasHit = false;
+    this.timeSinceHit = 0;
+    this.flashTime = 0.05;//seconds
+    this.brightTime = 0;
     
     this.drawOffset = {x: 0, y: 0};
 
@@ -38,6 +43,25 @@ const BIRD = function BIRD({pos}={}){
 }
 
 BIRD.prototype.update = function update(dt){
+    if(this.wasHit) {
+        this.timeSinceHit += dt;
+        this.brightTime += dt;
+        if(this.timeSinceHit > this.flashTime) {
+            this.timeSinceHit = 0;
+            this.wasHit = false;
+            this.spritesheet.image = G.img.EnemyTinydiver;
+        } else {
+            if(this.brightTime > this.flashTime / 5) {
+                this.brightImages = 0;
+                if(this.spritesheet.image == G.img.EnemyTinydiver) {
+                    this.spritesheet.image = G.img.EnemyTinydiver;
+                } else {
+                    this.spritesheet.image = G.loader.brightImages.EnemyTinydiver;
+                }
+            }
+            
+        }
+    }
     this.currentAnimation.update(dt);
 
     if(this.isDiving) {
@@ -115,6 +139,8 @@ BIRD.prototype.update = function update(dt){
             }
             bullet.kill();
             self.health--;
+            self.wasHit = true;
+            self.spritesheet.image = G.loader.brightImages.EnemyTinydiver;
         }
     });
 

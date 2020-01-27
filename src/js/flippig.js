@@ -20,6 +20,10 @@ const PIG = function PIG({pos, pathWidth=3, source={}}={}){
     this.health = 16;
     this.healthMax = 16;
     this.movingRight = true;
+    this.wasHit = false;
+    this.timeSinceHit = 0;
+    this.flashTime = 0.05;//seconds
+    this.brightTime = 0;
 
     //Tiled xy is upper-left of tileObject and can't be changed in-editor
     //modifying actual position here to compensate
@@ -37,7 +41,25 @@ const PIG = function PIG({pos, pathWidth=3, source={}}={}){
 }
 
 PIG.prototype.update = function update(dt){
-
+    if(this.wasHit) {
+        this.timeSinceHit += dt;
+        this.brightTime += dt;
+        if(this.timeSinceHit > this.flashTime) {
+            this.timeSinceHit = 0;
+            this.wasHit = false;
+            this.spritesheet.image = G.img.EnemyTinycrawler;
+        } else {
+            if(this.brightTime > this.flashTime / 5) {
+                this.brightImages = 0;
+                if(this.spritesheet.image == G.img.EnemyTinycrawler) {
+                    this.spritesheet.image = G.img.EnemyTinycrawler;
+                } else {
+                    this.spritesheet.image = G.loader.brightImages.EnemyTinycrawler;
+                }
+            }
+            
+        }
+    }
     this.currentAnimation.update(dt);
 
     this.pos.x = this.pos.x + (this.movingRight ? this.speed*dt : -this.speed*dt);
@@ -71,6 +93,8 @@ PIG.prototype.update = function update(dt){
             }
             bullet.kill();
             self.health--;
+            self.wasHit = true;
+            self.spritesheet.image = G.loader.brightImages.EnemyTinycrawler;
         }
     });
 
