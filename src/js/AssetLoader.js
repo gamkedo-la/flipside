@@ -1,8 +1,10 @@
 const AssetLoader = function AssetLoader(){
     this.images = {};
+    this.brightImages = {};
     this.tileMaps = {};
     this.sounds = {};
     this.mapWorker = null;
+    this.brightImgWorker = null;
     return this;
 }
 AssetLoader.prototype.loadImages = function loadImages(names, callback) {
@@ -11,9 +13,11 @@ AssetLoader.prototype.loadImages = function loadImages(names, callback) {
         name,
         result = {},
         count  = names.length,
+        self = this,
         onload = function() {
             if(--count == 0){
                 this.images = result;
+                self.prepareBrightImages(result);
                 callback();
             }
         }
@@ -26,6 +30,38 @@ AssetLoader.prototype.loadImages = function loadImages(names, callback) {
     }
     
     return result;
+}
+
+AssetLoader.prototype.prepareBrightImages = function prepareBrightImages(inputImages) {
+  if(this.brightImgWorker == null) {
+    this.brightImgWorker = new Worker('src/js/imageBrightener.js');
+  }
+
+  const inputCanvas = document.createElement('canvas');
+  const inputContext = inputCanvas.getContext('2d');
+
+  const imageKeys = Object.keys(inputImages);
+  for(let key of imageKeys) {
+    if((key == "tiles") || ((key == "aap64"))) continue;
+    const image = inputImages[key];
+    inputCanvas.width = image.width;
+    inputCanvas.height = image.height;
+    inputContext.drawImage(image, 0, 0);
+    const imageData = inputContext.getImageData(0, 0, inputCanvas.width, inputCanvas.height);
+    this.brightImgWorker.postMessage({key:key, imageData: imageData, size:{width:image.width, height:image.height}});
+  }
+
+  let self = this;
+  this.brightImgWorker.onmessage = function(message) {
+    const outputCanvas = document.createElement('canvas');
+    const outputContext = outputCanvas.getContext('2d');
+  
+    self.brightImages[message.data.key] = document.createElement('img');
+    outputCanvas.width = message.data.size.width;
+    outputCanvas.height = message.data.size.height;
+    outputContext.putImageData(message.data.data, 0, 0);
+    self.brightImages[message.data.key].src = outputCanvas.toDataURL();
+  }
 }
 
 AssetLoader.prototype.loadFile = function loadFile(filePath, done){

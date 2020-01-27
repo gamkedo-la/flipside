@@ -27,6 +27,11 @@ const RoboTank = function RoboTank({pos}={}){
     this.pos = {x: pos.x, y: pos.y-11}; // put feet where bottom of Tiled icon appears
     this.drawOffset = {x: 4, y: -2}; // center the sprite when rendering
     this.gunOffset = {leftX: -14, rightX: 20, y: -3}; // where bullets come from
+    this.wasHit = false;
+    this.timeSinceHit = 0;
+    this.flashTime = 0.05;//seconds
+    this.brightTime = 0;
+
     this.healthBar = {
         xOffset: 0,
         yOffset: -ROBOTANK_H,
@@ -92,7 +97,25 @@ RoboTank.prototype.flameThrower = function() {
 }  
 
 RoboTank.prototype.update = function update(dt){
-
+    if(this.wasHit) {
+        this.timeSinceHit += dt;
+        this.brightTime += dt;
+        if(this.timeSinceHit > this.flashTime) {
+            this.timeSinceHit = 0;
+            this.wasHit = false;
+            this.spritesheet.image = G.img.EnemyRoboTank;
+        } else {
+            if(this.brightTime > this.flashTime / 5) {
+                this.brightImages = 0;
+                if(this.spritesheet.image == G.img.EnemyRoboTank) {
+                    this.spritesheet.image = G.img.EnemyRoboTank;
+                } else {
+                    this.spritesheet.image = G.loader.brightImages.EnemyRoboTank;
+                }
+            }
+            
+        }
+    }
     this.currentAnimation.update(dt);
 
     // FIXME: entity pos is 0,0,0 at spawn
@@ -146,6 +169,8 @@ RoboTank.prototype.update = function update(dt){
             bullet.kill();
             
             self.health--;
+            self.wasHit = true;
+            self.spritesheet.image = G.loader.brightImages.EnemyRoboTank;
         }
     });
 
