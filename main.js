@@ -463,7 +463,7 @@ function render(dt){
 
             if(gidFore > 0)gidFore -=1;
             if(worldForeground.data[flatIndex]){
-                drawTile(x,y, worldForeground, gidFore, img.tiles);
+                drawTile(drawX, drawY, worldForeground, gidFore, img.tiles);
              }
         }//end column render
     }//end x loop
