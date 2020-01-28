@@ -79,16 +79,16 @@ export function makeMosaic(flipped=false){ //totally stealing from deepnight her
 
 }
 
-export function drawTile(pos, world, gid, tileset='tiles'){
+export function drawTile(x, y, world, gid, tileset){
         let {img, ctx, tileSheetSize} = G
         ctx.drawImage(
-            img[tileset],
+            tileset,
             gid%tileSheetSize.height * world.tileSize,
             Math.floor(gid/tileSheetSize.width) * world.tileSize,
             world.tileSize,
             world.tileSize,
-            pos.x,
-            pos.y,
+            x,
+            y,
             world.tileSize, world.tileSize
             );
 }

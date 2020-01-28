@@ -36,23 +36,25 @@ Barricade.prototype.update = function update(dt){
     }
 
     var self = this;
-    G.bullets.forEach(function(bullet){
-        if(rectCollision(bullet.rect, self.rect)){
-            let splodeCount = 10;
-            while(--splodeCount){
-                G.particles.push(new Particle({
-                    x: bullet.pos.x,
-                    y: bullet.pos.y,
-                    vx: (bullet.vx > 0 ? -1 : 1)+ rndFloat(-1, 1), 
-                    vy: rndFloat(1, 2),
-                    life: 10,
-                    color: 27,
-                    width: 1,
-                    height: 1,
-                    type: 'bg'
-                }))
+    G.particles.forEach(function(bullet){
+        if(bullet.type == 'bullet'){
+            if(rectCollision(bullet.rect, self.rect)){
+                let splodeCount = 10;
+                while(--splodeCount){
+                    G.particles.push(new Particle({
+                        x: bullet.pos.x,
+                        y: bullet.pos.y,
+                        vx: (bullet.vx > 0 ? -1 : 1)+ rndFloat(-1, 1), 
+                        vy: rndFloat(1, 2),
+                        life: 10,
+                        color: 27,
+                        width: 1,
+                        height: 1,
+                        type: 'bg'
+                    }))
+                }
+                bullet.kill();
             }
-            bullet.kill();
         }
     });
 

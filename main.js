@@ -32,7 +32,7 @@ G.GamepadSupport = new GamepadSupport();
 
 //initialize and show the FPS/mem use counter
 const stats = new Stats();
-stats.showPanel( 0 ); // 0: fps, 1: ms, 2: mb, 3+: custom
+stats.showPanel( 2 ); // 0: fps, 1: ms, 2: mb, 3+: custom
 document.body.appendChild( stats.dom );
 
 //canvas init and other data init---------------------------------------------
@@ -246,7 +246,7 @@ function update(dt){
     handleCamera(dt);
 
     handleInput(dt);
-    G.bullets = G.particles.filter(function(particle){return particle.type=='bullet'});
+    //G.bullets = G.particles.filter(function(particle){return particle.type=='bullet'});
 
     G.particles.forEach(function(particle){
         if(particle.type == 'bullet'){
@@ -371,18 +371,18 @@ function render(dt){
     rb.clear(64);
 
     //render background parallax
-    var parallaxImage = img[world.parallax0];
+    //var parallaxImage = img[world.parallax0];
     //console.log(parallaxImage);
-    var bgWidth = parallaxImage.width;
-    var bgHeight = parallaxImage.height;
-    let bgPadding = 1; 
-    let bgTileWidth = Math.round( c.width / bgWidth ) + bgPadding * 2;
-    let bgTileHeight = Math.round( c.height / bgHeight ) + bgPadding * 2;
+    //var bgWidth = img[world.parallax0].width;
+    //var bgHeight = img[world.parallax0].height;
+    //let bgPadding = 1; 
+    //let bgTileWidth = (Math.round( c.width / img[world.parallax0].width ) + 1 * 2);
+    //let bgTileHeight = (Math.round( c.height / img[world.parallax0].width ) + 1 * 2);
     //console.log(bgTileWidth, bgTileHeight);
-    for(let i = -bgPadding; i <= bgTileWidth; i++){
-        for (let j = -bgPadding; j <= bgTileHeight; j++){
-            let x = i * bgWidth, y = j * bgHeight;
-            ctx.drawImage(parallaxImage, x,y);
+    for(let i = -1; i <= (Math.round( c.width / img[world.parallax0].width ) + 1 * 2); i++){
+        for (let j = -1; j <= (Math.round( c.height / img[world.parallax0].width ) + 1 * 2); j++){
+            let x = i * img[world.parallax0].width, y = j * img[world.parallax0].height;
+            ctx.drawImage(img[world.parallax0], x,y);
         }
     }
 
@@ -405,14 +405,10 @@ function render(dt){
             var drawX =     Math.floor(i*8 - view.x),
                 drawY =     Math.floor(j*8 - view.y),
                 flatIndex = j * world.widthInTiles + i,
-                gid = world.data[flatIndex];
-
-
-                gid-=1;
-                
+                gid = world.data[flatIndex]-1;
 
             if(worldFlipped.data[flatIndex] == 3){
-                drawTile({x:drawX, y:drawY}, world, gid, `tiles${rndInt(26,28)}`);
+                drawTile(drawX, drawY, world, gid, Math.random()>0.5? img.tiles26: img.tiles27 );
 
                 let Ngid = worldFlipped.data[flatIndex - world.widthInTiles],
                     Sgid = worldFlipped.data[flatIndex + world.widthInTiles],
@@ -441,7 +437,7 @@ function render(dt){
                 }
             }else{
                 //normalspace tile draw
-                drawTile({x:drawX, y:drawY}, world, gid);
+                drawTile(drawX, drawY, world, gid, img.tiles);
             }
 
         }//end column render
@@ -467,7 +463,7 @@ function render(dt){
 
             if(gidFore > 0)gidFore -=1;
             if(worldForeground.data[flatIndex]){
-                drawTile({x: drawX, y: drawY}, worldForeground, gidFore);
+                drawTile(x,y, worldForeground, gidFore, img.tiles);
              }
         }//end column render
     }//end x loop
