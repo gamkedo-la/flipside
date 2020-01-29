@@ -21,7 +21,7 @@ import Switch from './src/js/Switch.js';
 import GameSaver from './src/js/GameSaver.js';
 
 const invertedMosaicEffectEnabled = false;
-const soundEnabled = true;
+const soundEnabled = false;
 
 //one global (G)ame object to rule them all
 window.G = {};
@@ -164,7 +164,9 @@ function init(){
 
 }
 
-function soundInit(){
+// this not not ONLY the sound inits, it is init step two after images have downloaded
+// with optional sound inits as well as essential map loading and game start callbacks
+function soundInit(){ 
 
     //next we load our soundlist, passing in start as a callback once complete.
     //soundloader just gives loader the properties,  loadAudioBuffer actually decodes the files and
@@ -174,6 +176,8 @@ function soundInit(){
     if (soundEnabled) {
         loader.soundLoader({context: audio.context, urlList: soundList, callback: start});
         loader.loadAudioBuffer();
+    } else {
+        start();
     }
 }
 
