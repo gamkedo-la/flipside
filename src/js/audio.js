@@ -8,12 +8,12 @@ const CROSSFADE_TIME = 0.25;
 
 const AudioGlobal = function AudioGlobal() {
 
-var initialized = false;
-var audioCtx, musicBus, soundEffectsBus, filterBus, masterBus;
-var isMuted;
-var musicVolume;
-var soundEffectsVolume;
-var currentMusicTrack;
+    var initialized = false;
+    var audioCtx, musicBus, soundEffectsBus, filterBus, masterBus;
+    var isMuted;
+    var musicVolume;
+    var soundEffectsVolume;
+    var currentMusicTrack;
 
 //--//Set up WebAudioAPI nodes------------------------------------------------
     this.init = function() {
@@ -173,7 +173,7 @@ var currentMusicTrack;
 		filterBus.frequency.linearRampToValueAtTime(FILTER_MAX, audioCtx.currentTime + FILTER_TRANSITION_TIME*2);
 	}
 
-    this.init(); // FIXME: defer until after a user interation!
+    // this.init(); // FIXME: defer until after a user interation!
 
     return this;
 }

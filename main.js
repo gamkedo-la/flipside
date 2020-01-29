@@ -21,6 +21,7 @@ import Switch from './src/js/Switch.js';
 import GameSaver from './src/js/GameSaver.js';
 
 const invertedMosaicEffectEnabled = false;
+const soundEnabled = true;
 
 //one global (G)ame object to rule them all
 window.G = {};
@@ -57,7 +58,10 @@ G.MSG = new Signal();
 G.loader = new AssetLoader();
 //G.Records = new Records();
 
-G.audio = new AudioGlobal(); // FIXME: defer to after the first click/keypress to avoid browser error
+if (soundEnabled) {
+    G.audio = new AudioGlobal(); 
+    G.audio.init(); // FIXME: defer to after the first click/keypress to avoid browser error
+}
 G.lightning = new ElectricityRenderer();
 G.saver = new GameSaver();
 G.gameKey = 'game1';//TODO: User input to decide which game save to load
@@ -142,7 +146,7 @@ window.addEventListener('blur',     function (event) { paused = true; }, false);
 window.addEventListener('focus',    function (event) { paused = false; }, false);
 
 
-window.addEventListener('click', function(event) { audio.context.resume(); }, false); //Temporary fix for chrome not strting the audio context until user interaction
+window.addEventListener('click', function(event) { if (soundEnabled) audio.context.resume(); }, false); //Temporary fix for chrome not strting the audio context until user interaction
 
 G.MSG.addEventListener('achievement',  function (event) { console.log(`%c ACHIEVEMENT GET: ${event.detail.title}`, 'background: #8F0') });
 
@@ -166,14 +170,20 @@ function soundInit(){
     //soundloader just gives loader the properties,  loadAudioBuffer actually decodes the files and
     //creates a list of buffers.
     loadMap({map: G.currentMap, spawnPoint: G.savedGame.spawnPoint});
-    loader.soundLoader({context: audio.context, urlList: soundList, callback: start});
-    loader.loadAudioBuffer();
+
+    if (soundEnabled) {
+        loader.soundLoader({context: audio.context, urlList: soundList, callback: start});
+        loader.loadAudioBuffer();
+    }
 }
 
 function start(sounds){
-    //sounds..
-    G.sounds = sounds;
-    G.loader.sounds = sounds;
+    
+    if (soundEnabled) {
+        G.sounds = sounds;
+        G.loader.sounds = sounds;
+    }
+    
     //create player spritesheet and animations, and set a default animation
     player.init();
 
@@ -196,7 +206,7 @@ function start(sounds){
 
     //Fire it up!
     requestAnimationFrame(frame);
-    G.audio.playMusic(G.sounds.testMusic1);
+    if (soundEnabled) G.audio.playMusic(G.sounds.testMusic1);
 }
 
 //game loop--------------------------------------------------------------------
