@@ -1,8 +1,10 @@
 import { inView } from './util.js'
 import { rndOneFrom, range, rndFloat, rndInt } from './math.js';
-const Particle = function Particle({x,y,vx,vy,color=22,width=1,height=1, life = 40, type='particle'}={}){
-    this.pos = {x: x, y: y};
-    this.oldPos = {x: 0, y: 0};
+const Particle = function Particle(x, y , vx, vy, color=22, width=1, height=1, life = 40, type='particle'){
+    this.x = x;
+    this.y = y;
+    this.prevX = 0;
+    this.prevY = 0;
     this.width = width;
     this.height = height;
     this.vx = vx;
@@ -21,13 +23,12 @@ const Particle = function Particle({x,y,vx,vy,color=22,width=1,height=1, life = 
 }
 
 Particle.prototype.draw = function draw(){
-    let { ctx, view } = G;
-    this.oldPos = this.pos
+    let { view } = G;
 
-    let sx = this.pos.x - view.x;
-    let sy = this.pos.y - view.y;
+    let sx = this.x - view.x;
+    let sy = this.y - view.y;
 
-    if(inView(this.pos)){
+    if(inView(this.x,this.y)){
 
         switch(this.type) {
             case  'jetBubble':
@@ -60,14 +61,15 @@ Particle.prototype.draw = function draw(){
 
 Particle.prototype.update = function update(world){
     this.life--
-    this.oldPos = this.pos;
-    this.pos.x += this.vx;
-    this.pos.y += this.vy;
+    this.prevX = this.x;
+    this.prevY = this.y;
+    this.x += this.vx;
+    this.y += this.vy;
     this.rect = {
-        top: this.pos.y - this.height/2,
-        left: this.pos.x - this.width/2,
-        right: this.pos.x + this.width/2,
-        bottom: this.pos.y + this.height/2
+        top: this.y - this.height/2,
+        left: this.x - this.width/2,
+        right: this.x + this.width/2,
+        bottom: this.y + this.height/2
     }
     
     if(this.life < 0)this.kill();

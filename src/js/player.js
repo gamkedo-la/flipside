@@ -268,17 +268,17 @@ Player.inTheFlipPhysics = function inTheFlipPhysics(dt, world, worldFlipped){
         let gunLeft = this.pos.x - 6;
         let gunRight = this.pos.x + 6;
         let gunYoffset = -1;
-        G.particles.push(new Particle({
-            x: this.pos.x,
-            y: this.pos.y,
-            vx: -this.vx/50,
-            vy: -this.vy/50,
-            color: 22,
-            width: 3, 
-            height: 3,
-            life: 50,
-            type: 'jetBubble'
-        }))
+        G.particles.push(new Particle(
+            this.pos.x,
+            this.pos.y,
+            -this.vx/50,
+            -this.vy/50,
+            22,
+            3, 
+            3,
+            50,
+            'jetBubble'
+        ))
         if(this.input.down){
             this.vy += this.accel;
         }
@@ -347,32 +347,32 @@ Player.muzzleFlash = function() {
     //console.log("Muzzleflash!");
     let max = rndInt(1,3);
     // big poof
-    G.particles.push(new Particle({
-        x: rndFloat(-1,1)+(this.facingLeft ? this.pos.x+this.gunOffset.leftX : this.pos.x+this.gunOffset.rightX), // gunXOffset
-        y: rndFloat(-1,1)+(this.pos.y + this.crouching ? 1: -4 ), // gunYOffset
-        vx: this.facingLeft?rndFloat(-1,0):rndFloat(0,1),
-        vy: rndFloat(1,1),
-        color: rndInt(7,10), // yellow
-        width: 6, 
-        height: 6,
-        life: 1,
-        type: 'particle'
-    })) ;   
+    G.particles.push(new Particle(
+        rndFloat(-1,1)+(this.facingLeft ? this.pos.x+this.gunOffset.leftX : this.pos.x+this.gunOffset.rightX), // gunXOffset
+        rndFloat(-1,1)+(this.pos.y + this.crouching ? 1: -4 ), // gunYOffset
+        this.facingLeft?rndFloat(-1,0):rndFloat(0,1),
+        rndFloat(1,1),
+        rndInt(7,10), // yellow
+        6, 
+        6,
+        1,
+        'particle'
+    )) ;   
     
     max = rndInt(6,12);
     // small sparks
     for (let i=0; i<max; i++) {
-        G.particles.push(new Particle({
-            x: this.facingLeft ? this.pos.x+this.gunOffset.leftX : this.pos.x+this.gunOffset.rightX, // gunXOffset
-            y: this.pos.y+ this.crouching ? 1 : -4, // gunYOffset
-            vx: this.facingLeft?rndFloat(-2,-4):rndFloat(2,4),
-            vy: rndFloat(-2,2),
-            color: rndInt(1,9), // black to red to yellow
-            width: 3, 
-            height: 3,
-            life: 4,
-            type: 'particle'
-        })) ;   
+        G.particles.push(new Particle(
+            this.facingLeft ? this.pos.x+this.gunOffset.leftX : this.pos.x+this.gunOffset.rightX, // gunXOffset
+            this.pos.y+ this.crouching ? 1 : -4, // gunYOffset
+            this.facingLeft?rndFloat(-2,-4):rndFloat(2,4),
+            rndFloat(-2,2),
+            rndInt(1,9), // black to red to yellow
+            3, 
+            3,
+            4,
+            'particle'
+        )) ;   
     }
 }    
         
@@ -382,17 +382,17 @@ Player.landedFX = function() {
     let max = rndInt(4,8);
     // small sparks
     for (let i=0; i<max; i++) {
-        G.particles.push(new Particle({
-            x: this.pos.x+4+rndFloat(-2,2),
-            y: this.pos.y+20+rndFloat(-2,-6), // foot offset
-            vx: rndFloat(-0.5,0.5),
-            vy: rndFloat(-0.1,-0.25),
-            color: rndInt(58,63), // sandy dirt color
-            width: 1, 
-            height: 1,
-            life: 20,
-            type: 'particle'
-        })) ;   
+        G.particles.push(new Particle(
+            this.pos.x+4+rndFloat(-2,2),
+            this.pos.y+20+rndFloat(-2,-6), // foot offset
+            rndFloat(-0.5,0.5),
+            rndFloat(-0.1,-0.25),
+            rndInt(58,63), // sandy dirt color
+            1, 
+            1,
+            20,
+            'particle'
+        )) ;   
     }
 }
 
@@ -416,17 +416,17 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         this.muzzleFlash();
 
         let gunYoffset = this.crouching? 7 : -3;
-        G.particles.push(new Particle({
-            x: this.facingLeft ? this.pos.x+this.gunOffset.leftX : this.pos.x+this.gunOffset.rightX,
-            y: this.pos.y + gunYoffset,
-            vx:this.facingLeft ? -this.bulletVX + (this.vx/100) : this.bulletVX + (this.vx/100),
-            vy: this.aimingUp ? -this.bulletVYdefault : 0,
-            color: 22,
-            width: 3, 
-            height: 3,
-            life: 50,
-            type: 'bullet'
-        }))
+        G.particles.push(new Particle(
+            this.facingLeft ? this.pos.x+this.gunOffset.leftX : this.pos.x+this.gunOffset.rightX,
+            this.pos.y + gunYoffset,
+            this.facingLeft ? -this.bulletVX + (this.vx/100) : this.bulletVX + (this.vx/100),
+            this.aimingUp ? -this.bulletVYdefault : 0,
+            22,
+            3, 
+            3,
+            50,
+            'bullet'
+        ))
     } else if (this.gunCooldown) {
         this.gunCooldown--;
     }
@@ -437,17 +437,17 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         this.muzzleFlash();
 
         let gunYoffset = this.crouching? 1 : -4;
-        G.particles.push(new Particle({
-            x: this.facingLeft ? this.pos.x+this.gunOffset.leftX : this.pos.x+this.gunOffset.rightX,
-            y: this.pos.y + gunYoffset,
-            vx: this.facingLeft ? -5: 5,
-            vy: 0,
-            color: 26,
-            width: 3, 
-            height: 3,
-            life: 50,
-            type: 'bulletFlipped'
-        }))
+        G.particles.push(new Particle(
+            this.facingLeft ? this.pos.x+this.gunOffset.leftX : this.pos.x+this.gunOffset.rightX,
+            this.pos.y + gunYoffset,
+            this.facingLeft ? -5: 5,
+            0,
+            26,
+            3, 
+            3,
+            50,
+            'bulletFlipped'
+        ))
     } else if (this.gunCooldown) {
         this.gunCooldown--;
     }
@@ -556,7 +556,7 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
     
 
     if(!this.fallthru && this.prevY < this.pos.y){
-        let gid = G.world.pixelToTileID({x:this.pos.x, y: (this.pos.y+this.height/2)-3 })
+        let gid = G.world.pixelToTileID(this.pos.x,(this.pos.y+this.height/2)-3)
         if(gid >= this.cloudTilesStartIndex && gid <= this.cloudTilesEndIndex){
         //console.log('cloud');
         this.falling = false;
@@ -604,7 +604,7 @@ Player.tileCollisionCheck = function tileCollisionCheck(world, tileCheck){
     
     for(let i = leftTile; i <=rightTile; i++){
         for(let j = topTile; j<= bottomTile; j++){
-            let tile = world.getTileAtPosition({tx: i, ty: j})
+            let tile = world.getTileAtPosition(i, j)
 
             // G.debugEvents.push(
             // `G.ctx.fillStyle = 'rgba(255,255,0,0.15)';
@@ -635,7 +635,7 @@ Player.withinCheck = function tileCollisionCheck(world, tileCheck){
     
     for(let i = leftTile; i <=rightTile; i++){
         for(let j = topTile; j<= bottomTile; j++){
-            let tile = world.getTileAtPosition({tx: i, ty: j})
+            let tile = world.getTileAtPosition(i, j)
 
                 if(!tileCheck(tile)){return false};
             }
@@ -779,17 +779,17 @@ Player.hurt = function(params){
     if(!this.hurtCooldown){
         let hurtParticleCount = 20;
         while(--hurtParticleCount){
-            G.particles.push(new Particle({
-                x: this.pos.x,
-                y: this.pos.y,
-                vx: -this.vx/50+rndFloat(-2,2),
-                vy: -this.vy/50+rndFloat(-2,2),
-                color: 4,
-                width: 2, 
-                height: 2,
-                life: 20,
-                type: 'blood'
-            }))
+            G.particles.push(new Particle(
+                this.pos.x,
+                this.pos.y,
+                -this.vx/50+rndFloat(-2,2),
+                -this.vy/50+rndFloat(-2,2),
+                4,
+                2, 
+                2,
+                20,
+                'blood'
+            ))
         }
 
         this.hurtCooldown = this.hurtCooldownMax;
@@ -837,34 +837,34 @@ Player.pickup = function(params){
     G.Records.playerStats.totals.nanitesCollected+=params.amount
     let particles = 40;
     while(--particles){
-        G.particles.push(new Particle({
-            x: params.x,
-            y: params.y,
-            vx: rndFloat(-5,5),
-            vy: rndFloat(-5,10),
-            color: 12,
-            width: 1, 
-            height: 1,
-            life: 30,
-            type: 'particle'
-        }))
+        G.particles.push(new Particle(
+            params.x,
+            params.y,
+            rndFloat(-5,5),
+            rndFloat(-5,10),
+            12,
+            1, 
+            1,
+            30,
+            'particle'
+        ))
     }
 }
 
 Player.crossedOver = function() {
 let particles = 10;
 while(--particles){
-    G.particles.push(new Particle({
-        x: this.pos.x,
-        y: this.pos.y,
-        vx: -this.vx/50+rndFloat(-2, 2),
-        vy: -this.vy/50+rndFloat(-2, 2),
-        color: 22,
-        width: 3, 
-        height: 3,
-        life: 40,
-        type: 'crossBubble'
-    }))
+    G.particles.push(new Particle(
+        this.pos.x,
+        this.pos.y,
+        -this.vx/50+rndFloat(-2, 2),
+        -this.vy/50+rndFloat(-2, 2),
+        22,
+        3, 
+        3,
+        40,
+        'crossBubble'
+    ))
 }
 }
 

@@ -49,7 +49,7 @@ RoboTank.prototype.canWalkForward = function() {
     let yofs = 1;
     let tilePos = {};
     let blocked = false;
-    let maxTileIndex = G.player.collideIndex; // FIXME this is a lame way to grab this number
+    let maxTileIndex = G.player.collideIndex; //this is a lazy GAMEJAMMERY way to grab this number 
     let tileHit = 0;
 
     // is there a wall in front of me?
@@ -82,17 +82,17 @@ RoboTank.prototype.flameThrower = function() {
     //console.log("Flame Thrower!");
     let max = rndInt(6,12);
     for (let i=0; i<max; i++) {
-        G.particles.push(new Particle({
-            x: this.goingLeft ? this.pos.x+this.gunOffset.rightX : this.pos.x+this.gunOffset.leftX, // gunXOffset
-            y: this.pos.y + this.gunOffset.y, // gunYOffset
-            vx: this.goingLeft?rndFloat(0.5,2):rndFloat(-0.5,-2),
-            vy: rndFloat(-0.25,0.25),
-            color: rndInt(1,9), // black to red to yellow
-            width: 2, 
-            height: 2,
-            life: 20,
-            type: 'fire'
-        })) ;   
+        G.particles.push(new Particle(
+            this.goingLeft ? this.pos.x+this.gunOffset.rightX : this.pos.x+this.gunOffset.leftX, // gunXOffset
+            this.pos.y + this.gunOffset.y, // gunYOffset
+            this.goingLeft?rndFloat(0.5,2):rndFloat(-0.5,-2),
+            rndFloat(-0.25,0.25),
+            rndInt(1,9), // black to red to yellow
+            2, 
+            2,
+            20,
+            'fire'
+        )) ;   
     }
 }  
 
@@ -155,17 +155,17 @@ RoboTank.prototype.update = function update(dt){
             if(rectCollision(bullet.rect, self.rect)){
                 let splodeCount = 10;
                 while(--splodeCount){
-                    G.particles.push(new Particle({
-                        x: bullet.pos.x,
-                        y: bullet.pos.y,
-                        vx: (bullet.vx > 0 ? -1 : 1)+ rndFloat(-1, 1), 
-                        vy: rndFloat(1, 2),
-                        life: 10,
-                        color: 27,
-                        width: 1,
-                        height: 1,
-                        type: 'bg'
-                    }))
+                    G.particles.push(new Particle(
+                        bullet.x,
+                        bullet.y,
+                        (bullet.vx > 0 ? -1 : 1)+ rndFloat(-1, 1), 
+                        rndFloat(1, 2),
+                        27,
+                        1,
+                        1,
+                        10,
+                        'bg'
+                    ))
                 }
                 bullet.kill();
                 
@@ -252,17 +252,17 @@ RoboTank.prototype.kill = function kill(){
     //splodey splode
     let splodeCount = 32;
             while(--splodeCount){
-                G.particles.push(new Particle({
-                    x: this.pos.x,
-                    y: this.pos.y,
-                    vx: rndFloat(-1.5, 1.5), 
-                    vy: rndFloat(-0.5, 1.5),
-                    life: 15,
-                    color: 27,
-                    width: 2,
-                    height: 2,
-                    type: 'bg'
-                }))
+                G.particles.push(new Particle(
+                    this.pos.x,
+                    this.pos.y,
+                    rndFloat(-1.5, 1.5), 
+                    rndFloat(-0.5, 1.5),
+                    27,
+                    2,
+                    2,
+                    15,
+                    'bg'
+                ))
             }
     
     G.world.entities.splice(G.world.entities.indexOf(this), 1);

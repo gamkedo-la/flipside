@@ -1,4 +1,4 @@
-function RetroBuffer({width, height}={}){
+function RetroBuffer(width, height){
 
   this.WIDTH =     width;
   this.HEIGHT =    height;

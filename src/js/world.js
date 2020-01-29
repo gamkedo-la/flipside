@@ -1,56 +1,54 @@
-const World = function World(params={
-    widthInTiles: 100,
-    heightInTiles: 100,
-    tileSize: 8
-}){
-    this.heightInTiles = params.heightInTiles;
-    this.widthInTiles = params.widthInTiles;
-    this.tileSize = params.tileSize;
-    this.data = new Uint16Array(params.widthInTiles * params.heightInTiles);
+const World = function World(widthInTiles=100, heightInTiles=100, tileSize=8){
+    this.heightInTiles = heightInTiles;
+    this.widthInTiles = widthInTiles;
+    this.tileSize = tileSize;
+    this.data = new Uint16Array(widthInTiles * heightInTiles);
     this.portals = [];
     this.spawnPoints = [];
+    this.spawnPoints = [];
+    this.lightningSpawners = [];
+    this.entities = [];
+
     return this;
 }
 
-World.prototype.getTileAtPosition = function getTileAtPosition(pos={tx:0, ty:0}){
-    return this.data[this.widthInTiles*pos.ty + pos.tx];
+World.prototype.getTileAtPosition = function getTileAtPosition(tx, ty){
+    return this.data[this.widthInTiles*ty + tx];
 }
 
-World.prototype.setTileAtPosition = function setTileAtPosition(pos={tx:0, ty:0}, value=1){
-    return this.data[this.widthInTiles*pos.ty + pos.tx] = value;
+World.prototype.setTileAtPosition = function setTileAtPosition(tx, ty, value=1){
+    return this.data[this.widthInTiles*ty + tx] = value;
 }
 
 
-World.prototype.getIndexAtPosition = function getIndexAtPosition(pos={tx:0, ty:0}){
-    return this.widthInTiles*pos.ty + pos.tx;
+World.prototype.getIndexAtPosition = function getIndexAtPosition(tx, ty){
+    return this.widthInTiles*ty + tx;
 }
 
-World.prototype.pixelToTileID = function pixelToTileID(params = {x:0, y:0}){
-    return this.data[this.pixelToTileIndex(params)];
+World.prototype.pixelToTileID = function pixelToTileID(x, y){
+    return this.data[this.pixelToTileIndex(x, y)];
 }
 
-World.prototype.pixelToTileIndex = function pixelToTileIndex(params = {x:0, y:0}){
-    let tx = Math.round(params.x / this.tileSize);
-    let ty = Math.round(params.y / this.tileSize);
-    return this.getIndexAtPosition({tx: tx, ty: ty});
+World.prototype.pixelToTileIndex = function pixelToTileIndex(x, y){
+    let tx = Math.round(x / this.tileSize);
+    let ty = Math.round(y / this.tileSize);
+    return this.getIndexAtPosition(tx, ty);
 }
 
-World.prototype.pixelToTileGrid = function pixelToTileGrid(params = {x:0, y:0}){
+World.prototype.pixelToTileGrid = function pixelToTileGrid(x, y){
     return {
-            x: Math.round(params.x / this.tileSize),
-            y: Math.round(params.y / this.tileSize)
+            x: Math.round(x / this.tileSize),
+            y: Math.round(y / this.tileSize)
             }
 }
 
-World.prototype.drawLine = function drawLine(params={
-    x1: 0, x2: 0, y1: 0, y2: 0, value: 1
-}) {
+World.prototype.drawLine = function drawLine( x1, x2, y1, y2, value ) {
     
-    var x1 = params.x1|0;
-    var x2 = params.x2|0;
-    var y1 = params.y1|0;
-    var y2 = params.y2|0;
-    var value = params.value|0;
+    var x1 = x1|0;
+    var x2 = x2|0;
+    var y1 = y1|0;
+    var y2 = y2|0;
+    var value = value|0;
 
     var dy = (y2 - y1);
     var dx = (x2 - x1);
@@ -65,7 +63,7 @@ World.prototype.drawLine = function drawLine(params={
     dy <<= 1;        // dy is now 2*dy
     dx <<= 1;        // dx is now 2*dx
 
-    this.setTileAtPosition({x: x1, y: y1}, value);
+    this.setTileAtPosition(x1, y1, value);
 
     if (dx > dy) {
       var fraction = dy - (dx >> 1);  // same as 2*dy - dx
@@ -76,7 +74,7 @@ World.prototype.drawLine = function drawLine(params={
         }
         x1 += stepx;
         fraction += dy;              // same as fraction -= 2*dy
-        this.setTileAtPosition({x: x1, y: y1}, value);
+        this.setTileAtPosition(x1, y1, value);
       }
       ;
     } else {
@@ -88,19 +86,17 @@ World.prototype.drawLine = function drawLine(params={
         }
         y1 += stepy;
         fraction += dx;
-        this.setTileAtPosition({x: x1, y: y1}, params.value);
+        this.setTileAtPosition(x1, y1, value);
       }
     }
 
   }
 
-World.prototype.tileFillRect = function tileFillRect(params = {
-    tx: 0, ty: 0, width: 1, height: 1, value: 1,
-}){
-    for(let i = params.ty; i <= params.ty + params.height; i++){
-        let start = this.widthInTiles * i + params.tx;
-        let finish = start + params.width+1;
-        this.data.fill(params.value, start, finish);
+World.prototype.tileFillRect = function tileFillRect( tx, ty, width, height, value ){
+    for(let i = ty; i <= ty + height; i++){
+        let start = this.widthInTiles * i + tx;
+        let finish = start + width+1;
+        this.data.fill(value, start, finish);
     }
 }
 
@@ -114,14 +110,12 @@ World.prototype.tileFillRectRandom = function tileFillRectRandom(params = {
     }
 }
 
-World.prototype.tileFillCircle = function tileFillCircle(params = {
-    tx: 0, ty: 0, radius: 1, value: 1,
-}){
-    let rad = Math.floor(params.radius);
+World.prototype.tileFillCircle = function tileFillCircle( tx, ty, radius, value ){
+    let rad = Math.floor(radius);
     for(let y = -rad; y <= rad; y++){
         for(let x = -rad; x <=rad; x++){
             if(x*x+y*y <= rad*rad){
-                this.data[this.getIndexAtPosition({tx: params.tx+x, ty: params.ty+y})] = params.value;
+                this.data[this.getIndexAtPosition(tx+x, ty+y)] = value;
             }
             
         }

@@ -1,5 +1,5 @@
 import Stats from './src/js/stats.module.js';
-import { Key, inView } from './src/js/util.js';
+import { Key, inView, pos } from './src/js/util.js';
 import { clearScreen, makeMosaic, drawTile, spriteFont, preRenderBlendedSprite, Transitioner } from './src/js/graphics.js'
 import World from './src/js/world.js';
 import player from './src/js/player.js';
@@ -8,7 +8,7 @@ import AssetLoader from './src/js/AssetLoader.js';
 import AudioGlobal from './src/js/audio.js';
 import Signal from './src/js/Signal.js';
 import Particle from './src/js/particle.js';
-import GamepadSupport from './src/js/gamepad.js';
+//import GamepadSupport from './src/js/gamepad.js';
 import ElectricityRenderer from './src/js/electricity.js';
 import RetroBuffer from './src/js/retroBuffer.js';
 import FlipBat from './src/js/flipbat.js';
@@ -24,15 +24,16 @@ const invertedMosaicEffectEnabled = false;
 
 //one global (G)ame object to rule them all
 window.G = {};
+G.pos = {x: 0, y: 0};
 G.transitioning = false;
 
 
 // start the gamepad keyboard event emulator
-G.GamepadSupport = new GamepadSupport();
+//G.GamepadSupport = new GamepadSupport();
 
 //initialize and show the FPS/mem use counter
 const stats = new Stats();
-stats.showPanel( 2 ); // 0: fps, 1: ms, 2: mb, 3+: custom
+stats.showPanel( 1 ); // 0: fps, 1: ms, 2: mb, 3+: custom
 document.body.appendChild( stats.dom );
 
 //canvas init and other data init---------------------------------------------
@@ -108,7 +109,7 @@ const soundList = [
 ]
 
 //retro buffer, for no AA lines, circles, indexed-color raster drawing;
-G.rb = new RetroBuffer({width: 427, height: 240});
+G.rb = new RetroBuffer(427,240);
 G.rb.c.id="retrobuffer";
 document.body.appendChild(G.rb.c);
 
@@ -257,7 +258,7 @@ function update(dt){
                 splodeCount = 6;
                 velX = 0;
                 randX = 1.5;
-            } else if (G.world.data[G.world.pixelToTileIndex(particle.pos)] > G.player.collideIndex) {
+            } else if (G.world.data[G.world.pixelToTileIndex(particle.x, particle.y)] > G.player.collideIndex) {
                 splodeCount = 3;
                 velX = -particle.vx/5;
                 randX = 0.5;
@@ -266,20 +267,20 @@ function update(dt){
 
              while(--splodeCount){
                 //console.log('making splode')
-                G.particles.push(new Particle({
-                    x: Math.round(particle.pos.x/8)*8,
-                    y: particle.pos.y,
-                    vx: velX + rndFloat(-randX, randX),
-                    vy: rndFloat(-2, 2),
-                    life: 10,
-                    color: 8,
-                    width: 1,
-                    height: 1,
-                    type: 'bg'
-                }))
+                G.particles.push(new Particle(
+                    Math.round(particle.x/8)*8,
+                    particle.y,
+                    velX + rndFloat(-randX, randX),
+                    rndFloat(-2, 2),
+                    10,
+                    1,
+                    1,
+                    8,
+                    'bg'
+                ))
             }
         }
-        var flippedIndex = G.world.pixelToTileIndex(particle.pos)
+        var flippedIndex = G.world.pixelToTileIndex(particle.x, particle.y)
         var flippedGID = G.worldFlipped.data[flippedIndex]
         if(flippedGID == 3){
             particle.vx *= 0.9;
@@ -288,55 +289,56 @@ function update(dt){
             //particle.color = 27;
             if(particle.type == 'bullet'){
                 //magic number is amount of ticks before it returns to being flipspace
-                G.worldFlipped.tileFillCircle({
-                    tx: Math.floor(particle.pos.x/8),
-                    ty: Math.floor(particle.pos.y/8),
-                    radius: 2,
-                    value: G.player.flipRemovedCooldown+rndInt(-20,20)
-                })  
+                G.worldFlipped.tileFillCircle(
+                    Math.floor(particle.x/8),
+                    Math.floor(particle.y/8),
+                    2,
+                    G.player.flipRemovedCooldown+rndInt(-20,20)
+                )  
                 
                // G.worldFlipped.data[flippedIndex]+=G.player.flipRemovedCooldown+rndInt(-20, 20);
                 let splodeCount = 6;
             while(--splodeCount){
                 //console.log('making splode')
-                G.particles.push(new Particle({
-                    x: particle.pos.x,
-                    y: particle.pos.y,
-                    vx: -particle.vx/5 + rndFloat(-0.5,0.5),
-                    vy: rndFloat(-3, 3),
-                    life: 10,
-                    color: 26,
-                    width: 1,
-                    height: 1,
-                    type: 'bg'
-                }))
+                G.particles.push(new Particle(
+                    particle.x,
+                    particle.y,
+                    -particle.vx/5 + rndFloat(-0.5,0.5),
+                    rndFloat(-3, 3),
+                    10,
+                    1,
+                    1,
+                    26,
+                    'bg'
+                ))
             }
             particle.life = 0;
             }
+
             if(particle.type == 'bulletFlipped'){
                 //magic number is amount of ticks before it returns to being flipspace
-                G.worldFlipped.tileFillCircle({
-                    tx: Math.floor(particle.pos.x/8),
-                    ty: Math.floor(particle.pos.y/8),
-                    radius: 2,
-                    value: 3
-                })  
+                G.worldFlipped.tileFillCircle(
+                    Math.floor(particle.x/8),
+                    Math.floor(particle.y/8),
+                    2,
+                    3
+                )  
                 
                // G.worldFlipped.data[flippedIndex]+=G.player.flipRemovedCooldown+rndInt(-20, 20);
-                let splodeCount = 6;
+            let splodeCount = 6;
             while(--splodeCount){
                 //console.log('making splode')
-                G.particles.push(new Particle({
-                    x: particle.pos.x,
-                    y: particle.pos.y,
-                    vx: -particle.vx/5 + rndFloat(-0.5,0.5),
-                    vy: rndFloat(-3, 3),
-                    life: 10,
-                    color: 26,
-                    width: 1,
-                    height: 1,
-                    type: 'bg'
-                }))
+                G.particles.push(new Particle(
+                    particle.x,
+                    particle.y,
+                    -particle.vx/5 + rndFloat(-0.5,0.5),
+                    rndFloat(-3, 3),
+                    10,
+                    26,
+                    1,
+                    1,
+                    'bg'
+                ));
             }
             particle.life = 0;
             }
@@ -364,7 +366,7 @@ function update(dt){
 }
 
 function render(dt){
-    let {world, worldFlipped, worldForeground, img, particles, rb } = G;
+    let {world, worldFlipped, worldForeground, img, rb } = G;
     //draw all the things
 
     clearScreen('black');
@@ -446,7 +448,7 @@ function render(dt){
 
     //render AABB's, including pickups and baddies
     G.world.entities.forEach(function(e){
-        if(inView(e.pos)){
+        if(inView(e.pos.x, e.pos.y)){
             e.render();
         }
     });
@@ -469,7 +471,7 @@ function render(dt){
     }//end x loop
     G.particles.forEach(function(particle){
         
-        if(world.data[world.pixelToTileIndex(particle.pos)] < G.player.collideIndex){
+        if(world.data[world.pixelToTileIndex(particle.x,particle.y)] < G.player.collideIndex){
             particle.draw();
         }
         
@@ -478,22 +480,22 @@ function render(dt){
     // TEMP TEST: work in progress electricity bolt line renderer
     //G.lightning.stressTest();
 
-    world.lightningSpawners.forEach(function(e){
-        if(e.width > e.height){
-            let x1 = e.x - G.view.x;
-            let y1 = e.y - G.view.y + rndInt(0, e.height);
-            let x0 = e.x  + e.width - G.view.x;
-            let y0 = e.y - G.view.y + rndInt(0, e.height);
-            G.lightning.drawZap({x: x0, y: y0}, {x: x1, y: y1})
-        } else {
-            let x1 = e.x - G.view.x + rndInt(0, e.width);
-            let y1 = e.y - G.view.y;
-            let x0 = e.x - G.view.x + rndInt(0, e.width);
-            let y0 = e.y + e.height - G.view.y;
-            G.lightning.drawZap({x: x0, y: y0}, {x: x1, y: y1})
-        }
+    // world.lightningSpawners.forEach(function(e){
+    //     if(e.width > e.height){
+    //         let x1 = e.x - G.view.x;
+    //         let y1 = e.y - G.view.y + rndInt(0, e.height);
+    //         let x0 = e.x  + e.width - G.view.x;
+    //         let y0 = e.y - G.view.y + rndInt(0, e.height);
+    //         G.lightning.drawZap(x0,y0,x1,y1)
+    //     } else {
+    //         let x1 = e.x - G.view.x + rndInt(0, e.width);
+    //         let y1 = e.y - G.view.y;
+    //         let x0 = e.x - G.view.x + rndInt(0, e.width);
+    //         let y0 = e.y + e.height - G.view.y;
+    //         G.lightning.drawZap(x0,y0,x1,y1);
+    //     }
         
-    })
+    // })
 
     
     UIRender();

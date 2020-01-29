@@ -6,64 +6,64 @@ const SPARK_CHANCE = 0.25; // if >0 ends of line occasionally spark
 const ElectricityRenderer = function ElectricityRenderer()
 {
     // multi-line electricity effect
-    this.drawZap = function(startPos,endPos) {
+    this.drawZap = function(x0,y0,x1,y1) {
         G.ctx.save();
         G.ctx.globalCompositeOperation = 'screen';
-        this.bolt(startPos,endPos,1,2,20,"rgba(255,255,255,1)");
-        this.bolt(startPos,endPos,1,3,20,"rgba(0,190,255,1)");
-        this.bolt(startPos,endPos,1,5,20,"rgba(0,190,255,1)");
-        this.bolt(startPos,endPos,1,6,20,"rgba(0,128,255,1)");
-        if (SPARK_CHANCE>0 && Math.random()<SPARK_CHANCE) this.spark(startPos.x,startPos.y);
-        if (SPARK_CHANCE>0 && Math.random()<SPARK_CHANCE) this.spark(endPos.x,endPos.y);
+        this.bolt(x0,y0,x1,y1,20,"rgba(255,255,255,1)");
+        this.bolt(x0,y0,x1,y1,1,3,20,"rgba(0,190,255,1)");
+        this.bolt(x0,y0,x1,y1,1,5,20,"rgba(0,190,255,1)");
+        this.bolt(x0,y0,x1,y1,1,6,20,"rgba(0,128,255,1)");
+        if (SPARK_CHANCE>0 && Math.random()<SPARK_CHANCE) this.spark(x0,y0);
+        if (SPARK_CHANCE>0 && Math.random()<SPARK_CHANCE) this.spark(x1,y1);
         G.ctx.restore();
-        //this.bolt(startPos,endPos,1,4,20,"rgba(0,0,255)");
+        //this.bolt(x0,y0,x1,y1,1,4,20,"rgba(0,0,255)");
     }
 
     this.spark = function(x,y) {
         // particles already accounts for camera position
         x += G.view.x;
         y += G.view.y;
-        G.particles.push(new Particle({
-            x: x,
-            y: y,
-            vx: Math.random()*4-2,
-            vy: Math.random()*4-2,
-            color: rndInt(16,22), // blue to white
-            width: 1, 
-            height: 1,
-            life: 10,
-            type: 'particle'
-        })) ;       
+        G.particles.push(new Particle(
+            x,
+            y,
+            Math.random()*4-2,
+            Math.random()*4-2,
+            rndInt(16,22), // blue to white
+            1, 
+            1,
+            10,
+            'particle'
+        )) ;       
     }
 
     // canvas line drawing version, looks better
-    this.bolt = function(startPos,endPos,width=1,chaos=6,numChunks=10,rgba="rgba(0,255,255)") {
+    this.bolt = function(x0,y0,x1,y1,width=1,chaos=6,numChunks=10,rgba="rgba(0,255,255)") {
         let {img, ctx, tileSheetSize} = G;
 
         ctx.beginPath();
         ctx.beginPath();
         ctx.strokeStyle = rgba;
         ctx.lineWidth = width;
-        ctx.moveTo(startPos.x,startPos.y);
+        ctx.moveTo(x0,y0);
 
         for (let chunk=0; chunk<numChunks-1; chunk++) {
             let percent = (chunk+1) / numChunks;
             // linear interp
-            let x = startPos.x + ((endPos.x - startPos.x) * percent);
-            let y = startPos.y + ((endPos.y - startPos.y) * percent);
+            let lx = x0 + ((x1 - x0) * percent);
+            let ly = y0 + ((y1 - y0) * percent);
             // perturb
-            x += (Math.random()*chaos*2)-chaos;
-            y += (Math.random()*chaos*2)-chaos;
-            ctx.lineTo(x,y);
+            lx += (Math.random()*chaos*2)-chaos;
+           ly += (Math.random()*chaos*2)-chaos;
+            ctx.lineTo(lx,ly);
         }
         
-        ctx.lineTo(endPos.x,endPos.y);
+        ctx.lineTo(x1,y1);
         ctx.stroke();
     }
 
     // lame tile-based solution, looks bad
     /*
-    this.drawZapUsingSprites = function(startPos,endPos) {
+    this.drawZapUsingSprites = function(x0,y0,x1,y1) {
         let {img, ctx, tileSheetSize} = G;
         let sw=8,sh=8,sx=0,sy=0,scount=16,spd=0.01;
         let x1 = Math.round(startPos.x / sw);

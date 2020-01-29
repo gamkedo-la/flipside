@@ -80,17 +80,17 @@ PIG.prototype.update = function update(dt){
             if(rectCollision(bullet.rect, self.rect)){
                 let splodeCount = 10;
                 while(--splodeCount){
-                    G.particles.push(new Particle({
-                        x: bullet.pos.x,
-                        y: bullet.pos.y,
-                        vx: (bullet.vx > 0 ? -1 : 1)+ rndFloat(-1, 1), 
-                        vy: rndFloat(1, 2),
-                        life: 10,
-                        color: 27,
-                        width: 1,
-                        height: 1,
-                        type: 'bg'
-                    }))
+                    G.particles.push(new Particle(
+                        bullet.x,
+                        bullet.xy,
+                        (bullet.vx > 0 ? -1 : 1)+ rndFloat(-1, 1), 
+                        rndFloat(1, 2),
+                        27,
+                        1,
+                        1,
+                        10,
+                        'bg'
+                    ))
                 }
                 bullet.kill();
                 self.health--;
@@ -164,17 +164,17 @@ PIG.prototype.kill = function kill(){
     //splodey splode
     let splodeCount = 32;
             while(--splodeCount){
-                G.particles.push(new Particle({
-                    x: this.pos.x+rndInt(-15,15),
-                    y: this.pos.y-10+rndInt(-5,5),
-                    vx: rndFloat(-.3, .3), 
-                    vy: rndFloat(-1, -1.5),
-                    life: 25,
-                    color: 26,
-                    width: 2,
-                    height: 2,
-                    type: 'enemyDeath'
-                }))
+                G.particles.push(new Particle(
+                    this.pos.x+rndInt(-15,15),
+                    this.pos.y-10+rndInt(-5,5),
+                    rndFloat(-.3, .3), 
+                    rndFloat(-1, -1.5),
+                    26,
+                    2,
+                    2,
+                    25,
+                    'enemyDeath'
+                ))
             }
     
     G.world.entities.splice(G.world.entities.indexOf(this), 1);

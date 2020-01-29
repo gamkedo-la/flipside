@@ -92,7 +92,7 @@ Switch.prototype.withinCheck = function withinCheck(world, tileCheck){
     
     for(let i = leftTile; i <=rightTile; i++){
         for(let j = topTile; j<= bottomTile; j++){
-            let tile = world.getTileAtPosition({tx: i, ty: j})
+            let tile = world.getTileAtPosition(i, j)
 
                 if(!tileCheck(tile)){return false};
             }

@@ -91,12 +91,12 @@ BIRD.prototype.update = function update(dt){
         
         this.diveCount++;
         if(this.diveCount % 10 == 0) {
-            G.worldFlipped.tileFillCircle({
-                tx: Math.floor(this.pos.x/8),
-                ty: Math.floor(this.pos.y/8),
-                radius: 0.5,
-                value: 3
-            });
+            G.worldFlipped.tileFillCircle(
+                Math.floor(this.pos.x/8),
+                Math.floor(this.pos.y/8),
+                0.5,
+                3
+            );
         }
     } else {
         if((onScreen(this.pos) && (Player.pos.y > this.pos.y))) {
@@ -126,17 +126,17 @@ BIRD.prototype.update = function update(dt){
             if(rectCollision(bullet.rect, self.rect)){
                 let splodeCount = 10;
                 while(--splodeCount){
-                    G.particles.push(new Particle({
-                        x: bullet.pos.x,
-                        y: bullet.pos.y,
-                        vx: (bullet.vx > 0 ? -1 : 1)+ rndFloat(-1, 1), 
-                        vy: rndFloat(1, 2),
-                        life: 10,
-                        color: 27,
-                        width: 1,
-                        height: 1,
-                        type: 'bg'
-                    }))
+                    G.particles.push(new Particle(
+                        bullet.x,
+                        bullet.y,
+                        (bullet.vx > 0 ? -1 : 1)+ rndFloat(-1, 1), 
+                        rndFloat(1, 2),
+                        27,
+                        1,
+                        1,
+                        10,
+                        'bg'
+                    ))
                 }
                 bullet.kill();
                 self.health--;
@@ -205,25 +205,25 @@ BIRD.prototype.kill = function kill(){
     //splodey splode
     let splodeCount = 32;
     while(--splodeCount){
-        G.particles.push(new Particle({
-            x: this.pos.x,
-            y: this.pos.y,
-            vx: rndFloat(-1.5, 1.5), 
-            vy: rndFloat(-0.5, 1.5),
-            life: 15,
-            color: 27,
-            width: 2,
-            height: 2,
-            type: 'bg'
-        }))
+        G.particles.push(new Particle(
+            this.pos.x,
+            this.pos.y,
+            rndFloat(-1.5, 1.5), 
+            rndFloat(-0.5, 1.5),
+            27,
+            2,
+            2,
+            15,
+            'bg'
+        ))
     }
 
-    G.worldFlipped.tileFillCircle({
-        tx: Math.floor(this.pos.x/8),
-        ty: Math.floor(this.pos.y/8),
-        radius: 3,
-        value: 3
-    }) 
+    G.worldFlipped.tileFillCircle(
+        Math.floor(this.pos.x/8),
+        Math.floor(this.pos.y/8),
+        3,
+        3
+    ) 
     
     G.world.entities.splice(G.world.entities.indexOf(this), 1);
 }
@@ -242,7 +242,7 @@ BIRD.prototype.tileCollisionCheck = function tileCollisionCheck(world, tileCheck
     
     for(let i = leftTile; i <=rightTile; i++){
         for(let j = topTile; j<= bottomTile; j++){
-            let tile = world.getTileAtPosition({tx: i, ty: j})
+            let tile = world.getTileAtPosition(i, j)
 
             if(tile >= tileCheck){
                 return true;

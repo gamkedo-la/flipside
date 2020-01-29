@@ -41,17 +41,17 @@ Barricade.prototype.update = function update(dt){
             if(rectCollision(bullet.rect, self.rect)){
                 let splodeCount = 10;
                 while(--splodeCount){
-                    G.particles.push(new Particle({
-                        x: bullet.pos.x,
-                        y: bullet.pos.y,
-                        vx: (bullet.vx > 0 ? -1 : 1)+ rndFloat(-1, 1), 
-                        vy: rndFloat(1, 2),
-                        life: 10,
-                        color: 27,
-                        width: 1,
-                        height: 1,
-                        type: 'bg'
-                    }))
+                    G.particles.push(new Particle(
+                        bullet.x,
+                        bullet.y,
+                        (bullet.vx > 0 ? -1 : 1)+ rndFloat(-1, 1), 
+                        rndFloat(1, 2),
+                        27,
+                        1,
+                        1,
+                        10,
+                        'bg'
+                    ))
                 }
                 bullet.kill();
             }
