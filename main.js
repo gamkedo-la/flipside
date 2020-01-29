@@ -246,6 +246,8 @@ function update(dt){
 
     handleCamera(dt);
 
+    if (G.GamepadSupport) G.GamepadSupport.handle_gamepad(); // polled each frame
+
     handleInput(dt);
     //G.bullets = G.particles.filter(function(particle){return particle.type=='bullet'});
 

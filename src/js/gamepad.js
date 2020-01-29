@@ -120,7 +120,8 @@ const GamepadSupport = function GamepadKeyboardEventEmulator()
         // compare previous state and send fake keyboard events
         fake_keyboard_events();
 
-        window.requestAnimationFrame(handle_gamepad);
+        // uncomment this if we are not calling update from a game loop
+        // window.requestAnimationFrame(handle_gamepad);
     }
 
     function fake_keyboard_events() // if any
@@ -184,9 +185,13 @@ const GamepadSupport = function GamepadKeyboardEventEmulator()
         document.dispatchEvent(oEvent);
     }
 
-    // init
-    //console.log('Initializing gamepad support...')
-    window.requestAnimationFrame(handle_gamepad);
+    // init immediately, stadalone
+    // console.log('Initializing gamepad support... right now! using a second requestAnimationFrame')
+    // window.requestAnimationFrame(handle_gamepad);
+
+    this.update = function() {
+        handle_gamepad();
+    }
 
 } // GamepadKeyboardEventEmulator
 
