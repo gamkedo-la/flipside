@@ -382,11 +382,11 @@ function update(dt){
 }
 
 function render(dt){
-    let {world, worldFlipped, worldForeground, img, rb } = G;
+    //let {world, worldFlipped, worldForeground, img, rb } = G;
     //draw all the things
 
     clearScreen('black');
-    rb.clear(64);
+    G.rb.clear(64);
 
     //render background parallax
     //var parallaxImage = img[world.parallax0];
@@ -397,10 +397,10 @@ function render(dt){
     //let bgTileWidth = (Math.round( c.width / img[world.parallax0].width ) + 1 * 2);
     //let bgTileHeight = (Math.round( c.height / img[world.parallax0].width ) + 1 * 2);
     //console.log(bgTileWidth, bgTileHeight);
-    for(let i = -1; i <= (Math.round( c.width / img[world.parallax0].width ) + 1 * 2); i++){
-        for (let j = -1; j <= (Math.round( c.height / img[world.parallax0].width ) + 1 * 2); j++){
-            let x = i * img[world.parallax0].width, y = j * img[world.parallax0].height;
-            ctx.drawImage(img[world.parallax0], x,y);
+    for(let i = -1; i <= (Math.round( c.width / G.img[G.world.parallax0].width ) + 1 * 2); i++){
+        for (let j = -1; j <= (Math.round( c.height / G.img[G.world.parallax0].width ) + 1 * 2); j++){
+            let x = i * G.img[G.world.parallax0].width, y = j * G.img[G.world.parallax0].height;
+            ctx.drawImage(G.img[G.world.parallax0], x,y);
         }
     }
 
@@ -409,10 +409,10 @@ function render(dt){
     //rx0, rx1, ry0, ry1 are the edges of the screen in tile positions, left, right, top, bottom, respectively.
 
     let tilePad = 3,
-        rx0 = view.x/world.tileSize - tilePad | 0,
-        rx1 = (view.x + c.width)/world.tileSize + tilePad | 0,
-        ry0 = view.y / world.tileSize - tilePad | 0,
-        ry1 = (view.y + c.height)/world.tileSize + tilePad | 0;
+        rx0 = view.x/G.world.tileSize - tilePad | 0,
+        rx1 = (view.x + c.width)/G.world.tileSize + tilePad | 0,
+        ry0 = view.y / G.world.tileSize - tilePad | 0,
+        ry1 = (view.y + c.height)/G.world.tileSize + tilePad | 0;
 
     //tile render loop! render order is columns.
     //for each column( i )
@@ -422,40 +422,62 @@ function render(dt){
 
             var drawX =     Math.floor(i*8 - view.x),
                 drawY =     Math.floor(j*8 - view.y),
-                flatIndex = j * world.widthInTiles + i,
-                gid = world.data[flatIndex]-1;
+                flatIndex = j * G.world.widthInTiles + i,
+                gid = G.world.data[flatIndex]-1;
 
-            if(worldFlipped.data[flatIndex] == 3){
-                drawTile(drawX, drawY, world, gid, Math.random()>0.5? img.tiles26: img.tiles27 );
+            if(G.worldFlipped.data[flatIndex] == 3){
+                drawTile(drawX, drawY, G.world, gid, Math.random()>0.5? G.img.tiles26: G.img.tiles27 );
 
-                let Ngid = worldFlipped.data[flatIndex - world.widthInTiles],
-                    Sgid = worldFlipped.data[flatIndex + world.widthInTiles],
-                    Egid = worldFlipped.data[flatIndex + 1],
-                    Wgid = worldFlipped.data[flatIndex -1];
+                let Ngid = G.worldFlipped.data[flatIndex - G.world.widthInTiles],
+                    Sgid = G.worldFlipped.data[flatIndex + G.world.widthInTiles],
+                    Egid = G.worldFlipped.data[flatIndex + 1],
+                    Wgid = G.worldFlipped.data[flatIndex -1];
                     //console.log(Ngid, Sgid, Egid, Wgid);
                 if(Ngid != 3){
                     ctx.drawImage(
-                        img.flipSpace, 8*rndInt(0,15), 8, 8, 8, drawX, drawY, world.tileSize, world.tileSize
+                        G.img.flipSpace, 8*rndInt(0,15), 8, 8, 8, drawX, drawY, G.world.tileSize, G.world.tileSize
                         )
                 }
                 if(Sgid != 3){
                     ctx.drawImage(
-                        img.flipSpace, 8*rndInt(0,15), 0, 8, 8, drawX, drawY, world.tileSize, world.tileSize
+                        G.img.flipSpace, 8*rndInt(0,15), 0, 8, 8, drawX, drawY, G.world.tileSize, G.world.tileSize
                         )
                 }
                 if(Wgid != 3){
                     ctx.drawImage(
-                        img.flipSpace, 8*rndInt(0,15), 16, 8, 8, drawX, drawY, world.tileSize, world.tileSize
+                        G.img.flipSpace, 8*rndInt(0,15), 16, 8, 8, drawX, drawY, G.world.tileSize, G.world.tileSize
                         )
                 }
                 if(Egid != 3){
                     ctx.drawImage(
-                        img.flipSpace, 8*rndInt(0,15), 24, 8, 8, drawX, drawY, world.tileSize, world.tileSize
+                        G.img.flipSpace, 8*rndInt(0,15), 24, 8, 8, drawX, drawY, G.world.tileSize, G.world.tileSize
                         )
                 }
             }else{
+                /*
+                export function drawTile(x, y, world, gid, tileset){
+                let {img, ctx, tileSheetSize} = G
+                ctx.drawImage(
+                    tileset,
+                    gid%tileSheetSize.height * world.tileSize,
+                    Math.floor(gid/tileSheetSize.width) * world.tileSize,
+                    world.tileSize,
+                    world.tileSize,
+                    x,
+                    y,
+                    world.tileSize, world.tileSize
+                    );
+}
+                */
                 //normalspace tile draw
-                drawTile(drawX, drawY, world, gid, img.tiles);
+                //drawTile(drawX, drawY, world, gid, img.tiles);
+                ctx.drawImage(
+                    G.img.tiles,
+                    gid%G.tileSheetSize.height * 8,
+                    Math.floor(gid/G.tileSheetSize.width) * 8,
+                    8,8,
+                    drawX, drawY, 8, 8
+                    );
             }
 
         }//end column render
@@ -476,12 +498,19 @@ function render(dt){
         for(let j = ry0; j < ry1; j++){
             let drawX =     Math.floor(i*8 - view.x),
                 drawY =     Math.floor(j*8 - view.y),
-                flatIndex = j * world.widthInTiles + i,
-                gidFore = worldForeground.data[flatIndex];
+                flatIndex = j * G.world.widthInTiles + i,
+                gidFore = G.worldForeground.data[flatIndex];
 
             if(gidFore > 0)gidFore -=1;
-            if(worldForeground.data[flatIndex]){
-                drawTile(drawX, drawY, worldForeground, gidFore, img.tiles);
+            if(G.worldForeground.data[flatIndex]){
+                ctx.drawImage(
+                    G.img.tiles,
+                    gidFore%G.tileSheetSize.height * 8,
+                    Math.floor(gid/G.tileSheetSize.width) * 8,
+                    8,8,
+                    drawX, drawY, 8, 8
+                    );
+                //drawTile(drawX, drawY, worldForeground, gidFore, img.tiles);
              }
         }//end column render
     }//end x loop
@@ -516,7 +545,7 @@ function render(dt){
     
     UIRender();
     debugRender();
-    rb.render();
+    G.rb.render();
 
 }//end render
 
