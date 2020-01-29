@@ -27,9 +27,9 @@ window.G = {};
 G.pos = {x: 0, y: 0};
 G.transitioning = false;
 
-
 // start the gamepad keyboard event emulator
-//G.GamepadSupport = new GamepadSupport();
+// works fine, disabled for perf testing
+// G.GamepadSupport = new GamepadSupport();
 
 //initialize and show the FPS/mem use counter
 const stats = new Stats();
