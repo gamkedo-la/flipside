@@ -104,7 +104,15 @@ export function rectCollision(rect1, rect2) {
         top < this.rect.bottom
       );
       */
-  }
+}
+
+export function pointInRect(x, y, rect){
+    return  x >= rect.left &&
+            x <= rect.right &&
+            y >= rect.top &&
+            y <= rect.bottom
+}
+
 
 export function oscillate(input, min, max)
 {

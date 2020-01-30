@@ -36,7 +36,7 @@ ParticlePool.prototype.spawn = function(x, y , vx, vy, color=22, width=1, height
             this.pool[i+8] = type;
             this.pool[i+9] = 0; //prevX
             this.pool[i+10] = 0; //prevY
-            this.i = i;
+            //this.i = i;
             break;
         }
         
