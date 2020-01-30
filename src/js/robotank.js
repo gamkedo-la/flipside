@@ -45,33 +45,35 @@ RoboTank.prototype.canWalkForward = function() {
     // how far to look ahead
     let xofs = this.goingLeft ? 2 : -2; // tiles to look ahead
     let yofs = 1;
-    let tilePos = {};
+    let tx = 0;
+    let ty = 0;
     let blocked = false;
     let maxTileIndex = G.player.collideIndex; //this is a lazy GAMEJAMMERY way to grab this number 
     let tileHit = 0;
 
     // is there a wall in front of me?
-    tilePos.tx = Math.round(this.pos.x / G.world.tileSize) + xofs; // in front of
-    tilePos.ty = Math.round(this.pos.y / G.world.tileSize) - 1; // slightly above the foot tile
-    tileHit = G.world.getTileAtPosition(tilePos);
+    tx = Math.round(this.pos.x / G.world.tileSize) + xofs; // in front of
+    ty = Math.round(this.pos.y / G.world.tileSize) - 1; // slightly above the foot tile
+    
+    tileHit = G.world.getTileAtPosition(tx,ty); 
 
     blocked = (tileHit > maxTileIndex); // it HAS to be air to let us through
 
     // if there's no wall, let's check the floor to ensure we don't fall off a ledge
     if (!blocked) { // yet
         // is there any floor in front of me and a bit down?
-        tilePos.tx = Math.round(this.pos.x / G.world.tileSize) + xofs; // in front of
-        tilePos.ty = Math.round(this.pos.y / G.world.tileSize) + yofs; // and below
-        tileHit = G.world.getTileAtPosition(tilePos);
+        tx = Math.round(this.pos.x / G.world.tileSize) + xofs; // in front of
+        ty = Math.round(this.pos.y / G.world.tileSize) + yofs; // and below
+        tileHit = G.world.getTileAtPosition(tx,ty);
         blocked = (tileHit <= maxTileIndex); // as in, it HAS to be solid
     }
 
     // highlight the problem
-    this.debugX = tilePos.tx * G.world.tileSize - G.view.x;
-    this.debugY = tilePos.ty * G.world.tileSize - G.view.y;
+    this.debugX = tx * G.world.tileSize - G.view.x;
+    this.debugY = ty * G.world.tileSize - G.view.y;
     this.debugC = blocked ? 4 : 11; // reddish or greenish
 
-    if (ROBO_DEBUG) console.log('RoboTank debug: canWalkForward '+(blocked?'BLOCKED ':'ok ')+this.pos.x.toFixed(1)+','+this.pos.y.toFixed(1)+' says tile '+tilePos.tx+','+tilePos.ty+' is tile #' + tileHit);
+    if (ROBO_DEBUG) console.log('RoboTank debug: canWalkForward '+(blocked?'BLOCKED ':'ok ')+this.pos.x.toFixed(1)+','+this.pos.y.toFixed(1)+' says tile '+tx+','+ty+' is tile #' + tileHit);
 
     return !blocked; 
 }
