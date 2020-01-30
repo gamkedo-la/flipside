@@ -18,11 +18,12 @@ const ParticlePool = function ParticlePool(size){
     this.tuple = 11;
     this.pool = new Float32Array(this.size*this.tuple);
     this.i = 0;
+    this.nothingDead = false;
     
     return this;
 }
 ParticlePool.prototype.spawn = function(x, y , vx, vy, color=22, width=1, height=1, life = 40, type=0){
-    for(let i = this.i; i <= this.pool.length; i+=this.tuple){
+    for(let i = 0; i <= this.pool.length; i+=this.tuple){
         if(this.pool[i] <= 0){
             this.pool[i] = life;
             this.pool[i+1] = x;
@@ -38,6 +39,7 @@ ParticlePool.prototype.spawn = function(x, y , vx, vy, color=22, width=1, height
             this.i = i;
             break;
         }
+        
     }
     
     
@@ -119,7 +121,7 @@ ParticlePool.prototype.draw = function draw(){
     }    
 }
 
-ParticlePool.prototype.update = function update(){
+ParticlePool.prototype.update = function update(dt){
     
     // this.pool[this.i] = life;
     // this.pool[this.i+1] = x;
@@ -141,8 +143,8 @@ ParticlePool.prototype.update = function update(){
             this.pool[i] = this.pool[i]-1;
             this.pool[i+9] = this.pool[i+1]; //prevX = this X
             this.pool[i+10] = this.pool[i+2]; //prevY = this Y;
-            this.pool[i+1] += this.pool[i+3]; //x += vx;
-            this.pool[i+2] += this.pool[i+4]; //y += vy;
+            this.pool[i+1] += this.pool[i+3]*dt; //x += vx;
+            this.pool[i+2] += this.pool[i+4]*dt; //y += vy;
            // console.log(this.pool[i+1], this.pool[i+2])
         }
         
@@ -159,6 +161,22 @@ ParticlePool.prototype.update = function update(){
     //     right: this.x + this.width/2,
     //     bottom: this.y + this.height/2
     // }
+}
+
+ParticlePool.prototype.updateWithCollision = function updateWithCollision(){
+    for(let i = 0; i<=this.pool.length-this.tuple; i+=this.tuple){
+        //if life is zero, skip update, increment i 1 tuple. 
+        //we don't delete particles, we just don't update or draw them
+        if(this.pool[i]<=0){i+=this.tuple}
+        else{
+            this.pool[i] = this.pool[i]-1;
+            this.pool[i+9] = this.pool[i+1]; //prevX = this X
+            this.pool[i+10] = this.pool[i+2]; //prevY = this Y;
+            this.pool[i+1] += this.pool[i+3]; //x += vx;
+            this.pool[i+2] += this.pool[i+4]; //y += vy;
+           // console.log(this.pool[i+1], this.pool[i+2])
+        }
+    }
 }
 
 export default ParticlePool

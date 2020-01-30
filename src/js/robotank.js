@@ -83,7 +83,7 @@ RoboTank.prototype.flameThrower = function() {
         G.particles.spawn(
             this.goingLeft ? this.pos.x+this.gunOffset.rightX : this.pos.x+this.gunOffset.leftX, // gunXOffset
             this.pos.y + this.gunOffset.y, // gunYOffset
-            this.goingLeft?rndFloat(0.5,2):rndFloat(-0.5,-2),
+            this.goingLeft?rndFloat(100,170):rndFloat(-100,-170),
             rndFloat(-0.25,0.25),
             rndInt(1,9), // black to red to yellow
             2, 

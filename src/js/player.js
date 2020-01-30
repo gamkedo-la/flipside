@@ -75,9 +75,9 @@ const Player = {
 
     doorCooldown: 0,
 
-    bulletVXdefault: 4,
-    bulletVX: 4,
-    bulletVYdefault: 2.5,
+    bulletVXdefault: 200,
+    bulletVX: 200,
+    bulletVYdefault: 25,
 
     flipBar: {
         xOffset: -12,
@@ -268,8 +268,8 @@ Player.inTheFlipPhysics = function inTheFlipPhysics(dt, world, worldFlipped){
         G.particles.spawn(
             this.pos.x,
             this.pos.y,
-            -this.vx/50,
-            -this.vy/50,
+            -this.vxx,
+            -this.vy,
             22,
             3, 
             3,
@@ -289,15 +289,7 @@ Player.inTheFlipPhysics = function inTheFlipPhysics(dt, world, worldFlipped){
             this.vx += this.accel;
         }
     }
-    if(this.input.secondaryFire && !this.gunCooldown){ 
-        worldFlipped.tileFillCircle({
-            tx: Math.floor(this.pos.x/8),
-            ty: Math.floor(this.pos.y/8),
-            radius: 8,
-            value: 3
-        })
-    }
-
+    
     if(this.vy < 0){
         this.falling = true;
     }
@@ -416,8 +408,8 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         G.bullets.spawn(
             this.facingLeft ? this.pos.x+this.gunOffset.leftX : this.pos.x+this.gunOffset.rightX,
             this.pos.y + gunYoffset,
-            this.facingLeft ? -this.bulletVX + (this.vx/100) : this.bulletVX + (this.vx/100),
-            this.aimingUp ? -this.bulletVYdefault : 0,
+            this.facingLeft ? (-this.bulletVX + this.vx) : (this.bulletVX + this.vx),
+            this.aimingUp ? -this.bulletVYdefault * xdt : 0,
             22,
             3, 
             3,
@@ -428,26 +420,7 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         this.gunCooldown--;
     }
 
-    //---add flipspace fun
-    if(this.input.secondaryFire && !this.gunCooldown){ //fire gun
-        this.gunCooldown = this.gunCooldownMax;
-        this.muzzleFlash();
-
-        let gunYoffset = this.crouching? 1 : -4;
-        G.bullets.spawn(
-            this.facingLeft ? this.pos.x+this.gunOffset.leftX : this.pos.x+this.gunOffset.rightX,
-            this.pos.y + gunYoffset,
-            this.facingLeft ? -5: 5,
-            0,
-            26,
-            3, 
-            3,
-            50,
-            4
-        )
-    } else if (this.gunCooldown) {
-        this.gunCooldown--;
-    }
+    
     this.inAir = false;
     this.falling = false;
     
