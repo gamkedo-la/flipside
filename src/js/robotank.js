@@ -1,6 +1,6 @@
 // RoboTank - a horizontally patrolling tank unit
 
-import { rectCollision } from "./util.js";
+import { rectCollision, pointInRect } from "./util.js";
 import { rndFloat, rndInt, range } from "./math.js";
 import SpriteSheet from './spritesheet.js';
 
@@ -45,33 +45,35 @@ RoboTank.prototype.canWalkForward = function() {
     // how far to look ahead
     let xofs = this.goingLeft ? 2 : -2; // tiles to look ahead
     let yofs = 1;
-    let tilePos = {};
+    let tx = 0;
+    let ty = 0;
     let blocked = false;
     let maxTileIndex = G.player.collideIndex; //this is a lazy GAMEJAMMERY way to grab this number 
     let tileHit = 0;
 
     // is there a wall in front of me?
-    tilePos.tx = Math.round(this.pos.x / G.world.tileSize) + xofs; // in front of
-    tilePos.ty = Math.round(this.pos.y / G.world.tileSize) - 1; // slightly above the foot tile
-    tileHit = G.world.getTileAtPosition(tilePos);
+    tx = Math.round(this.pos.x / G.world.tileSize) + xofs; // in front of
+    ty = Math.round(this.pos.y / G.world.tileSize) - 1; // slightly above the foot tile
+    
+    tileHit = G.world.getTileAtPosition(tx,ty); 
 
     blocked = (tileHit > maxTileIndex); // it HAS to be air to let us through
 
     // if there's no wall, let's check the floor to ensure we don't fall off a ledge
     if (!blocked) { // yet
         // is there any floor in front of me and a bit down?
-        tilePos.tx = Math.round(this.pos.x / G.world.tileSize) + xofs; // in front of
-        tilePos.ty = Math.round(this.pos.y / G.world.tileSize) + yofs; // and below
-        tileHit = G.world.getTileAtPosition(tilePos);
+        tx = Math.round(this.pos.x / G.world.tileSize) + xofs; // in front of
+        ty = Math.round(this.pos.y / G.world.tileSize) + yofs; // and below
+        tileHit = G.world.getTileAtPosition(tx,ty);
         blocked = (tileHit <= maxTileIndex); // as in, it HAS to be solid
     }
 
     // highlight the problem
-    this.debugX = tilePos.tx * G.world.tileSize - G.view.x;
-    this.debugY = tilePos.ty * G.world.tileSize - G.view.y;
+    this.debugX = tx * G.world.tileSize - G.view.x;
+    this.debugY = ty * G.world.tileSize - G.view.y;
     this.debugC = blocked ? 4 : 11; // reddish or greenish
 
-    if (ROBO_DEBUG) console.log('RoboTank debug: canWalkForward '+(blocked?'BLOCKED ':'ok ')+this.pos.x.toFixed(1)+','+this.pos.y.toFixed(1)+' says tile '+tilePos.tx+','+tilePos.ty+' is tile #' + tileHit);
+    if (ROBO_DEBUG) console.log('RoboTank debug: canWalkForward '+(blocked?'BLOCKED ':'ok ')+this.pos.x.toFixed(1)+','+this.pos.y.toFixed(1)+' says tile '+tx+','+ty+' is tile #' + tileHit);
 
     return !blocked; 
 }
@@ -83,13 +85,13 @@ RoboTank.prototype.flameThrower = function() {
         G.particles.spawn(
             this.goingLeft ? this.pos.x+this.gunOffset.rightX : this.pos.x+this.gunOffset.leftX, // gunXOffset
             this.pos.y + this.gunOffset.y, // gunYOffset
-            this.goingLeft?rndFloat(0.5,2):rndFloat(-0.5,-2),
-            rndFloat(-0.25,0.25),
+            this.goingLeft?rndFloat(100,120):rndFloat(-100,-120),
+            rndFloat(-20,20),
             rndInt(1,9), // black to red to yellow
             2, 
             2,
             20,
-            0
+            5
         ) ;   
     }
 }  
@@ -156,6 +158,18 @@ RoboTank.prototype.update = function update(dt){
     // look at player
     // G.player.pos.x < this.pos.x ? this.play('idleRight') : this.play('idleLeft');
 
+    for(let i = 0; i < G.bullets.pool.length; i+= G.bullets.tuple){
+        if(G.bullets.pool[i]>=0){
+            if(pointInRect(G.bullets.pool[i+1], G.bullets.pool[i+2], this.rect)){
+                G.bullets.pool[i] = -1;
+                G.bullets.pool[i+1] = 0;
+                G.bullets.pool[i+2] = 0;
+                this.health--;
+                break;
+            }
+        }
+    }
+
     // look in direction of movement
     this.goingLeft ? this.play('idleLeft') : this.play('idleRight');
 
@@ -187,6 +201,7 @@ RoboTank.prototype.render = function render(dt){
         // draw "this wall/gap got in my way" tile
         if (this.debugC) G.rb.fillRect(this.debugX,this.debugY,G.world.tileSize,G.world.tileSize,this.debugC);
     }
+    G.rb.rect(this.rect.left-G.view.x, this.rect.top-G.view.y, this.width, this.height, 11);
 }
 
 RoboTank.prototype.play = function play(animationName){
@@ -233,7 +248,7 @@ RoboTank.prototype.kill = function kill(){
                     2,
                     2,
                     15,
-                    0
+                    3
                 )
             }
     

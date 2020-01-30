@@ -1,4 +1,4 @@
-import {  rectCollision } from "./util.js";
+import {  rectCollision, pointInRect } from "./util.js";
 import { rndFloat, rndInt, range } from "./math.js";
 import SpriteSheet from './spritesheet.js';
 
@@ -76,6 +76,19 @@ FlipBat.prototype.update = function update(dt){
 
     G.player.pos.x > this.pos.x ? this.play('idleRight') : this.play('idleLeft');
 
+    //bullet collision check
+    for(let i = 0; i < G.bullets.pool.length; i+= G.bullets.tuple){
+        if(G.bullets.pool[i]>=0){
+            if(pointInRect(G.bullets.pool[i+1], G.bullets.pool[i+2], this.rect)){
+                G.bullets.pool[i] = -1;
+                G.bullets.pool[i+1] = 0;
+                G.bullets.pool[i+2] = 0;
+                this.health--;
+                break;
+            }
+        }
+    }
+
     if(this.health <=0){ this.kill(); }
 
 
@@ -140,12 +153,13 @@ FlipBat.prototype.kill = function kill(){
         G.particles.spawn(
             this.pos.x+rndInt(-5,5),
             this.pos.y-10+rndInt(-5,5),
-            rndFloat(-.3, .3), 
-            rndFloat(-1, -1.5),
+            rndFloat(-50, 50), 
+            rndFloat(-50, 50),
             15,
             6,
             6,
-            0
+            20,
+            5
         )
     }
     

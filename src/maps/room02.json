@@ -1,5 +1,5 @@
 { "backgroundcolor":"#28283c",
- "compressionlevel":-1,
+ "compressionlevel":0,
  "editorsettings":
     {
      "export":
@@ -68,12 +68,6 @@
                  "height":1.73071,
                  "id":33,
                  "name":"",
-                 "properties":[
-                        {
-                         "name":"Color",
-                         "type":"int",
-                         "value":0
-                        }],
                  "rotation":0,
                  "type":"lightningBox",
                  "visible":true,
@@ -115,7 +109,7 @@
          "name":"game objects",
          "objects":[
                 {
-                 "gid":11,
+                 "gid":13,
                  "height":8,
                  "id":141,
                  "name":"RoboTank",
@@ -203,6 +197,78 @@
                  "width":8,
                  "x":256,
                  "y":296
+                }, 
+                {
+                 "gid":13,
+                 "height":8,
+                 "id":147,
+                 "name":"RoboTank",
+                 "properties":[
+                        {
+                         "name":"pathWidthInTiles",
+                         "type":"int",
+                         "value":10
+                        }],
+                 "rotation":0,
+                 "type":"robotank",
+                 "visible":true,
+                 "width":8,
+                 "x":360,
+                 "y":256
+                }, 
+                {
+                 "gid":13,
+                 "height":8,
+                 "id":148,
+                 "name":"RoboTank",
+                 "properties":[
+                        {
+                         "name":"pathWidthInTiles",
+                         "type":"int",
+                         "value":10
+                        }],
+                 "rotation":0,
+                 "type":"robotank",
+                 "visible":true,
+                 "width":8,
+                 "x":256,
+                 "y":224
+                }, 
+                {
+                 "gid":13,
+                 "height":8,
+                 "id":149,
+                 "name":"RoboTank",
+                 "properties":[
+                        {
+                         "name":"pathWidthInTiles",
+                         "type":"int",
+                         "value":10
+                        }],
+                 "rotation":0,
+                 "type":"robotank",
+                 "visible":true,
+                 "width":8,
+                 "x":352,
+                 "y":160
+                }, 
+                {
+                 "gid":13,
+                 "height":8,
+                 "id":150,
+                 "name":"RoboTank",
+                 "properties":[
+                        {
+                         "name":"pathWidthInTiles",
+                         "type":"int",
+                         "value":10
+                        }],
+                 "rotation":0,
+                 "type":"robotank",
+                 "visible":true,
+                 "width":8,
+                 "x":184,
+                 "y":184
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -211,7 +277,7 @@
          "y":0
         }],
  "nextlayerid":9,
- "nextobjectid":147,
+ "nextobjectid":151,
  "orientation":"orthogonal",
  "properties":[
         {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="2019.12.11" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="74" height="56" tilewidth="8" tileheight="8" infinite="0" backgroundcolor="#28283c" nextlayerid="9" nextobjectid="147">
+<map version="1.2" tiledversion="2019.12.11" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="74" height="56" tilewidth="8" tileheight="8" infinite="0" backgroundcolor="#28283c" nextlayerid="9" nextobjectid="151">
  <editorsettings>
   <export target="../../src/maps/room02.json" format="json"/>
  </editorsettings>
@@ -216,7 +216,7 @@
   </object>
  </objectgroup>
  <objectgroup id="6" name="game objects">
-  <object id="141" name="RoboTank" type="robotank" gid="11" x="360" y="328" width="8" height="8">
+  <object id="141" name="RoboTank" type="robotank" gid="13" x="360" y="328" width="8" height="8">
    <properties>
     <property name="pathWidthInTiles" type="int" value="10"/>
    </properties>
@@ -232,6 +232,26 @@
   <object id="146" name="Flippig" type="flippig" gid="11" x="256" y="296" width="8" height="8">
    <properties>
     <property name="pathWidthInTiles" type="int" value="4"/>
+   </properties>
+  </object>
+  <object id="147" name="RoboTank" type="robotank" gid="13" x="360" y="256" width="8" height="8">
+   <properties>
+    <property name="pathWidthInTiles" type="int" value="10"/>
+   </properties>
+  </object>
+  <object id="148" name="RoboTank" type="robotank" gid="13" x="256" y="224" width="8" height="8">
+   <properties>
+    <property name="pathWidthInTiles" type="int" value="10"/>
+   </properties>
+  </object>
+  <object id="149" name="RoboTank" type="robotank" gid="13" x="352" y="160" width="8" height="8">
+   <properties>
+    <property name="pathWidthInTiles" type="int" value="10"/>
+   </properties>
+  </object>
+  <object id="150" name="RoboTank" type="robotank" gid="13" x="184" y="184" width="8" height="8">
+   <properties>
+    <property name="pathWidthInTiles" type="int" value="10"/>
    </properties>
   </object>
  </objectgroup>

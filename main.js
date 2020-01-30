@@ -46,8 +46,13 @@ G.view = {
     x: 0, y: 0, w: G.c.width, h: G.c.height
 }
 
+<<<<<<< HEAD
 G.particles = new ParticlePool(1000);
 G.bullets = new ParticlePool(50);
+=======
+G.particles = new ParticlePool(20000);
+G.bullets = new ParticlePool(1000);
+>>>>>>> 4fc37394d76fef6544012b4cd4595161687bea4d
 
 G.deadZone = {
     x: 60, y: 60
@@ -168,7 +173,6 @@ function init(){
 // this not not ONLY the sound inits, it is init step two after images have downloaded
 // with optional sound inits as well as essential map loading and game start callbacks
 function soundInit(){ 
-
     //next we load our soundlist, passing in start as a callback once complete.
     //soundloader just gives loader the properties,  loadAudioBuffer actually decodes the files and
     //creates a list of buffers.
@@ -258,7 +262,11 @@ function update(dt){
     //update all the things
     elapsed += dt;
     G.frameCount ++;
-
+    // let p = 200;
+    // while(--p){
+    //     G.particles.spawn(rndInt(0, 1000), rndInt(0, 1000), rndFloat(-2,2), rndFloat(-2,0), 3, 1, 1, 50, 0 )
+    // }
+    
     handleCamera(dt);
 
     if (G.GamepadSupport) G.GamepadSupport.handle_gamepad(); // polled each frame
@@ -282,7 +290,8 @@ function update(dt){
     //Key needs updated so justReleased queue gets emptied at end of frame
     Key.update();
 
-    G.particles.update();
+    G.particles.update(dt);
+    G.bullets.update(dt);
 
 }
 
@@ -332,7 +341,14 @@ function render(dt){
                 gid = G.world.data[flatIndex]-1;
 
             if(G.worldFlipped.data[flatIndex] == 3){
-                drawTile(drawX, drawY, G.world, gid, Math.random()>0.5? G.img.tiles26: G.img.tiles27 );
+
+                ctx.drawImage(
+                    Math.random()>0.5? G.img.tiles26: G.img.tiles27,
+                    gid%G.tileSheetSize.height * 8,
+                    Math.floor(gid/G.tileSheetSize.width) * 8,
+                    8,8,
+                    drawX, drawY, 8, 8
+                    );
 
                 let Ngid = G.worldFlipped.data[flatIndex - G.world.widthInTiles],
                     Sgid = G.worldFlipped.data[flatIndex + G.world.widthInTiles],
@@ -360,23 +376,7 @@ function render(dt){
                         )
                 }
             }else{
-                /*
-                export function drawTile(x, y, world, gid, tileset){
-                let {img, ctx, tileSheetSize} = G
-                ctx.drawImage(
-                    tileset,
-                    gid%tileSheetSize.height * world.tileSize,
-                    Math.floor(gid/tileSheetSize.width) * world.tileSize,
-                    world.tileSize,
-                    world.tileSize,
-                    x,
-                    y,
-                    world.tileSize, world.tileSize
-                    );
-}
-                */
                 //normalspace tile draw
-                //drawTile(drawX, drawY, world, gid, img.tiles);
                 ctx.drawImage(
                     G.img.tiles,
                     gid%G.tileSheetSize.height * 8,
@@ -413,7 +413,7 @@ function render(dt){
                 ctx.drawImage(
                     G.img.tiles,
                     gidFore%G.tileSheetSize.height * 8,
-                    Math.floor(gid/G.tileSheetSize.width) * 8,
+                    Math.floor(gidFore/G.tileSheetSize.width) * 8,
                     8,8,
                     drawX, drawY, 8, 8
                     );
@@ -423,6 +423,7 @@ function render(dt){
     }//end x loop
 
     G.particles.draw();
+    G.bullets.draw();
 
     // TEMP TEST: work in progress electricity bolt line renderer
     //G.lightning.stressTest();
@@ -446,7 +447,6 @@ function render(dt){
 
     UIRender();
     debugRender();
-    G.rb.circle(40,40,10,4);
     G.rb.render();
 
 }//end render
@@ -683,6 +683,3 @@ function UIRender(){
 
 }
 
-function flipSpaceRender(){
-
-}

@@ -1,6 +1,6 @@
 // BIRD - a diving flip creature
 
-import { rectCollision } from "./util.js";
+import { rectCollision, pointInRect } from "./util.js";
 import { rndFloat, range } from "./math.js";
 import SpriteSheet from './spritesheet.js';
 import Player from './player.js';
@@ -126,6 +126,18 @@ BIRD.prototype.update = function update(dt){
         G.MSG.dispatch('hurt', {amount: 5});
     }
 
+    for(let i = 0; i < G.bullets.pool.length; i+= G.bullets.tuple){
+        if(G.bullets.pool[i]>=0){
+            if(pointInRect(G.bullets.pool[i+1], G.bullets.pool[i+2], this.rect)){
+                G.bullets.pool[i] = -1;
+                G.bullets.pool[i+1] = 0;
+                G.bullets.pool[i+2] = 0;
+                this.health--;
+                break;
+            }
+        }
+    }
+
     this.isDiving ? this.play('diving') : this.play('idle');
 
     if(this.health <= 0){ this.kill(); }
@@ -190,7 +202,7 @@ BIRD.prototype.kill = function kill(){
             2,
             2,
             15,
-            'bg'
+            3
         )
     }
 
