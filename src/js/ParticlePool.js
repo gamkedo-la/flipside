@@ -16,32 +16,33 @@ const ParticlePool = function ParticlePool(size){
     */  //11 parameters
     this.size = size;
     this.tuple = 11;
-    this.pool = new Float32Array(this.size*this.tuple);
+    this.pool = new Float32Array(this.size * this.tuple).fill(0);
     this.i = 0;
     this.nothingDead = false;
     
     return this;
 }
 ParticlePool.prototype.spawn = function(x, y , vx, vy, color=22, width=1, height=1, life = 40, type=0){
-    for(let i = 0; i <= this.pool.length; i+=this.tuple){
-        if(this.pool[i] <= 0){
-            this.pool[i] = life;
-            this.pool[i+1] = x;
-            this.pool[i+2] = y;
-            this.pool[i+3] = vx;
-            this.pool[i+4] = vy;
-            this.pool[i+5] = width;
-            this.pool[i+6] = height;
-            this.pool[i+7] = color;
-            this.pool[i+8] = type;
-            this.pool[i+9] = 0; //prevX
-            this.pool[i+10] = 0; //prevY
-            //this.i = i;
-            break;
-        }
-        
+    for(let l = 0; l < 15; l++){
+        for(let i = 0; i <= this.pool.length; i+=this.tuple){
+            if(this.pool[i] <= l){
+                this.pool[i] = life;
+                this.pool[i+1] = x;
+                this.pool[i+2] = y;
+                this.pool[i+3] = vx;
+                this.pool[i+4] = vy;
+                this.pool[i+5] = width;
+                this.pool[i+6] = height;
+                this.pool[i+7] = color;
+                this.pool[i+8] = type;
+                this.pool[i+9] = 0; //prevX
+                this.pool[i+10] = 0; //prevY
+                break;
+            }
     }
     
+        
+    }
     
     //reset counter 
     if(this.i >= this.size*this.tuple-this.tuple) this.i = 0; 
@@ -138,7 +139,7 @@ ParticlePool.prototype.update = function update(dt){
     for(let i = 0; i<=this.pool.length-this.tuple; i+=this.tuple){
         //if life is zero, skip update, increment i 1 tuple. 
         //we don't delete particles, we just don't update or draw them
-        if(this.pool[i]<=0){i+=this.tuple}
+        if(this.pool[i]<=0){i+=this.tuple; this.kill(i)}
         else{
             this.pool[i] = this.pool[i]-1;
             this.pool[i+9] = this.pool[i+1]; //prevX = this X
@@ -177,6 +178,10 @@ ParticlePool.prototype.updateWithCollision = function updateWithCollision(){
            // console.log(this.pool[i+1], this.pool[i+2])
         }
     }
+}
+
+ParticlePool.prototype.kill = function kill(index){
+    this.pool.fill(0, index, index+10)
 }
 
 export default ParticlePool

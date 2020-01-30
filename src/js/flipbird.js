@@ -129,9 +129,7 @@ BIRD.prototype.update = function update(dt){
     for(let i = 0; i < G.bullets.pool.length; i+= G.bullets.tuple){
         if(G.bullets.pool[i]>=0){
             if(pointInRect(G.bullets.pool[i+1], G.bullets.pool[i+2], this.rect)){
-                G.bullets.pool[i] = -1;
-                G.bullets.pool[i+1] = 0;
-                G.bullets.pool[i+2] = 0;
+                G.bullets.kill(i);
                 this.health--;
                 break;
             }

@@ -827,8 +827,8 @@ while(--particles){
     G.particles.spawn(
         this.pos.x,
         this.pos.y,
-        -this.vx/50+rndFloat(-2, 2),
-        -this.vy/50+rndFloat(-2, 2),
+        -this.vx/4+rndFloat(-20, 20),
+        -this.vy/4+rndFloat(-20, 20),
         22,
         3, 
         3,
