@@ -89,7 +89,7 @@ RoboTank.prototype.flameThrower = function() {
             2, 
             2,
             20,
-            0
+            5
         ) ;   
     }
 }  

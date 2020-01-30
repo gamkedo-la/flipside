@@ -22,25 +22,32 @@ const ParticlePool = function ParticlePool(size){
     return this;
 }
 ParticlePool.prototype.spawn = function(x, y , vx, vy, color=22, width=1, height=1, life = 40, type=0){
-    this.pool[this.i] = life;
-    this.pool[this.i+1] = x;
-    this.pool[this.i+2] = y;
-    this.pool[this.i+3] = vx;
-    this.pool[this.i+4] = vy;
-    this.pool[this.i+5] = width;
-    this.pool[this.i+6] = height;
-    this.pool[this.i+7] = color;
-    this.pool[this.i+8] = type;
-    this.pool[this.i+9] = 0; //prevX
-    this.pool[this.i+10] = 0; //prevY
+    for(let i = this.i; i <= this.pool.length; i+=this.tuple){
+        if(this.pool[i] <= 0){
+            this.pool[i] = life;
+            this.pool[i+1] = x;
+            this.pool[i+2] = y;
+            this.pool[i+3] = vx;
+            this.pool[i+4] = vy;
+            this.pool[i+5] = width;
+            this.pool[i+6] = height;
+            this.pool[i+7] = color;
+            this.pool[i+8] = type;
+            this.pool[i+9] = 0; //prevX
+            this.pool[i+10] = 0; //prevY
+            this.i = i;
+            break;
+        }
+    }
+    
     
     //increment index to be ready for next spawned particle
-    this.i >= this.size*this.tuple ? this.i = 0 : this.i += this.tuple;
+    if(this.i >= this.size*this.tuple-this.tuple) this.i = 0; 
 }
 
 ParticlePool.prototype.draw = function draw(){
 
-    for(let i = 0; i<=this.pool.length; i+=this.tuple){
+    for(let i = 0; i<=this.pool.length-this.tuple; i+=this.tuple){
 
         if(this.pool[i] <= 0){i+=this.tuple}else{
            // console.log(this.pool[i+1], this.pool[i+2]);
@@ -126,7 +133,7 @@ ParticlePool.prototype.update = function update(){
     // this.pool[this.i+9] = 0; //prevX
     // this.pool[this.i+10] = 0; //prevY
 
-    for(let i = 0; i<=this.pool.length; i+=this.tuple){
+    for(let i = 0; i<=this.pool.length-this.tuple; i+=this.tuple){
         //if life is zero, skip update, increment i 1 tuple. 
         //we don't delete particles, we just don't update or draw them
         if(this.pool[i]<=0){i+=this.tuple}

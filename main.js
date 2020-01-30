@@ -46,7 +46,7 @@ G.view = {
     x: 0, y: 0, w: G.c.width, h: G.c.height
 }
 
-G.particles = new ParticlePool(1000);
+G.particles = new ParticlePool(500);
 G.bullets = new ParticlePool(10);
 
 G.deadZone = {
