@@ -408,7 +408,7 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         G.bullets.spawn(
             this.facingLeft ? this.pos.x+this.gunOffset.leftX : this.pos.x+this.gunOffset.rightX,
             this.pos.y + gunYoffset,
-            this.facingLeft ? (-this.bulletVX + this.vx) : (this.bulletVX + this.vx),
+            this.facingLeft ? -this.bulletVX : this.bulletVX,
             this.aimingUp ? -this.bulletVYdefault : 0,
             22,
             3, 
