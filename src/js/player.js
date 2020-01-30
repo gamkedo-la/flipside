@@ -374,12 +374,12 @@ Player.landedFX = function() {
         G.particles.spawn(
             this.pos.x+4+rndFloat(-2,2),
             this.pos.y+20+rndFloat(-2,-6), // foot offset
-            rndFloat(-0.5,0.5),
-            rndFloat(-0.1,-0.25),
+            rndFloat(-30,30),
+            rndFloat(-3,-15),
             rndInt(58,63), // sandy dirt color
             1, 
             1,
-            20,
+            25,
             0
         ) ;   
     }
