@@ -7,7 +7,7 @@ import { rndInt, clamp, rndFloat, range } from './src/js/math.js';
 import AssetLoader from './src/js/AssetLoader.js';
 import AudioGlobal from './src/js/audio.js';
 import Signal from './src/js/Signal.js';
-import Particle from './src/js/particle.js';
+import ParticlePool from './src/js/ParticlePool.js';
 //import GamepadSupport from './src/js/gamepad.js';
 import ElectricityRenderer from './src/js/electricity.js';
 import RetroBuffer from './src/js/retroBuffer.js';
@@ -46,7 +46,7 @@ G.view = {
     x: 0, y: 0, w: G.c.width, h: G.c.height
 }
 
-G.particles = [];
+G.particles = new ParticlePool(2000);
 
 G.deadZone = {
     x: 60, y: 60
@@ -263,104 +263,6 @@ function update(dt){
     if (G.GamepadSupport) G.GamepadSupport.handle_gamepad(); // polled each frame
 
     handleInput(dt);
-    //G.bullets = G.particles.filter(function(particle){return particle.type=='bullet'});
-
-    G.particles.forEach(function(particle){
-        if(particle.type == 'bullet'){
-
-            let splodeCount = 1, velX, randX;
-
-            if (particle.life <= 0) {
-                splodeCount = 6;
-                velX = 0;
-                randX = 1.5;
-            } else if (G.world.data[G.world.pixelToTileIndex(particle.x, particle.y)] > G.player.collideIndex) {
-                splodeCount = 3;
-                velX = -particle.vx/5;
-                randX = 0.5;
-                particle.life = 0;
-            }
-
-             while(--splodeCount){
-                //console.log('making splode')
-                G.particles.push(new Particle(
-                    Math.round(particle.x/8)*8,
-                    particle.y,
-                    velX + rndFloat(-randX, randX),
-                    rndFloat(-2, 2),
-                    10,
-                    1,
-                    1,
-                    8,
-                    'bg'
-                ))
-            }
-        }
-        var flippedIndex = G.world.pixelToTileIndex(particle.x, particle.y)
-        var flippedGID = G.worldFlipped.data[flippedIndex]
-        if(flippedGID == 3){
-            particle.vx *= 0.9;
-            particle.vy *= 0.9;
-            particle.vx += rndFloat(-0.2, 0.2)
-            //particle.color = 27;
-            if(particle.type == 'bullet'){
-                //magic number is amount of ticks before it returns to being flipspace
-                G.worldFlipped.tileFillCircle(
-                    Math.floor(particle.x/8),
-                    Math.floor(particle.y/8),
-                    2,
-                    G.player.flipRemovedCooldown+rndInt(-20,20)
-                )  
-                
-               // G.worldFlipped.data[flippedIndex]+=G.player.flipRemovedCooldown+rndInt(-20, 20);
-                let splodeCount = 6;
-            while(--splodeCount){
-                //console.log('making splode')
-                G.particles.push(new Particle(
-                    particle.x,
-                    particle.y,
-                    -particle.vx/5 + rndFloat(-0.5,0.5),
-                    rndFloat(-3, 3),
-                    10,
-                    1,
-                    1,
-                    26,
-                    'bg'
-                ))
-            }
-            particle.life = 0;
-            }
-
-            if(particle.type == 'bulletFlipped'){
-                //magic number is amount of ticks before it returns to being flipspace
-                G.worldFlipped.tileFillCircle(
-                    Math.floor(particle.x/8),
-                    Math.floor(particle.y/8),
-                    2,
-                    3
-                )  
-                
-               // G.worldFlipped.data[flippedIndex]+=G.player.flipRemovedCooldown+rndInt(-20, 20);
-            let splodeCount = 6;
-            while(--splodeCount){
-                //console.log('making splode')
-                G.particles.push(new Particle(
-                    particle.x,
-                    particle.y,
-                    -particle.vx/5 + rndFloat(-0.5,0.5),
-                    rndFloat(-3, 3),
-                    10,
-                    26,
-                    1,
-                    1,
-                    'bg'
-                ));
-            }
-            particle.life = 0;
-            }
-        }
-        particle.update();
-    })
 
     //flip healing routine--------------------------------
     for(let i = 0; i < G.worldFlipped.data.length; i++){
@@ -378,6 +280,8 @@ function update(dt){
     player.update(dt, G.world, G.worldFlipped, G.worldForeground);
     //Key needs updated so justReleased queue gets emptied at end of frame
     Key.update();
+
+    G.particles.update();
 
 }
 
@@ -397,6 +301,7 @@ function render(dt){
     //let bgTileWidth = (Math.round( c.width / img[world.parallax0].width ) + 1 * 2);
     //let bgTileHeight = (Math.round( c.height / img[world.parallax0].width ) + 1 * 2);
     //console.log(bgTileWidth, bgTileHeight);
+
     for(let i = -1; i <= (Math.round( c.width / G.img[G.world.parallax0].width ) + 1 * 2); i++){
         for (let j = -1; j <= (Math.round( c.height / G.img[G.world.parallax0].width ) + 1 * 2); j++){
             let x = i * G.img[G.world.parallax0].width, y = j * G.img[G.world.parallax0].height;
@@ -490,7 +395,8 @@ function render(dt){
             e.render();
         }
     });
-     //render player; 
+
+    //render player; 
     player.render();
     
     //render foreground tiles if any in front of player-----------------------------------
@@ -514,13 +420,8 @@ function render(dt){
              }
         }//end column render
     }//end x loop
-    G.particles.forEach(function(particle){
-        
-        if(world.data[world.pixelToTileIndex(particle.x,particle.y)] < G.player.collideIndex){
-            particle.draw();
-        }
-        
-    })
+
+    G.particles.draw();
 
     // TEMP TEST: work in progress electricity bolt line renderer
     //G.lightning.stressTest();
@@ -542,9 +443,9 @@ function render(dt){
         
     // })
 
-    
     UIRender();
     debugRender();
+    G.rb.circle(40,40,10,4);
     G.rb.render();
 
 }//end render

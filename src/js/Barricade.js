@@ -1,8 +1,6 @@
-import { lerp, rectCollision} from "./util.js";
+import { rectCollision} from "./util.js";
 import { rndFloat, rndInt, range } from "./math.js";
 import SpriteSheet from './spritesheet.js';
-import Particle from './particle.js'
-import Player from "./player.js";
 
 
 const Barricade = function Barricade(obj){
@@ -36,27 +34,7 @@ Barricade.prototype.update = function update(dt){
     }
 
     var self = this;
-    G.particles.forEach(function(bullet){
-        if(bullet.type == 'bullet'){
-            if(rectCollision(bullet.rect, self.rect)){
-                let splodeCount = 10;
-                while(--splodeCount){
-                    G.particles.push(new Particle(
-                        bullet.x,
-                        bullet.y,
-                        (bullet.vx > 0 ? -1 : 1)+ rndFloat(-1, 1), 
-                        rndFloat(1, 2),
-                        27,
-                        1,
-                        1,
-                        10,
-                        'bg'
-                    ))
-                }
-                bullet.kill();
-            }
-        }
-    });
+    
 
 }
 

@@ -1,8 +1,6 @@
-import { lerp, rectCollision, oscillate } from "./util.js";
+import {  rectCollision } from "./util.js";
 import { rndFloat, rndInt, range } from "./math.js";
 import SpriteSheet from './spritesheet.js';
-import Particle from './particle.js'
-import Player from "./player.js";
 
 
 //FlipBat will patrol from pos1 to pos2 and back again, thats it! No chase behavior. 
@@ -71,32 +69,7 @@ FlipBat.prototype.update = function update(dt){
         bottom: this.pos.y + this.height/2
     }
     var self = this;
-    G.particles.forEach(function(bullet){
-        if(bullet.type == 'bullet'){
-            if(rectCollision(bullet.rect, self.rect)){
-                let splodeCount = 10;
-                while(--splodeCount){
-                    G.particles.push(new Particle(
-                        bullet.x,
-                        bullet.y,
-                        (bullet.vx > 0 ? -1 : 1)+ rndFloat(-1, 1), 
-                        rndFloat(1, 2),
-                        27,
-                        1,
-                        1,
-                        10,
-                        'bg'
-                    ))
-                }
-                bullet.kill();
-                self.health--;
-                self.wasHit = true;
-                self.spritesheet.image = G.loader.brightImages.EnemyTinyflyer;
-            }
-        }
-        
-    });
-
+   
     if(rectCollision(this.rect, G.player.rect)){
         G.MSG.dispatch('hurt', {amount: 5});
     }
@@ -164,7 +137,7 @@ FlipBat.prototype.kill = function kill(){
     //splodey splode
     let splodeCount = 32;
     while(--splodeCount){
-        G.particles.push(new Particle(
+        G.particles.spawn(
             this.pos.x+rndInt(-5,5),
             this.pos.y-10+rndInt(-5,5),
             rndFloat(-.3, .3), 
@@ -172,8 +145,8 @@ FlipBat.prototype.kill = function kill(){
             15,
             6,
             6,
-            'enemyDeath'
-        ))
+            0
+        )
     }
     
     G.worldFlipped.tileFillCircle(

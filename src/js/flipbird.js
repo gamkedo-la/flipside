@@ -1,9 +1,8 @@
 // BIRD - a diving flip creature
 
-import { lerp, rectCollision } from "./util.js";
-import { rndFloat, rndInt, range } from "./math.js";
+import { rectCollision } from "./util.js";
+import { rndFloat, range } from "./math.js";
 import SpriteSheet from './spritesheet.js';
-import Particle from './particle.js'
 import Player from './player.js';
 import { onScreen } from './graphics.js';
 
@@ -121,30 +120,7 @@ BIRD.prototype.update = function update(dt){
         bottom: this.pos.y + this.height/2
     }
     var self = this;
-    G.particles.forEach(function(bullet){
-        if(bullet.type == 'bullet'){
-            if(rectCollision(bullet.rect, self.rect)){
-                let splodeCount = 10;
-                while(--splodeCount){
-                    G.particles.push(new Particle(
-                        bullet.x,
-                        bullet.y,
-                        (bullet.vx > 0 ? -1 : 1)+ rndFloat(-1, 1), 
-                        rndFloat(1, 2),
-                        27,
-                        1,
-                        1,
-                        10,
-                        'bg'
-                    ))
-                }
-                bullet.kill();
-                self.health--;
-                self.wasHit = true;
-                self.spritesheet.image = G.loader.brightImages.EnemyTinydiver;
-            }
-        }
-    });
+    
 
     if(rectCollision(this.rect, G.player.rect)){
         G.MSG.dispatch('hurt', {amount: 5});
@@ -205,7 +181,7 @@ BIRD.prototype.kill = function kill(){
     //splodey splode
     let splodeCount = 32;
     while(--splodeCount){
-        G.particles.push(new Particle(
+        G.particles.spawn(
             this.pos.x,
             this.pos.y,
             rndFloat(-1.5, 1.5), 
@@ -215,7 +191,7 @@ BIRD.prototype.kill = function kill(){
             2,
             15,
             'bg'
-        ))
+        )
     }
 
     G.worldFlipped.tileFillCircle(

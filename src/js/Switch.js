@@ -1,7 +1,5 @@
-import { lerp, rectCollision} from "./util.js";
-import { rndFloat, rndInt, range } from "./math.js";
+import { rndInt } from "./math.js";
 import SpriteSheet from './spritesheet.js';
-import Particle from './particle.js'
 import Player from "./player.js";
 
 

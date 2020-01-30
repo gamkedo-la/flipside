@@ -1,4 +1,3 @@
-import Particle from './particle.js'; // used by sparks
 import { rndInt, rndFloat, range } from './math.js';
 
 const SPARK_CHANCE = 0.25; // if >0 ends of line occasionally spark

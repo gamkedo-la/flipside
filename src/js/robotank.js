@@ -1,10 +1,8 @@
 // RoboTank - a horizontally patrolling tank unit
 
-import { lerp, rectCollision } from "./util.js";
+import { rectCollision } from "./util.js";
 import { rndFloat, rndInt, range } from "./math.js";
 import SpriteSheet from './spritesheet.js';
-import Particle from './particle.js'
-import Player from "./player.js";
 
 const ROBOTANK_W = 32;
 const ROBOTANK_H = 26;
@@ -82,7 +80,7 @@ RoboTank.prototype.flameThrower = function() {
     //console.log("Flame Thrower!");
     let max = rndInt(6,12);
     for (let i=0; i<max; i++) {
-        G.particles.push(new Particle(
+        G.particles.spawn(
             this.goingLeft ? this.pos.x+this.gunOffset.rightX : this.pos.x+this.gunOffset.leftX, // gunXOffset
             this.pos.y + this.gunOffset.y, // gunYOffset
             this.goingLeft?rndFloat(0.5,2):rndFloat(-0.5,-2),
@@ -91,8 +89,8 @@ RoboTank.prototype.flameThrower = function() {
             2, 
             2,
             20,
-            'fire'
-        )) ;   
+            0
+        ) ;   
     }
 }  
 
@@ -150,33 +148,7 @@ RoboTank.prototype.update = function update(dt){
         bottom: this.pos.y + this.height/2
     }
     var self = this;
-    G.particles.forEach(function(bullet){
-        if(bullet.type == 'bullet'){
-            if(rectCollision(bullet.rect, self.rect)){
-                let splodeCount = 10;
-                while(--splodeCount){
-                    G.particles.push(new Particle(
-                        bullet.x,
-                        bullet.y,
-                        (bullet.vx > 0 ? -1 : 1)+ rndFloat(-1, 1), 
-                        rndFloat(1, 2),
-                        27,
-                        1,
-                        1,
-                        10,
-                        'bg'
-                    ))
-                }
-                bullet.kill();
-                
-                self.health--;
-                self.wasHit = true;
-                self.spritesheet.image = G.loader.brightImages.EnemyRoboTank;
-            }
-        }
-        
-    });
-
+    
     if(rectCollision(this.rect, G.player.rect)){
         G.MSG.dispatch('hurt', {amount: 5});
     }
@@ -252,7 +224,7 @@ RoboTank.prototype.kill = function kill(){
     //splodey splode
     let splodeCount = 32;
             while(--splodeCount){
-                G.particles.push(new Particle(
+                G.particles.spawn(
                     this.pos.x,
                     this.pos.y,
                     rndFloat(-1.5, 1.5), 
@@ -261,8 +233,8 @@ RoboTank.prototype.kill = function kill(){
                     2,
                     2,
                     15,
-                    'bg'
-                ))
+                    0
+                )
             }
     
     G.world.entities.splice(G.world.entities.indexOf(this), 1);

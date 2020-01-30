@@ -1,7 +1,6 @@
 import { clamp } from './math.js';
 import SpriteSheet from './spritesheet.js';
 import { rndFloat, rndInt, range } from './math.js';
-import Particle from './particle.js';
 import { Transitioner } from './graphics.js';
 import { rectCollision } from './util.js';
 
@@ -133,8 +132,6 @@ const Player = {
         friction: 0.99
     }
 }
-
-
 
 Player.update = function update(dt, world, worldFlipped, worldForeground){
     this.world = world;
@@ -268,7 +265,7 @@ Player.inTheFlipPhysics = function inTheFlipPhysics(dt, world, worldFlipped){
         let gunLeft = this.pos.x - 6;
         let gunRight = this.pos.x + 6;
         let gunYoffset = -1;
-        G.particles.push(new Particle(
+        G.particles.spawn(
             this.pos.x,
             this.pos.y,
             -this.vx/50,
@@ -277,8 +274,8 @@ Player.inTheFlipPhysics = function inTheFlipPhysics(dt, world, worldFlipped){
             3, 
             3,
             50,
-            'jetBubble'
-        ))
+            1
+        )
         if(this.input.down){
             this.vy += this.accel;
         }
@@ -347,7 +344,7 @@ Player.muzzleFlash = function() {
     //console.log("Muzzleflash!");
     let max = rndInt(1,3);
     // big poof
-    G.particles.push(new Particle(
+    G.particles.spawn(
         rndFloat(-1,1)+(this.facingLeft ? this.pos.x+this.gunOffset.leftX : this.pos.x+this.gunOffset.rightX), // gunXOffset
         rndFloat(-1,1)+(this.pos.y + this.crouching ? 1: -4 ), // gunYOffset
         this.facingLeft?rndFloat(-1,0):rndFloat(0,1),
@@ -356,13 +353,13 @@ Player.muzzleFlash = function() {
         6, 
         6,
         1,
-        'particle'
-    )) ;   
+        0
+    ) ;   
     
     max = rndInt(6,12);
     // small sparks
     for (let i=0; i<max; i++) {
-        G.particles.push(new Particle(
+        G.particles.spawn(
             this.facingLeft ? this.pos.x+this.gunOffset.leftX : this.pos.x+this.gunOffset.rightX, // gunXOffset
             this.pos.y+ this.crouching ? 1 : -4, // gunYOffset
             this.facingLeft?rndFloat(-2,-4):rndFloat(2,4),
@@ -371,8 +368,8 @@ Player.muzzleFlash = function() {
             3, 
             3,
             4,
-            'particle'
-        )) ;   
+            0
+            ) ;   
     }
 }    
         
@@ -382,7 +379,7 @@ Player.landedFX = function() {
     let max = rndInt(4,8);
     // small sparks
     for (let i=0; i<max; i++) {
-        G.particles.push(new Particle(
+        G.particles.spawn(
             this.pos.x+4+rndFloat(-2,2),
             this.pos.y+20+rndFloat(-2,-6), // foot offset
             rndFloat(-0.5,0.5),
@@ -391,8 +388,8 @@ Player.landedFX = function() {
             1, 
             1,
             20,
-            'particle'
-        )) ;   
+            0
+        ) ;   
     }
 }
 
@@ -416,7 +413,7 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         this.muzzleFlash();
 
         let gunYoffset = this.crouching? 7 : -3;
-        G.particles.push(new Particle(
+        G.particles.spawn(
             this.facingLeft ? this.pos.x+this.gunOffset.leftX : this.pos.x+this.gunOffset.rightX,
             this.pos.y + gunYoffset,
             this.facingLeft ? -this.bulletVX + (this.vx/100) : this.bulletVX + (this.vx/100),
@@ -425,8 +422,8 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
             3, 
             3,
             50,
-            'bullet'
-        ))
+            4
+        )
     } else if (this.gunCooldown) {
         this.gunCooldown--;
     }
@@ -437,7 +434,7 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         this.muzzleFlash();
 
         let gunYoffset = this.crouching? 1 : -4;
-        G.particles.push(new Particle(
+        G.particles.spawn(
             this.facingLeft ? this.pos.x+this.gunOffset.leftX : this.pos.x+this.gunOffset.rightX,
             this.pos.y + gunYoffset,
             this.facingLeft ? -5: 5,
@@ -446,8 +443,8 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
             3, 
             3,
             50,
-            'bulletFlipped'
-        ))
+            4
+        )
     } else if (this.gunCooldown) {
         this.gunCooldown--;
     }
@@ -779,7 +776,7 @@ Player.hurt = function(params){
     if(!this.hurtCooldown){
         let hurtParticleCount = 20;
         while(--hurtParticleCount){
-            G.particles.push(new Particle(
+            G.particles.spawn(
                 this.pos.x,
                 this.pos.y,
                 -this.vx/50+rndFloat(-2,2),
@@ -788,8 +785,8 @@ Player.hurt = function(params){
                 2, 
                 2,
                 20,
-                'blood'
-            ))
+                0
+            )
         }
 
         this.hurtCooldown = this.hurtCooldownMax;
@@ -837,7 +834,7 @@ Player.pickup = function(params){
     G.Records.playerStats.totals.nanitesCollected+=params.amount
     let particles = 40;
     while(--particles){
-        G.particles.push(new Particle(
+        G.particles.spawn(
             params.x,
             params.y,
             rndFloat(-5,5),
@@ -846,15 +843,15 @@ Player.pickup = function(params){
             1, 
             1,
             30,
-            'particle'
-        ))
+            0
+        )
     }
 }
 
 Player.crossedOver = function() {
 let particles = 10;
 while(--particles){
-    G.particles.push(new Particle(
+    G.particles.spawn(
         this.pos.x,
         this.pos.y,
         -this.vx/50+rndFloat(-2, 2),
@@ -863,8 +860,8 @@ while(--particles){
         3, 
         3,
         40,
-        'crossBubble'
-    ))
+        2
+    )
 }
 }
 

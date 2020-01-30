@@ -1,10 +1,8 @@
 // PIG - a horizontally patrolling flip creature
 
-import { lerp, rectCollision } from "./util.js";
+import { rectCollision } from "./util.js";
 import { rndFloat, rndInt, range } from "./math.js";
 import SpriteSheet from './spritesheet.js';
-import Particle from './particle.js'
-import Player from "./player.js";
 
 // patrols the area near pos, back and forth horizontally
 const PIG = function PIG({pos, pathWidth=3, source={}}={}){
@@ -75,31 +73,7 @@ PIG.prototype.update = function update(dt){
         bottom: this.pos.y + this.height/2
     }
     var self = this;
-    G.particles.forEach(function(bullet){
-        if(bullet.type == 'bullet'){
-            if(rectCollision(bullet.rect, self.rect)){
-                let splodeCount = 10;
-                while(--splodeCount){
-                    G.particles.push(new Particle(
-                        bullet.x,
-                        bullet.xy,
-                        (bullet.vx > 0 ? -1 : 1)+ rndFloat(-1, 1), 
-                        rndFloat(1, 2),
-                        27,
-                        1,
-                        1,
-                        10,
-                        'bg'
-                    ))
-                }
-                bullet.kill();
-                self.health--;
-                self.wasHit = true;
-                self.spritesheet.image = G.loader.brightImages.EnemyTinycrawler;
-            }
-        }
-    });
-
+    
     if(rectCollision(this.rect, G.player.rect)){
         G.MSG.dispatch('hurt', {amount: 5});
     }
