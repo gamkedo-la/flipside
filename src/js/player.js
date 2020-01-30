@@ -413,7 +413,7 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         this.muzzleFlash();
 
         let gunYoffset = this.crouching? 7 : -3;
-        G.particles.spawn(
+        G.bullets.spawn(
             this.facingLeft ? this.pos.x+this.gunOffset.leftX : this.pos.x+this.gunOffset.rightX,
             this.pos.y + gunYoffset,
             this.facingLeft ? -this.bulletVX + (this.vx/100) : this.bulletVX + (this.vx/100),
@@ -434,7 +434,7 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         this.muzzleFlash();
 
         let gunYoffset = this.crouching? 1 : -4;
-        G.particles.spawn(
+        G.bullets.spawn(
             this.facingLeft ? this.pos.x+this.gunOffset.leftX : this.pos.x+this.gunOffset.rightX,
             this.pos.y + gunYoffset,
             this.facingLeft ? -5: 5,

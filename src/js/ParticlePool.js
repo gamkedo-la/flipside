@@ -40,7 +40,7 @@ ParticlePool.prototype.spawn = function(x, y , vx, vy, color=22, width=1, height
 
 ParticlePool.prototype.draw = function draw(){
 
-    for(let i = 0; i<this.pool.length; i+=this.tuple){
+    for(let i = 0; i<=this.pool.length; i+=this.tuple){
 
         if(this.pool[i] <= 0){i+=this.tuple}else{
            // console.log(this.pool[i+1], this.pool[i+2]);
@@ -126,7 +126,7 @@ ParticlePool.prototype.update = function update(){
     // this.pool[this.i+9] = 0; //prevX
     // this.pool[this.i+10] = 0; //prevY
 
-    for(let i = 0; i<this.pool.length; i+=this.tuple){
+    for(let i = 0; i<=this.pool.length; i+=this.tuple){
         //if life is zero, skip update, increment i 1 tuple. 
         //we don't delete particles, we just don't update or draw them
         if(this.pool[i]<=0){i+=this.tuple}
