@@ -21,7 +21,7 @@ import Switch from './src/js/Switch.js';
 import GameSaver from './src/js/GameSaver.js';
 
 const invertedMosaicEffectEnabled = false;
-const soundEnabled = false;
+const soundEnabled = true;
 
 //one global (G)ame object to rule them all
 window.G = {};
@@ -46,7 +46,8 @@ G.view = {
     x: 0, y: 0, w: G.c.width, h: G.c.height
 }
 
-G.particles = new ParticlePool(2000);
+G.particles = new ParticlePool(1000);
+G.bullets = new ParticlePool(50);
 
 G.deadZone = {
     x: 60, y: 60
