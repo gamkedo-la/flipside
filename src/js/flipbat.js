@@ -145,7 +145,7 @@ FlipBat.prototype.kill = function kill(){
             15,
             6,
             6,
-            0
+            3
         )
     }
     

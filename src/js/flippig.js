@@ -138,7 +138,7 @@ PIG.prototype.kill = function kill(){
     //splodey splode
     let splodeCount = 32;
             while(--splodeCount){
-                G.particles.push(new Particle(
+                G.particles.spawn(
                     this.pos.x+rndInt(-15,15),
                     this.pos.y-10+rndInt(-5,5),
                     rndFloat(-.3, .3), 
@@ -147,8 +147,8 @@ PIG.prototype.kill = function kill(){
                     2,
                     2,
                     25,
-                    'enemyDeath'
-                ))
+                    3
+                )
             }
     
     G.world.entities.splice(G.world.entities.indexOf(this), 1);

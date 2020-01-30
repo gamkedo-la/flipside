@@ -77,7 +77,7 @@ const Player = {
 
     bulletVXdefault: 200,
     bulletVX: 200,
-    bulletVYdefault: 25,
+    bulletVYdefault: 200,
 
     flipBar: {
         xOffset: -12,
@@ -409,7 +409,7 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
             this.facingLeft ? this.pos.x+this.gunOffset.leftX : this.pos.x+this.gunOffset.rightX,
             this.pos.y + gunYoffset,
             this.facingLeft ? (-this.bulletVX + this.vx) : (this.bulletVX + this.vx),
-            this.aimingUp ? -this.bulletVYdefault * xdt : 0,
+            this.aimingUp ? -this.bulletVYdefault : 0,
             22,
             3, 
             3,
@@ -752,8 +752,8 @@ Player.hurt = function(params){
             G.particles.spawn(
                 this.pos.x,
                 this.pos.y,
-                -this.vx/50+rndFloat(-2,2),
-                -this.vy/50+rndFloat(-2,2),
+                -this.vx+rndFloat(-60,60),
+                -this.vy+rndFloat(-60,z60),
                 4,
                 2, 
                 2,
@@ -810,8 +810,8 @@ Player.pickup = function(params){
         G.particles.spawn(
             params.x,
             params.y,
-            rndFloat(-5,5),
-            rndFloat(-5,10),
+            rndFloat(-50,50),
+            rndFloat(-50,50),
             12,
             1, 
             1,

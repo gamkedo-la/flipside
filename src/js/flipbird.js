@@ -190,7 +190,7 @@ BIRD.prototype.kill = function kill(){
             2,
             2,
             15,
-            'bg'
+            3
         )
     }
 
