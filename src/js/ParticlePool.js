@@ -14,8 +14,9 @@ const ParticlePool = function ParticlePool(size){
     this.color = color;
     this.type = type;
     */  //11 parameters
+    this.size = size;
     this.tuple = 11;
-    this.pool = new Float32Array(size*this.tuple);
+    this.pool = new Float32Array(this.size*this.tuple);
     this.i = 0;
     
     return this;
@@ -34,7 +35,7 @@ ParticlePool.prototype.spawn = function(x, y , vx, vy, color=22, width=1, height
     this.pool[this.i+10] = 0; //prevY
     
     //increment index to be ready for next spawned particle
-    this.i >= this.size ? this.i = 0 : this.i += this.tuple;
+    this.i >= this.size*this.tuple ? this.i = 0 : this.i += this.tuple;
 }
 
 ParticlePool.prototype.draw = function draw(){
