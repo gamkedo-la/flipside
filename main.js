@@ -46,7 +46,7 @@ G.view = {
     x: 0, y: 0, w: G.c.width, h: G.c.height
 }
 
-G.particles = new ParticlePool(500);
+G.particles = new ParticlePool(10000);
 G.bullets = new ParticlePool(10);
 
 G.deadZone = {
@@ -258,6 +258,11 @@ function update(dt){
     //update all the things
     elapsed += dt;
     G.frameCount ++;
+    // let p = 200;
+    // while(--p){
+    //     G.particles.spawn(rndInt(0, 1000), rndInt(0, 1000), rndFloat(-2,2), rndFloat(-2,0), 3, 1, 1, 50, 0 )
+    // }
+    
 
     handleCamera(dt);
 

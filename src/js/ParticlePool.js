@@ -41,7 +41,7 @@ ParticlePool.prototype.spawn = function(x, y , vx, vy, color=22, width=1, height
     }
     
     
-    //increment index to be ready for next spawned particle
+    //reset counter 
     if(this.i >= this.size*this.tuple-this.tuple) this.i = 0; 
 }
 
