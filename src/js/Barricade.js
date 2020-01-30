@@ -1,4 +1,4 @@
-import { rectCollision} from "./util.js";
+import { rectCollision, pointInRect} from "./util.js";
 import { rndFloat, rndInt, range } from "./math.js";
 import SpriteSheet from './spritesheet.js';
 

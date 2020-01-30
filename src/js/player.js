@@ -753,7 +753,7 @@ Player.hurt = function(params){
                 this.pos.x,
                 this.pos.y,
                 -this.vx+rndFloat(-60,60),
-                -this.vy+rndFloat(-60,z60),
+                -this.vy+rndFloat(-60,60),
                 4,
                 2, 
                 2,

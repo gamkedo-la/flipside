@@ -1,6 +1,6 @@
 // RoboTank - a horizontally patrolling tank unit
 
-import { rectCollision } from "./util.js";
+import { rectCollision, pointInRect } from "./util.js";
 import { rndFloat, rndInt, range } from "./math.js";
 import SpriteSheet from './spritesheet.js';
 
@@ -156,6 +156,18 @@ RoboTank.prototype.update = function update(dt){
     // look at player
     // G.player.pos.x < this.pos.x ? this.play('idleRight') : this.play('idleLeft');
 
+    for(let i = 0; i < G.bullets.pool.length; i+= G.bullets.tuple){
+        if(G.bullets.pool[i]>=0){
+            if(pointInRect(G.bullets.pool[i+1], G.bullets.pool[i+2], this.rect)){
+                G.bullets.pool[i] = -1;
+                G.bullets.pool[i+1] = 0;
+                G.bullets.pool[i+2] = 0;
+                this.health--;
+                break;
+            }
+        }
+    }
+
     // look in direction of movement
     this.goingLeft ? this.play('idleLeft') : this.play('idleRight');
 
@@ -187,6 +199,7 @@ RoboTank.prototype.render = function render(dt){
         // draw "this wall/gap got in my way" tile
         if (this.debugC) G.rb.fillRect(this.debugX,this.debugY,G.world.tileSize,G.world.tileSize,this.debugC);
     }
+    G.rb.rect(this.rect.left-G.view.x, this.rect.top-G.view.y, this.width, this.height, 11);
 }
 
 RoboTank.prototype.play = function play(animationName){
