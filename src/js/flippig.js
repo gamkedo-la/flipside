@@ -15,8 +15,8 @@ const PIG = function PIG({pos, pathWidth=3, source={}}={}){
     this.width = 30;
     this.height = 20;
     this.rect = {};
-    this.health = 16;
-    this.healthMax = 16;
+    this.health = 32;
+    this.healthMax = 32;
     this.movingRight = true;
     this.wasHit = false;
     this.timeSinceHit = 0;
@@ -79,7 +79,7 @@ PIG.prototype.update = function update(dt){
     }
 
     for(let i = 0; i < G.bullets.pool.length; i+= G.bullets.tuple){
-        if(G.bullets.pool[i]>=0){
+        if(G.bullets.pool[i]>0){
             if(pointInRect(G.bullets.pool[i+1], G.bullets.pool[i+2], this.rect)){
                 G.bullets.kill(i);
                 this.health--;

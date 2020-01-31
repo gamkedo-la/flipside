@@ -15,8 +15,8 @@ const BIRD = function BIRD({pos}={}){
     this.width = 18;
     this.height = 27;
     this.rect = {};
-    this.health = 16;
-    this.healthMax = 16;
+    this.health = 32;
+    this.healthMax = 32;
     this.isDiving = false;
     this.diveCount = 0;
     this.gravity = 5;
@@ -131,7 +131,6 @@ BIRD.prototype.update = function update(dt){
             if(pointInRect(G.bullets.pool[i+1], G.bullets.pool[i+2], this.rect)){
                 G.bullets.kill(i);
                 this.health--;
-                break;
             }
         }
     }

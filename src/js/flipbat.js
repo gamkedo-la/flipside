@@ -13,8 +13,8 @@ const FlipBat = function FlipBat({pos, height}={}){
     this.width = 12;
     this.height = 12;
     this.rect = {};
-    this.health = 4;
-    this.healthMax = 4;
+    this.health = 8;
+    this.healthMax = 8;
     this.drawOffset = {x: -7, y: -13}
     this.lerpAmount = 0;
     this.movingDown = true
@@ -78,13 +78,10 @@ FlipBat.prototype.update = function update(dt){
 
     //bullet collision check
     for(let i = 0; i < G.bullets.pool.length; i+= G.bullets.tuple){
-        if(G.bullets.pool[i]>=0){
+        if(G.bullets.pool[i]>0){
             if(pointInRect(G.bullets.pool[i+1], G.bullets.pool[i+2], this.rect)){
-                G.bullets.pool[i] = -1;
-                G.bullets.pool[i+1] = 0;
-                G.bullets.pool[i+2] = 0;
+                G.bullets.kill(i);
                 this.health--;
-                break;
             }
         }
     }

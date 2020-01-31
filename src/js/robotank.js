@@ -20,8 +20,8 @@ const RoboTank = function RoboTank({pos}={}){
     this.width = ROBOTANK_W; // note: width and height are hitbox, not drawsize
     this.height = ROBOTANK_H;
     this.rect = {};
-    this.health = 16;
-    this.healthMax = 16;
+    this.health = 32;
+    this.healthMax = 32;
     this.pos = {x: pos.x, y: pos.y-11}; // put feet where bottom of Tiled icon appears
     this.drawOffset = {x: 4, y: -2}; // center the sprite when rendering
     this.gunOffset = {leftX: -14, rightX: 20, y: -3}; // where bullets come from
