@@ -685,10 +685,19 @@ function UIRender(){
         healthBarDrawWidth,
         healthBarDimensions.h-healthBarPadding*2
         );
-    /*G.ctx.drawImage(//wip msgBox work in progress
+    /*let msgBoxX = 50;
+    let msgBoxY = 50;
+    let msgBoxTextX = msgBoxX + 30;
+    let msgBoxTextY = msgBoxY + 30;
+    G.ctx.drawImage(//wip msgBox work in progress
         G.img.msgBox,
-        healthBarLocation.x,
-        healthBarLocation.y
-        );*/
+        msgBoxX,
+        msgBoxY
+        );
+    G.gameFont.drawText({
+        textString: "testing",
+        pos: {x: msgBoxTextX, y: msgBoxTextY},
+        spacing: 0
+        });*/
 }
 
