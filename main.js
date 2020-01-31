@@ -685,7 +685,14 @@ function UIRender(){
         healthBarDrawWidth,
         healthBarDimensions.h-healthBarPadding*2
         );
-    /*let msgBoxX = 50;
+    if (showMessageBox){
+        handleMessageBox();
+    }  
+}
+//working on this will move into its own file once ready
+let showMessageBox = false; 
+function handleMessageBox(){
+    let msgBoxX = 50;
     let msgBoxY = 50;
     let msgBoxTextX = msgBoxX + 30;
     let msgBoxTextY = msgBoxY + 30;
@@ -698,6 +705,5 @@ function UIRender(){
         textString: "testing",
         pos: {x: msgBoxTextX, y: msgBoxTextY},
         spacing: 0
-        });*/
+        });
 }
-
