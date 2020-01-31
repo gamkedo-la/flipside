@@ -690,19 +690,25 @@ function UIRender(){
     }  
 }
 //working on this will move into its own file once ready
-let showMessageBox = false; 
+let showMessageBox = false;
+let showMessageText = 'text';
+
+function showMessage(withText){//work in progress
+    showMessageBox = true;
+    showMessageText = withText;
+}
 function handleMessageBox(){
     let msgBoxX = 50;
     let msgBoxY = 50;
     let msgBoxTextX = msgBoxX + 30;
     let msgBoxTextY = msgBoxY + 30;
-    G.ctx.drawImage(//wip msgBox work in progress
+    G.ctx.drawImage(
         G.img.msgBox,
         msgBoxX,
         msgBoxY
         );
     G.gameFont.drawText({
-        textString: "testing",
+        textString: showMessageText,
         pos: {x: msgBoxTextX, y: msgBoxTextY},
         spacing: 0
         });
