@@ -71,7 +71,7 @@ const Player = {
     hurtPush: 40,
 
     gunCooldown: 0,
-    gunCooldownMax: 11,
+    gunCooldownMax: 7,
 
     doorCooldown: 0,
 
@@ -86,22 +86,24 @@ const Player = {
         height: 4
     },
 
+    gunOffsets: {
+        standingLeft: -11,
+        standingRight: 14,
+        pointedUpLeft: -3,
+        pointedUpRight: 3,
+        pointedUpY: -25,
+        standingY:-2,
+        crouchingY:0,
+        pointedDownY:6,
+        pointedDownX:3
+    },
+
+
+    //these are set by conditionals in gunOffsets ^^^,  don't set them here.
     gunOffset: {
-        leftX: -15,
-        rightX: 18,
-        y:-5
-    },
-
-    gunOffsetDefault: {
-        leftX: -15,
-        rightX: 18,
-        y:-5
-    },
-
-    gunOffsetUp: {
         leftX: 0,
         rightX: 0,
-        y:-10
+        y: 0
     },
 
 
@@ -394,20 +396,26 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
 
     if(this.input.up){
         this.aimingUp = true;
-        if(!this.input.left && !this.input.right){this.bulletVX = 0} 
+        this.bulletVX = 0;
+        this.gunOffset.y = this.gunOffsets.pointedUpY;
+        this.gunOffset.leftX = this.gunOffsets.pointedUpLeft;
+        this.gunOffset.rightX = this.gunOffsets.pointedUpRight;
     } else {
         this.aimingUp = false;
         this.bulletVX = this.bulletVXdefault;
+        this.gunOffset.y = this.gunOffsets.standingY;
+        this.gunOffset.leftX = this.gunOffsets.standingLeft;
+        this.gunOffset.rightX = this.gunOffsets.standingRight;
     }
 
     if(this.input.primaryFire && !this.gunCooldown){ //fire gun
         this.gunCooldown = this.gunCooldownMax;
         this.muzzleFlash();
 
-        let gunYoffset = this.crouching? 7 : -3;
+        
         G.bullets.spawn(
             this.facingLeft ? this.pos.x+this.gunOffset.leftX : this.pos.x+this.gunOffset.rightX,
-            this.pos.y + gunYoffset,
+            this.pos.y + this.gunOffset.y,
             this.facingLeft ? -this.bulletVX : this.bulletVX,
             this.aimingUp ? -this.bulletVYdefault : 0,
             22,
@@ -456,6 +464,13 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
     if(this.input.down && !this.inAir && !this.falling){
         this.crouching = true;
     }else{this.crouching = false}
+
+    if(this.input.down && ( this.inAir || this.falling ) ){
+        this.play('pointedDown');
+    }
+    if(this.input.up && Math.abs(this.vx) < 10){
+        this.facingLeft ? this.play('pointedUpLeft') : this.play('pointedUpRight');
+    }
 
     if(this.input.left ){
         this.vx -= this.accel;
@@ -692,25 +707,22 @@ Player.init = function init(){
             },
             crouchRight: {
                 frames: 32
+            },
+            pointedUpRight: {
+                frames: 34
+            },
+            pointedUpLeft: {
+                frames: 35
+            },
+            pointedDown: {
+                frames: 36
             }
 
         }
     })
 
-    // this.spritesheetV2 = new SpriteSheet({
-    //     image: img.playerRight,
-    //     frameWidth: 50,
-    //     frameHeight: 49,
-    //     animations: {
-    //         idleRight: {
-    //             frames: 0
-    //         }
-    //     }
-    // })
     //player must have an anim set at start, or player.currentAnimation is null
     this.play('idleRight');
-
-    
 
 }
 
