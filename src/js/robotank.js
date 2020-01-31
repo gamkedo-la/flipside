@@ -163,7 +163,6 @@ RoboTank.prototype.update = function update(dt){
             if(pointInRect(G.bullets.pool[i+1], G.bullets.pool[i+2], this.rect)){
                 G.bullets.kill(i)
                 this.health--;
-                break;
             }
         }
     }
@@ -199,7 +198,7 @@ RoboTank.prototype.render = function render(dt){
         // draw "this wall/gap got in my way" tile
         if (this.debugC) G.rb.fillRect(this.debugX,this.debugY,G.world.tileSize,G.world.tileSize,this.debugC);
     }
-    G.rb.rect(this.rect.left-G.view.x, this.rect.top-G.view.y, this.width, this.height, 11);
+    //G.rb.rect(this.rect.left-G.view.x, this.rect.top-G.view.y, this.width, this.height, 11);
 }
 
 RoboTank.prototype.play = function play(animationName){

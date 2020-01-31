@@ -148,20 +148,8 @@ ParticlePool.prototype.update = function update(dt){
             this.pool[i+2] += this.pool[i+4]*dt; //y += vy;
            // console.log(this.pool[i+1], this.pool[i+2])
         }
-        
-        //no more rect object, we'll do that inline when needed
     }
-    // this.life--
-    // this.prevX = this.x;
-    // this.prevY = this.y;
-    // this.x += this.vx;
-    // this.y += this.vy;
-    // this.rect = {
-    //     top: this.y - this.height/2,
-    //     left: this.x - this.width/2,
-    //     right: this.x + this.width/2,
-    //     bottom: this.y + this.height/2
-    // }
+   
 }
 
 ParticlePool.prototype.updateWithCollision = function updateWithCollision(){

@@ -8,7 +8,7 @@ import AssetLoader from './src/js/AssetLoader.js';
 import AudioGlobal from './src/js/audio.js';
 import Signal from './src/js/Signal.js';
 import ParticlePool from './src/js/ParticlePool.js';
-//import GamepadSupport from './src/js/gamepad.js';
+import GamepadSupport from './src/js/gamepad.js';
 import ElectricityRenderer from './src/js/electricity.js';
 import RetroBuffer from './src/js/retroBuffer.js';
 import FlipBat from './src/js/flipbat.js';
@@ -30,7 +30,7 @@ G.transitioning = false;
 
 // start the gamepad keyboard event emulator
 // works fine, disabled for perf testing
-// G.GamepadSupport = new GamepadSupport();
+G.GamepadSupport = new GamepadSupport();
 
 //initialize and show the FPS/mem use counter
 const stats = new Stats();
@@ -257,10 +257,6 @@ function update(dt){
     //update all the things
     elapsed += dt;
     G.frameCount ++;
-    // let p = 200;
-    // while(--p){
-    //     G.particles.spawn(rndInt(0, 1000), rndInt(0, 1000), rndFloat(-2,2), rndFloat(-2,0), 3, 1, 1, 50, 0 )
-    // }
     
     handleCamera(dt);
 
@@ -287,6 +283,11 @@ function update(dt){
 
     G.particles.update(dt);
     G.bullets.update(dt);
+    for(let i = 0; i < G.bullets.pool.length; i+= G.bullets.tuple){
+        if(G.world.pixelToTileID(G.bullets.pool[i+1], G.bullets.pool[i+2]) > G.player.collideIndex){
+            G.bullets.kill(i);
+        }
+    }
 
 }
 

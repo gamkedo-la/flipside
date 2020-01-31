@@ -83,7 +83,6 @@ PIG.prototype.update = function update(dt){
             if(pointInRect(G.bullets.pool[i+1], G.bullets.pool[i+2], this.rect)){
                 G.bullets.kill(i);
                 this.health--;
-                break;
             }
         }
     }
