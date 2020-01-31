@@ -67,7 +67,7 @@ const Player = {
     flipTimeMax: 200,
 
     hurtCooldown: 0,
-    hurtCooldownMax: 180,
+    hurtCooldownMax: 30,
     hurtPush: 40,
 
     gunCooldown: 0,
