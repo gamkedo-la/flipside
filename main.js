@@ -20,11 +20,14 @@ import Switch from './src/js/Switch.js';
 // import Drone from './src/js/drone.js';
 import GameSaver from './src/js/GameSaver.js';
 
+
+
 const invertedMosaicEffectEnabled = false;
 const soundEnabled = true;
 
 //one global (G)ame object to rule them all
 window.G = {};
+G.scenes = {};
 G.pos = {x: 0, y: 0};
 G.transitioning = false;
 
@@ -57,7 +60,6 @@ G.tileSheetSize = { height: 16, width: 16 }
 
 G.MSG = new Signal();
 G.loader = new AssetLoader();
-//G.Records = new Records();
 
 if (soundEnabled) {
     G.audio = new AudioGlobal(); 
@@ -88,7 +90,8 @@ const images = [
     'EnemyTinydiver',
     'EnemyRoboTank',
     'flipSpace',
-    'msgBox'
+    'msgBox',
+    'msgBox3'
 ]
 
 const maps = [
@@ -124,7 +127,7 @@ document.body.appendChild(G.rb.c);
 //for that tasty deepnight pixel mosaic overlay effect
 const mosaic = makeMosaic();
 mosaic.canvas.id = "mosaic";
-//document.body.appendChild(mosaic.canvas);
+document.body.appendChild(mosaic.canvas);
 G.mosaic = mosaic;
 
 // inverted mosaic bevel during flipspace
