@@ -19,7 +19,7 @@ import Barricade from './src/js/Barricade.js';
 import Switch from './src/js/Switch.js';
 // import Drone from './src/js/drone.js';
 import GameSaver from './src/js/GameSaver.js';
-
+import { UIRender, showMessage, handleMessageBox} from './src/js/UI.js';
 
 
 const invertedMosaicEffectEnabled = false;
@@ -663,56 +663,4 @@ function debugRender(){
     G.debugEvents = [];
 
     //G.rb.rect(player.rect.left-G.view.x, player.rect.top-G.view.y, player.rect.right-player.rect.left, player.rect.bottom-player.rect.top, 22)
-}
-
-function UIRender(){
-    let healthBarLocation   = {x: 4, y: 4},
-        healthBarDimensions = {w: 50, h: 8},
-        healthBarPadding    = 1,
-        healthBarDrawWidth  = range(G.player.health, 0, G.player.maxHealth, 0, healthBarDimensions.w-healthBarPadding*2);
-    ctx.fillStyle = '#777';
-    ctx.fillRect(healthBarLocation.x, healthBarLocation.y, healthBarDimensions.w, healthBarDimensions.h);
-    ctx.fillStyle = '#444';
-    ctx.fillRect(
-            healthBarLocation.x + healthBarPadding,
-            healthBarLocation.y+healthBarPadding,
-            healthBarDimensions.w-healthBarPadding*2,
-            healthBarDimensions.h-healthBarPadding*2
-            );
-    //test by setting lower than full
-    //G.player.health = 75;
-    ctx.fillStyle = '#4f0'
-    ctx.fillRect(
-        healthBarLocation.x + healthBarPadding,
-        healthBarLocation.y+healthBarPadding,
-        healthBarDrawWidth,
-        healthBarDimensions.h-healthBarPadding*2
-        );
-    if (showMessageBox){
-        handleMessageBox();
-    }  
-}
-//working on this will move into its own file once ready
-let showMessageBox = false;
-let showMessageText = 'text';
-
-function showMessage(withText){//work in progress
-    showMessageBox = true;
-    showMessageText = withText;
-}
-function handleMessageBox(){
-    let msgBoxX = 50;
-    let msgBoxY = 50;
-    let msgBoxTextX = msgBoxX + 30;
-    let msgBoxTextY = msgBoxY + 30;
-    G.ctx.drawImage(
-        G.img.msgBox,
-        msgBoxX,
-        msgBoxY
-        );
-    G.gameFont.drawText({
-        textString: showMessageText,
-        pos: {x: msgBoxTextX, y: msgBoxTextY},
-        spacing: 0
-        });
 }
