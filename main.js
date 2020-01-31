@@ -87,7 +87,8 @@ const images = [
     'EnemyTinycrawler',
     'EnemyTinydiver',
     'EnemyRoboTank',
-    'flipSpace'
+    'flipSpace',
+    'msgBox'
 ]
 
 const maps = [
@@ -683,6 +684,10 @@ function UIRender(){
         healthBarDrawWidth,
         healthBarDimensions.h-healthBarPadding*2
         );
-
+    /*G.ctx.drawImage(//wip msgBox work in progress
+        G.img.msgBox,
+        healthBarLocation.x,
+        healthBarLocation.y
+        );*/
 }
 
