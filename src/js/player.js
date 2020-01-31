@@ -426,7 +426,7 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
     if(this.input.primaryFire && !this.gunCooldown){ //fire gun
         this.gunCooldown = this.gunCooldownMax;
         this.muzzleFlash();
-
+        G.audio.playSound(G.sounds.playerShoot, 0, 0.5, 1, false);
         G.bullets.spawn(
             this.facingLeft ? this.pos.x+this.gunOffset.leftX : this.pos.x+this.gunOffset.rightX,
             this.pos.y + this.gunOffset.y,
