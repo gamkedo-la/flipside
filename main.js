@@ -436,22 +436,22 @@ function render(dt){
     // TEMP TEST: work in progress electricity bolt line renderer
     //G.lightning.stressTest();
 
-    world.lightningSpawners.forEach(function(e){
-        if(e.width > e.height){
-            let x1 = e.x - G.view.x;
-            let y1 = e.y - G.view.y + rndInt(0, e.height);
-            let x0 = e.x  + e.width - G.view.x;
-            let y0 = e.y - G.view.y + rndInt(0, e.height);
-            G.lightning.drawZap(x0,y0,x1,y1)
-        } else {
-            let x1 = e.x - G.view.x + rndInt(0, e.width);
-            let y1 = e.y - G.view.y;
-            let x0 = e.x - G.view.x + rndInt(0, e.width);
-            let y0 = e.y + e.height - G.view.y;
-            G.lightning.drawZap(x0,y0,x1,y1);
-        }
+    // world.lightningSpawners.forEach(function(e){
+    //     if(e.width > e.height){
+    //         let x1 = e.x - G.view.x;
+    //         let y1 = e.y - G.view.y + rndInt(0, e.height);
+    //         let x0 = e.x  + e.width - G.view.x;
+    //         let y0 = e.y - G.view.y + rndInt(0, e.height);
+    //         G.lightning.drawZap(x0,y0,x1,y1)
+    //     } else {
+    //         let x1 = e.x - G.view.x + rndInt(0, e.width);
+    //         let y1 = e.y - G.view.y;
+    //         let x0 = e.x - G.view.x + rndInt(0, e.width);
+    //         let y0 = e.y + e.height - G.view.y;
+    //         G.lightning.drawZap(x0,y0,x1,y1);
+    //     }
         
-    })
+    // })
 
     UIRender();
     debugRender();
