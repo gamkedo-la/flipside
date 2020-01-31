@@ -98,6 +98,7 @@ RoboTank.prototype.flameThrower = function() {
 
 RoboTank.prototype.update = function update(dt){
     if(this.wasHit) {
+        this.spritesheet.image = G.loader.brightImages.EnemyRoboTank;
         this.timeSinceHit += dt;
         this.brightTime += dt;
         if(this.timeSinceHit > this.flashTime) {
@@ -162,6 +163,7 @@ RoboTank.prototype.update = function update(dt){
         if(G.bullets.pool[i]>=0){
             if(pointInRect(G.bullets.pool[i+1], G.bullets.pool[i+2], this.rect)){
                 G.bullets.kill(i)
+                this.wasHit = true;
                 this.health--;
             }
         }

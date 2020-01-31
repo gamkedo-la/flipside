@@ -13,8 +13,8 @@ const FlipBat = function FlipBat({pos, height}={}){
     this.width = 12;
     this.height = 12;
     this.rect = {};
-    this.health = 8;
-    this.healthMax = 8;
+    this.health = 32;
+    this.healthMax = 32;
     this.drawOffset = {x: -7, y: -13}
     this.lerpAmount = 0;
     this.movingDown = true
@@ -35,6 +35,7 @@ const FlipBat = function FlipBat({pos, height}={}){
 
 FlipBat.prototype.update = function update(dt){
     if(this.wasHit) {
+        this.spritesheet.image = G.loader.brightImages.EnemyTinyflyer;
         this.timeSinceHit += dt;
         this.brightTime += dt;
         if(this.timeSinceHit > this.flashTime) {
@@ -80,6 +81,7 @@ FlipBat.prototype.update = function update(dt){
     for(let i = 0; i < G.bullets.pool.length; i+= G.bullets.tuple){
         if(G.bullets.pool[i]>0){
             if(pointInRect(G.bullets.pool[i+1], G.bullets.pool[i+2], this.rect)){
+                this.wasHit = true;
                 G.bullets.kill(i);
                 this.health--;
             }

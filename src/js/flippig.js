@@ -20,7 +20,7 @@ const PIG = function PIG({pos, pathWidth=3, source={}}={}){
     this.movingRight = true;
     this.wasHit = false;
     this.timeSinceHit = 0;
-    this.flashTime = 0.05;//seconds
+    this.flashTime = 0.1;//seconds
     this.brightTime = 0;
 
     //Tiled xy is upper-left of tileObject and can't be changed in-editor
@@ -40,6 +40,7 @@ const PIG = function PIG({pos, pathWidth=3, source={}}={}){
 
 PIG.prototype.update = function update(dt){
     if(this.wasHit) {
+        this.spritesheet.image = G.loader.brightImages.EnemyTinycrawler
         this.timeSinceHit += dt;
         this.brightTime += dt;
         if(this.timeSinceHit > this.flashTime) {
@@ -81,6 +82,7 @@ PIG.prototype.update = function update(dt){
     for(let i = 0; i < G.bullets.pool.length; i+= G.bullets.tuple){
         if(G.bullets.pool[i]>0){
             if(pointInRect(G.bullets.pool[i+1], G.bullets.pool[i+2], this.rect)){
+                self.wasHit = true;
                 G.bullets.kill(i);
                 this.health--;
             }

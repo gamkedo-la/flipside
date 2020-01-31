@@ -287,6 +287,12 @@ function update(dt){
         if(G.world.pixelToTileID(G.bullets.pool[i+1], G.bullets.pool[i+2]) > G.player.collideIndex){
             G.bullets.kill(i);
         }
+        if(G.worldFlipped.pixelToTileID(G.bullets.pool[i+1], G.bullets.pool[i+2]) == 2){
+            G.bullets.pool[i+3]*=.98;
+            G.bullets.pool[i+4]*=.98;
+            G.bullets.pool[i+7]==27;
+        }
+
     }
 
 }
