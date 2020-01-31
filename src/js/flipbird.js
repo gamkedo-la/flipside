@@ -21,7 +21,7 @@ const BIRD = function BIRD({pos}={}){
     this.diveCount = 0;
     this.gravity = 5;
     this.attackRange = 4; //in tiles
-    this.collideIndex = 1009;
+    this.collideIndex = 961;
     this.hazardTilesStartIndex = 113;
     this.hazardTilesEndIndex = 120;
 
