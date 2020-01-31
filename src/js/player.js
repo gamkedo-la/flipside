@@ -8,6 +8,11 @@ const Player = {
     spritesheet:{},
     currentAnimation:{},
     facingLeft: false,
+    wasHit: false,
+    timeSinceHit: 0,
+    flashTime: 0.1,//seconds
+    brightTime: 0,
+
 
     collideIndex: 1009,
     hazardTilesStartIndex: 113,
@@ -142,6 +147,26 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
     this.fallthru = false;
     const { MSG } = G;
 
+    if(this.wasHit) {
+        this.spritesheet.image = G.loader.brightImages.player
+        this.timeSinceHit += dt;
+        this.brightTime += dt;
+        if(this.timeSinceHit > this.flashTime) {
+            this.timeSinceHit = 0;
+            this.wasHit = false;
+            this.spritesheet.image = G.img.player;
+        } else {
+            if(this.brightTime > this.flashTime / 5) {
+                this.brightImages = 0;
+                if(this.spritesheet.image == G.img.player) {
+                    this.spritesheet.image = G.img.player;
+                } else {
+                    this.spritesheet.image = G.loader.brightImages.player;
+                }
+            }
+            
+        }
+    }
     this.currentAnimation.update(dt);
 
     this.doorCooldown--;
@@ -790,6 +815,7 @@ Player.hurt = function(params){
 
         this.hurtCooldown = this.hurtCooldownMax;
         this.health -= params.amount;
+        this.wasHit = true;
         //if we're moving more left-right than up-down
         if(Math.abs(this.vx) > Math.abs(this.vy)){
             //moving right when hit
