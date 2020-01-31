@@ -146,6 +146,7 @@ FlipBat.prototype.init = function init(){
 }
 
 FlipBat.prototype.kill = function kill(){
+    G.audio.playSound(G.sounds.splode1, range(this.pos.x-G.view.x, 0,427,-1,1), 0.5, 1, false);
     //splodey splode
     let splodeCount = 32;
     while(--splodeCount){
