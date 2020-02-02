@@ -1,10 +1,15 @@
 //Make some webGL stuff here
 function WebRenderer(mainCanvas, tileImage) {
+    const TILE_SIZE = 8;
+    const TILE_PAD = 3
     const webCanvas = document.createElement('canvas');
-    webCanvas.width = mainCanvas.width;
-    webCanvas.height = mainCanvas.height;
+    webCanvas.width = mainCanvas.width + (2 * TILE_PAD) * TILE_SIZE;
+    webCanvas.height = mainCanvas.height + (2 * TILE_PAD) * TILE_SIZE;
+    const w = TILE_SIZE / tileImage.width;  //width of a tile in Texture Coordinate space
+    const h = TILE_SIZE / tileImage.height; //height of a tile in Texture Coordinate space
+    const TILES_PER_ROW = tileImage.width / TILE_SIZE;
     
-    const gl = webCanvas.getContext('webgl');
+    let gl = webCanvas.getContext('webgl');
     if(!gl) {
         gl = webCanvas.getContext('experimental-webgl');
     }
@@ -19,12 +24,12 @@ function WebRenderer(mainCanvas, tileImage) {
     // Bind the texture to texture unit 0
     gl.bindTexture(gl.TEXTURE_2D, tileImage);
 
-    const TILE_SIZE = 8;
+    
     let vertexCount = 0
 
     const generateVertData = function() {
-        const startX = -webCanvas.width/2 - (2 * TILE_SIZE);
-        const startY = -webCanvas.height/2 - (2 * TILE_SIZE);
+        const startX = -webCanvas.width / 2;
+        const startY = -webCanvas.height / 2;
 
         const vertArray = [];
         for(let y = startY; y < -startY; y += TILE_SIZE) {
@@ -42,8 +47,8 @@ function WebRenderer(mainCanvas, tileImage) {
     const vertexBufferObject = gl.createBuffer();
 
     const generateIndexData = function() {
-        const vertsPerRow = 4 + webCanvas.width / TILE_SIZE;//4 give two tiles on each side of the visible screen
-        const numRows = 4 + webCanvas.height / TILE_SIZE;//4 give two tiles above and two below the visible screen
+        const vertsPerRow = webCanvas.width / TILE_SIZE;
+        const numRows = webCanvas.height / TILE_SIZE;
 
         const indexArray = [];
         for(let row = 0; row < numRows - 1; row++) {
@@ -69,11 +74,66 @@ function WebRenderer(mainCanvas, tileImage) {
     const generateTexCoords = function(tileData) {
         const coords = [];
 
-        //need to populate the texture coordinates based on provided tileData
+        /* need to populate the texture coordinates based on provided tileData
+           tileData is GID info from Tiled for each tile position starting two
+           tiles left of the left edge of the screen and two tiles above the top
+           and extending to two tiles to the right and two below the screen */
+
+        /* tile width in texCoord space  is w = TILE_SIZE / tileImage.width
+           tile height in texCoord space is h = TILE_SIZE / tileImage.height
+           tilesPerRow is TILE_SIZE / tileImage.width
+           totalRows is TILE_SIZE / tileImage.height */
+
+        /* GID = 1 starts at texCoord (0, 0) and extends to (w, h)
+           GID = 2 starts at texCoord (w, 0) and extends to (2 * w, h)
+           GID = 16 starts at texCoord (15 * w, 0) and extends to (1, h)
+           GID = 17 starts at texCoord (0, h) and extends to (w, 2 * h) */
+
+        /* For any GID, its left edge is at texCoord.x = (GID - 1) % 16) * w
+           For any GID, its right edge is at texCoord.x = (1 + (GID - 1) % 16) * w
+           For any GID, its top is at texCoord.y = (Math.floor(GID / 16)) * h
+           For any GID, its bottom is at texCoord.y = (1 + Math.floor(GID / 16)) * h 
+           */
+
+        /* Vertex Data draws the lower left half of the upper left tile, then the
+           upper right have of that tile, then it does the same for the tile to the
+           right and moves accross the row, moving down after reaching the right hand
+           side of the row. */
+
+        for(let i = 0; i < tileData.length; i++) {
+            const GID = tileData[i];
+        
+            
+            const x1 = ((GID - 1) % TILES_PER_ROW) * w;
+            const x2 = x1 + w;
+            const y1 = (Math.floor(GID / TILES_PER_ROW)) * h;
+            const y2 = y1 + h
+            //first triangle
+            //first vertex (upper left)
+            coords.push(x1);
+            coords.push(y1);
+            //second vertex (lower left)
+            coords.push(x1);
+            coords.push(y2);
+            //third vertex (lower right)
+            coords.push(x2);
+            coords.push(y2);
+            //second triangle
+            //fourth vertex (upper left)
+            coords.push(x1);
+            coords.push(y1);
+            //fifth vertex (lower right)
+            coords.push(x2);
+            coords.push(y2);
+            //sixth vertex (upper right)
+            coords.push(x2);
+            coords.push(y1);
+        }
 
         return new Float32Array(coords);
     }
 
+    //texCoordData must by dynamically generated each frame, that's why it isn't here
     const textCoordBuffer = gl.createBuffer();
 
     const getVertexShaderString = function() {
@@ -83,11 +143,13 @@ function WebRenderer(mainCanvas, tileImage) {
         precision mediump float;
 
         attribute vec2 vertPosition;
+        attribute vec2 aTextureCoord;
 
-        varying highp vec2 vTextureCoord;
+        varying vec2 vTextureCoord;
 
         void main() {
             gl_Position = vec4(vertPosition, 0.0, 1.0);
+            vTextureCoord = aTextureCoord;
         }
         `;
     }
@@ -96,7 +158,7 @@ function WebRenderer(mainCanvas, tileImage) {
         return `
         precision mediump float;
 
-        varying highp vec2 vTextureCoord;
+        varying vec2 vTextureCoord;
 
         uniform sampler2D sampler;
 
@@ -158,15 +220,17 @@ function WebRenderer(mainCanvas, tileImage) {
         const samplerUniformLocation = gl.getUniformLocation(program, 'sampler');
         gl.uniform1i(samplerUniformLocation, 0);
 
-        const num = 2; // every coordinate composed of 2 values
-        const type = gl.FLOAT; // the data in the buffer is 32 bit float
-        const normalize = false; // don't normalize
-        const stride = 0; // how many bytes to get from one set to the next
-        const offset = 0; // how many bytes inside the buffer to start from
-        gl.bindBuffer(gl.ARRAY_BUFFER, buffers.textureCoord);
-        gl.vertexAttribPointer(programInfo.attribLocations.textureCoord, num, type, normalize, stride, offset);
-        gl.enableVertexAttribArray(programInfo.attribLocations.textureCoord);
+        const texCoordAttribLocation = gl.getAttribLocation(program, 'aTextureCoord');
+        gl.vertexAttribPointer(
+            texCoordAttribLocation, //Attribute location
+            2, //number of elements per attribute
+            gl.FLOAT, //Type of the elements
+            gl.FALSE, //Is data normalized?
+            2 * Float32Array.BYTES_PER_ELEMENT, //Stride
+            0 //Offset into buffer for first element of this type
+        );
 
+        gl.enableVertexAttribArray(texCoordAttribLocation);
     }
 
     this.getBackgroundImageCanvas = function(tileData) {
