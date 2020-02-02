@@ -849,9 +849,13 @@ Player.died = function(params){
     console.log('dead');
     G.loadMap({map:'room01', spawnPoint:'PlayerStart'});
     this.health = this.maxHealth;
-    G.Records.playerStats.totals.deaths++;
-    console.log(`Steps: ${G.Records.playerStats.totals.stepsTaken}, and Deaths: ${G.Records.playerStats.totals.deaths}`)
-    G.Records.resetSession();
+    if (G.Records && G.Records.playerStats && G.Records.playerStats.totals) {
+        G.Records.playerStats.totals.deaths++;
+        console.log(`Steps: ${G.Records.playerStats.totals.stepsTaken}, and Deaths: ${G.Records.playerStats.totals.deaths}`)
+        G.Records.resetSession();
+    } else {
+        console.log('G.Records not initialized: ignoring.')
+    }
 }
 
 Player.pickup = function(params){
