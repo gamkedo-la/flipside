@@ -1,6 +1,6 @@
 import Stats from './src/js/stats.module.js';
 import { Key, inView, pos } from './src/js/util.js';
-import { clearScreen, makeMosaic, drawTile, spriteFont, preRenderBlendedSprite, Transitioner } from './src/js/graphics.js'
+import { clearScreen, makeMosaic, drawTile, spriteFont, preRenderBlendedSprite, Transitioner, colors } from './src/js/graphics.js'
 import World from './src/js/world.js';
 import player from './src/js/player.js';
 import { rndInt, clamp, rndFloat, range } from './src/js/math.js';
@@ -293,7 +293,7 @@ function update(dt){
         if(G.world.pixelToTileID(G.bullets.pool[i+1], G.bullets.pool[i+2]) > G.player.collideIndex){
             G.bullets.kill(i);
         }
-        if(G.worldFlipped.pixelToTileID(G.bullets.pool[i+1], G.bullets.pool[i+2]) == 2){
+        if(G.worldFlipped.pixelToTileID(G.bullets.pool[i+1], G.bullets.pool[i+2]) == 3){
             G.bullets.pool[i+3]*=.98;
             G.bullets.pool[i+4]*=.98;
             G.bullets.pool[i+7]==27;
@@ -436,22 +436,23 @@ function render(dt){
     // TEMP TEST: work in progress electricity bolt line renderer
     //G.lightning.stressTest();
 
-    // world.lightningSpawners.forEach(function(e){
-    //     if(e.width > e.height){
-    //         let x1 = e.x - G.view.x;
-    //         let y1 = e.y - G.view.y + rndInt(0, e.height);
-    //         let x0 = e.x  + e.width - G.view.x;
-    //         let y0 = e.y - G.view.y + rndInt(0, e.height);
-    //         G.lightning.drawZap(x0,y0,x1,y1)
-    //     } else {
-    //         let x1 = e.x - G.view.x + rndInt(0, e.width);
-    //         let y1 = e.y - G.view.y;
-    //         let x0 = e.x - G.view.x + rndInt(0, e.width);
-    //         let y0 = e.y + e.height - G.view.y;
-    //         G.lightning.drawZap(x0,y0,x1,y1);
-    //     }
+    G.world.lightningSpawners.forEach(function(e){
+        if(e.width > e.height){
+            let x1 = e.x - G.view.x;
+            let y1 = e.y - G.view.y + rndInt(0, e.height);
+            let x0 = e.x  + e.width - G.view.x;
+            let y0 = e.y - G.view.y + rndInt(0, e.height);
+            let colorIndex = e.properties[0].value;
+            G.lightning.drawZap(x0,y0,x1,y1,colors[colorIndex])
+        } else {
+            let x1 = e.x - G.view.x + rndInt(0, e.width);
+            let y1 = e.y - G.view.y;
+            let x0 = e.x - G.view.x + rndInt(0, e.width);
+            let y0 = e.y + e.height - G.view.y;
+            G.lightning.drawZap(x0,y0,x1,y1,colors[colorIndex]);
+        }
         
-    // })
+     })
 
     UIRender();
     debugRender();

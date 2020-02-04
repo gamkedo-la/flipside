@@ -1,17 +1,17 @@
 import { rndInt, rndFloat, range } from './math.js';
 
-const SPARK_CHANCE = 0.25; // if >0 ends of line occasionally spark
+const SPARK_CHANCE = 0.35; // if >0 ends of line occasionally spark
 
 const ElectricityRenderer = function ElectricityRenderer()
 {
     // multi-line electricity effect
-    this.drawZap = function(x0,y0,x1,y1) {
+    this.drawZap = function(x0,y0,x1,y1,color="rgba(0,190,255,1)") {
         G.ctx.save();
         G.ctx.globalCompositeOperation = 'screen';
-        this.bolt(x0,y0,x1,y1,20,"rgba(255,255,255,1)");
-        this.bolt(x0,y0,x1,y1,1,3,20,"rgba(0,190,255,1)");
-        this.bolt(x0,y0,x1,y1,1,5,20,"rgba(0,190,255,1)");
-        this.bolt(x0,y0,x1,y1,1,6,20,"rgba(0,128,255,1)");
+        this.bolt(x0,y0,x1,y1,1,1,20,"rgba(255,255,255,1)");
+        this.bolt(x0,y0,x1,y1,1,2,20, color);
+        this.bolt(x0,y0,x1,y1,1,3,20, color);
+        this.bolt(x0,y0,x1,y1,1,4,20, color);
         if (SPARK_CHANCE>0 && Math.random()<SPARK_CHANCE) this.spark(x0,y0);
         if (SPARK_CHANCE>0 && Math.random()<SPARK_CHANCE) this.spark(x1,y1);
         G.ctx.restore();
@@ -22,24 +22,23 @@ const ElectricityRenderer = function ElectricityRenderer()
         // particles already accounts for camera position
         x += G.view.x;
         y += G.view.y;
-        G.particles.push(new Particle(
+        G.particles.spawn(
             x,
             y,
-            Math.random()*4-2,
-            Math.random()*4-2,
+            Math.random()*110-55,
+            Math.random()*110-55,
             rndInt(16,22), // blue to white
             1, 
             1,
             10,
             'particle'
-        )) ;       
+        ) ;       
     }
 
     // canvas line drawing version, looks better
     this.bolt = function(x0,y0,x1,y1,width=1,chaos=6,numChunks=10,rgba="rgba(0,255,255)") {
         let {img, ctx, tileSheetSize} = G;
 
-        ctx.beginPath();
         ctx.beginPath();
         ctx.strokeStyle = rgba;
         ctx.lineWidth = width;

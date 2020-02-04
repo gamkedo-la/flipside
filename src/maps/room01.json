@@ -61,8 +61,8 @@
                  "type":"spawnPoint",
                  "visible":true,
                  "width":0,
-                 "x":2856,
-                 "y":728
+                 "x":3184,
+                 "y":664
                 }, 
                 {
                  "height":0,
@@ -114,6 +114,12 @@
                  "height":1.73071,
                  "id":33,
                  "name":"",
+                 "properties":[
+                        {
+                         "name":"colorIndex",
+                         "type":"int",
+                         "value":4
+                        }],
                  "rotation":0,
                  "type":"lightningBox",
                  "visible":true,
@@ -210,6 +216,23 @@
                  "width":31.4167,
                  "x":3056,
                  "y":712
+                }, 
+                {
+                 "height":1.73071,
+                 "id":189,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"colorIndex",
+                         "type":"int",
+                         "value":11
+                        }],
+                 "rotation":0,
+                 "type":"lightningBox",
+                 "visible":true,
+                 "width":76.3904,
+                 "x":3272,
+                 "y":648
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -819,7 +842,7 @@
          "y":0
         }],
  "nextlayerid":10,
- "nextobjectid":189,
+ "nextobjectid":190,
  "orientation":"orthogonal",
  "properties":[
         {

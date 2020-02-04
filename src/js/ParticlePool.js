@@ -152,21 +152,7 @@ ParticlePool.prototype.update = function update(dt){
    
 }
 
-ParticlePool.prototype.updateWithCollision = function updateWithCollision(){
-    for(let i = 0; i<=this.pool.length-this.tuple; i+=this.tuple){
-        //if life is zero, skip update, increment i 1 tuple. 
-        //we don't delete particles, we just don't update or draw them
-        if(this.pool[i]<=0){i+=this.tuple}
-        else{
-            this.pool[i] = this.pool[i]-1;
-            this.pool[i+9] = this.pool[i+1]; //prevX = this X
-            this.pool[i+10] = this.pool[i+2]; //prevY = this Y;
-            this.pool[i+1] += this.pool[i+3]; //x += vx;
-            this.pool[i+2] += this.pool[i+4]; //y += vy;
-           // console.log(this.pool[i+1], this.pool[i+2])
-        }
-    }
-}
+
 
 ParticlePool.prototype.kill = function kill(index){
     this.pool.fill(0, index, index+10)
