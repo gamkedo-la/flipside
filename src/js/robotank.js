@@ -91,7 +91,7 @@ RoboTank.prototype.flameThrower = function() {
             2, 
             2,
             20,
-            5
+            G.FIRE
         ) ;   
     }
 }  
@@ -161,7 +161,7 @@ RoboTank.prototype.update = function update(dt){
 
     for(let i = 0; i < G.bullets.pool.length; i+= G.bullets.tuple){
         if(G.bullets.pool[i]>=0){
-            if(pointInRect(G.bullets.pool[i+1], G.bullets.pool[i+2], this.rect)){
+            if(pointInRect(G.bullets.pool[i+G.PARTICLE_X], G.bullets.pool[i+G.PARTICLE_Y], this.rect)){
                 G.bullets.kill(i)
                 this.wasHit = true;
                 this.health--;

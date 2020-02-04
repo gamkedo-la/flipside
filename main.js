@@ -1,4 +1,6 @@
 import Stats from './src/js/stats.module.js';
+
+import G from './src/js/G.js';
 import { Key, inView, pos } from './src/js/util.js';
 import { clearScreen, makeMosaic, drawTile, spriteFont, preRenderBlendedSprite, Transitioner, colors } from './src/js/graphics.js'
 import World from './src/js/world.js';
@@ -22,11 +24,14 @@ import GameSaver from './src/js/GameSaver.js';
 import { UIRender, showMessage, handleMessageBox} from './src/js/UI.js';
 
 
+
+
 const invertedMosaicEffectEnabled = false;
 const soundEnabled = true;
 
-//one global (G)ame object to rule them all
-window.G = {};
+//one global (G)ame object to rule them all, constants defined here
+window.G = G;
+
 G.scenes = {};
 G.pos = {x: 0, y: 0};
 G.transitioning = false;
@@ -51,6 +56,7 @@ G.view = {
 
 G.particles = new ParticlePool(10000);
 G.bullets = new ParticlePool(300);
+G.pickups = new ParticlePool(1000);
 
 G.deadZone = {
     x: 60, y: 60

@@ -242,7 +242,7 @@
                         {
                          "name":"colorIndex",
                          "type":"int",
-                         "value":20
+                         "value":19
                         }],
                  "rotation":0,
                  "type":"lightningBox",

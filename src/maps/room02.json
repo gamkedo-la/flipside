@@ -65,17 +65,6 @@
                  "y":385.094
                 }, 
                 {
-                 "height":1.73071,
-                 "id":33,
-                 "name":"",
-                 "rotation":0,
-                 "type":"lightningBox",
-                 "visible":true,
-                 "width":76.3904,
-                 "x":29.08,
-                 "y":23.994
-                }, 
-                {
                  "height":47.5,
                  "id":133,
                  "name":"exitDoor01",

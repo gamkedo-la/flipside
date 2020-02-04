@@ -207,7 +207,6 @@
   <object id="8" name="enter01" type="spawnPoint" x="398.94" y="385.094">
    <point/>
   </object>
-  <object id="33" type="lightningBox" x="29.08" y="23.994" width="76.3904" height="1.73071"/>
   <object id="133" name="exitDoor01" type="door" x="382.773" y="359.371" width="31.4167" height="47.5">
    <properties>
     <property name="destinationMap" value="room01"/>

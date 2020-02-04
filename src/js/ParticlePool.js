@@ -1,5 +1,7 @@
 import { inView } from './util.js'
 import { rndOneFrom, range, rndInt } from './math.js';
+
+
 const ParticlePool = function ParticlePool(size){
     /*
     this.x = x;
@@ -58,7 +60,7 @@ ParticlePool.prototype.draw = function draw(){
             if(inView(this.pool[i+1],this.pool[i+2])){
 
                 switch(this.pool[i+8]) {
-                    case  1: //jetbubble
+                    case  G.JET: //jetbubble
                         G.rb.circle(
                             this.pool[i+1]-G.view.x,
                             this.pool[i+2]-G.view.y,

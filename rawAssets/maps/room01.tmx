@@ -447,7 +447,7 @@
   </object>
   <object id="190" type="lightningBox" x="3269.25" y="642.75" width="2.5" height="76.25">
    <properties>
-    <property name="colorIndex" type="int" value="20"/>
+    <property name="colorIndex" type="int" value="19"/>
    </properties>
   </object>
   <object id="192" type="lightningBox" x="3349.5" y="642.875" width="2.5" height="76.25">
