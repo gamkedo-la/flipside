@@ -3,6 +3,7 @@ import SpriteSheet from './spritesheet.js';
 import { rndFloat, rndInt, range } from './math.js';
 import { Transitioner } from './graphics.js';
 import { rectCollision } from './util.js';
+import G from './G.js';
 
 const Player = {
     spritesheet:{},
@@ -129,7 +130,7 @@ const Player = {
         maxVel: { x: 130, y: 290 },
         accel: 10,
         jumpVel: 1500,
-        gravity: 10,
+        gravity: G.GRAVITY,
         friction: 0.7
     },
 

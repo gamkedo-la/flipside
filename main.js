@@ -32,8 +32,6 @@ const soundEnabled = true;
 //one global (G)ame object to rule them all, constants defined here
 window.G = G;
 
-G.scenes = {};
-G.pos = {x: 0, y: 0};
 G.transitioning = false;
 
 // start the gamepad keyboard event emulator
@@ -294,6 +292,7 @@ function update(dt){
     Key.update();
 
     G.particles.update(dt);
+    G.pickups.update(dt);
     G.bullets.update(dt);
     for(let i = 0; i < G.bullets.pool.length; i+= G.bullets.tuple){
         if(G.world.pixelToTileID(G.bullets.pool[i+1], G.bullets.pool[i+2]) > G.player.collideIndex){
@@ -438,6 +437,7 @@ function render(dt){
 
     G.particles.draw();
     G.bullets.draw();
+    G.pickups.draw();
 
     // TEMP TEST: work in progress electricity bolt line renderer
     //G.lightning.stressTest();

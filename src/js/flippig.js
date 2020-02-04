@@ -3,6 +3,7 @@
 import { rectCollision, pointInRect } from "./util.js";
 import { rndFloat, rndInt, range } from "./math.js";
 import SpriteSheet from './spritesheet.js';
+import G from './G.js'
 
 // patrols the area near pos, back and forth horizontally
 const PIG = function PIG({pos, pathWidth=3, source={}}={}){
@@ -149,19 +150,35 @@ PIG.prototype.kill = function kill(){
     //splodey splode
     G.audio.playSound(G.sounds.splode1, range(this.pos.x-G.view.x, 0,427,-1,1), 0.5, 1, false);
     let splodeCount = 32;
-            while(--splodeCount){
-                G.particles.spawn(
+    while(--splodeCount){
+        G.particles.spawn(
+            this.pos.x+rndInt(-15,15),
+            this.pos.y-10+rndInt(-5,5),
+            rndFloat(-.3, .3), 
+            rndFloat(-1, -1.5),
+            26,
+            2,
+            2,
+            25,
+            G.ENEMYDEATH
+        )
+    }
+
+    let dropCount = 16;
+            while(--dropCount){
+                G.pickups.spawn(
                     this.pos.x+rndInt(-15,15),
                     this.pos.y-10+rndInt(-5,5),
-                    rndFloat(-.3, .3), 
-                    rndFloat(-1, -1.5),
-                    26,
-                    2,
-                    2,
-                    25,
-                    3
+                    rndFloat(-10, 10), 
+                    rndFloat(10, 10),
+                    11,
+                    6,
+                    6,
+                    180,
+                    G.PICKUP_NANITE
                 )
             }
+
     
     G.world.entities.splice(G.world.entities.indexOf(this), 1);
 }

@@ -1,5 +1,6 @@
 import { inView } from './util.js'
 import { rndOneFrom, range, rndInt } from './math.js';
+import G from './G.js';
 
 
 const ParticlePool = function ParticlePool(size){
@@ -141,14 +142,28 @@ ParticlePool.prototype.update = function update(dt){
     for(let i = 0; i<=this.pool.length-this.tuple; i+=this.tuple){
         //if life is zero, skip update, increment i 1 tuple. 
         //we don't delete particles, we just don't update or draw them
+        
         if(this.pool[i]<=0){i+=this.tuple; this.kill(i)}
         else{
-            this.pool[i] = this.pool[i]-1;
-            this.pool[i+9] = this.pool[i+1]; //prevX = this X
-            this.pool[i+10] = this.pool[i+2]; //prevY = this Y;
-            this.pool[i+1] += this.pool[i+3]*dt; //x += vx;
-            this.pool[i+2] += this.pool[i+4]*dt; //y += vy;
-           // console.log(this.pool[i+1], this.pool[i+2])
+            switch(this.pool[i+G.PARTICLE_TYPE]){
+                case G.PICKUP_NANITE: {
+                    this.pool[i] = this.pool[i]-1;
+                    this.pool[i+9] = this.pool[i+1]; //prevX = this X
+                    this.pool[i+10] = this.pool[i+2]; //prevY = this Y;
+                    this.pool[i+1] += this.pool[i+3]*dt; //x += vx;
+                    this.pool[i+2] += this.pool[i+4]*dt; //y += vy;
+                    break;
+
+                }
+                default: 
+                this.pool[i] = this.pool[i]-1;
+                this.pool[i+9] = this.pool[i+1]; //prevX = this X
+                this.pool[i+10] = this.pool[i+2]; //prevY = this Y;
+                this.pool[i+1] += this.pool[i+3]*dt; //x += vx;
+                this.pool[i+2] += this.pool[i+4]*dt; //y += vy;
+            // console.log(this.pool[i+1], this.pool[i+2])
+            }
+            
         }
     }
    

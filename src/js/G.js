@@ -16,7 +16,11 @@ export const G = {
     PARTICLE_COLOR     :           7,
     PARTICLE_TYPE      :           8,
     PARTICLE_PREV_X    :           9,
-    PARTICLE_PREV_Y    :           10
+    PARTICLE_PREV_Y    :           10,
+    GRAVITY            :           10,
+
+
+    scenes: {},
     
 };
 
