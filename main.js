@@ -449,6 +449,7 @@ function render(dt){
             let y1 = e.y - G.view.y;
             let x0 = e.x - G.view.x + rndInt(0, e.width);
             let y0 = e.y + e.height - G.view.y;
+            let colorIndex = e.properties[0].value;
             G.lightning.drawZap(x0,y0,x1,y1,colors[colorIndex]);
         }
         

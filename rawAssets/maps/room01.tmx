@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="2019.12.11" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="1000" height="120" tilewidth="8" tileheight="8" infinite="0" backgroundcolor="#28283c" nextlayerid="10" nextobjectid="190">
+<map version="1.2" tiledversion="2019.12.11" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="1000" height="120" tilewidth="8" tileheight="8" infinite="0" backgroundcolor="#28283c" nextlayerid="10" nextobjectid="193">
  <editorsettings>
   <export target="../../src/maps/room01.json" format="json"/>
  </editorsettings>
@@ -440,9 +440,19 @@
     <property name="destinationSpawn" value="enter01"/>
    </properties>
   </object>
-  <object id="189" type="lightningBox" x="3272" y="648" width="76.3904" height="1.73071">
+  <object id="189" type="lightningBox" x="3272" y="640" width="76.3904" height="1.73071">
    <properties>
     <property name="colorIndex" type="int" value="11"/>
+   </properties>
+  </object>
+  <object id="190" type="lightningBox" x="3269.25" y="642.75" width="2.5" height="76.25">
+   <properties>
+    <property name="colorIndex" type="int" value="20"/>
+   </properties>
+  </object>
+  <object id="192" type="lightningBox" x="3349.5" y="642.875" width="2.5" height="76.25">
+   <properties>
+    <property name="colorIndex" type="int" value="28"/>
    </properties>
   </object>
  </objectgroup>
