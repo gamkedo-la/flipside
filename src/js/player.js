@@ -2,7 +2,7 @@ import { clamp } from './math.js';
 import SpriteSheet from './spritesheet.js';
 import { rndFloat, rndInt, range } from './math.js';
 import { Transitioner } from './graphics.js';
-import { rectCollision } from './util.js';
+import { rectCollision, pointInRect } from './util.js';
 import G from './G.js';
 
 const Player = {
@@ -13,6 +13,9 @@ const Player = {
     timeSinceHit: 0,
     flashTime: 0.1,//seconds
     brightTime: 0,
+
+    nanitesCollected: 0,
+    nanitesMax: 3000,
 
 
     collideIndex: 1009,
@@ -257,6 +260,31 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
             G.Records.update();
         }
     })
+
+    //check pickups for overlap, and pick them up
+    for(let i = 0; i < G.pickups.pool.length; i+= G.bullets.tuple){
+        if(G.pickups.pool[i]>=0){
+            
+            if(pointInRect(G.pickups.pool[i+1], G.pickups.pool[i+2], this.rect)){
+                let x = G.pickups.pool[i+1],
+                    y = G.pickups.pool[i+2];
+                    G.particles.spawn(
+                        x,
+                        y,
+                        rndFloat(-30, 30), 
+                        rndFloat(-50, -70),
+                        11,
+                        1,
+                        1,
+                        25,
+                        G.PICKUP_DEATH
+                    )
+                G.pickups.kill(i);
+                this.nanitesCollected += 1;
+                
+            }
+        }
+    }
 
     
 

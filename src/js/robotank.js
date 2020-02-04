@@ -252,6 +252,22 @@ RoboTank.prototype.kill = function kill(){
                 )
             }
     
+            let dropCount = 10;
+            while(--dropCount){
+                G.pickups.spawn(
+                    this.pos.x+rndInt(-5,5),
+                    this.pos.y-10+rndInt(-5,5),
+                    rndFloat(-30, 30), 
+                    rndFloat(-30),
+                    11,
+                    6,
+                    6,
+                    180,
+                    G.PICKUP_NANITE
+                )
+            }
+
+    
     G.world.entities.splice(G.world.entities.indexOf(this), 1);
 }
 

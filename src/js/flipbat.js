@@ -162,11 +162,29 @@ FlipBat.prototype.kill = function kill(){
             5
         )
     }
+
+
+    let dropCount = 5;
+            while(--dropCount){
+                G.pickups.spawn(
+                    this.pos.x+rndInt(-5,5),
+                    this.pos.y-10+rndInt(-5,5),
+                    rndFloat(-30, 30), 
+                    rndFloat(-30),
+                    11,
+                    6,
+                    6,
+                    180,
+                    G.PICKUP_NANITE
+                )
+            }
+
+    
     
     G.worldFlipped.tileFillCircle(
         Math.floor(this.pos.x/8),
         Math.floor(this.pos.y/8),
-        6,
+        4,
         3
     ) 
 

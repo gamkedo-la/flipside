@@ -109,6 +109,25 @@ ParticlePool.prototype.draw = function draw(){
                             this.pool[i+2]-G.view.y + rndInt(-3,3),
                             color);
                         break;
+
+                    case G.PICKUP_NANITE: //enemydeath
+                        G.rb.fillRect(
+                            this.pool[i+1]-G.view.x,
+                            this.pool[i+2]-G.view.y,
+                            3,3,
+                            rndOneFrom([10,11,12,13])
+                            );
+                    break;
+
+                    case G.PICKUP_DEATH: //enemydeath
+                        G.rb.fillRect(
+                            this.pool[i+1]-G.view.x,
+                            this.pool[i+2]-G.view.y,
+                            this.pool[i]/4,
+                            this.pool[i]/4,
+                            rndOneFrom([10,11,12,13])
+                            );
+                    break;
         
                     default:
                         G.rb.fillRect(
@@ -150,6 +169,9 @@ ParticlePool.prototype.update = function update(dt){
                     this.pool[i] = this.pool[i]-1;
                     this.pool[i+9] = this.pool[i+1]; //prevX = this X
                     this.pool[i+10] = this.pool[i+2]; //prevY = this Y;
+                    this.pool[i+3] *= 0.98;
+                    this.pool[i+4] *= 0.98;
+
                     this.pool[i+1] += this.pool[i+3]*dt; //x += vx;
                     this.pool[i+2] += this.pool[i+4]*dt; //y += vy;
                     break;

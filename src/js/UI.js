@@ -1,12 +1,13 @@
 import { range } from './math.js';
+import G from './G.js';
 let speaker;
 let showMessageBox = false;
 let showMessageText = 'text';
 
 export function UIRender(){
-    let healthBarLocation   = {x: 4, y: 4},
-        healthBarDimensions = {w: 50, h: 8},
-        healthBarPadding    = 1,
+    let {healthBarDimensions, healthBarLocation, healthBarColor, naniteBarDimensions, naniteBarLocation, naniteBarColor} = G;
+        let healthBarPadding    = 1,
+            naniteBarPadding = 1,
         healthBarDrawWidth  = range(G.player.health, 0, G.player.maxHealth, 0, healthBarDimensions.w-healthBarPadding*2);
     G.ctx.fillStyle = '#777';
     G.ctx.fillRect(healthBarLocation.x, healthBarLocation.y, healthBarDimensions.w, healthBarDimensions.h);
@@ -17,15 +18,38 @@ export function UIRender(){
             healthBarDimensions.w-healthBarPadding*2,
             healthBarDimensions.h-healthBarPadding*2
             );
-    //test by setting lower than full
-    //G.player.health = 75;
-    G.ctx.fillStyle = '#4f0'
+   
+    G.ctx.fillStyle = healthBarColor;
     G.ctx.fillRect(
         healthBarLocation.x + healthBarPadding,
         healthBarLocation.y+healthBarPadding,
         healthBarDrawWidth,
         healthBarDimensions.h-healthBarPadding*2
         );
+
+
+    ///------draw nanite bar
+    
+    let naniteBarDrawWidth  = range(G.player.nanitesCollected, 0, G.player.nanitesMax, 0, naniteBarDimensions.w-naniteBarPadding*2);
+    G.ctx.fillStyle = '#777';
+    G.ctx.fillRect(naniteBarLocation.x, naniteBarLocation.y, naniteBarDimensions.w, naniteBarDimensions.h);
+    G.ctx.fillStyle = '#444';
+    G.ctx.fillRect(
+            naniteBarLocation.x + naniteBarPadding,
+            naniteBarLocation.y+naniteBarPadding,
+            naniteBarDimensions.w-naniteBarPadding*2,
+            naniteBarDimensions.h-naniteBarPadding*2
+            );
+   
+    G.ctx.fillStyle = naniteBarColor;
+    G.ctx.fillRect(
+        naniteBarLocation.x + naniteBarPadding,
+        naniteBarLocation.y+naniteBarPadding,
+        naniteBarDrawWidth,
+        naniteBarDimensions.h-naniteBarPadding*2
+        );
+
+
     if (showMessageBox){
         handleMessageBox();
     }  

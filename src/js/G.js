@@ -7,6 +7,9 @@ export const G = {
     FIRE               :           5,
     PICKUP_NANITE      :           6,
     PICKUP_HEALTH      :           7,
+    PICKUP_DEATH        :          8,
+
+
     PARTICLE_X         :           1,
     PARTICLE_Y         :           2,
     PARTICLE_VEL_X     :           3,
@@ -21,7 +24,14 @@ export const G = {
 
 
     scenes: {},
-    
+
+    healthBarLocation : {x: 4, y: 4},
+    healthBarDimensions : {w: 50, h: 8},
+    healthBarColor : '#E00',
+
+    naniteBarLocation : {x: 4, y: 14},
+    naniteBarDimensions : {w: 50, h: 8},
+    naniteBarColor : '#0F0',    
 };
 
 export default G;

@@ -1,7 +1,7 @@
 // BIRD - a diving flip creature
 
 import { rectCollision, pointInRect } from "./util.js";
-import { rndFloat, range } from "./math.js";
+import { rndFloat, rndInt, range } from "./math.js";
 import SpriteSheet from './spritesheet.js';
 import Player from './player.js';
 import { onScreen } from './graphics.js';
@@ -211,8 +211,24 @@ BIRD.prototype.kill = function kill(){
         Math.floor(this.pos.y/8),
         3,
         3
-    ) 
-    
+    )
+
+
+    let dropCount = 5;
+            while(--dropCount){
+                G.pickups.spawn(
+                    this.pos.x+rndInt(-5,5),
+                    this.pos.y-10+rndInt(-5,5),
+                    rndFloat(-30, 30), 
+                    rndFloat(-30),
+                    11,
+                    6,
+                    6,
+                    180,
+                    G.PICKUP_NANITE
+                )
+            }
+
     G.world.entities.splice(G.world.entities.indexOf(this), 1);
 }
 
