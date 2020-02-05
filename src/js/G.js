@@ -22,6 +22,10 @@ export const G = {
     PARTICLE_PREV_Y    :           10,
     GRAVITY            :           10,
 
+    GID_FLIPSPACE      :            3,
+
+    FLIPSPACE_TIME     :            180,
+
 
     scenes: {},
 

@@ -52,7 +52,7 @@ G.view = {
     x: 0, y: 0, w: G.c.width, h: G.c.height
 }
 
-G.particles = new ParticlePool(10000);
+G.particles = new ParticlePool(5000);
 G.bullets = new ParticlePool(300);
 G.pickups = new ParticlePool(150);
 
@@ -302,11 +302,11 @@ function update(dt){
                 G.bullets.kill(i);
             }
             //console.log(G.worldFlipped.pixelToTileID(G.bullets.pool[i+1], G.bullets.pool[i+2]));
-            if(G.worldFlipped.pixelToTileID(G.bullets.pool[i+1], G.bullets.pool[i+2]) == 3){
+            if(G.worldFlipped.pixelToTileID(G.bullets.pool[i+1], G.bullets.pool[i+2]) >= 3){
                 G.worldFlipped.tileFillCircle(
                     Math.floor(G.bullets.pool[i+1]/8),
                     Math.floor(G.bullets.pool[i+2]/8),
-                     2, 0);
+                     2, -180);
                 G.bullets.kill(i);
                 
             }
@@ -365,14 +365,17 @@ function render(dt){
             //technically this next bit should be in update not render, but yay optimizing!
             //check worldFlipped index against loaded map index, since this layer is destructable.
             //if not equal, random chance of 'healing' back to loaded map state.
+
             if(G.worldFlipped.data[flatIndex] != loader.tileMaps[currentMap].layers[1].data[flatIndex]){
-                if(rndFloat(0,1) < 0.005){
-                    G.worldFlipped.data[flatIndex] = loader.tileMaps[currentMap].layers[1].data[flatIndex]
+                if(G.worldFlipped.data[flatIndex] > loader.tileMaps[currentMap].layers[1].data[flatIndex]){
+                    G.worldFlipped.data[flatIndex]--;
+                }else if(G.worldFlipped.data[flatIndex] < loader.tileMaps[currentMap].layers[1].data[flatIndex]){
+                    G.worldFlipped.data[flatIndex]++;
                 }
             }
             
             //flipped area affect, purple/pink stuff----------------------------------------
-            if(G.worldFlipped.data[flatIndex] == 3){
+            if(G.worldFlipped.data[flatIndex] >= 3){
 
                 ctx.drawImage(
                     Math.random()>0.5? G.img.tiles26: G.img.tiles27,
@@ -387,22 +390,22 @@ function render(dt){
                     Egid = G.worldFlipped.data[flatIndex + 1],
                     Wgid = G.worldFlipped.data[flatIndex -1];
                     //console.log(Ngid, Sgid, Egid, Wgid);
-                if(Ngid != 3){
+                if(Ngid < 3){
                     ctx.drawImage(
                         G.img.flipSpace, 8*rndInt(0,15), 8, 8, 8, drawX, drawY, G.world.tileSize, G.world.tileSize
                         )
                 }
-                if(Sgid != 3){
+                if(Sgid < 3){
                     ctx.drawImage(
                         G.img.flipSpace, 8*rndInt(0,15), 0, 8, 8, drawX, drawY, G.world.tileSize, G.world.tileSize
                         )
                 }
-                if(Wgid != 3){
+                if(Wgid < 3){
                     ctx.drawImage(
                         G.img.flipSpace, 8*rndInt(0,15), 16, 8, 8, drawX, drawY, G.world.tileSize, G.world.tileSize
                         )
                 }
-                if(Egid != 3){
+                if(Egid < 3){
                     ctx.drawImage(
                         G.img.flipSpace, 8*rndInt(0,15), 24, 8, 8, drawX, drawY, G.world.tileSize, G.world.tileSize
                         )

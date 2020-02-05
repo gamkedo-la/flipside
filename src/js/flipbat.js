@@ -1,5 +1,6 @@
 import {  rectCollision, pointInRect } from "./util.js";
 import { rndFloat, rndInt, range } from "./math.js";
+import G from './G.js';
 import SpriteSheet from './spritesheet.js';
 
 
@@ -185,7 +186,7 @@ FlipBat.prototype.kill = function kill(){
         Math.floor(this.pos.x/8),
         Math.floor(this.pos.y/8),
         4,
-        3
+        3 + G.FLIPSPACE_TIME
     ) 
 
     G.world.entities.splice(G.world.entities.indexOf(this), 1);
