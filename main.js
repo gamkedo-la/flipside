@@ -5,7 +5,7 @@ import { Key, inView, pos } from './src/js/util.js';
 import { clearScreen, makeMosaic, drawTile, spriteFont, preRenderBlendedSprite, Transitioner, colors } from './src/js/graphics.js'
 import World from './src/js/world.js';
 import player from './src/js/player.js';
-import { rndInt, clamp, rndFloat, range } from './src/js/math.js';
+import { rndInt, clamp, rndFloat, range, coinFlip } from './src/js/math.js';
 import AssetLoader from './src/js/AssetLoader.js';
 import AudioGlobal from './src/js/audio.js';
 import Signal from './src/js/Signal.js';
@@ -294,17 +294,26 @@ function update(dt){
     G.particles.update(dt);
     G.pickups.update(dt);
     G.bullets.update(dt);
-    for(let i = 0; i < G.bullets.pool.length; i+= G.bullets.tuple){
-        if(G.world.pixelToTileID(G.bullets.pool[i+1], G.bullets.pool[i+2]) > G.player.collideIndex){
-            G.bullets.kill(i);
-        }
-        if(G.worldFlipped.pixelToTileID(G.bullets.pool[i+1], G.bullets.pool[i+2]) == 3){
-            G.bullets.pool[i+3]*=.98;
-            G.bullets.pool[i+4]*=.98;
-            G.bullets.pool[i+7]==27;
-        }
 
+    //---bullet collision checks-----------------------------------------------------
+    for(let i = 0; i < G.bullets.pool.length; i+= G.bullets.tuple){
+        if(G.bullets.pool[i]==0){i+=G.bullets.tuple}else{
+            if(G.world.pixelToTileID(G.bullets.pool[i+1], G.bullets.pool[i+2]) > G.player.collideIndex){
+                G.bullets.kill(i);
+            }
+            //console.log(G.worldFlipped.pixelToTileID(G.bullets.pool[i+1], G.bullets.pool[i+2]));
+            if(G.worldFlipped.pixelToTileID(G.bullets.pool[i+1], G.bullets.pool[i+2]) == 3){
+                G.worldFlipped.tileFillCircle(
+                    Math.floor(G.bullets.pool[i+1]/8),
+                    Math.floor(G.bullets.pool[i+2]/8),
+                     2, 0);
+                G.bullets.kill(i);
+                
+            }
+        }
     }
+    //---end bullet collision checks-----------------------------------------------------
+    
 
 }
 
@@ -353,6 +362,16 @@ function render(dt){
                 flatIndex = j * G.world.widthInTiles + i,
                 gid = G.world.data[flatIndex]-1;
 
+            //technically this next bit should be in update not render, but yay optimizing!
+            //check worldFlipped index against loaded map index, since this layer is destructable.
+            //if not equal, random chance of 'healing' back to loaded map state.
+            if(G.worldFlipped.data[flatIndex] != loader.tileMaps[currentMap].layers[1].data[flatIndex]){
+                if(rndFloat(0,1) < 0.005){
+                    G.worldFlipped.data[flatIndex] = loader.tileMaps[currentMap].layers[1].data[flatIndex]
+                }
+            }
+            
+            //flipped area affect, purple/pink stuff----------------------------------------
             if(G.worldFlipped.data[flatIndex] == 3){
 
                 ctx.drawImage(

@@ -80,7 +80,7 @@ RoboTank.prototype.canWalkForward = function() {
 
 RoboTank.prototype.flameThrower = function() {
     //console.log("Flame Thrower!");
-    let max = rndInt(6,12);
+    let max = rndInt(0,5);
     for (let i=0; i<max; i++) {
         G.particles.spawn(
             this.goingLeft ? this.pos.x+this.gunOffset.rightX : this.pos.x+this.gunOffset.leftX, // gunXOffset
