@@ -5,6 +5,7 @@ import { rndFloat, rndInt, range } from "./math.js";
 import SpriteSheet from './spritesheet.js';
 import Player from './player.js';
 import { onScreen } from './graphics.js';
+import G from './G.js';
 
 // patrols the area near pos, back and forth horizontally
 const BIRD = function BIRD({pos}={}){
@@ -210,7 +211,7 @@ BIRD.prototype.kill = function kill(){
         Math.floor(this.pos.x/8),
         Math.floor(this.pos.y/8),
         3,
-        3
+        3 + G.FLI
     )
 
 

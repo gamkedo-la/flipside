@@ -366,13 +366,15 @@ function render(dt){
             //check worldFlipped index against loaded map index, since this layer is destructable.
             //if not equal, random chance of 'healing' back to loaded map state.
 
-            if(G.worldFlipped.data[flatIndex] != loader.tileMaps[currentMap].layers[1].data[flatIndex]){
+            //an enemy has added some flipspace, begin reverting back           
                 if(G.worldFlipped.data[flatIndex] > loader.tileMaps[currentMap].layers[1].data[flatIndex]){
-                    G.worldFlipped.data[flatIndex]--;
-                }else if(G.worldFlipped.data[flatIndex] < loader.tileMaps[currentMap].layers[1].data[flatIndex]){
-                    G.worldFlipped.data[flatIndex]++;
+                    if(coinFlip())G.worldFlipped.data[flatIndex]--;
                 }
-            }
+            //we've removed flipspace with weapons, begin reverting back    
+                if(G.worldFlipped.data[flatIndex] < loader.tileMaps[currentMap].layers[1].data[flatIndex]){
+                    if(coinFlip())G.worldFlipped.data[flatIndex]++;
+                }
+            
             
             //flipped area affect, purple/pink stuff----------------------------------------
             if(G.worldFlipped.data[flatIndex] >= 3){
@@ -614,7 +616,7 @@ function updateWorldData(world, worldFlipped, worldForeground, currentMap) {
     worldForeground.heightInTiles= loader.tileMaps[currentMap].layers[2].height;
 
     world.data = Uint16Array.from(loader.tileMaps[currentMap].layers[0].data);
-    worldFlipped.data = Uint16Array.from(loader.tileMaps[currentMap].layers[1].data);
+    worldFlipped.data = Int32Array.from(loader.tileMaps[currentMap].layers[1].data);
     worldForeground.data = Uint16Array.from(loader.tileMaps[currentMap].layers[2].data);
 
     world.portals = loader.tileMaps[currentMap].layers[3].objects.filter(function(e){return e.type == "portal"});

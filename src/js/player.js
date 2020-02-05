@@ -215,7 +215,7 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
 
 
     //---flipped world checks
-    if( this.withinCheck(worldFlipped, function(tile){return tile == 3}) ){
+    if( this.withinCheck(worldFlipped, function(tile){return tile >= 3}) ){
             if(!this.inTheFlip){
                 MSG.dispatch('crossed');
                 this.inTheFlip = true;
