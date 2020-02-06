@@ -290,8 +290,42 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
 
 
 }
+
+Player.zapWalls = function() {
+
+    const dist = 64;
+    const walk = 20;
+    const width = 1;
+    const chaos = 0;
+    const segs = 64; // fixme, optimize!
+    const rgba = 'rgba(0,255,255,1)';
+    const spd1 = 666;
+    const spd2 = 555;
+    let now = performance.now();
+    G.lightning.bolt(this.pos.x-G.view.x,this.pos.y-G.view.y,
+        this.pos.x+dist-G.view.x+Math.cos(now/spd1)*walk,
+        this.pos.y+dist-G.view.y+Math.cos(now/spd2)*walk,
+        width, chaos, segs, rgba, true); 
+    G.lightning.bolt(this.pos.x-G.view.x,this.pos.y-G.view.y,
+        this.pos.x-dist-G.view.x+Math.cos(now/spd1)*-walk,
+        this.pos.y+dist-G.view.y+Math.cos(now/spd2)*walk,
+        width, chaos, segs, rgba, true); 
+    G.lightning.bolt(this.pos.x-G.view.x,this.pos.y-G.view.y,
+        this.pos.x+dist-G.view.x+Math.cos(now/spd1)*walk,
+        this.pos.y-dist-G.view.y+Math.cos(now/spd2)*-walk,
+        width, chaos, segs, rgba, true); 
+    G.lightning.bolt(this.pos.x-G.view.x,this.pos.y-G.view.y,
+        this.pos.x-dist-G.view.x+Math.cos(now/spd1)*-walk,
+        this.pos.y-dist-G.view.y+Math.cos(now/spd2)*-walk,
+        width, chaos, segs, rgba, true); 
+
+}
+
 Player.render = function render(dt, world, worldFlipped, worldForeground){
 
+    // temp debug test - bolts that collide with walls!
+    this.zapWalls();
+            
     if(this.inTheFlip){
         let x = this.pos.x + this.flipBar.xOffset - G.view.x;
         let y = this.pos.y + this.flipBar.yOffset - G.view.y;

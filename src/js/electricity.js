@@ -35,9 +35,19 @@ const ElectricityRenderer = function ElectricityRenderer()
         ) ;       
     }
 
+    function hitWall(x,y) {
+        // we need to remove the camera offset
+        let tx = Math.round((x+G.view.x) / G.world.tileSize);
+        let ty = Math.round((y+G.view.y) / G.world.tileSize);
+        let tileHit = G.world.getTileAtPosition(tx,ty); 
+        let maxTileIndex = G.player.cloudTilesStartIndex;//.collideIndex;
+        return tileHit > maxTileIndex; // true=blocked
+    }
+
     // canvas line drawing version, looks better
-    this.bolt = function(x0,y0,x1,y1,width=1,chaos=6,numChunks=10,rgba="rgba(0,255,255)") {
+    this.bolt = function(x0,y0,x1,y1,width=1,chaos=6,numChunks=10,rgba="rgba(0,255,255)",collideWithMap=false) {
         let {img, ctx, tileSheetSize} = G;
+        let hit = false;
 
         ctx.beginPath();
         ctx.strokeStyle = rgba;
@@ -51,11 +61,22 @@ const ElectricityRenderer = function ElectricityRenderer()
             let ly = y0 + ((y1 - y0) * percent);
             // perturb
             lx += (Math.random()*chaos*2)-chaos;
-           ly += (Math.random()*chaos*2)-chaos;
-            ctx.lineTo(lx,ly);
+            ly += (Math.random()*chaos*2)-chaos;
+            // optionally stop short when we hit a wall
+            if (collideWithMap && hitWall(lx,ly)) { 
+                console.log('bolt collided with wall!');
+                hit = true;
+                break; // out of the loop early
+            }
+            // set next line segment
+            if (!hit) ctx.lineTo(lx,ly);
+            // FIXME ideally actually find the contact point
         }
         
-        ctx.lineTo(x1,y1);
+        // made it all the way? finish up the line
+        if (!hit) ctx.lineTo(x1,y1);
+
+        // render
         ctx.stroke();
     }
 
