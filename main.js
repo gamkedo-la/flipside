@@ -314,7 +314,7 @@ function update(dt){
                 G.worldFlipped.tileFillCircle(
                     Math.floor(G.bullets.pool[i+1]/8),
                     Math.floor(G.bullets.pool[i+2]/8),
-                     2, -180);
+                     2, -G.FLIPSPACE_TIME);
                 G.bullets.kill(i);
                 
             }
