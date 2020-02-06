@@ -4,6 +4,7 @@ export const Key = {
     _pressed: {},
     _released: {},
 
+    ESCAPE: 27,
     LEFT: 37,
     UP: 38,
     RIGHT: 39,
