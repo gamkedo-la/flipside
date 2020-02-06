@@ -620,6 +620,7 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         if(obj.type == 'barricade'){
             if(rectCollision(obj.rect, self.rect)){
                 // console.log(obj);
+                G.MSG.dispatch('hurt', { amount: 200 })
                 self.pos.x = self.prevX;
                 self.vx = 0;
             }
@@ -910,7 +911,7 @@ Player.hurt = function(params){
 
 Player.died = function(params){
     console.log('dead');
-    G.loadMap({map:'room01', spawnPoint:'PlayerStart'});
+    
     this.health = this.maxHealth;
     if (G.Records && G.Records.playerStats && G.Records.playerStats.totals) {
         G.Records.playerStats.totals.deaths++;
@@ -919,6 +920,11 @@ Player.died = function(params){
     } else {
         console.log('G.Records not initialized: ignoring.')
     }
+
+    self.doorCooldown = 60;
+    var wipe = new Transitioner().start('wipe', function(){
+        G.loadMap({map:'room01', spawnPoint:'PlayerStart'});
+    });
 }
 
 Player.pickup = function(params){

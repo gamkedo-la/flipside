@@ -58,6 +58,8 @@ export function showMessage(withText){//work in progress
     showMessageBox = true;
     showMessageText = withText;
 }
+
+
 export function handleMessageBox(){
     let msgBoxX = 50;
     let msgBoxY = 50;
