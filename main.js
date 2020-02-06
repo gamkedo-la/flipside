@@ -401,11 +401,11 @@ function render(dt){
             //if not equal, random chance of 'healing' back to loaded map state.
 
             //an enemy has added some flipspace, begin reverting back           
-                if(G.worldFlipped.data[flatIndex] > loader.tileMaps[currentMap].layers[1].data[flatIndex]){
+                if(G.worldFlipped.data[flatIndex] > loader.tileMaps[G.currentMap].layers[1].data[flatIndex]){
                     if(coinFlip())G.worldFlipped.data[flatIndex]--;
                 }
             //we've removed flipspace with weapons, begin reverting back    
-                if(G.worldFlipped.data[flatIndex] < loader.tileMaps[currentMap].layers[1].data[flatIndex]){
+                if(G.worldFlipped.data[flatIndex] < loader.tileMaps[G.currentMap].layers[1].data[flatIndex]){
                     if(coinFlip())G.worldFlipped.data[flatIndex]++;
                 }
             
