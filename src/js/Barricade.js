@@ -10,6 +10,7 @@ const Barricade = function Barricade(obj){
     this.startY = obj.y;
     this.pos = {x: obj.x, y: obj.y};
     this.height = obj.height;
+    this.closedHeight = obj.height;
     this.width = obj.width;
     this.rect={};
     return this;
@@ -26,12 +27,9 @@ Barricade.prototype.update = function update(dt){
         bottom: this.pos.y + this.height
     }
 
-    if(this.open && this.pos.y >= this.startY - this.height){
-        this.pos.y -= 1;
-    }
-    if(!this.open && this.pos.y != this.startY ){
-        this.pos.y += 1;
-    }
+    if(this.open){
+        this.height = 0;
+    }else{this.height = this.closedHeight};
 
     var self = this;
     
