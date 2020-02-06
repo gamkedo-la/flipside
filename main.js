@@ -267,12 +267,20 @@ function update(dt){
     //update all the things
     elapsed += dt;
     G.frameCount ++;
-    
-    handleCamera(dt);
 
     if (G.GamepadSupport) G.GamepadSupport.handle_gamepad(); // polled each frame
 
     handleInput(dt);
+
+    if (paused) {
+        // If we don't run Key.update() then the escape key "justReleased" state  will never reset
+        // and we will unpause automatically next frame when calling handleInput(dt) above
+        Key.update();
+
+        return;
+    }
+
+    handleCamera(dt);
 
     //flip healing routine--------------------------------
     for(let i = 0; i < G.worldFlipped.data.length; i++){
