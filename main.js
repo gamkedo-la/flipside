@@ -66,7 +66,7 @@ G.MSG = new Signal();
 G.loader = new AssetLoader();
 
 if (soundEnabled) {
-    G.audio = new AudioGlobal(); 
+    G.audio = new AudioGlobal();
     G.audio.init(); // FIXME: defer to after the first click/keypress to avoid browser error
 }
 G.lightning = new ElectricityRenderer();
@@ -111,7 +111,7 @@ const maps = [
     'room08',
     'room09',
     'room10',
-    
+
 ]
  //sounds list!---------------------------------------------------------------
 const soundList = [
@@ -177,7 +177,7 @@ function init(){
 
 // this not not ONLY the sound inits, it is init step two after images have downloaded
 // with optional sound inits as well as essential map loading and game start callbacks
-function soundInit(){ 
+function soundInit(){
     //next we load our soundlist, passing in start as a callback once complete.
     //soundloader just gives loader the properties,  loadAudioBuffer actually decodes the files and
     //creates a list of buffers.
@@ -192,12 +192,12 @@ function soundInit(){
 }
 
 function start(sounds){
-    
+
     if (soundEnabled) {
         G.sounds = sounds;
         G.loader.sounds = sounds;
     }
-    
+
     //create player spritesheet and animations, and set a default animation
     player.init();
 
@@ -257,7 +257,7 @@ function frame(){
     }else{
         requestAnimationFrame(frame);
     }
-    
+
 }
 G.frame = frame;
 
@@ -278,10 +278,10 @@ function update(dt){
     for(let i = 0; i < G.worldFlipped.data.length; i++){
         let tile = G.worldFlipped.data[i];
         if(tile <= 3){
-        
+
         }
         if(tile > 3){
-           
+
             G.worldFlipped.data[i] = tile-1;
         }
     }
@@ -329,7 +329,7 @@ function render(dt){
     //console.log(parallaxImage);
     //var bgWidth = img[world.parallax0].width;
     //var bgHeight = img[world.parallax0].height;
-    //let bgPadding = 1; 
+    //let bgPadding = 1;
     //let bgTileWidth = (Math.round( c.width / img[world.parallax0].width ) + 1 * 2);
     //let bgTileHeight = (Math.round( c.height / img[world.parallax0].width ) + 1 * 2);
     //console.log(bgTileWidth, bgTileHeight);
@@ -434,9 +434,9 @@ function render(dt){
         }
     });
 
-    //render player; 
+    //render player;
     player.render();
-    
+
     //render foreground tiles if any in front of player-----------------------------------
     for(let i = rx0; i < rx1; i++){
         for(let j = ry0; j < ry1; j++){
@@ -482,7 +482,7 @@ function render(dt){
             let colorIndex = e.properties[0].value;
             G.lightning.drawZap(x0,y0,x1,y1,colors[colorIndex]);
         }
-        
+
      })
 
     UIRender();
@@ -516,7 +516,6 @@ function handleInput(dt){
     if(Key.isDown(Key.z) || Key.isDown(Key.p) || Key.isDown(Key.SPACE)){
         player.input.jump = true;
     }
-
 
     if(Key.justReleased(Key.LEFT) || Key.justReleased(Key.a)){
         player.input.left = false;
@@ -573,14 +572,14 @@ function handleCamera(dt){
 
 function loadMap({map, spawnPoint}){
     let { loader, currentMap, world, worldFlipped, worldForeground } = G;
-    
+
     currentMap = map;
 
     if(!loader.mapIsLoaded(map)) {
         loader.loadInitialMapData(map, loadFromConsole, spawnPoint);
         return;//can't continue with this function until the map is loaded
     }
-    
+
     loader.loadConnectedMapData(map, function(){});
 
     updateWorldData(world, worldFlipped, worldForeground, currentMap);
@@ -595,7 +594,7 @@ function loadFromConsole(loadedMap, spawnPoint) {
     let { loader, currentMap, world, worldFlipped, worldForeground } = G;
     let map = Object.keys(loadedMap)[0];
     currentMap = map;
-    
+
     loader.loadConnectedMapData(map, function(){});
 
     updateWorldData(world, worldFlipped, worldForeground, currentMap);
@@ -626,7 +625,7 @@ function updateWorldData(world, worldFlipped, worldForeground, currentMap) {
 
     world.entities = processWorldObjects(loader.tileMaps[currentMap].layers[4].objects);
     //world.objects = loader.tileMaps[currentMap].layers[4].objects
-    
+
     if(loader.tileMaps[currentMap].properties){
         world.parallax0 = loader.tileMaps[currentMap].properties.find(function(e){return e.name = 'Parallax0' }).value;
     }
@@ -650,7 +649,7 @@ function processWorldObjects(objects){
                 results.push(new FlipBird({pos:{x: obj.x, y: obj.y}}).init());
             break;
             case "robotank":
-                results.push(new RoboTank({pos:{x: obj.x, y: obj.y}}).init()); 
+                results.push(new RoboTank({pos:{x: obj.x, y: obj.y}}).init());
             break;
             case "barricade":
                 // console.log(obj);
@@ -660,7 +659,7 @@ function processWorldObjects(objects){
                 results.push(new Switch(obj).init());
             default:
                 //nothing
-            
+
         }
     })
     return results;
@@ -670,7 +669,7 @@ function movePlayerToSpawnPoint(currentMap, spawnPoint) {
     if(spawnPoint.x == undefined) {
         let spawn = loader.tileMaps[currentMap].layers[3].objects.find(function(e){return e.name == spawnPoint});
         player.pos.x = spawn.x;
-        player.pos.y = spawn.y;    
+        player.pos.y = spawn.y;
     } else {
         player.pos.x = spawnPoint.x;
         player.pos.y = spawnPoint.y;
@@ -679,7 +678,7 @@ function movePlayerToSpawnPoint(currentMap, spawnPoint) {
 
 
 function debugRender(){
-    
+
     ctx.fillStyle='rgba(0,0,0,0.6)';
     ctx.fillRect(0,228,427,12)
 

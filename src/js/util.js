@@ -87,7 +87,7 @@ export function inView(x,y){
 }
 
 export function rectCollision(rect1, rect2) {
-    
+
     //console.log(this.x);
     return (
         rect1.left < rect2.right &&
@@ -119,7 +119,6 @@ export function oscillate(input, min, max)
     let range = max - min ;
     return min + Math.abs(((input + range) % (range * 2)) - range);
 }
-    
 
-   
-    
+
+
