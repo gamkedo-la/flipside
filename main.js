@@ -529,6 +529,10 @@ function render(dt){
 
 function handleInput(dt){
 
+    if (Key.justReleased(Key.ESCAPE)) {
+        paused = !paused;
+    }
+
     if(Key.isDown(Key.LEFT) || Key.isDown(Key.a)){
         player.input.left = true;
     }
