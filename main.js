@@ -325,7 +325,33 @@ function update(dt){
 
 }
 
+function drawPauseMenu() {
+    const pauseStr = 'PAUSED';
+    const spacing = 6;
+
+    const pauseWidth = G.gameFont.characterWidth * pauseStr.length + (spacing * pauseStr.length);
+    const pauseHeight = G.gameFont.characterHeight;
+
+    const yOffset = 64;
+    const pos = {x: (c.width / 2) - (pauseWidth / 2), y: (c.height / 2) - (pauseHeight / 2) - yOffset};
+
+    ctx.fillStyle='rgba(0,0,0,0.6)';
+    ctx.fillRect(pos.x, pos.y, pauseWidth, pauseHeight);
+
+    G.gameFont.drawText({
+        textString: pauseStr,
+        pos,
+        spacing,
+    });
+}
+
 function render(dt){
+    if (paused) {
+        drawPauseMenu();
+
+        return;
+    }
+
     //let {world, worldFlipped, worldForeground, img, rb } = G;
     //draw all the things
 
