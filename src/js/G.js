@@ -8,6 +8,7 @@ export const G = {
     PICKUP_NANITE      :           6,
     PICKUP_HEALTH      :           7,
     PICKUP_DEATH        :          8,
+    MUZZLESMOKE        :           9,
 
 
     PARTICLE_X         :           1,

@@ -78,7 +78,7 @@ ParticlePool.prototype.draw = function draw(){
                             );
                         break;
         
-                    case 3: //enemydeath
+                    case G.ENEMYDEATH: //enemydeath
                         G.rb.fillCircle(
                             this.pool[i+1]-G.view.x,
                             this.pool[i+2]-G.view.y,
@@ -86,6 +86,15 @@ ParticlePool.prototype.draw = function draw(){
                             rndOneFrom([25,26,27,28])
                             );
                         break;
+
+                    case G.MUZZLESMOKE: //enemydeath
+                        G.rb.fillCircle(
+                            this.pool[i+1]-G.view.x,
+                            this.pool[i+2]-G.view.y,
+                            this.pool[i]/2,
+                            rndOneFrom([23,22,37])
+                            );
+                    break;
         
                     case 4: //bullet
                         G.rb.fillCircle(

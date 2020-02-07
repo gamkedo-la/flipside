@@ -324,7 +324,7 @@ Player.zapWalls = function() {
 Player.render = function render(dt, world, worldFlipped, worldForeground){
 
     // temp debug test - bolts that collide with walls!
-    this.zapWalls();
+    //this.zapWalls();
             
     if(this.inTheFlip){
         let x = this.pos.x + this.flipBar.xOffset - G.view.x;
@@ -345,6 +345,7 @@ Player.render = function render(dt, world, worldFlipped, worldForeground){
     G.rb.line(dX, dY, dX, dY-3, 11);
     
 }
+
 Player.inTheFlipPhysics = function inTheFlipPhysics(dt, world, worldFlipped){
     this.gravity = this.physicsFlip.gravity;
     this.friction = this.physicsFlip.friction;
@@ -422,35 +423,36 @@ Player.inTheFlipPhysics = function inTheFlipPhysics(dt, world, worldFlipped){
 
 
 }
-
 // emit a poof when the gun is fired
 Player.muzzleFlash = function() {
     //console.log("Muzzleflash!");
-    let max = rndInt(1,3);
+    let max = 10;
     // big poof
-    G.particles.spawn(
-        rndFloat(-1,1)+(this.facingLeft ? this.pos.x+this.gunOffset.leftX : this.pos.x+this.gunOffset.rightX), // gunXOffset
-        rndFloat(-1,1)+(this.pos.y + this.crouching ? 1: -4 ), // gunYOffset
-        this.facingLeft?rndFloat(-1,0):rndFloat(0,1),
-        rndFloat(1,1),
-        rndInt(7,10), // yellow
-        6, 
-        6,
-        1,
-        0
-    ) ;   
+    for (let i=0; i<max; i++) {
+        G.particles.spawn(
+            rndInt(-5,5)+(this.facingLeft ? this.pos.x+this.gunOffset.leftX -12 : this.pos.x+this.gunOffset.rightX) + 8, // gunXOffset
+            (this.pos.y + this.gunOffset.y )+rndInt(-2,2), // gunYOffset
+            this.facingLeft ? rndInt(-40,-20) : rndInt(20, 40),
+            rndInt(-70,-10),
+            22, // yellow
+            12, 
+            12,
+            rndInt(5,15),
+            G.MUZZLESMOKE
+        ) ;   
+    }
     
-    max = rndInt(6,12);
+    max = rndInt(12,24);
     // small sparks
     for (let i=0; i<max; i++) {
         G.particles.spawn(
             this.facingLeft ? this.pos.x+this.gunOffset.leftX : this.pos.x+this.gunOffset.rightX, // gunXOffset
-            this.pos.y+ this.crouching ? 1 : -4, // gunYOffset
-            this.facingLeft?rndFloat(-2,-4):rndFloat(2,4),
-            rndFloat(-2,2),
+            this.pos.y + this.gunOffset.y, // gunYOffset
+            this.facingLeft?rndFloat(-200,-400):rndFloat(200,400),
+            rndFloat(-200,200),
             rndInt(1,9), // black to red to yellow
-            3, 
-            3,
+            2, 
+            2,
             4,
             0
             ) ;   
