@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objecttypes>
+ <objecttype name="door" color="#00ff00"/>
+ <objecttype name="flipbat" color="#ff00fe">
+  <property name="pathHeightInTiles" type="int" default="0"/>
+ </objecttype>
+ <objecttype name="flipbird" color="#d900ff"/>
+ <objecttype name="flippig" color="#c200ff"/>
+ <objecttype name="lightningBox" color="#00d4ff">
+  <property name="Color" type="int" default="0"/>
+ </objecttype>
+ <objecttype name="portal" color="#00ff00"/>
+ <objecttype name="robotank" color="#e300ff"/>
+ <objecttype name="spawnPoint" color="#00d4ff"/>
+ <objecttype name="switch" color="#ffdc00"/>
+</objecttypes>

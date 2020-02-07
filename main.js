@@ -273,6 +273,7 @@ function update(dt){
     handleInput(dt);
 
     if (paused) {
+
         // If we don't run Key.update() then the escape key "justReleased" state  will never reset
         // and we will unpause automatically next frame when calling handleInput(dt) above
         Key.update();
@@ -280,24 +281,13 @@ function update(dt){
         return;
     }
 
-    handleCamera(dt);
+    handleCamera(dt); //
 
-    //flip healing routine--------------------------------
-    for(let i = 0; i < G.worldFlipped.data.length; i++){
-        let tile = G.worldFlipped.data[i];
-        if(tile <= 3){
-
-        }
-        if(tile > 3){
-
-            G.worldFlipped.data[i] = tile-1;
-        }
-    }
     G.world.entities.forEach(function(e){e.update(dt)});
 
     player.update(dt, G.world, G.worldFlipped, G.worldForeground);
     //Key needs updated so justReleased queue gets emptied at end of frame
-    Key.update();
+    Key.update();//
 
     G.particles.update(dt);
     G.pickups.update(dt);

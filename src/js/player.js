@@ -324,7 +324,7 @@ Player.zapWalls = function() {
 Player.render = function render(dt, world, worldFlipped, worldForeground){
 
     // temp debug test - bolts that collide with walls!
-    this.zapWalls();
+    //this.zapWalls();
             
     if(this.inTheFlip){
         let x = this.pos.x + this.flipBar.xOffset - G.view.x;

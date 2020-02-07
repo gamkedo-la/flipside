@@ -1,0 +1,16 @@
+{
+    "maps": [
+        {
+            "fileName": "space01.tmx",
+            "x": 0,
+            "y": 0
+        },
+        {
+            "fileName": "planetSurface01.tmx",
+            "x": 0,
+            "y": 2400
+        }
+        
+    ],
+    "type": "world"
+}Í
