@@ -7,7 +7,9 @@ export const G = {
     FIRE               :           5,
     PICKUP_NANITE      :           6,
     PICKUP_HEALTH      :           7,
-    PICKUP_DEATH        :          8,
+    PICKUP_DEATH       :           8,
+    MUZZLESMOKE        :           9,
+    FLIPSPACE_DEATH    :          10,
 
 
     PARTICLE_X         :           1,
@@ -19,8 +21,9 @@ export const G = {
     PARTICLE_COLOR     :           7,
     PARTICLE_TYPE      :           8,
     PARTICLE_PREV_X    :           9,
-    PARTICLE_PREV_Y    :           10,
-    GRAVITY            :           10,
+    PARTICLE_PREV_Y    :          10,
+
+    GRAVITY            :          10,
 
     GID_FLIPSPACE      :            3,
 
