@@ -32,7 +32,6 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage)
     let vertexCount = 0;//not just vertsPerRow * numRows because we revisit some vertices and they need to be counted
 
     const generateVertData = function() { 
-        const vertArray = [];
         const numTiles = widthInTiles * heightInTiles;
         for(let i = 0; i < numTiles; i++) {
             const x1 = -1 + (i % widthInTiles) * 2/widthInTiles;
@@ -40,52 +39,46 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage)
             const y1 = 1 - (Math.floor(i / widthInTiles)) * 2/heightInTiles;
             const y2 = y1 - 2/heightInTiles;
 
-            vertArray.push(x1);
-            vertArray.push(y1);
+            vertexData[8 * i + 0] = x1;
+            vertexData[8 * i + 1] = y1;
 
-            vertArray.push(x2);
-            vertArray.push(y1);
+            vertexData[8 * i + 2] = x2;
+            vertexData[8 * i + 3] = y1;
 
-            vertArray.push(x1);
-            vertArray.push(y2);
+            vertexData[8 * i + 4] = x1;
+            vertexData[8 * i + 5] = y2;
 
-            vertArray.push(x2);
-            vertArray.push(y2);
+            vertexData[8 * i + 6] = x2;
+            vertexData[8 * i + 7] = y2;
         }
-
-        return new Float32Array(vertArray);
     }
-
-    const vertexData = generateVertData();
+    const vertexData = new Float32Array(8 * widthInTiles * heightInTiles).fill(0);
+    generateVertData();
 
     const vertexBufferObject = gl.createBuffer();
 
     const generateIndexData = function() {
-        const indexArray = [];
         const numTiles = widthInTiles * heightInTiles;
 
         for(let i = 0; i < numTiles; i++) {
             const vertsPerTile = 4; //tiles are quads
 
-            indexArray.push(0 + i * vertsPerTile);
-            indexArray.push(3 + i * vertsPerTile);
-            indexArray.push(1 + i * vertsPerTile);
-            indexArray.push(0 + i * vertsPerTile);
-            indexArray.push(2 + i * vertsPerTile);
-            indexArray.push(3 + i * vertsPerTile);
+            indexData[6 * i + 0] = (0 + i * vertsPerTile);
+            indexData[6 * i + 1] = (3 + i * vertsPerTile);
+            indexData[6 * i + 2] = (1 + i * vertsPerTile);
+            indexData[6 * i + 3] = (0 + i * vertsPerTile);
+            indexData[6 * i + 4] = (2 + i * vertsPerTile);
+            indexData[6 * i + 5] = (3 + i * vertsPerTile);
         }
-
-        return new Uint16Array(indexArray);
     }
 
-    let indexData = generateIndexData();
+    const indexData = new Uint16Array(6 * widthInTiles * heightInTiles).fill(0);
+    generateIndexData();
 
     vertexCount = indexData.length;
     const indexBuffer = gl.createBuffer();
 
     const generateTexCoords = function(tileData) {
-        const coords = [];
-
         for(let i = 0; i < tileData.length; i++) {
             const GID = tileData[i];
 
@@ -95,23 +88,21 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage)
             const y2 = y1 + h ;
 
                 //first vertex (upper left)
-                coords.push(x1);
-                coords.push(y1);
+                texCoords[8 * i + 0] = x1;
+                texCoords[8 * i + 1] = y1;
                 //second vertex (lower left)
-                coords.push(x2);
-                coords.push(y1);
+                texCoords[8 * i + 2] = x2;
+                texCoords[8 * i + 3] = y1;
                 //third vertex (lower right)
-                coords.push(x1);
-                coords.push(y2);
+                texCoords[8 * i + 4] = x1;
+                texCoords[8 * i + 5] = y2;
                 //fourth vertex (upper right)
-                coords.push(x2);
-                coords.push(y2);
+                texCoords[8 * i + 6] = x2;
+                texCoords[8 * i + 7] = y2;
         }
-
-        return new Float32Array(coords);
     }
 
-    //texCoordData must by dynamically generated each frame, that's why it isn't here
+    const texCoords = new Float32Array(8 * widthInTiles * heightInTiles).fill(0);
     const textCoordBuffer = gl.createBuffer();
 
     const getVertexShaderString = function() {
@@ -201,7 +192,7 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage)
         const samplerUniformLocation = gl.getUniformLocation(program, 'sampler');
         gl.uniform1i(samplerUniformLocation, 0);
 
-        let texCoords = generateTexCoords(tileData);
+        generateTexCoords(tileData);
 
         gl.bindBuffer(gl.ARRAY_BUFFER, textCoordBuffer);
         gl.bufferData(gl.ARRAY_BUFFER, texCoords, gl.STATIC_DRAW);
