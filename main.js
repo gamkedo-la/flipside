@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import Stats from './src/js/stats.module.js';
 
 import G from './src/js/G.js';
@@ -22,10 +23,11 @@ import Switch from './src/js/Switch.js';
 // import Drone from './src/js/drone.js';
 import GameSaver from './src/js/GameSaver.js';
 import { UIRender, showMessage, handleMessageBox} from './src/js/UI.js';
+import WebRenderer from './src/js/webRenderer.js';
 
 
 
-
+const USE_GL_RENDERER = false;
 const invertedMosaicEffectEnabled = false;
 const soundEnabled = true;
 
@@ -178,6 +180,9 @@ function init(){
 // this not not ONLY the sound inits, it is init step two after images have downloaded
 // with optional sound inits as well as essential map loading and game start callbacks
 function soundInit(){
+    if(USE_GL_RENDERER) {
+        G.GLRenderer = new WebRenderer(60, 36, G.img.tiles);
+    }
     //next we load our soundlist, passing in start as a callback once complete.
     //soundloader just gives loader the properties,  loadAudioBuffer actually decodes the files and
     //creates a list of buffers.
@@ -375,6 +380,19 @@ function render(dt){
         ry0 = view.y / G.world.tileSize - tilePad | 0,
         ry1 = (view.y + c.height)/G.world.tileSize + tilePad | 0;
 
+        if(USE_GL_RENDERER) {
+            const GIDs = [];
+            for(let k = ry0; k < ry1; k++) {
+                for(let l = rx0; l < rx1; l++) {
+                    const flatIndex = k * G.world.widthInTiles + l;
+                    GIDs.push(G.world.data[flatIndex]-1);
+                }
+            }
+
+            const backgroundCanvas = G.GLRenderer.getBackgroundImageCanvas(GIDs);
+            ctx.drawImage(backgroundCanvas, 0, 0);
+        }
+
     //tile render loop! render order is columns.
     //for each column( i )
     for(let i = rx0; i < rx1; i++){
@@ -438,6 +456,7 @@ function render(dt){
                 }
             }else{
                 //normalspace tile draw
+                if(USE_GL_RENDERER) continue;
                 ctx.drawImage(
                     G.img.tiles,
                     gid%G.tileSheetSize.height * 8,
