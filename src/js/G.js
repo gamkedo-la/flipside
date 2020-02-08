@@ -29,6 +29,8 @@ export const G = {
 
     FLIPSPACE_TIME     :            180,
 
+    TRANSITION_DEATH    :           1,
+
 
     scenes: {},
 

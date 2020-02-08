@@ -1,4 +1,5 @@
 
+import G from './G.js'
 export function clearScreen(color='#040408'){
     G.ctx.save();
     G.ctx.setTransform(1,0,0,1,0,0);
@@ -180,6 +181,28 @@ export function Transitioner() {
     this.update = function(dt){
        
         switch(this.type){
+            case G.TRANSITION_DEATH:
+
+                if(this.transitioningIn){
+                    this.width+=15;
+                    if(this.width >= G.c.width){
+                        this.callback();
+                        requestAnimationFrame(G.frame);
+                        this.transitioningIn = false;
+                    }
+                }else{
+                    this.width-=15;
+                    if(this.width <= 0){
+                        this.done = true;
+                        G.transitioning = false;
+                        //requestAnimationFrame(G.frame);
+                        //return;
+                    }
+                }
+
+
+            break;
+
 
             default:
 
@@ -207,6 +230,9 @@ export function Transitioner() {
     this.render = function(dt){
         G.rb.clear(64);
         switch(this.type){
+            case G.TRANSITION_DEATH:
+                G.rb.fillRect(0,0,this.width,G.c.height,4);
+            break;
             default: 
             G.rb.fillRect(0,0,this.width,G.c.height,0);
             
