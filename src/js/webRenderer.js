@@ -220,7 +220,7 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage)
     }
 
     this.getBackgroundImageCanvas = function(tileData) {
-        gl.clearColor(1.0, 0.0, 0.0, 1.0);//full black
+        gl.clearColor(0.0, 0.0, 0.0, 1.0);//full black
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
         
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);

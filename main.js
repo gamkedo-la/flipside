@@ -350,7 +350,7 @@ function render(dt){
     //let {world, worldFlipped, worldForeground, img, rb } = G;
     //draw all the things
 
-    clearScreen('black');
+//    clearScreen('black');
     G.rb.clear(64);
 
     //render background parallax
@@ -391,6 +391,7 @@ function render(dt){
 
             const backgroundCanvas = G.GLRenderer.getBackgroundImageCanvas(GIDs);
             //the view.x/y % tileSize accounts for sub-tile scrolling
+            //-28 and -24 account for the "overdraw" that we're doing 
             ctx.drawImage(backgroundCanvas, -28 - view.x % G.world.tileSize, -24 - view.y % G.world.tileSize);
         }
 
