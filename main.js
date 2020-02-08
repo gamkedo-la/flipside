@@ -392,7 +392,7 @@ function render(dt){
             const backgroundCanvas = G.GLRenderer.getBackgroundImageCanvas(GIDs);
             //the view.x/y % tileSize accounts for sub-tile scrolling
             //-28 and -24 account for the "overdraw" that we're doing 
-            ctx.drawImage(backgroundCanvas, -28 - view.x % G.world.tileSize, -24 - view.y % G.world.tileSize);
+            ctx.drawImage(backgroundCanvas, -24 - view.x % G.world.tileSize, -24 - view.y % G.world.tileSize);
         }
 
     //tile render loop! render order is columns.
