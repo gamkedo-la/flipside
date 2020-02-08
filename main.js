@@ -27,7 +27,7 @@ import WebRenderer from './src/js/webRenderer.js';
 
 
 
-const USE_GL_RENDERER = false;
+const USE_GL_RENDERER = true;
 const invertedMosaicEffectEnabled = false;
 const soundEnabled = true;
 
@@ -390,7 +390,8 @@ function render(dt){
             }
 
             const backgroundCanvas = G.GLRenderer.getBackgroundImageCanvas(GIDs);
-            ctx.drawImage(backgroundCanvas, -28, -24);
+            //the view.x/y % tileSize accounts for sub-tile scrolling
+            ctx.drawImage(backgroundCanvas, -28 - view.x % G.world.tileSize, -24 - view.y % G.world.tileSize);
         }
 
     //tile render loop! render order is columns.
