@@ -55,14 +55,20 @@ export function UIRender(){
     }  
 }
 export function showMessage(withText){//work in progress
-    showMessageBox = true;
     showMessageText = withText;
+    if (showMessageBox = false) {
+        showMessageBox = true;
+        stopGame = true;
+        console.log("Press B to hide or show the Box");
+    }else{ 
+        showMessageBox = false ; 
+    }
 }
 
 
 export function handleMessageBox(){
-    let msgBoxX = 50;
-    let msgBoxY = 50;
+    let msgBoxX = 30;
+    let msgBoxY = 160;
     let msgBoxTextX = msgBoxX + 30;
     let msgBoxTextY = msgBoxY + 30;
     G.ctx.drawImage(

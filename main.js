@@ -518,7 +518,6 @@ function render(dt){
 //update systems---------------------------------------------------------------------
 
 function handleInput(dt){
-
     if (Key.justReleased(Key.ESCAPE)) {
         paused = !paused;
     }
@@ -575,6 +574,9 @@ function handleInput(dt){
         audio.turnVolumeUp();
     }
 
+    if (Key.isDown(Key.b)) {
+        showMessage();
+    }
 }
 
 function handleCamera(dt){

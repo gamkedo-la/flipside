@@ -17,6 +17,7 @@ export const Key = {
     COMMA: 188,
     PERIOD: 190,
     a: 65,
+    b: 66,
     c: 67,
     w: 87,
     s: 83,
