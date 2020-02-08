@@ -382,15 +382,15 @@ function render(dt){
 
         if(USE_GL_RENDERER) {
             const GIDs = [];
-            for(let k = ry0; k < ry1; k++) {
-                for(let l = rx0; l < rx1; l++) {
+            for(let k = ry0; k < ry0 + 36; k++) {
+                for(let l = rx0; l < rx0 + 60; l++) {
                     const flatIndex = k * G.world.widthInTiles + l;
                     GIDs.push(G.world.data[flatIndex]-1);
                 }
             }
 
             const backgroundCanvas = G.GLRenderer.getBackgroundImageCanvas(GIDs);
-            ctx.drawImage(backgroundCanvas, 0, 0);
+            ctx.drawImage(backgroundCanvas, -28, -24);
         }
 
     //tile render loop! render order is columns.
