@@ -390,11 +390,11 @@ function render(dt){
                     GIDs.push(G.world.data[flatIndex]-1);
                 }
             }
-            const deltaX = view.x;// % G.world.tileSize;
-            const deltaY = view.y;// % G.world.tileSize;
+            const deltaX = view.x % G.world.tileSize;
+            const deltaY = view.y % G.world.tileSize;
             const backgroundCanvas = G.GLRenderer.getBackgroundImageCanvas(GIDs, deltaX, deltaY);
             //the view.x/y % tileSize accounts for sub-tile scrolling
-            ctx.drawImage(backgroundCanvas, -(tilePad * G.world.tileSize) - view.x % G.world.tileSize, -(tilePad * G.world.tileSize) - view.y % G.world.tileSize);
+            ctx.drawImage(backgroundCanvas, -(tilePad * G.world.tileSize), -(tilePad * G.world.tileSize));
         }
 
     //tile render loop! render order is columns.

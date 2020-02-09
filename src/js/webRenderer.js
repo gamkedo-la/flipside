@@ -272,7 +272,7 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
     const program = getWebGLProgram();
     gl.useProgram(program);
 
-    const setUpTileAttribs = function(tileData) {
+    const setUpTileAttribs = function(tileData, deltaX, deltaY) {
         gl.bindBuffer(gl.ARRAY_BUFFER, tileVertexBuffer);
         gl.bufferData(gl.ARRAY_BUFFER, tileVertexData, gl.STATIC_DRAW);
 
@@ -288,6 +288,8 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
 
         gl.enableVertexAttribArray(positionAttribLocation);
 
+        tileDelta[0] = -(Math.round(deltaX)) / (4 * widthInTiles);
+        tileDelta[1] = Math.round(deltaY) / (4 * heightInTiles);
         const depthUniformLocation = gl.getUniformLocation(program, 'delta');
         gl.uniform2fv(depthUniformLocation, tileDelta);
 
@@ -313,7 +315,7 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
         gl.enableVertexAttribArray(texCoordAttribLocation);
     }
 
-    const setUpBkgdAttribs = function(deltaX, deltaY) {
+    const setUpBkgdAttribs = function() {
         gl.bindBuffer(gl.ARRAY_BUFFER, bkgdVertexBuffer);
         gl.bufferData(gl.ARRAY_BUFFER, bkgdVertexData, gl.STATIC_DRAW);
 
@@ -328,9 +330,7 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
         );
 
         gl.enableVertexAttribArray(positionAttribLocation);
-
-        bkgdDelta[0] = 0;
-        bkgdDelta[1] = 0;
+        
         const depthUniformLocation = gl.getUniformLocation(program, 'delta');
         gl.uniform2fv(depthUniformLocation, bkgdDelta);
 
@@ -378,7 +378,7 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, tileIndexBuffer);
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, tileIndexData, gl.STATIC_DRAW);
 
-        setUpTileAttribs(tileData);
+        setUpTileAttribs(tileData, deltaX, deltaY);
         
         gl.drawElements(
             gl.TRIANGLES, //what to draw triangle strip? triangle fan?
