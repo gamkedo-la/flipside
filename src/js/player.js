@@ -14,8 +14,8 @@ const Player = {
     flashTime: 0.1,//seconds
     brightTime: 0,
 
-    coyoteTime: 0,
-    maxCoyoteTime: 20,
+    coyoteTime: 10,
+    maxCoyoteTime: 10,
     canJump: true,
 
     nanitesCollected: 0,
@@ -541,15 +541,14 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
     this.falling = false;
     
     
-    if(this.vy < 0.5 && this.vy != 0){
+    if(this.vy < 10 && this.vy != 0){
         //this.falling = true;
         // console.log("in Air!")
         this.inAir = true;
         this.facingLeft ? this.play('airLeft') : this.play('airRight');
     }
-    if(this.vy > 0.5){
+    if(this.vy > 10){
         this.falling = true;
-        this.coyoteTime -=1;
         this.facingLeft ? this.play('fallingLeft') : this.play('fallingRight');
         // console.log("Falling!!")
     }
@@ -566,6 +565,10 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         this.facingLeft = false;
         this.play('walkRight');
     }
+    if(this.falling){
+        this.coyoteTime -=1;
+        if(this.coyoteTime < 0){this.canJump = false};
+    }else{this.canJump = true;}
 
     if(this.crouching){
         this.facingLeft ? this.play('crouchLeft') : this.play('crouchRight');
@@ -670,6 +673,7 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
                 //console.log("Just landed from a jump!");
                 this.jumping = false;
                 this.falling = false;
+                this.coyoteTime = this.maxCoyoteTime;
                 this.landedFX();
                 
             } else if (this.vy < 0) {
