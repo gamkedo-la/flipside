@@ -181,7 +181,7 @@ function init(){
 // with optional sound inits as well as essential map loading and game start callbacks
 function soundInit(){
     if(USE_GL_RENDERER) {
-        G.GLRenderer = new WebRenderer(60, 36, G.img.tiles);
+        G.GLRenderer = new WebRenderer(60, 36, G.img.tiles, G.img.labCaveWall);
     }
     //next we load our soundlist, passing in start as a callback once complete.
     //soundloader just gives loader the properties,  loadAudioBuffer actually decodes the files and
@@ -363,10 +363,12 @@ function render(dt){
     //let bgTileHeight = (Math.round( c.height / img[world.parallax0].width ) + 1 * 2);
     //console.log(bgTileWidth, bgTileHeight);
 
-    for(let i = -1; i <= (Math.round( c.width / G.img[G.world.parallax0].width ) + 1 * 2); i++){
-        for (let j = -1; j <= (Math.round( c.height / G.img[G.world.parallax0].width ) + 1 * 2); j++){
-            let x = i * G.img[G.world.parallax0].width, y = j * G.img[G.world.parallax0].height;
-            ctx.drawImage(G.img[G.world.parallax0], x,y);
+    if(!USE_GL_RENDERER) {
+        for(let i = -1; i <= (Math.round( c.width / G.img[G.world.parallax0].width ) + 1 * 2); i++){
+            for (let j = -1; j <= (Math.round( c.height / G.img[G.world.parallax0].width ) + 1 * 2); j++){
+                let x = i * G.img[G.world.parallax0].width, y = j * G.img[G.world.parallax0].height;
+                ctx.drawImage(G.img[G.world.parallax0], x,y);
+            }
         }
     }
 
@@ -388,11 +390,11 @@ function render(dt){
                     GIDs.push(G.world.data[flatIndex]-1);
                 }
             }
-
-            const backgroundCanvas = G.GLRenderer.getBackgroundImageCanvas(GIDs);
+            const deltaX = view.x;// % G.world.tileSize;
+            const deltaY = view.y;// % G.world.tileSize;
+            const backgroundCanvas = G.GLRenderer.getBackgroundImageCanvas(GIDs, deltaX, deltaY);
             //the view.x/y % tileSize accounts for sub-tile scrolling
-            //-28 and -24 account for the "overdraw" that we're doing 
-            ctx.drawImage(backgroundCanvas, -24 - view.x % G.world.tileSize, -24 - view.y % G.world.tileSize);
+            ctx.drawImage(backgroundCanvas, -(tilePad * G.world.tileSize) - view.x % G.world.tileSize, -(tilePad * G.world.tileSize) - view.y % G.world.tileSize);
         }
 
     //tile render loop! render order is columns.
