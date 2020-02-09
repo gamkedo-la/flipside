@@ -27,7 +27,7 @@ import WebRenderer from './src/js/webRenderer.js';
 
 
 
-const USE_GL_RENDERER = true;
+const USE_GL_RENDERER = false;
 const invertedMosaicEffectEnabled = false;
 const soundEnabled = true;
 
@@ -59,7 +59,7 @@ G.bullets = new ParticlePool(300);
 G.pickups = new ParticlePool(150);
 
 G.deadZone = {
-    x: 60, y: 60
+    x: 60, y: 0
 }
 
 G.tileSheetSize = { height: 16, width: 16 }
@@ -563,6 +563,11 @@ function handleInput(dt){
     }
     if(Key.isDown(Key.z) || Key.isDown(Key.p) || Key.isDown(Key.SPACE)){
         player.input.jump = true;
+        //player.canJump = false;
+    }
+    if(Key.justReleased(Key.z) || Key.justReleased(Key.p) || Key.justReleased(Key.SPACE)){
+        player.input.jump = false;
+        player.canJump = true;
     }
 
     if(Key.justReleased(Key.LEFT) || Key.justReleased(Key.a)){

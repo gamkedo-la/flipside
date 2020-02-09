@@ -14,6 +14,10 @@ const Player = {
     flashTime: 0.1,//seconds
     brightTime: 0,
 
+    coyoteTime: 0,
+    maxCoyoteTime: 20,
+    canJump: true,
+
     nanitesCollected: 0,
     nanitesMax: 3000,
 
@@ -536,6 +540,7 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
     this.inAir = false;
     this.falling = false;
     
+    
     if(this.vy < 0.5 && this.vy != 0){
         //this.falling = true;
         // console.log("in Air!")
@@ -544,6 +549,7 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
     }
     if(this.vy > 0.5){
         this.falling = true;
+        this.coyoteTime -=1;
         this.facingLeft ? this.play('fallingLeft') : this.play('fallingRight');
         // console.log("Falling!!")
     }
@@ -585,7 +591,7 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
     }
     else{this.vx *= this.friction}
 
-    if(this.input.jump && !this.jumping){
+    if(this.canJump && this.input.jump && !this.jumping){
         if(this.input.down){
             this.fallthru = true;
             this.jumping = true;
@@ -595,15 +601,13 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
             this.vy = -this.jumpVel
             this.jumping = true;
             this.input.jump = false; 
+            this.canJump = false;
+
         }
         
     }
     else{
         this.vy += this.gravity;
-    }
-
-    if(this.jumping){
-        this.input.jump = false;
     }
 
     
@@ -660,8 +664,9 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
     //------------------------------------------------------------------------------------
 
     if(this.tileCollisionCheck(world, this.collideIndex) ){
+
         if (this.jumping) {
-            if (this.vy > 0) { // did we just stop falling?
+            if (this.vy >= 0) { // did we just stop falling?
                 //console.log("Just landed from a jump!");
                 this.jumping = false;
                 this.falling = false;
@@ -673,6 +678,7 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         }
 
         this.falling = false;
+        //this.canJump = true;
         this.vy = 0;
         this.pos.y = this.prevY;
     }
