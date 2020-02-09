@@ -59,7 +59,7 @@ G.bullets = new ParticlePool(300);
 G.pickups = new ParticlePool(150);
 
 G.deadZone = {
-    x: 60, y: 0
+    x: 60, y: 60
 }
 
 G.tileSheetSize = { height: 16, width: 16 }
