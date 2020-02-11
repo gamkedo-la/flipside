@@ -7,7 +7,7 @@ import SpriteSheet from './spritesheet.js';
 const FlipSpider_W = 30;//32;
 const FlipSpider_H = 30;//26;
 const SPIDER_SPEED = 0.25;
-const SPIDER_DEBUG = false; // set to true for verbose debug info
+const SPIDER_DEBUG = true; // set to true for verbose debug info
 const SPIDER_SEEK_DIST = 16; // only seek player if farther away than this
 const SPIDER_FIRE_DIST = 64; // shoot at the player if we get closer than this
 
@@ -23,7 +23,7 @@ const FlipSpider = function FlipSpider({pos}={}){
     this.health = 32;
     this.healthMax = 32;
     this.pos = {x: pos.x, y: pos.y-11}; // put feet where bottom of Tiled icon appears
-    this.drawOffset = {x: 4, y: -2}; // center the sprite when rendering
+    this.drawOffset = {x: -4, y: -2}; // center the sprite when rendering
     this.gunOffset = {leftX: -14, rightX: 20, y: -3}; // where bullets come from
     this.wasHit = false;
     this.timeSinceHit = 0;
@@ -71,9 +71,38 @@ FlipSpider.prototype.canWalkForward = function() {
     // highlight the problem
     this.debugX = tx * G.world.tileSize - G.view.x;
     this.debugY = ty * G.world.tileSize - G.view.y;
-    this.debugC = blocked ? 4 : 11; // reddish or greenish
+    this.debugC = blocked ? 6 : 13; // reddish or greenish
 
     if (SPIDER_DEBUG) console.log('FlipSpider debug: canWalkForward '+(blocked?'BLOCKED ':'ok ')+this.pos.x.toFixed(1)+','+this.pos.y.toFixed(1)+' says tile '+tx+','+ty+' is tile #' + tileHit);
+
+    return !blocked; 
+}
+
+FlipSpider.prototype.canMoveVert = function(vertSpdInTiles) {
+    
+    if (!vertSpdInTiles) return true;
+    
+    // how far to look ahead
+    let xofs = 0;
+    let yofs = (vertSpdInTiles>0) ? 1 : -2; // look below feet or above head
+    let tx = 0;
+    let ty = 0;
+    let blocked = false;
+    let maxTileIndex = G.player.collideIndex;
+    let tileHit = 0;
+
+    // is there any floor or ceiling blocking me?
+    tx = Math.round(this.pos.x / G.world.tileSize) + xofs; // in front of
+    ty = Math.round(this.pos.y / G.world.tileSize) + yofs; // and above/below
+    tileHit = G.world.getTileAtPosition(tx,ty);
+    blocked = (tileHit <= maxTileIndex); // as in, it HAS to be solid
+
+    // highlight the problem
+    this.debugX = tx * G.world.tileSize - G.view.x;
+    this.debugY = ty * G.world.tileSize - G.view.y;
+    this.debugC = blocked ? 4 : 11; // reddish or greenish
+
+    if (SPIDER_DEBUG) console.log('FlipSpider debug: canMoveVert '+(blocked?'BLOCKED ':'ok ')+this.pos.x.toFixed(1)+','+this.pos.y.toFixed(1)+' says tile '+tx+','+ty+' is tile #' + tileHit);
 
     return !blocked; 
 }
@@ -131,6 +160,12 @@ FlipSpider.prototype.update = function update(dt){
     // ultra simplistic movement for now
     if (horizDist > SPIDER_SEEK_DIST && this.canWalkForward()) {
         this.pos.x += this.goingLeft ? SPIDER_SPEED : -SPIDER_SPEED;
+    }
+
+    // move up and down but collide w ceiling/wall
+    let grapplePower = Math.round(Math.sin(performance.now()/1200)*2);
+    if (this.canMoveVert(grapplePower)) {
+        this.pos.y -= grapplePower;
     }
 
     // maybe shoot the player
@@ -194,29 +229,59 @@ FlipSpider.prototype.update = function update(dt){
 FlipSpider.prototype.zapWalls = function() {
     const dist = 64;
     const walk = 20;
-    const width = 1;
-    const chaos = 0;
-    const segs = 64; // fixme, optimize!
-    const rgba = 'rgba(0,255,255,1)';
+    const width = 2;
+    const chaos = 4;
+    const segs = 16; // fixme, optimize!
     const spd1 = 666;
     const spd2 = 555;
+    const spd3 = 444;
     let now = performance.now();
+    let rgba;
+
+    rgba = 'rgba('+ // pulsing rainbow
+    Math.floor(((Math.cos(now/spd1)+1)/2)*255)+','+
+    Math.floor(((Math.cos(now/spd2)+1)/2)*255)+','+
+    Math.floor(((Math.cos(now/spd3)+1)/2)*255)+','+
+    '1)';
+    //console.log(rgba);
+
     G.lightning.bolt(this.pos.x-G.view.x,this.pos.y-G.view.y,
-        this.pos.x+dist-G.view.x+Math.cos(now/spd1)*walk,
-        this.pos.y+dist-G.view.y+Math.cos(now/spd2)*walk,
-        width, chaos, segs, rgba, true);
+    this.pos.x+dist-G.view.x+Math.cos(now/spd1)*walk,
+    this.pos.y+dist-G.view.y+Math.cos(now/spd2)*walk,
+    width, chaos, segs, rgba, true);
+
+    rgba = 'rgba('+ // pulsing rainbow
+    Math.floor(((Math.cos(now/spd3)+1)/2)*255)+','+
+    Math.floor(((Math.cos(now/spd2)+1)/2)*255)+','+
+    Math.floor(((Math.cos(now/spd1)+1)/2)*255)+','+
+    '1)';
+
     G.lightning.bolt(this.pos.x-G.view.x,this.pos.y-G.view.y,
-        this.pos.x-dist-G.view.x+Math.cos(now/spd1)*-walk,
-        this.pos.y+dist-G.view.y+Math.cos(now/spd2)*walk,
-        width, chaos, segs, rgba, true);
+    this.pos.x-dist-G.view.x+Math.cos(now/spd1)*-walk,
+    this.pos.y+dist-G.view.y+Math.cos(now/spd2)*walk,
+    width, chaos, segs, rgba, true);
+
+    rgba = 'rgba('+ // pulsing rainbow
+    Math.floor(((Math.cos(now/spd2)+1)/2)*255)+','+
+    Math.floor(((Math.cos(now/spd1)+1)/2)*255)+','+
+    Math.floor(((Math.cos(now/spd3)+1)/2)*255)+','+
+    '1)';
+
     G.lightning.bolt(this.pos.x-G.view.x,this.pos.y-G.view.y,
-        this.pos.x+dist-G.view.x+Math.cos(now/spd1)*walk,
-        this.pos.y-dist-G.view.y+Math.cos(now/spd2)*-walk,
-        width, chaos, segs, rgba, true);
+    this.pos.x+dist-G.view.x+Math.cos(now/spd1)*walk,
+    this.pos.y-dist-G.view.y+Math.cos(now/spd2)*-walk,
+    width, chaos, segs, rgba, true);
+
+    rgba = 'rgba('+ // pulsing rainbow
+    Math.floor(((Math.cos(now/spd3)+1)/2)*255)+','+
+    Math.floor(((Math.cos(now/spd1)+1)/2)*255)+','+
+    Math.floor(((Math.cos(now/spd2)+1)/2)*255)+','+
+    '1)';
+
     G.lightning.bolt(this.pos.x-G.view.x,this.pos.y-G.view.y,
-        this.pos.x-dist-G.view.x+Math.cos(now/spd1)*-walk,
-        this.pos.y-dist-G.view.y+Math.cos(now/spd2)*-walk,
-        width, chaos, segs, rgba, true);
+    this.pos.x-dist-G.view.x+Math.cos(now/spd1)*-walk,
+    this.pos.y-dist-G.view.y+Math.cos(now/spd2)*-walk,
+    width, chaos, segs, rgba, true);
 
 }
 
