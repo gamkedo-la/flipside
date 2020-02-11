@@ -1316,6 +1316,6 @@ and a new line of text!
 and another!</property>
    </properties>
   </object>
-  <object id="208" name="Spidey" type="flipspider" gid="13" x="1776.25" y="1479.5" width="8" height="8"/>
+  <object id="208" name="Spidey" type="flipspider" gid="13" x="1789.25" y="1439.75" width="8" height="8"/>
  </objectgroup>
 </map>
