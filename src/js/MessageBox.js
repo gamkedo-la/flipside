@@ -34,7 +34,7 @@ MessageBox.prototype.update = function update(dt){
 
 MessageBox.prototype.render = function render(dt){
    
-    G.rb.rect(this.rect.left-G.view.x, this.rect.top-G.view.y, this.width, this.height, 11);
+    //G.rb.rect(this.rect.left-G.view.x, this.rect.top-G.view.y, this.width, this.height, 11);
     // if(this.active){
     //     G.rb.fillRect(this.rect.left-G.view.x, this.rect.top-G.view.y, this.width, this.height, 11);
     // }

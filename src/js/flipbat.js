@@ -6,10 +6,12 @@ import SpriteSheet from './spritesheet.js';
 
 //FlipBat will patrol from pos1 to pos2 and back again, thats it! No chase behavior. 
 const MAX_SPEED = 500;
-const FlipBat = function FlipBat({pos, height}={}){
-    this.start = pos;
-    this.target = {x: pos.x, y: pos.y + height * 8}
-    this.pos = {x: pos.x, y: pos.y};
+const FlipBat = function FlipBat(obj){
+    this.height = obj.properties.find(function(e){return e.name == 'pathHeightInTiles'}).value;
+    this.name = obj.name;
+    this.start = {x: obj.x, y: obj.y};
+    this.target = {x: obj.x, y: obj.y + this.height * 8}
+    this.pos = {x: obj.x, y: obj.y};
     this.speed = 30;
     this.width = 12;
     this.height = 12;
@@ -97,6 +99,12 @@ FlipBat.prototype.update = function update(dt){
 FlipBat.prototype.render = function render(dt){
     if(this.health < this.healthMax){
         let fillWidth = range(this.health, 0, this.healthMax, 0, this.healthBar.width);
+        G.gameFont.drawText({
+            textString: this.name,
+            pos: {x: Math.floor(this.pos.x-G.view.x)-24, y: Math.floor(this.pos.y-24-G.view.y)},
+            spacing: 0
+            }); 
+
         G.rb.fillRect(this.pos.x + this.healthBar.xOffset - G.view.x,
             this.pos.y + this.healthBar.yOffset - G.view.y,
             fillWidth,

@@ -163,7 +163,7 @@ window.addEventListener('focus',    function (event) { paused = false; }, false)
 
 window.addEventListener('click', function(event) { if (soundEnabled) audio.context.resume(); }, false); //Temporary fix for chrome not strting the audio context until user interaction
 
-G.MSG.addEventListener('achievement',  function (event) { console.log(`%c ACHIEVEMENT GET: ${event.detail.title}`, 'background: #8F0') });
+G.MSG.addEventListener('achievement',  function (event) { showMessage(`ACHIEVEMENT GET: ${event.detail.title}`) });
 
 //load assets, then start game-------------------------------------------------------------
 
@@ -481,11 +481,7 @@ function render(dt){
     }//end x loop
 
     //render AABB's, including pickups and baddies
-    G.world.entities.forEach(function(e){
-        if(inView(e.pos.x, e.pos.y)){
-            e.render();
-        }
-    });
+    
 
     //render player;
     player.render();
@@ -511,6 +507,12 @@ function render(dt){
              }
         }//end column render
     }//end x loop
+
+    G.world.entities.forEach(function(e){
+        if(inView(e.pos.x, e.pos.y)){
+            e.render();
+        }
+    });
 
     G.particles.draw();
     G.bullets.draw();
@@ -714,8 +716,8 @@ function processWorldObjects(objects){
         switch(obj.type){
             case "flipbat":
                 //console.log(obj);
-                let height = obj.properties.find(function(e){return e.name == 'pathHeightInTiles'}).value;
-                results.push(new FlipBat({pos:{x: obj.x, y: obj.y}, height: height }).init());
+                //let height = obj.properties.find(function(e){return e.name == 'pathHeightInTiles'}).value;
+                results.push(new FlipBat(obj).init());
             break;
             case "flippig":
                 let pathWidth = obj.properties.find(function(e){return e.name == 'pathWidthInTiles'}).value;
