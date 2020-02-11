@@ -36,7 +36,13 @@ function loadConnectedMaps(map) {
     if(!alreadyLoaded) {
       mapsToLoad++;
       loadFile(`../../src/maps/${connectedMap}.json`, function(response){
-        workerTileMaps[connectedMap] = JSON.parse(response);
+        
+        try {
+            // note: malformed JSON can cause syntax error
+            workerTileMaps[connectedMap] = JSON.parse(response); 
+        } catch(e) {
+            console.log("WARNING: ignoring malformed JSON mapLoader.loadConnectedMaps - map file: " + connectedMap)
+        }
 
         finishedLoadingMap();
       })
