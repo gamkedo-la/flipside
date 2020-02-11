@@ -57,6 +57,7 @@ export function UIRender(){
 export function showMessage(withText){//work in progress
         showMessageText = withText;
         G.showMessageBox = true;
+        G.messageCooldown = 180;
 }
 
 

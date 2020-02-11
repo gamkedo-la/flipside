@@ -274,6 +274,8 @@ function update(dt){
     //update all the things
     elapsed += dt;
     G.frameCount ++;
+    if(G.showMessageBox)G.messageCooldown--
+    if(G.messageCooldown < 0)G.showMessageBox = false;
 
     if (G.GamepadSupport) G.GamepadSupport.handle_gamepad(); // polled each frame
 
@@ -577,7 +579,7 @@ function handleInput(dt){
         player.input.primaryFire = true;
     }
     if(Key.justReleased(Key.c)){
-        G.showMessageBox = !G.showMessageBox
+        G.showMessageBox = false;
     }
     if(Key.isDown(Key.z) || Key.isDown(Key.p) || Key.isDown(Key.SPACE)){
         player.input.jump = true;

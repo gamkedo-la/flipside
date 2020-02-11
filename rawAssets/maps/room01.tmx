@@ -1305,7 +1305,7 @@
   <object id="205" type="messageBox" x="1984" y="1648" width="24" height="24">
    <properties>
     <property name="speaker" type="int" value="1"/>
-    <property name="text" value="I sure hope some pretties up these maps soon"/>
+    <property name="text" value="I sure hope someone pretties up these maps soon"/>
    </properties>
   </object>
   <object id="206" type="messageBox" x="1712" y="1648" width="24" height="24">
