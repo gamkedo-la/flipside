@@ -99,7 +99,7 @@ export function spriteFont({
     height,  
     characterWidth, 
     characterHeight, 
-    characterOrderString = `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.0123456789 `,
+    characterOrderString = `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.0123456789 '!@#$%^&*()+-=`,
     image }
     ={}
     ){
