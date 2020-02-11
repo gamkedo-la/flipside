@@ -1,7 +1,7 @@
 import { range } from './math.js';
 import G from './G.js';
 let speaker;
-let showMessageBox = false;
+//var showMessageBox = true; //moved to G
 let showMessageText = 'text';
 
 export function UIRender(){
@@ -50,19 +50,13 @@ export function UIRender(){
         );
 
 
-    if (showMessageBox){
+    if (G.showMessageBox){
         handleMessageBox();
     }  
 }
 export function showMessage(withText){//work in progress
-    showMessageText = withText;
-    if (showMessageBox = false) {
+        showMessageText = withText;
         showMessageBox = true;
-        stopGame = true;
-        console.log("Press B to hide or show the Box");
-    }else{ 
-        showMessageBox = false ; 
-    }
 }
 
 
@@ -71,11 +65,15 @@ export function handleMessageBox(){
     let msgBoxY = 160;
     let msgBoxTextX = msgBoxX + 30;
     let msgBoxTextY = msgBoxY + 30;
+    G.ctx.save();
+    G.ctx.globalAlpha = 0.7;
     G.ctx.drawImage(
         G.img.msgBox,
         msgBoxX,
         msgBoxY
         );
+    G.ctx.restore();
+
     G.gameFont.drawText({
         textString: showMessageText,
         pos: {x: msgBoxTextX, y: msgBoxTextY},

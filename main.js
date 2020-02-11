@@ -120,7 +120,7 @@ const maps = [
 const soundList = [
     { name: "test1", url:"./src/snd/test1.mp3" },
     { name: "test2", url:"./src/snd/test2.mp3" },
-    //{ name: "testMusic1", url:"./src/snd/stebsScaryFlipside(2).mp3" }
+    { name: "testMusic2", url:"./src/snd/stebsScaryFlipside(2).mp3" },
     { name: "testMusic1", url:"./src/snd/Vanishing.mp3" },
     { name: "playerShoot", url:"./src/snd/playerShoot1.mp3" },
     { name: "splode1", url:"./src/snd/splode1.mp3"}
@@ -134,7 +134,7 @@ document.body.appendChild(G.rb.c);
 //for that tasty deepnight pixel mosaic overlay effect
 const mosaic = makeMosaic();
 mosaic.canvas.id = "mosaic";
-document.body.appendChild(mosaic.canvas);
+//document.body.appendChild(mosaic.canvas);
 G.mosaic = mosaic;
 
 // inverted mosaic bevel during flipspace
@@ -284,6 +284,11 @@ function update(dt){
         // and we will unpause automatically next frame when calling handleInput(dt) above
         Key.update();
 
+        return;
+    }
+
+    if (G.showMessageBox){
+        Key.update();
         return;
     }
 
@@ -531,7 +536,7 @@ function render(dt){
      })
 
     UIRender();
-    debugRender();
+    //debugRender();
     G.rb.render(); 
     
     if (paused) {
@@ -541,7 +546,7 @@ function render(dt){
     }
 
     
-    G.rb.clear(64);
+    
     
 
     
@@ -570,8 +575,8 @@ function handleInput(dt){
     if(Key.isDown(Key.x) || Key.isDown(Key.o)){
         player.input.primaryFire = true;
     }
-    if(Key.isDown(Key.c)){
-        player.input.secondaryFire = true;
+    if(Key.justReleased(Key.c)){
+        G.showMessageBox = !G.showMessageBox
     }
     if(Key.isDown(Key.z) || Key.isDown(Key.p) || Key.isDown(Key.SPACE)){
         player.input.jump = true;

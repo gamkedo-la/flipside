@@ -41,6 +41,10 @@ export const G = {
     naniteBarLocation : {x: 4, y: 14},
     naniteBarDimensions : {w: 50, h: 8},
     naniteBarColor : '#0F0',    
+
+    showMessageBox: false,
+    messageCooldown: 0,
+
 };
 
 export default G;
