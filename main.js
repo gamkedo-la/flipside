@@ -97,7 +97,8 @@ const images = [
     'EnemyRoboTank',
     'flipSpace',
     'msgBox',
-    'msgBox3'
+    'msgBox3',
+    'pauseScreen'
 ]
 
 const maps = [
@@ -321,31 +322,28 @@ function update(dt){
 }
 
 function drawPauseMenu() {
-    const pauseStr = 'PAUSED';
-    const spacing = 6;
+    // const pauseStr = 'PAUSED';
+    // const spacing = 6;
 
-    const pauseWidth = G.gameFont.characterWidth * pauseStr.length + (spacing * pauseStr.length);
-    const pauseHeight = G.gameFont.characterHeight;
+    // const pauseWidth = G.gameFont.characterWidth * pauseStr.length + (spacing * pauseStr.length);
+    // const pauseHeight = G.gameFont.characterHeight;
 
-    const yOffset = 64;
-    const pos = {x: (c.width / 2) - (pauseWidth / 2), y: (c.height / 2) - (pauseHeight / 2) - yOffset};
+    // const yOffset = 64;
+    // const pos = {x: (c.width / 2) - (pauseWidth / 2), y: (c.height / 2) - (pauseHeight / 2) - yOffset};
 
-    ctx.fillStyle='rgba(0,0,0,0.6)';
-    ctx.fillRect(pos.x, pos.y, pauseWidth, pauseHeight);
+    // ctx.fillStyle='rgba(0,0,0,0.6)';
+    // ctx.fillRect(pos.x, pos.y, pauseWidth, pauseHeight);
 
-    G.gameFont.drawText({
-        textString: pauseStr,
-        pos,
-        spacing,
-    });
+    // G.gameFont.drawText({
+    //     textString: pauseStr,
+    //     pos,
+    //     spacing,
+    // });
+    ctx.drawImage(G.img.pauseScreen, 0,0);
 }
 
 function render(dt){
-    if (paused) {
-        drawPauseMenu();
-
-        return;
-    }
+    
 
     //let {world, worldFlipped, worldForeground, img, rb } = G;
     //draw all the things
@@ -534,7 +532,19 @@ function render(dt){
 
     UIRender();
     debugRender();
-    G.rb.render();
+    G.rb.render(); 
+    
+    if (paused) {
+        G.rb.ctx.clearRect(0,0,427,240);
+        drawPauseMenu();
+        return;
+    }
+
+    
+    G.rb.clear(64);
+    
+
+    
 
 }//end render
 
