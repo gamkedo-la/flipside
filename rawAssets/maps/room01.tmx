@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="400" height="400" tilewidth="8" tileheight="8" infinite="0" backgroundcolor="#28283c" nextlayerid="11" nextobjectid="209">
+<map version="1.2" tiledversion="1.3.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="400" height="400" tilewidth="8" tileheight="8" infinite="0" backgroundcolor="#28283c" nextlayerid="11" nextobjectid="209">
  <editorsettings>
   <export target="../../src/maps/room01.json" format="json"/>
  </editorsettings>
@@ -1311,7 +1311,9 @@
   <object id="207" type="messageBox" x="1856" y="1432" width="24" height="24">
    <properties>
     <property name="speaker" type="int" value="1"/>
-    <property name="text" value="Some other characters! @#$%^&amp;()-=+"/>
+    <property name="text">Some other characters! @#$%^&amp;()-=+
+and a new line of text!
+and another!</property>
    </properties>
   </object>
   <object id="208" name="Spidey" type="flipspider" gid="13" x="1776.25" y="1479.5" width="8" height="8"/>

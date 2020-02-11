@@ -116,7 +116,16 @@ export function spriteFont({
         return this;
     }
 
-spriteFont.prototype.drawText = function drawText({textString, pos={x: 0, y: 0}, spacing=0} = {}){
+spriteFont.prototype.drawText = function drawText({ textString, pos={x: 0, y: 0}, hspacing=0, vspacing = 2 } = {}){
+    var lines = textString.split("\n");
+    var self = this;
+    self.pos = pos, self.hspacing = hspacing, self.vspacing = vspacing;
+    lines.forEach(function(line, index, arr){
+        self.textLine( { textString:line, pos:{x: self.pos.x, y: self.pos.y + index * (self.characterHeight + self.vspacing) }, hspacing: self.hspacing } )
+    })
+}
+
+spriteFont.prototype.textLine = function textLine({ textString, pos={x: 0, y: 0}, hspacing=0 } = {}){
     var textStringArray = textString.split("");
     var self = this;
 
@@ -128,13 +137,14 @@ spriteFont.prototype.drawText = function drawText({textString, pos={x: 0, y: 0},
         let spriteY = Math.floor( keyIndex / self.widthInCharacters ) * self.characterHeight;
         //draw
         //console.log(character);
+        
         G.ctx.drawImage(
             self.image,
             spriteX,
             spriteY,
             self.characterWidth,
             self.characterHeight,
-            pos.x + ( (self.characterWidth + spacing) * index),
+            pos.x + ( (self.characterWidth + hspacing) * index),
             pos.y,
             self.characterWidth,
             self.characterHeight

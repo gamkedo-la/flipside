@@ -96,7 +96,7 @@ ParticlePool.prototype.draw = function draw(){
                             );
                     break;
         
-                    case 4: //bullet
+                    case G.BULLET: //bullet
                         G.rb.fillCircle(
                             this.pool[i+1]-G.view.x,
                             this.pool[i+2]-G.view.y,
@@ -105,7 +105,7 @@ ParticlePool.prototype.draw = function draw(){
                             );
                         break;
         
-                    case 5: //fire
+                    case G.FIRE: //fire
                         let color = range(this.pool[i], 0, 19, 0, 9);
                         G.rb.fillCircle(
                             this.pool[i+1]-G.view.x,
