@@ -715,6 +715,7 @@ function processWorldObjects(objects){
     let results = [];
     // console.log(objects);
     objects.forEach(function(obj){
+        console.log("spawning a " + obj.type);
         switch(obj.type){
             case "flipbat":
                 //console.log(obj);
@@ -730,6 +731,9 @@ function processWorldObjects(objects){
             break;
             case "robotank":
                 results.push(new RoboTank({pos:{x: obj.x, y: obj.y}}).init());
+            break;
+            case "flipspider":
+                results.push(new FlipSpider({pos:{x: obj.x, y: obj.y}}).init());
             break;
             case "barricade":
                 // console.log(obj);

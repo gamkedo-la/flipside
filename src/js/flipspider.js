@@ -1,4 +1,4 @@
-// FlipSpider - a horizontally patrolling tank unit
+// FlipSpider - a grappling-hook style movement experiment
 
 import { rectCollision, pointInRect } from "./util.js";
 import { rndFloat, rndInt, range } from "./math.js";
@@ -98,20 +98,20 @@ FlipSpider.prototype.flameThrower = function() {
 
 FlipSpider.prototype.update = function update(dt){
     if(this.wasHit) {
-        this.spritesheet.image = G.loader.brightImages.EnemyRoboTank;
+        this.spritesheet.image = G.loader.brightImages.flipspider;
         this.timeSinceHit += dt;
         this.brightTime += dt;
         if(this.timeSinceHit > this.flashTime) {
             this.timeSinceHit = 0;
             this.wasHit = false;
-            this.spritesheet.image = G.img.EnemyRoboTank;
+            this.spritesheet.image = G.img.flipspider;
         } else {
             if(this.brightTime > this.flashTime / 5) {
                 this.brightImages = 0;
-                if(this.spritesheet.image == G.img.EnemyRoboTank) {
-                    this.spritesheet.image = G.img.EnemyRoboTank;
+                if(this.spritesheet.image == G.img.flipspider) {
+                    this.spritesheet.image = G.img.flipspider;
                 } else {
-                    this.spritesheet.image = G.loader.brightImages.EnemyRoboTank;
+                    this.spritesheet.image = G.loader.brightImages.flipspider;
                 }
             }
             
@@ -144,7 +144,7 @@ FlipSpider.prototype.update = function update(dt){
     //this.pos.x = Math.round(lerp(this.start.x, this.target.x, Math.sin(performance.now()*this.speed)));
     //this.pos.y = Math.round(lerp(this.start.y, this.target.y, Math.sin(performance.now()*this.speed)));
 
-    this.rect = {
+    this.rect = { // FIXME: new obj every frame
         top: this.pos.y - this.width/2,
         left: this.pos.x - this.height/2,
         right: this.pos.x + this.height/2,
@@ -162,9 +162,23 @@ FlipSpider.prototype.update = function update(dt){
     for(let i = 0; i < G.bullets.pool.length; i+= G.bullets.tuple){
         if(G.bullets.pool[i]>=0){
             if(pointInRect(G.bullets.pool[i+G.PARTICLE_X], G.bullets.pool[i+G.PARTICLE_Y], this.rect)){
+                // ONHIT:
                 G.bullets.kill(i)
                 this.wasHit = true;
                 this.health--;
+                // generous! woot
+                G.pickups.spawn(
+                    this.pos.x+rndInt(-5,5),
+                    this.pos.y-10+rndInt(-5,5),
+                    rndFloat(-30, 30), 
+                    rndFloat(-30),
+                    11,
+                    6,
+                    6,
+                    180,
+                    G.PICKUP_NANITE
+                )
+
             }
         }
     }
@@ -177,8 +191,40 @@ FlipSpider.prototype.update = function update(dt){
 
 }
 
+FlipSpider.prototype.zapWalls = function() {
+    const dist = 64;
+    const walk = 20;
+    const width = 1;
+    const chaos = 0;
+    const segs = 64; // fixme, optimize!
+    const rgba = 'rgba(0,255,255,1)';
+    const spd1 = 666;
+    const spd2 = 555;
+    let now = performance.now();
+    G.lightning.bolt(this.pos.x-G.view.x,this.pos.y-G.view.y,
+        this.pos.x+dist-G.view.x+Math.cos(now/spd1)*walk,
+        this.pos.y+dist-G.view.y+Math.cos(now/spd2)*walk,
+        width, chaos, segs, rgba, true);
+    G.lightning.bolt(this.pos.x-G.view.x,this.pos.y-G.view.y,
+        this.pos.x-dist-G.view.x+Math.cos(now/spd1)*-walk,
+        this.pos.y+dist-G.view.y+Math.cos(now/spd2)*walk,
+        width, chaos, segs, rgba, true);
+    G.lightning.bolt(this.pos.x-G.view.x,this.pos.y-G.view.y,
+        this.pos.x+dist-G.view.x+Math.cos(now/spd1)*walk,
+        this.pos.y-dist-G.view.y+Math.cos(now/spd2)*-walk,
+        width, chaos, segs, rgba, true);
+    G.lightning.bolt(this.pos.x-G.view.x,this.pos.y-G.view.y,
+        this.pos.x-dist-G.view.x+Math.cos(now/spd1)*-walk,
+        this.pos.y-dist-G.view.y+Math.cos(now/spd2)*-walk,
+        width, chaos, segs, rgba, true);
+
+}
+
 FlipSpider.prototype.render = function render(dt){
     //console.log("FlipSpider is rendering at "+this.pos.x.toFixed(1)+','+this.pos.y.toFixed(1))
+
+    this.zapWalls(); // legs raycast to walls/floors/ceilings
+
     if(this.health < this.healthMax){
         let fillWidth = range(this.health, 0, this.healthMax, 0, this.healthBar.width);
         G.rb.fillRect(this.pos.x + this.healthBar.xOffset - G.view.x,
@@ -214,20 +260,23 @@ FlipSpider.prototype.init = function init(){
 
     //console.log("FlipSpider init...");
     this.spritesheet = new SpriteSheet({
-        image: G.img.EnemyRoboTank,
+        image: G.img.flipspider,
         frameWidth: FlipSpider_W,
         frameHeight: FlipSpider_H,
         animations: {
             idleRight: {
-                frames: '0..1',
-                frameRate: 4
+                frames: '8..15',
+                frameRate: 7
             },
             idleLeft: {
-                frames: '2..3',
-                frameRate: 4
+                frames: '0..7',
+                frameRate: 7
             }
         }
-    })
+    });
+
+
+
     //must have an anim set at start, or .currentAnimation is null
     this.play('idleLeft');
     

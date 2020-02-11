@@ -64,7 +64,7 @@ const ElectricityRenderer = function ElectricityRenderer()
             ly += (Math.random()*chaos*2)-chaos;
             // optionally stop short when we hit a wall
             if (collideWithMap && hitWall(lx,ly)) { 
-                console.log('bolt collided with wall!');
+                //console.log('bolt collided with wall!');
                 hit = true;
                 break; // out of the loop early
             }
