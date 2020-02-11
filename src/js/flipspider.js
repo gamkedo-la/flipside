@@ -1,28 +1,24 @@
-
-// RoboTank - a horizontally patrolling tank unit
+// FlipSpider - a horizontally patrolling tank unit
 
 import { rectCollision, pointInRect } from "./util.js";
 import { rndFloat, rndInt, range } from "./math.js";
 import SpriteSheet from './spritesheet.js';
-import RoboTank from "./robotank.js";
 
-// FIXME: these var names are from RoboTank.js and may overwrite globals
-// FIXME: REFACTOR - rename all via search n replace
-const ROBOTANK_W = 32;
-const ROBOTANK_H = 26;
-const ROBO_SPEED = 0.25;
-const ROBO_DEBUG = false; // set to true for verbose debug info
-const ROBO_SEEK_DIST = 16; // only seek player if farther away than this
-const ROBO_FIRE_DIST = 64; // shoot at the player if we get closer than this
+const FlipSpider_W = 30;//32;
+const FlipSpider_H = 30;//26;
+const SPIDER_SPEED = 0.25;
+const SPIDER_DEBUG = false; // set to true for verbose debug info
+const SPIDER_SEEK_DIST = 16; // only seek player if farther away than this
+const SPIDER_FIRE_DIST = 64; // shoot at the player if we get closer than this
 
 // patrols the area near pos, back and forth horizontally
-const Slime = function Slime({pos}={}){
+const FlipSpider = function FlipSpider({pos}={}){
     this.start = pos;
     this.currentAnimation = 'idle';
     this.target = {x: pos.x + 24, y: pos.y };
     this.speed = 0.001;
-    this.width = ROBOTANK_W; // note: width and height are hitbox, not drawsize
-    this.height = ROBOTANK_H;
+    this.width = FlipSpider_W; // note: width and height are hitbox, not drawsize
+    this.height = FlipSpider_H;
     this.rect = {};
     this.health = 32;
     this.healthMax = 32;
@@ -36,15 +32,15 @@ const Slime = function Slime({pos}={}){
 
     this.healthBar = {
         xOffset: 0,
-        yOffset: -ROBOTANK_H,
-        width: ROBOTANK_W, 
+        yOffset: -FlipSpider_H,
+        width: FlipSpider_W, 
         height: 2
     }
     return this;
 }
 
 // can we walk forward?
-Slime.prototype.canWalkForward = function() {
+FlipSpider.prototype.canWalkForward = function() {
     
     // how far to look ahead
     let xofs = this.goingLeft ? 2 : -2; // tiles to look ahead
@@ -77,14 +73,30 @@ Slime.prototype.canWalkForward = function() {
     this.debugY = ty * G.world.tileSize - G.view.y;
     this.debugC = blocked ? 4 : 11; // reddish or greenish
 
-    if (ROBO_DEBUG) console.log('RoboTank debug: canWalkForward '+(blocked?'BLOCKED ':'ok ')+this.pos.x.toFixed(1)+','+this.pos.y.toFixed(1)+' says tile '+tx+','+ty+' is tile #' + tileHit);
+    if (SPIDER_DEBUG) console.log('FlipSpider debug: canWalkForward '+(blocked?'BLOCKED ':'ok ')+this.pos.x.toFixed(1)+','+this.pos.y.toFixed(1)+' says tile '+tx+','+ty+' is tile #' + tileHit);
 
     return !blocked; 
 }
 
+FlipSpider.prototype.flameThrower = function() {
+    //console.log("Flame Thrower!");
+    let max = rndInt(0,5);
+    for (let i=0; i<max; i++) {
+        G.particles.spawn(
+            this.goingLeft ? this.pos.x+this.gunOffset.rightX : this.pos.x+this.gunOffset.leftX, // gunXOffset
+            this.pos.y + this.gunOffset.y, // gunYOffset
+            this.goingLeft?rndFloat(100,120):rndFloat(-100,-120),
+            rndFloat(-20,20),
+            rndInt(1,9), // black to red to yellow
+            2, 
+            2,
+            20,
+            G.FIRE
+        ) ;   
+    }
+}  
 
-
-Slime.prototype.update = function update(dt){
+FlipSpider.prototype.update = function update(dt){
     if(this.wasHit) {
         this.spritesheet.image = G.loader.brightImages.EnemyRoboTank;
         this.timeSinceHit += dt;
@@ -117,12 +129,12 @@ Slime.prototype.update = function update(dt){
     let horizDist = Math.abs(G.player.pos.x - this.pos.x);
 
     // ultra simplistic movement for now
-    if (horizDist > ROBO_SEEK_DIST && this.canWalkForward()) {
-        this.pos.x += this.goingLeft ? ROBO_SPEED : -ROBO_SPEED;
+    if (horizDist > SPIDER_SEEK_DIST && this.canWalkForward()) {
+        this.pos.x += this.goingLeft ? SPIDER_SPEED : -SPIDER_SPEED;
     }
 
     // maybe shoot the player
-    if (horizDist < ROBO_FIRE_DIST) {
+    if (horizDist < SPIDER_FIRE_DIST) {
         //if (Math.random()<0.02) {
             this.flameThrower();
         //}
@@ -165,8 +177,8 @@ Slime.prototype.update = function update(dt){
 
 }
 
-Slime.prototype.render = function render(dt){
-    //console.log("Robotank is rendering at "+this.pos.x.toFixed(1)+','+this.pos.y.toFixed(1))
+FlipSpider.prototype.render = function render(dt){
+    //console.log("FlipSpider is rendering at "+this.pos.x.toFixed(1)+','+this.pos.y.toFixed(1))
     if(this.health < this.healthMax){
         let fillWidth = range(this.health, 0, this.healthMax, 0, this.healthBar.width);
         G.rb.fillRect(this.pos.x + this.healthBar.xOffset - G.view.x,
@@ -178,11 +190,11 @@ Slime.prototype.render = function render(dt){
     this.currentAnimation.render({
         x: Math.floor(this.pos.x-this.width/2-G.view.x + this.drawOffset.x),
         y: Math.floor(this.pos.y-this.height/2-G.view.y + this.drawOffset.y),
-        width: ROBOTANK_W,
-        height: ROBOTANK_H
+        width: FlipSpider_W,
+        height: FlipSpider_H
     });
 
-    if (ROBO_DEBUG) {
+    if (SPIDER_DEBUG) {
         // draw collision box
         G.rb.rect(this.rect.left-G.view.x, this.rect.top-G.view.y, this.width, this.height, 11);
         // draw "this wall/gap got in my way" tile
@@ -191,20 +203,20 @@ Slime.prototype.render = function render(dt){
     //G.rb.rect(this.rect.left-G.view.x, this.rect.top-G.view.y, this.width, this.height, 11);
 }
 
-Slime.prototype.play = function play(animationName){
+FlipSpider.prototype.play = function play(animationName){
     this.currentAnimation = this.spritesheet.animations[animationName];
     if (!this.currentAnimation.loop){
         this.currentAnimation.reset();
     }
 }
 
-Slime.prototype.init = function init(){
+FlipSpider.prototype.init = function init(){
 
-    //console.log("RoboTank init...");
+    //console.log("FlipSpider init...");
     this.spritesheet = new SpriteSheet({
         image: G.img.EnemyRoboTank,
-        frameWidth: ROBOTANK_W,
-        frameHeight: ROBOTANK_H,
+        frameWidth: FlipSpider_W,
+        frameHeight: FlipSpider_H,
         animations: {
             idleRight: {
                 frames: '0..1',
@@ -222,7 +234,7 @@ Slime.prototype.init = function init(){
     return this;
 }
 
-Slime.prototype.kill = function kill(){
+FlipSpider.prototype.kill = function kill(){
     //splodey splode
     G.audio.playSound(G.sounds.splode1, range(this.pos.x-G.view.x, 0,427,-1,1), 0.5, 1, false);
     let splodeCount = 32;
@@ -259,4 +271,4 @@ Slime.prototype.kill = function kill(){
     G.world.entities.splice(G.world.entities.indexOf(this), 1);
 }
 
-export default Slime;
+export default FlipSpider;

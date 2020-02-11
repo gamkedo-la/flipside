@@ -18,6 +18,7 @@ import FlipBat from './src/js/flipbat.js';
 import FlipPig from './src/js/flippig.js';
 import FlipBird from './src/js/flipbird.js';
 import RoboTank from './src/js/robotank.js';
+import FlipSpider from './src/js/flipspider.js';
 import Barricade from './src/js/Barricade.js';
 import Switch from './src/js/Switch.js';
 import MessageBox from './src/js/MessageBox.js';
@@ -96,6 +97,7 @@ const images = [
     'EnemyTinycrawler',
     'EnemyTinydiver',
     'EnemyRoboTank',
+    'flipspider',
     'flipSpace',
     'msgBox',
     'msgBox3',
