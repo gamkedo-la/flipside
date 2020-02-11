@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <objecttypes>
- <objecttype name="door" color="#00ff00"/>
- <objecttype name="flipbat" color="#ff00fe">
-  <property name="pathHeightInTiles" type="int" default="0"/>
+ <objecttype name="barricade" color="#22c803"/>
+ <objecttype name="door" color="#22c803">
+  <property name="destinationMap" type="string" default="room01"/>
+  <property name="destinationSpawn" type="string" default="enter01"/>
  </objecttype>
- <objecttype name="flipbird" color="#d900ff"/>
- <objecttype name="flippig" color="#c200ff"/>
- <objecttype name="lightningBox" color="#00d4ff">
-  <property name="Color" type="int" default="0"/>
+ <objecttype name="flipbat" color="#d300bb">
+  <property name="pathHeightInTiles" type="int" default="3"/>
  </objecttype>
- <objecttype name="portal" color="#00ff00"/>
- <objecttype name="robotank" color="#e300ff"/>
- <objecttype name="spawnPoint" color="#00d4ff"/>
- <objecttype name="switch" color="#ffdc00"/>
+ <objecttype name="flippig" color="#d300bb">
+  <property name="pathWidthInTiles" type="int" default="5"/>
+ </objecttype>
+ <objecttype name="portal" color="#22c803">
+  <property name="destinationMap" type="string" default="room01"/>
+  <property name="destinationSpawn" type="string" default="enter01"/>
+ </objecttype>
+ <objecttype name="robotank" color="#d300bb"/>
+ <objecttype name="spawnPoint" color="#1ce1ff"/>
+ <objecttype name="switch" color="#e8e809">
+  <property name="attachedBarricade" type="string" default=""/>
+ </objecttype>
 </objecttypes>

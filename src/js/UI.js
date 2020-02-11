@@ -56,7 +56,7 @@ export function UIRender(){
 }
 export function showMessage(withText){//work in progress
         showMessageText = withText;
-        showMessageBox = true;
+        G.showMessageBox = true;
 }
 
 

@@ -81,7 +81,7 @@ const Player = {
 
     hurtCooldown: 0,
     hurtCooldownMax: 30,
-    hurtPush: 40,
+    hurtPush: 120,
 
     gunCooldown: 0,
     gunCooldownMax: 7,

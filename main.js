@@ -20,6 +20,7 @@ import FlipBird from './src/js/flipbird.js';
 import RoboTank from './src/js/robotank.js';
 import Barricade from './src/js/Barricade.js';
 import Switch from './src/js/Switch.js';
+import MessageBox from './src/js/MessageBox.js';
 // import Drone from './src/js/drone.js';
 import GameSaver from './src/js/GameSaver.js';
 import { UIRender, showMessage, handleMessageBox} from './src/js/UI.js';
@@ -287,10 +288,10 @@ function update(dt){
         return;
     }
 
-    if (G.showMessageBox){
-        Key.update();
-        return;
-    }
+    // if (G.showMessageBox){
+    //     Key.update();
+    //     return;
+    // }
 
     handleCamera(dt); //
 
@@ -730,6 +731,11 @@ function processWorldObjects(objects){
             break;
             case "switch":
                 results.push(new Switch(obj).init());
+            break;
+            case "messageBox":
+                results.push(new MessageBox(obj));
+            break
+;                
             default:
                 //nothing
 
