@@ -35,7 +35,7 @@ const Player = {
 
     prevX: 0,
     prevY: 0,
-    
+
     rect: {
         left: 0,
         top: 0,
@@ -45,16 +45,16 @@ const Player = {
 
     width: 18,
     height: 41,
-    
+
     health: 100,
     maxHealth: 100,
 
     //when we shoot flipspace tiles, this is how long before they heal
     flipRemovedCooldown: 240,
 
-    vx: 0, 
+    vx: 0,
     vy: 10,
-    
+
     //vars set by in/out of flipspace physics functions. don't try to set them here
     accel: 0,
     jumpVel: 0,
@@ -92,12 +92,12 @@ const Player = {
     bulletVX: 300,
     bulletVY: 300,
     bulletUp: -300,
-    bulletDown: 300,    
+    bulletDown: 300,
 
     flipBar: {
         xOffset: -12,
         yOffset: -18,
-        width: 40, 
+        width: 40,
         height: 4
     },
 
@@ -125,7 +125,7 @@ const Player = {
     input: {
         left: false,
         up: false,
-        right: false, 
+        right: false,
         down: false,
         jump: false,
         primaryFire: false,
@@ -172,13 +172,13 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
                     this.spritesheet.image = G.loader.brightImages.player;
                 }
             }
-            
+
         }
     }
     this.currentAnimation.update(dt);
 
     this.doorCooldown--;
-    
+
     this.prevX = this.pos.x;
     this.prevY = this.pos.y;
 
@@ -187,7 +187,7 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
     this.rect.left = this.pos.x - this.width/2;
     this.rect.right = this.pos.x + this.width/2;
 
-    
+
     // dangerous tiles
     var self = this;
     if(this.tileCollisionCheck(world, function(tile){ return tile >=self.hazardTilesStartIndex && tile <= self.hazardTilesEndIndex; } )) {
@@ -203,7 +203,7 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
 
     if(this.inTheFlip){
         this.inTheFlipPhysics(dt, world, worldFlipped);
-        
+
         if(this.flipTimer){
             this.flipTimer--;
         }else{
@@ -251,7 +251,7 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
     world.doors.forEach(function(door){
         if(self.rectCollision(door) && self.input.up && self.doorCooldown <= 0){
             //console.log('entered portal');
-            
+
             self.doorCooldown = 60;
             var wipe = new Transitioner().start('wipe', function(){
                 let destinationMap = door.properties.find(function(prop){return prop.name == 'destinationMap'}).value;
@@ -268,14 +268,14 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
     //check pickups for overlap, and pick them up
     for(let i = 0; i < G.pickups.pool.length; i+= G.bullets.tuple){
         if(G.pickups.pool[i]>=0){
-            
+
             if(pointInRect(G.pickups.pool[i+1], G.pickups.pool[i+2], this.rect)){
                 let x = G.pickups.pool[i+1],
                     y = G.pickups.pool[i+2];
                     G.particles.spawn(
                         x,
                         y,
-                        rndFloat(-30, 30), 
+                        rndFloat(-30, 30),
                         rndFloat(-50, -70),
                         11,
                         1,
@@ -285,12 +285,12 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
                     )
                 G.pickups.kill(i);
                 this.nanitesCollected += 1;
-                
+
             }
         }
     }
 
-    
+
 
 
 }
@@ -309,19 +309,19 @@ Player.zapWalls = function() {
     G.lightning.bolt(this.pos.x-G.view.x,this.pos.y-G.view.y,
         this.pos.x+dist-G.view.x+Math.cos(now/spd1)*walk,
         this.pos.y+dist-G.view.y+Math.cos(now/spd2)*walk,
-        width, chaos, segs, rgba, true); 
+        width, chaos, segs, rgba, true);
     G.lightning.bolt(this.pos.x-G.view.x,this.pos.y-G.view.y,
         this.pos.x-dist-G.view.x+Math.cos(now/spd1)*-walk,
         this.pos.y+dist-G.view.y+Math.cos(now/spd2)*walk,
-        width, chaos, segs, rgba, true); 
+        width, chaos, segs, rgba, true);
     G.lightning.bolt(this.pos.x-G.view.x,this.pos.y-G.view.y,
         this.pos.x+dist-G.view.x+Math.cos(now/spd1)*walk,
         this.pos.y-dist-G.view.y+Math.cos(now/spd2)*-walk,
-        width, chaos, segs, rgba, true); 
+        width, chaos, segs, rgba, true);
     G.lightning.bolt(this.pos.x-G.view.x,this.pos.y-G.view.y,
         this.pos.x-dist-G.view.x+Math.cos(now/spd1)*-walk,
         this.pos.y-dist-G.view.y+Math.cos(now/spd2)*-walk,
-        width, chaos, segs, rgba, true); 
+        width, chaos, segs, rgba, true);
 
 }
 
@@ -329,7 +329,7 @@ Player.render = function render(dt, world, worldFlipped, worldForeground){
 
     // temp debug test - bolts that collide with walls!
     //this.zapWalls();
-            
+
     if(this.inTheFlip){
         let x = this.pos.x + this.flipBar.xOffset - G.view.x;
         let y = this.pos.y + this.flipBar.yOffset - G.view.y;
@@ -347,7 +347,7 @@ Player.render = function render(dt, world, worldFlipped, worldForeground){
     })
     let dX = this.pos.x-G.view.x, dY = this.rect.bottom-G.view.y
     G.rb.line(dX, dY, dX, dY-3, 11);
-    
+
 }
 
 Player.inTheFlipPhysics = function inTheFlipPhysics(dt, world, worldFlipped){
@@ -358,7 +358,7 @@ Player.inTheFlipPhysics = function inTheFlipPhysics(dt, world, worldFlipped){
     this.jumpVel = this.physicsFlip.jumpVel;
 
     if(this.input.primaryFire){
-        
+
         let gunLeft = this.pos.x - 6;
         let gunRight = this.pos.x + 6;
         let gunYoffset = -1;
@@ -368,7 +368,7 @@ Player.inTheFlipPhysics = function inTheFlipPhysics(dt, world, worldFlipped){
             -this.vxx,
             -this.vy,
             22,
-            3, 
+            3,
             3,
             50,
             1
@@ -386,7 +386,7 @@ Player.inTheFlipPhysics = function inTheFlipPhysics(dt, world, worldFlipped){
             this.vx += this.accel;
         }
     }
-    
+
     if(this.vy < 0){
         this.falling = true;
     }
@@ -402,7 +402,7 @@ Player.inTheFlipPhysics = function inTheFlipPhysics(dt, world, worldFlipped){
     if(this.input.jump && !this.jumping){
         this.vy = -this.jumpVel
         this.jumping = true;
-         this.input.jump = false; 
+         this.input.jump = false;
     }
     else{
         this.vy += this.gravity;
@@ -411,7 +411,7 @@ Player.inTheFlipPhysics = function inTheFlipPhysics(dt, world, worldFlipped){
 
     this.vx = clamp(this.vx, -this.maxVel.x, this.maxVel.x);
     this.vy = clamp(this.vy, -this.maxVel.y, this.maxVel.y);
-        
+
     this.pos.x = this.pos.x + (dt * this.vx);
     if( this.tileCollisionCheck(world, this.collideIndex) ){
         this.pos.x = this.prevX;
@@ -439,13 +439,13 @@ Player.muzzleFlash = function() {
             this.facingLeft ? rndInt(-40,-20) : rndInt(20, 40),
             rndInt(-70,-10),
             22, // yellow
-            12, 
+            12,
             12,
             rndInt(5,15),
             G.MUZZLESMOKE
-        ) ;   
+        ) ;
     }
-    
+
     max = rndInt(12,24);
     // small sparks
     for (let i=0; i<max; i++) {
@@ -455,14 +455,14 @@ Player.muzzleFlash = function() {
             this.facingLeft?rndFloat(-200,-400):rndFloat(200,400),
             rndFloat(-200,200),
             rndInt(1,9), // black to red to yellow
-            2, 
+            2,
             2,
             4,
             0
-            ) ;   
+            ) ;
     }
-}    
-        
+}
+
 // emit a poof when we hit the ground after falling
 Player.landedFX = function() {
     // console.log("landedFX!");
@@ -475,15 +475,16 @@ Player.landedFX = function() {
             rndFloat(-30,30),
             rndFloat(-3,-15),
             rndInt(58,63), // sandy dirt color
-            1, 
+            1,
             1,
             25,
             0
-        ) ;   
+        ) ;
     }
 }
 
 Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
+    this.aimingUp = false;
     this.gravity = this.physicsNormal.gravity;
     this.friction = this.physicsNormal.friction;
     this.maxVel = this.physicsNormal.maxVel;
@@ -513,6 +514,10 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         this.gunOffset.rightX = this.gunOffsets.standingRight;
     }
 
+    if(this.input.down && !this.inAir && !this.falling){
+        this.crouching = true;
+    }else{this.crouching = false}
+
     if(this.crouching){
         this.gunOffset.y = this.gunOffsets.crouchingY;
     }
@@ -527,7 +532,7 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
             this.facingLeft ? -this.bulletVX : this.bulletVX,
             this.bulletVY,
             22,
-            3, 
+            3,
             3,
             50,
             4
@@ -536,11 +541,11 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         this.gunCooldown--;
     }
 
-    
+
     this.inAir = false;
     this.falling = false;
-    
-    
+
+
     if(this.vy < 10 && this.vy != 0){
         //this.falling = true;
         // console.log("in Air!")
@@ -574,10 +579,6 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         this.facingLeft ? this.play('crouchLeft') : this.play('crouchRight');
     }
 
-    if(this.input.down && !this.inAir && !this.falling){
-        this.crouching = true;
-    }else{this.crouching = false}
-
     if(this.input.down && ( this.inAir || this.falling ) ){
         this.play('pointedDown');
     }
@@ -585,11 +586,13 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         this.facingLeft ? this.play('pointedUpLeft') : this.play('pointedUpRight');
     }
 
-    if(this.input.left ){
+    // Player moving left
+    if(this.input.left && (!this.crouching && !this.aimingUp)){
         this.vx -= this.accel;
-        
+
     }
-    else if(this.input.right ){
+    // Player moving right
+    else if(this.input.right && (!this.crouching && !this.aimingUp)){
         this.vx += this.accel;
     }
     else{this.vx *= this.friction}
@@ -603,22 +606,22 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         } else {
             this.vy = -this.jumpVel
             this.jumping = true;
-            this.input.jump = false; 
+            this.input.jump = false;
             this.canJump = false;
 
         }
-        
+
     }
     else{
         this.vy += this.gravity;
     }
 
-    
-    
+
+
     var self = this;
     this.vx = clamp(this.vx, -this.maxVel.x, this.maxVel.x);
     this.vy = clamp(this.vy, -this.maxVel.y, this.maxVel.y);
-        
+
     this.pos.x = this.pos.x + (dt * this.vx);
     if(this.tileCollisionCheck(world, this.collideIndex) ){
         this.pos.x = this.prevX;
@@ -640,17 +643,17 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
                 // console.log(obj);
             }
         }
-        
-        
+
+
     })
 
     this.pos.y = this.pos.y + (dt * this.vy);
 
-    
+
 
     //one-way platforms------------------------------------------------------------------------------------
-    
-    
+
+
 
     if(!this.fallthru && this.prevY < this.pos.y){
         let gid = G.world.pixelToTileID(this.pos.x,(this.pos.y+this.height/2)-3)
@@ -661,9 +664,9 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         this.vy = 0;
         this.pos.y = this.prevY;
         }
-    } 
-    
-    
+    }
+
+
     //------------------------------------------------------------------------------------
 
     if(this.tileCollisionCheck(world, this.collideIndex) ){
@@ -675,7 +678,7 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
                 this.falling = false;
                 this.coyoteTime = this.maxCoyoteTime;
                 this.landedFX();
-                
+
             } else if (this.vy < 0) {
                 //console.log('ceiling');
             }
@@ -686,7 +689,7 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         this.vy = 0;
         this.pos.y = this.prevY;
     }
-    
+
 }
 
 Player.tileCollisionCheck = function tileCollisionCheck(world, tileCheck){
@@ -701,7 +704,7 @@ Player.tileCollisionCheck = function tileCollisionCheck(world, tileCheck){
         topTile =       Math.floor(this.rect.top / world.tileSize),
         bottomTile =    Math.floor(this.rect.bottom / world.tileSize)
         //collision = false;
-    
+
     for(let i = leftTile; i <=rightTile; i++){
         for(let j = topTile; j<= bottomTile; j++){
             let tile = world.getTileAtPosition(i, j)
@@ -732,14 +735,14 @@ Player.withinCheck = function tileCollisionCheck(world, tileCheck){
         topTile =       Math.floor(this.rect.top / world.tileSize),
         bottomTile =    Math.floor(this.rect.bottom / world.tileSize)
         //collision = false;
-    
+
     for(let i = leftTile; i <=rightTile; i++){
         for(let j = topTile; j<= bottomTile; j++){
             let tile = world.getTileAtPosition(i, j)
 
                 if(!tileCheck(tile)){return false};
             }
-            
+
         }
         return true;
     }
@@ -844,7 +847,7 @@ Player.init = function init(){
 Player.rectCollision = function(body) {
     let left    = body.x,
         right   = body.x + body.width,
-        top     = body.y, 
+        top     = body.y,
         bottom  = body.y + body.height
     //console.log(this.pos.x);
     return (
@@ -882,7 +885,7 @@ Player.hurt = function(params){
                 -this.vx+rndFloat(-60,60),
                 -this.vy+rndFloat(-60,60),
                 4,
-                2, 
+                2,
                 2,
                 20,
                 0
@@ -923,7 +926,7 @@ Player.hurt = function(params){
 
 Player.died = function(params){
     console.log('dead');
-    
+
     this.health = this.maxHealth;
     if (G.Records && G.Records.playerStats && G.Records.playerStats.totals) {
         G.Records.playerStats.totals.deaths++;
@@ -950,7 +953,7 @@ Player.pickup = function(params){
             rndFloat(-50,50),
             rndFloat(-50,50),
             12,
-            1, 
+            1,
             1,
             30,
             0
@@ -967,7 +970,7 @@ while(--particles){
         -this.vx/4+rndFloat(-20, 20),
         -this.vy/4+rndFloat(-20, 20),
         22,
-        3, 
+        3,
         3,
         40,
         2
