@@ -116,11 +116,11 @@ FlipSpider.prototype.flameThrower = function() {
             this.pos.y + this.gunOffset.y, // gunYOffset
             this.goingLeft?rndFloat(100,120):rndFloat(-100,-120),
             rndFloat(-20,20),
-            rndInt(26,29), // flippish
+            24,//rndInt(26,29), // flippish colours
             2, 
             2,
             20,
-            G.FIRE
+            G.POISONPARTICLE
         ) ;   
     }
 }  

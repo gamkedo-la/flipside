@@ -10,6 +10,7 @@ export const G = {
     PICKUP_DEATH       :           8,
     MUZZLESMOKE        :           9,
     FLIPSPACE_DEATH    :          10,
+    POISONPARTICLE     :          11,
 
 
     PARTICLE_X         :           1,
