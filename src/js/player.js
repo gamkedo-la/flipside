@@ -22,11 +22,11 @@ const Player = {
     nanitesMax: 3000,
 
 
-    collideIndex: 1009,
-    hazardTilesStartIndex: 113,
-    hazardTilesEndIndex: 120,
-    cloudTilesStartIndex: 977,
-    cloudTilesEndIndex: 992,
+    collideIndex: G.collideIndex,
+    hazardTilesStartIndex: G.hazardTilesStartIndex,
+    hazardTilesEndIndex: G.hazardTilesEndIndex,
+    cloudTilesStartIndex: G.cloudTilesStartIndex,
+    cloudTilesEndIndex: G.cloudTilesEndIndex,
 
     pos: {
         x: 0,
@@ -346,7 +346,7 @@ Player.render = function render(dt, world, worldFlipped, worldForeground){
         height: 45
     })
     let dX = this.pos.x-G.view.x, dY = this.rect.bottom-G.view.y
-    G.rb.line(dX, dY, dX, dY-3, 11);
+    //G.rb.line(dX, dY, dX, dY-3, 11);
 
 }
 

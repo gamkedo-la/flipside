@@ -34,6 +34,11 @@ export const G = {
 
 
     scenes: {},
+    collideIndex: 1009,
+    hazardTilesStartIndex: 113,
+    hazardTilesEndIndex: 120,
+    cloudTilesStartIndex: 977,
+    cloudTilesEndIndex: 992,
 
     healthBarLocation : {x: 4, y: 4},
     healthBarDimensions : {w: 50, h: 8},
@@ -45,6 +50,8 @@ export const G = {
 
     showMessageBox: false,
     messageCooldown: 0,
+
+    showMiniMap: false
 
 };
 

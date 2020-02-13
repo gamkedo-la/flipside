@@ -292,10 +292,12 @@ function update(dt){
         return;
     }
 
-    // if (G.showMessageBox){
-    //     Key.update();
-    //     return;
-    // }
+    if (G.showMiniMap){
+        //same behavior as pause...maybe handle some animation, like blinking of player location
+        //but game loop is skipped.
+        Key.update();
+        return;
+    }
 
     handleCamera(dt); //
 
@@ -332,23 +334,7 @@ function update(dt){
 }
 
 function drawPauseMenu() {
-    // const pauseStr = 'PAUSED';
-    // const spacing = 6;
-
-    // const pauseWidth = G.gameFont.characterWidth * pauseStr.length + (spacing * pauseStr.length);
-    // const pauseHeight = G.gameFont.characterHeight;
-
-    // const yOffset = 64;
-    // const pos = {x: (c.width / 2) - (pauseWidth / 2), y: (c.height / 2) - (pauseHeight / 2) - yOffset};
-
-    // ctx.fillStyle='rgba(0,0,0,0.6)';
-    // ctx.fillRect(pos.x, pos.y, pauseWidth, pauseHeight);
-
-    // G.gameFont.drawText({
-    //     textString: pauseStr,
-    //     pos,
-    //     spacing,
-    // });
+    
     ctx.drawImage(G.img.pauseScreen, 0,0);
 }
 
@@ -544,13 +530,54 @@ function render(dt){
 
     UIRender();
     //debugRender();
+    if(G.showMiniMap){
+        
+        //G.ctx.fillStyle = 'rgba(0,0,0,0.7)';
+        //G.ctx.fillRect(0,0,G.c.width, G.c.height);
+        let px = Math.round(G.player.pos.x / 8),
+            py = Math.round(G.player.pos.y / 8),
+            hw = Math.round(G.c.width /2),
+            hh = Math.round(G.c.height /2),
+            xStart = px-hw,
+            yStart = py-hh;
+
+        for(let x = 0; x <= G.c.width; x++){
+            for(let y = 0; y <= G.c.height; y++){
+                ctx.fillStyle = 'rgba(25,25,25, 0.7)';
+                ctx.fillRect(x,y,1,1);
+
+                // if(G.world.data[x + G.world.widthInTiles*y] >= G.collideIndex){
+                //     G.rb.pset(x,y, 4);
+                // }
+
+                let lx = x + xStart;
+                let ly = y + yStart;
+                
+                    //and position isn't outside the tilemap
+                    if(lx < G.world.widthInTiles && lx > 0 && ly > 0 && ly < G.world.heightInTiles){
+                        //optimize by pre-rendering tiny tilemap at 1px or just hardcoding a few tile types
+                        ctx.drawImage(
+                            G.img.tiles,
+                            G.world.data[lx + G.world.widthInTiles*ly]%G.tileSheetSize.height * 8 +3,
+                            Math.floor(G.world.data[lx + G.world.widthInTiles*ly]/G.tileSheetSize.width) * 8 +3,
+                            2,2,
+                            x,y, 1, 1
+                            );
+                    }       
+                
+            }
+        }
+        G.rb.fillRect(px-xStart-1, py-yStart-2, 3, 5, 9);
+    }
+
     G.rb.render(); 
     
     if (paused) {
         G.rb.ctx.clearRect(0,0,427,240);
         drawPauseMenu();
-        return;
     }
+
+   
 
     
     
@@ -584,6 +611,9 @@ function handleInput(dt){
     }
     if(Key.justReleased(Key.c)){
         G.showMessageBox = false;
+    }
+    if(Key.justReleased(Key.m)){
+        G.showMiniMap = !G.showMiniMap
     }
     if(Key.isDown(Key.z) || Key.isDown(Key.p) || Key.isDown(Key.SPACE)){
         player.input.jump = true;
