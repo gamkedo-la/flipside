@@ -3,6 +3,7 @@ import G from './G.js';
 let speaker;
 //var showMessageBox = true; //moved to G
 let showMessageText = 'text';
+let showMessageSpeaker = 0;
 
 export function UIRender(){
     let {healthBarDimensions, healthBarLocation, healthBarColor, naniteBarDimensions, naniteBarLocation, naniteBarColor} = G;
@@ -54,8 +55,9 @@ export function UIRender(){
         handleMessageBox();
     }  
 }
-export function showMessage(withText){//work in progress
+export function showMessage(withText, fromSpeaker = 0){//work in progress
         showMessageText = withText;
+        showMessageSpeaker = fromSpeaker;
         G.showMessageBox = true;
         G.messageCooldown = 180;
 }
@@ -75,11 +77,14 @@ export function handleMessageBox(){
         msgBoxX,
         msgBoxY
         );
-    G.ctx.drawImage(
-        G.img.face,
-        faceX,
-        faceY
-        );
+    if (showMessageSpeaker != 0){
+        G.ctx.drawImage(
+            G.img["face" + showMessageSpeaker],
+            faceX,
+            faceY
+            );
+    }
+    
     G.ctx.restore();
     G.gameFont.drawText({
         textString: showMessageText,

@@ -102,7 +102,9 @@ const images = [
     'msgBox',
     'msgBox3',
     'pauseScreen',
-    'face'
+    'face1',
+    'face2',
+    'face3'
 ]
 
 const maps = [

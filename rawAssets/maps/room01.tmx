@@ -1292,7 +1292,7 @@
   </object>
   <object id="204" type="messageBox" x="2072" y="1432" width="24" height="24">
    <properties>
-    <property name="speaker" type="int" value="1"/>
+    <property name="speaker" type="int" value="2"/>
     <property name="text" value="Hi Jordan!  I'm between two Girders!"/>
    </properties>
   </object>
