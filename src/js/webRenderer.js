@@ -1,9 +1,11 @@
 import GLTextureManager from './GLTextureManager.js';
 import vertexDataBuilder from './vertexDataBuilder.js';
 import indexDataBuilder from './indexDataBuilder.js';
+import textureCoordinateBuilder from './textureCoordinateBuilder.js';
 
 //Make some webGL stuff here
 const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage, bkgdImage) {
+    //------Set up some basic constants---------//
     const TILE_SIZE = 8;
     const webCanvas = document.createElement('canvas');
     webCanvas.width = widthInTiles * TILE_SIZE;
@@ -18,6 +20,7 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
     const tileDelta = new Float32Array(2).fill(0);
     const bkgdDelta = new Float32Array(2).fill(0);
     
+    //------Get WebGL---------//
     let gl = webCanvas.getContext('webgl');
     if(!gl) {
         gl = webCanvas.getContext('experimental-webgl');
@@ -27,10 +30,12 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
         console.error("WebGL not supported");
     }
 
+    //------Set up the textures we're going to use---------//
     const texManager = new GLTextureManager(gl);
     const tileTexture = texManager.setUpTexture(tileImage);
     const bkgdTexture = texManager.setUpTexture(bkgdImage);
     
+    //------Set up the geometry, one quad per tile---------//
     let vertexCount = 0;//not just vertsPerRow * numRows because we revisit some vertices and they need to be counted
     const vertexGenerator = new vertexDataBuilder();
     const tileVertexData = vertexGenerator.generateQuads(widthInTiles, heightInTiles, -1, 1);
@@ -44,6 +49,7 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
     const tileVertexBuffer = gl.createBuffer();
     const bkgdVertexBuffer = gl.createBuffer();
 
+    //------Set up index arrays so we draw elements---------//
     const indexBuilder = new indexDataBuilder();
     const tileIndexData = indexBuilder.generateIndices(widthInTiles * heightInTiles);
     vertexCount = tileIndexData.length;
@@ -52,61 +58,14 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
     const tileIndexBuffer = gl.createBuffer();
     const bkgdIndexBuffer = gl.createBuffer();
 
-    const generateTexCoords = function(tileData) {
-        for(let i = 0; i < tileData.length; i++) {
-            let GID = tileData[i];
-
-            if(GID < 0) {
-                GID = 1;
-            }
-
-            const x1 = (((GID) % sourceWidthInTiles) * w);
-            const x2 = (x1 + w);
-            const y1 = (Math.floor(GID / sourceWidthInTiles) * h);
-            const y2 = y1 + h ;
-
-                //first vertex (upper left)
-                tileTexCoords[8 * i + 0] = x1;
-                tileTexCoords[8 * i + 1] = y1;
-                //second vertex (lower left)
-                tileTexCoords[8 * i + 2] = x2;
-                tileTexCoords[8 * i + 3] = y1;
-                //third vertex (lower right)
-                tileTexCoords[8 * i + 4] = x1;
-                tileTexCoords[8 * i + 5] = y2;
-                //fourth vertex (upper right)
-                tileTexCoords[8 * i + 6] = x2;
-                tileTexCoords[8 * i + 7] = y2;
-        }
-    }
+    //------Set up texture coordinate arrays so we can sample textures---------//
+    const texCoordinator = new textureCoordinateBuilder();
 
     const tileTexCoords = new Float32Array(8 * widthInTiles * heightInTiles).fill(0);
     const tileTexCoordBuffer = gl.createBuffer();
 
-    const generateBkgdTexCoords = function() {
-        const numBKGDs = widthInBKGDs * heightInBKGDs;
-        for(let i = 0; i < numBKGDs; i++) {
-            const x1 = 0;
-            const x2 = 1;
-            const y1 = 0;
-            const y2 = 1;
-
-                //first vertex (upper left)
-                bkgdTexCoords[8 * i + 0] = x1;
-                bkgdTexCoords[8 * i + 1] = y1;
-                //second vertex (lower left)
-                bkgdTexCoords[8 * i + 2] = x2;
-                bkgdTexCoords[8 * i + 3] = y1;
-                //third vertex (lower right)
-                bkgdTexCoords[8 * i + 4] = x1;
-                bkgdTexCoords[8 * i + 5] = y2;
-                //fourth vertex (upper right)
-                bkgdTexCoords[8 * i + 6] = x2;
-                bkgdTexCoords[8 * i + 7] = y2;
-        }
-    }
     const bkgdTexCoords = new Float32Array(8 * widthInBKGDs * heightInBKGDs).fill(0);
-    generateBkgdTexCoords();
+    texCoordinator.generateBKDGCoords(bkgdTexCoords, widthInBKGDs * heightInBKGDs);
     const bkgdTexCoordBuffer = gl.createBuffer();
 
     const getVertexShaderString = function() {
@@ -202,7 +161,7 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
         const samplerUniformLocation = gl.getUniformLocation(program, 'sampler');
         gl.uniform1i(samplerUniformLocation, tileTexture);
 
-        generateTexCoords(tileData);
+        texCoordinator.generateTileCoords(sourceWidthInTiles, w, h, tileData, tileTexCoords);
 
         gl.bindBuffer(gl.ARRAY_BUFFER, tileTexCoordBuffer);
         gl.bufferData(gl.ARRAY_BUFFER, tileTexCoords, gl.STATIC_DRAW);
