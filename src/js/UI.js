@@ -4,6 +4,11 @@ let speaker;
 //var showMessageBox = true; //moved to G
 let showMessageText = 'text';
 let showMessageSpeaker = 0;
+let msgBoxForSpeakerLookUp = [1,//msgBox style for no speaker
+     2,//msgBox style for speaker 1
+      1,//msgBox style for speaker 2...
+       3
+    ];//example speaker1 is messageBox [1] which is 2
 
 export function UIRender(){
     let {healthBarDimensions, healthBarLocation, healthBarColor, naniteBarDimensions, naniteBarLocation, naniteBarColor} = G;
@@ -73,7 +78,7 @@ export function handleMessageBox(){
     G.ctx.save();
     G.ctx.globalAlpha = 0.7;
     G.ctx.drawImage(
-        G.img.msgBox,
+        G.img["msgBox" + msgBoxForSpeakerLookUp[showMessageSpeaker] ],
         msgBoxX,
         msgBoxY
         );
