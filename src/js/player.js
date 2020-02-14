@@ -553,11 +553,21 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         //this.falling = true;
         // console.log("in Air!")
         this.inAir = true;
-        this.facingLeft ? this.play('airLeft') : this.play('airRight');
+        if(this.hasPugGun){
+            this.facingLeft ? this.play('airLeft') : this.play('airRight');
+        }else{
+            this.facingLeft ? this.play('airLeftNoGun') : this.play('airRightNoGun');
+        }
+        
     }
     if(this.vy > 10){
         this.falling = true;
-        this.facingLeft ? this.play('fallingLeft') : this.play('fallingRight');
+        if(this.hasPugGun){
+            this.facingLeft ? this.play('fallingLeft') : this.play('fallingRight');
+        }else{
+            this.facingLeft ? this.play('fallingLeftNoGun') : this.play('fallingRightNoGun');
+        }
+        
         // console.log("Falling!!")
     }
     if(Math.abs(this.vx) < 0.9 && !this.inAir && !this.falling){
@@ -810,11 +820,11 @@ Player.init = function init(){
                 frameRate: 5
             },
             idleLeftNoGun: {
-                frames: '69..70',
+                frames: '68..69',
                 frameRate: 2
             },
             idleRightNoGun: {
-                frames: '71..72',
+                frames: '70..71',
                 frameRate: 2
             },
             walkRight: {
@@ -839,11 +849,23 @@ Player.init = function init(){
             fallingRight: {
                 frames: 30
             },
+            fallingLeftNoGun:{
+                frames: 67
+            },
+            fallingRightNoGun: {
+                frames: 66
+            },
             airLeft: {
                 frames: 29
             },
             airRight: {
                 frames: 28
+            },
+            airLeftNoGun: {
+                frames: 67
+            },
+            airRightNoGun: {
+                frames: 66
             },
             crouchLeft: {
                 frames: 33
