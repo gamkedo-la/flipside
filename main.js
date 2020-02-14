@@ -101,7 +101,10 @@ const images = [
     'flipSpace',
     'msgBox',
     'msgBox3',
-    'pauseScreen'
+    'pauseScreen',
+    'face1',
+    'face2',
+    'face3'
 ]
 
 const maps = [

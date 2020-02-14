@@ -28,7 +28,7 @@ MessageBox.prototype.update = function update(dt){
     }
 
     if(rectCollision(this.rect, G.player.rect)){
-        showMessage(this.message);
+        showMessage(this.message, this.speaker);
     }
 }
 
