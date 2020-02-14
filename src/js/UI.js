@@ -64,6 +64,8 @@ export function showMessage(withText){//work in progress
 export function handleMessageBox(){
     let msgBoxX = 30;
     let msgBoxY = 160;
+    let faceX = msgBoxX + 310;
+    let faceY= msgBoxY + 15;
     let msgBoxTextX = msgBoxX + 30;
     let msgBoxTextY = msgBoxY + 30;
     G.ctx.save();
@@ -73,8 +75,12 @@ export function handleMessageBox(){
         msgBoxX,
         msgBoxY
         );
+    G.ctx.drawImage(
+        G.img.face,
+        faceX,
+        faceY
+        );
     G.ctx.restore();
-
     G.gameFont.drawText({
         textString: showMessageText,
         pos: {x: msgBoxTextX, y: msgBoxTextY},
