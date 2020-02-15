@@ -1,5 +1,5 @@
 export const G = {
-
+    //particle types
     JETBUBBLE          :           1,
     CROSSBUBBLE        :           2,
     ENEMYDEATH         :           3,
@@ -12,7 +12,7 @@ export const G = {
     FLIPSPACE_DEATH    :          10,
     POISONPARTICLE     :          11,
 
-
+//particle buffer params
     PARTICLE_X         :           1,
     PARTICLE_Y         :           2,
     PARTICLE_VEL_X     :           3,
@@ -31,6 +31,11 @@ export const G = {
     FLIPSPACE_TIME     :            180,
 
     TRANSITION_DEATH    :           1,
+
+    //portrait enums
+    PORTRAIT_SIZE          :           50,
+    PORTRAIT_FLIPBAT    :           1,
+    PORTRAIT_INFO       :           2,
 
 
     scenes: {},

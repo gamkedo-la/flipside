@@ -103,6 +103,7 @@ const images = [
     'msgBox2',
     'msgBox3',
     'pauseScreen',
+    'portraits',
     'face1',
     'face2',
     'face3'
@@ -478,6 +479,11 @@ function render(dt){
     //render player;
     player.render();
 
+    G.world.entities.forEach(function(e){
+        if(inView(e.pos.x, e.pos.y)){
+            e.render();
+        }
+    });
     //render foreground tiles if any in front of player-----------------------------------
     for(let i = rx0; i < rx1; i++){
         for(let j = ry0; j < ry1; j++){
@@ -500,11 +506,7 @@ function render(dt){
         }//end column render
     }//end x loop
 
-    G.world.entities.forEach(function(e){
-        if(inView(e.pos.x, e.pos.y)){
-            e.render();
-        }
-    });
+    
 
     G.particles.draw();
     G.bullets.draw();

@@ -71,22 +71,25 @@ export function showMessage(withText, fromSpeaker = 0){//work in progress
 export function handleMessageBox(){
     let msgBoxX = 30;
     let msgBoxY = 160;
-    let faceX = msgBoxX + 310;
-    let faceY = msgBoxY + 15;
-    let msgBoxTextX = msgBoxX + 30;
-    let msgBoxTextY = msgBoxY + 30;
+    let faceX = msgBoxX + 10;
+    let faceY = msgBoxY + 10;
+    let msgBoxTextX = msgBoxX + 66;
+    let msgBoxTextY = msgBoxY + 10;
     G.ctx.save();
     G.ctx.globalAlpha = 0.7;
     G.ctx.drawImage(
-        G.img["msgBox" + msgBoxForSpeakerLookUp[showMessageSpeaker] ],
+        G.img.msgBox1,
         msgBoxX,
         msgBoxY
         );
     if (showMessageSpeaker != 0){
         G.ctx.drawImage(
-            G.img["face" + showMessageSpeaker],
+            G.img.portraits,
+            showMessageSpeaker * G.PORTRAIT_SIZE,
+            0, G.PORTRAIT_SIZE, G.PORTRAIT_SIZE,
             faceX,
-            faceY
+            faceY,
+            G.PORTRAIT_SIZE, G.PORTRAIT_SIZE
             );
     }
     

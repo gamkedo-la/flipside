@@ -3,6 +3,7 @@ import SpriteSheet from './spritesheet.js';
 import { rndFloat, rndInt, range } from './math.js';
 import { Transitioner } from './graphics.js';
 import { rectCollision, pointInRect } from './util.js';
+import { showMessage } from "./UI.js";
 import G from './G.js';
 
 const Player = {
@@ -611,7 +612,7 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
             this.facingLeft ? this.play('pointedUpLeft') : this.play('pointedUpRight');
         }
         else{
-            this.facingLeft ? this.play('pointedUpLeftNoGun') : this.play('pointedUpRightNoGun');
+            //this.facingLeft ? this.play('pointedUpLeftNoGun') : this.play('pointedUpRightNoGun');
         }
         
     }
@@ -947,6 +948,7 @@ Player.flipMosaic = function() {
 Player.hurt = function(params){
 
     if(!this.hurtCooldown){
+        this.play('pointedUpRightNoGun');
         let hurtParticleCount = 20;
         while(--hurtParticleCount){
             G.particles.spawn(
@@ -989,7 +991,9 @@ Player.hurt = function(params){
                 this.vy += this.hurtPush
             }
         }
-
+        if(params.message){
+            showMessage(params.message.text, params.message.speaker )
+        }
     }//end cooldown check
 
 }//end player.hurt
