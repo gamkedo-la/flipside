@@ -595,14 +595,25 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
     }else{this.canJump = true;}
 
     if(this.crouching){
-        this.facingLeft ? this.play('crouchLeft') : this.play('crouchRight');
+        if(this.hasPugGun){
+            this.facingLeft ? this.play('crouchLeft') : this.play('crouchRight');
+        }else{
+            this.facingLeft ? this.play('crouchLeftNoGun') : this.play('crouchRightNoGun');
+        }
+        
     }
 
     if(this.input.down && ( this.inAir || this.falling ) ){
         this.play('pointedDown');
     }
     if(this.input.up){
-        this.facingLeft ? this.play('pointedUpLeft') : this.play('pointedUpRight');
+        if(this.hasPugGun){
+            this.facingLeft ? this.play('pointedUpLeft') : this.play('pointedUpRight');
+        }
+        else{
+            this.facingLeft ? this.play('pointedUpLeftNoGun') : this.play('pointedUpRightNoGun');
+        }
+        
     }
 
     // Player moving left
