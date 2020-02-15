@@ -72,7 +72,7 @@ export function handleMessageBox(){
     let msgBoxX = 30;
     let msgBoxY = 160;
     let faceX = msgBoxX + 310;
-    let faceY= msgBoxY + 15;
+    let faceY = msgBoxY + 15;
     let msgBoxTextX = msgBoxX + 30;
     let msgBoxTextY = msgBoxY + 30;
     G.ctx.save();

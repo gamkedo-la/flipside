@@ -821,11 +821,11 @@ Player.init = function init(){
             },
             idleLeftNoGun: {
                 frames: '68..69',
-                frameRate: 2
+                frameRate: 1
             },
             idleRightNoGun: {
                 frames: '70..71',
-                frameRate: 2
+                frameRate: 1
             },
             walkRight: {
                 frames: '0..7',
@@ -837,11 +837,11 @@ Player.init = function init(){
             },
             walkRightNoGun: {
                 frames: '50..57',
-                frameRate: 16
+                frameRate: 12
             },
             walkLeftNoGun: {
                 frames: '58..65',
-                frameRate: 16
+                frameRate: 12
             },
             fallingLeft:{
                 frames: 31
@@ -878,6 +878,18 @@ Player.init = function init(){
             },
             pointedUpLeft: {
                 frames: 35
+            },
+            crouchLeftNoGun: {
+                frames: 73
+            },
+            crouchRightNoGun: {
+                frames: 72
+            },
+            pointedUpRightNoGun: {
+                frames: 74
+            },
+            pointedUpLeftNoGun: {
+                frames: 75
             },
             pointedDown: {
                 frames: 36
