@@ -6,10 +6,12 @@ import SpriteSheet from './spritesheet.js';
 import G from './G.js'
 
 // patrols the area near pos, back and forth horizontally
-const PIG = function PIG({pos, pathWidth=3, source={}}={}){
-    this.start = pos;
-    this.target = {x: pos.x + pathWidth*8, y: pos.y }
-    this.obj = source;
+const PIG = function PIG(obj){
+    this.start = {x: obj.x, y: obj.y};
+    this.pathWidth = obj.properties.find(function(e){return e.name == 'pathWidthInTiles'}).value;
+    this.target = {x: obj.x + this.pathWidth*8, y: obj.y }
+    
+    this.name = obj.name;
     
     this.speed = 20;
     //width and height are hitbox, not the sprite
@@ -26,7 +28,7 @@ const PIG = function PIG({pos, pathWidth=3, source={}}={}){
 
     //Tiled xy is upper-left of tileObject and can't be changed in-editor
     //modifying actual position here to compensate
-    this.pos = {x: pos.x, y: pos.y-6};
+    this.pos = {x: obj.x, y: obj.y-6};
         
     this.drawOffset = {x:4, y:-12}; 
 
@@ -77,7 +79,7 @@ PIG.prototype.update = function update(dt){
     var self = this;
     
     if(rectCollision(this.rect, G.player.rect)){
-        G.MSG.dispatch('hurt', {amount: 5});
+        G.MSG.dispatch('hurt', {amount: 5, message:{text: this.name, speaker:G.PORTRAIT_FLIPPIG}});
     }
 
     for(let i = 0; i < G.bullets.pool.length; i+= G.bullets.tuple){

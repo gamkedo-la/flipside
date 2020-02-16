@@ -36,6 +36,7 @@ export const G = {
     PORTRAIT_SIZE          :           50,
     PORTRAIT_FLIPBAT    :           1,
     PORTRAIT_INFO       :           2,
+    PORTRAIT_FLIPPIG    :           3,
 
 
     scenes: {},

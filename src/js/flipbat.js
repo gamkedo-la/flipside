@@ -75,7 +75,7 @@ FlipBat.prototype.update = function update(dt){
     var self = this;
    
     if(rectCollision(this.rect, G.player.rect)){
-        G.MSG.dispatch('hurt', {amount: 5, message:{text: "dasdfn oawier 123# na", speaker:G.PORTRAIT_FLIPBAT}});
+        G.MSG.dispatch('hurt', {amount: 5, message:{text: this.name, speaker:G.PORTRAIT_FLIPBAT}});
     }
 
     G.player.pos.x > this.pos.x ? this.play('idleRight') : this.play('idleLeft');

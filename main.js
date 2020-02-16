@@ -759,8 +759,8 @@ function processWorldObjects(objects){
                 results.push(new FlipBat(obj).init());
             break;
             case "flippig":
-                let pathWidth = obj.properties.find(function(e){return e.name == 'pathWidthInTiles'}).value;
-                results.push(new FlipPig({pos:{x: obj.x, y: obj.y}, pathWidth: pathWidth, source: obj}).init());
+                //let pathWidth = obj.properties.find(function(e){return e.name == 'pathWidthInTiles'}).value;
+                results.push(new FlipPig(obj).init());
             break;
             case "flipbird":
                 results.push(new FlipBird({pos:{x: obj.x, y: obj.y}}).init());
