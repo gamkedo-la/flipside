@@ -566,7 +566,7 @@ function render(dt){
                             G.img.tiles,
                             G.world.data[lx + G.world.widthInTiles*ly]%G.tileSheetSize.height * 8 +3,
                             Math.floor(G.world.data[lx + G.world.widthInTiles*ly]/G.tileSheetSize.width) * 8 +3,
-                            2,2,
+                            1,1,
                             x,y, 1, 1
                             );
                     }       
@@ -647,6 +647,9 @@ function handleInput(dt){
     }
     if(Key.justReleased(Key.c)){
         player.input.secondaryFire = false;
+    }
+    if(Key.justReleased(Key.ONE)){
+        player.hasPugGun = !player.hasPugGun;
     }
 
 

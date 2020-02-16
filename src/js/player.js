@@ -1052,5 +1052,22 @@ while(--particles){
 }
 }
 
+Player.gotPugGun = function() {
+    let particles = 10;
+    while(--particles){
+        G.particles.spawn(
+            this.pos.x,
+            this.pos.y,
+            -this.vx/4+rndFloat(-20, 20),
+            -this.vy/4+rndFloat(-20, 20),
+            22,
+            3,
+            3,
+            40,
+            G.BIGPOWERUP
+        )
+    }
+    }
+
 //----------------------------------------------------------------------------------
 export default Player

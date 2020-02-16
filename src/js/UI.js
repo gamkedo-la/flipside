@@ -76,7 +76,7 @@ export function handleMessageBox(){
     let msgBoxTextX = msgBoxX + 66;
     let msgBoxTextY = msgBoxY + 10;
     G.ctx.save();
-    G.ctx.globalAlpha = 0.7;
+    G.ctx.globalAlpha = 0.88;
     G.ctx.drawImage(
         G.img.msgBox1,
         msgBoxX,
