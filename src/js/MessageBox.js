@@ -1,6 +1,7 @@
 import { rndInt } from "./math.js";
 import { showMessage } from "./UI.js";
 import { rectCollision } from "./util.js";
+import G from "./G.js";
 
 
 const MessageBox = function MessageBox(obj){
@@ -27,7 +28,7 @@ MessageBox.prototype.update = function update(dt){
         bottom: this.pos.y + this.height
     }
 
-    if(rectCollision(this.rect, G.player.rect)){
+    if(rectCollision(this.rect, G.player.rect) && G.player.input.up){
         showMessage(this.message, this.speaker);
     }
 }
