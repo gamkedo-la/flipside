@@ -165,6 +165,28 @@
                  "width":0,
                  "x":384,
                  "y":2080
+                }, 
+                {
+                 "height":47.5,
+                 "id":167,
+                 "name":"exitDoor04",
+                 "properties":[
+                        {
+                         "name":"destinationMap",
+                         "type":"string",
+                         "value":"theArmory"
+                        }, 
+                        {
+                         "name":"destinationSpawn",
+                         "type":"string",
+                         "value":"enter01"
+                        }],
+                 "rotation":0,
+                 "type":"door",
+                 "visible":true,
+                 "width":31.4167,
+                 "x":368,
+                 "y":2056
                 }],
          "opacity":0.86,
          "type":"objectgroup",
@@ -242,28 +264,6 @@
                  "width":24,
                  "x":232,
                  "y":2136
-                }, 
-                {
-                 "height":47.5,
-                 "id":157,
-                 "name":"exitDoor04",
-                 "properties":[
-                        {
-                         "name":"destinationMap",
-                         "type":"string",
-                         "value":"theArmory"
-                        }, 
-                        {
-                         "name":"destinationSpawn",
-                         "type":"string",
-                         "value":"enter01"
-                        }],
-                 "rotation":0,
-                 "type":"door",
-                 "visible":true,
-                 "width":31.4167,
-                 "x":368,
-                 "y":2056
                 }, 
                 {
                  "height":24,
@@ -360,7 +360,7 @@
          "y":0
         }],
  "nextlayerid":11,
- "nextobjectid":167,
+ "nextobjectid":168,
  "orientation":"orthogonal",
  "properties":[
         {

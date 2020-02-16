@@ -109,21 +109,21 @@ const images = [
     'face3'
 ]
 
-const maps = [
-    //map loader assumes JSON files. TMX maps are are at /rawAssets/maps,  exported maps loaded
-    //from this array are located in /src/maps/*.json.
-    'room01',
-    'room02',
-    'room03',
-    'room04',
-    'room05',
-    'room06',
-    'room07',
-    'room08',
-    'room09',
-    'room10',
+// const maps = [
+//     //map loader assumes JSON files. TMX maps are are at /rawAssets/maps,  exported maps loaded
+//     //from this array are located in /src/maps/*.json.
+//     'room01',
+//     'room02',
+//     'room03',
+//     'room04',
+//     'room05',
+//     'room06',
+//     'room07',
+//     'room08',
+//     'room09',
+//     'room10',
 
-]
+// ]
  //sounds list!---------------------------------------------------------------
 const soundList = [
     { name: "test1", url:"./src/snd/test1.mp3" },
