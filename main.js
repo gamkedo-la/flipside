@@ -61,7 +61,7 @@ G.bullets = new ParticlePool(300);
 G.pickups = new ParticlePool(150);
 
 G.deadZone = {
-    x: 60, y: 60
+    x: 300, y: 100
 }
 
 G.tileSheetSize = { height: 16, width: 16 }
@@ -142,7 +142,7 @@ document.body.appendChild(G.rb.c);
 //for that tasty deepnight pixel mosaic overlay effect
 const mosaic = makeMosaic();
 mosaic.canvas.id = "mosaic";
-//document.body.appendChild(mosaic.canvas);
+document.body.appendChild(mosaic.canvas);
 G.mosaic = mosaic;
 
 // inverted mosaic bevel during flipspace

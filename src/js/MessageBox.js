@@ -1,4 +1,4 @@
-import { rndInt } from "./math.js";
+import { rndInt, rndFloat } from "./math.js";
 import { showMessage } from "./UI.js";
 import { rectCollision } from "./util.js";
 import G from "./G.js";
@@ -28,8 +28,26 @@ MessageBox.prototype.update = function update(dt){
         bottom: this.pos.y + this.height
     }
 
-    if(rectCollision(this.rect, G.player.rect) && G.player.input.up){
-        showMessage(this.message, this.speaker);
+    if(rectCollision(this.rect, G.player.rect)){
+        let particles = 3;
+        while(--particles){
+            G.particles.spawn(
+                rndInt(this.rect.left, this.rect.right),
+                this.rect.top,
+                0,
+                rndFloat(-20,-70),
+                21,
+                1,
+                2,
+                10,
+                0
+            )
+        }
+        
+        if(G.player.input.up){
+            showMessage(this.message, this.speaker);
+        }
+        
     }
 }
 
