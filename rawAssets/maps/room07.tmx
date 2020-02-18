@@ -344,7 +344,7 @@
   </object>
   <object id="56" name="Door To Hub" type="door" x="69.9926" y="636.706" width="31.4167" height="47.5">
    <properties>
-    <property name="destinationMap" value="room2"/>
+    <property name="destinationMap" value="room02"/>
     <property name="destinationSpawn" value="Exit From Level 7"/>
    </properties>
   </object>

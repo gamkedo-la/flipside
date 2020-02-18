@@ -174,7 +174,7 @@
                         {
                          "name":"destinationMap",
                          "type":"string",
-                         "value":"room7"
+                         "value":"room07"
                         }, 
                         {
                          "name":"destinationSpawn",

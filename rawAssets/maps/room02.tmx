@@ -952,7 +952,7 @@
   </object>
   <object id="167" name="Door To Level 7" type="door" x="176.333" y="2256.67" width="31.4167" height="47.5">
    <properties>
-    <property name="destinationMap" value="room7"/>
+    <property name="destinationMap" value="room07"/>
     <property name="destinationSpawn" value="enter01"/>
    </properties>
   </object>
