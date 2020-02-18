@@ -690,6 +690,9 @@ function handleCamera(dt){
 }
 
 function loadMap({map, spawnPoint}){
+    
+    console.log("Loading map: " + map);
+    
     let { loader, currentMap, world, worldFlipped, worldForeground } = G;
 
     currentMap = map;

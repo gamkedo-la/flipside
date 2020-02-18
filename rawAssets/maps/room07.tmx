@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="2019.12.11" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="100" height="100" tilewidth="8" tileheight="8" infinite="0" backgroundcolor="#28283c" nextlayerid="7" nextobjectid="55">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="100" height="100" tilewidth="8" tileheight="8" infinite="0" backgroundcolor="#28283c" nextlayerid="7" nextobjectid="57">
  <editorsettings>
   <export target="../../src/maps/room07.json" format="json"/>
  </editorsettings>
@@ -339,6 +339,15 @@
    </properties>
   </object>
   <object id="33" type="lightningBox" x="566.374" y="659.02" width="74.4733" height="3.32826"/>
+  <object id="55" name="enter01" type="spawnPoint" x="115.51" y="683.745">
+   <point/>
+  </object>
+  <object id="56" name="Door To Hub" type="door" x="69.9926" y="636.706" width="31.4167" height="47.5">
+   <properties>
+    <property name="destinationMap" value="room2"/>
+    <property name="destinationSpawn" value="Exit From Level 7"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="6" name="game objects">
   <object id="48" name="NaniteCluster" type="nanites" gid="7" x="301.333" y="441.333" width="8" height="8">

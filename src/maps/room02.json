@@ -1,5 +1,5 @@
 { "backgroundcolor":"#28283c",
- "compressionlevel":-1,
+ "compressionlevel":0,
  "editorsettings":
     {
      "export":
@@ -169,6 +169,28 @@
                 {
                  "height":47.5,
                  "id":167,
+                 "name":"Door To Level 7",
+                 "properties":[
+                        {
+                         "name":"destinationMap",
+                         "type":"string",
+                         "value":"room7"
+                        }, 
+                        {
+                         "name":"destinationSpawn",
+                         "type":"string",
+                         "value":"enter01"
+                        }],
+                 "rotation":0,
+                 "type":"door",
+                 "visible":true,
+                 "width":31.4167,
+                 "x":176.333333333333,
+                 "y":2256.66666666667
+                }, 
+                {
+                 "height":47.5,
+                 "id":168,
                  "name":"exitDoor04",
                  "properties":[
                         {
@@ -185,8 +207,20 @@
                  "type":"door",
                  "visible":true,
                  "width":31.4167,
-                 "x":368,
-                 "y":2056
+                 "x":370.29165,
+                 "y":2058.58333333333
+                }, 
+                {
+                 "height":0,
+                 "id":169,
+                 "name":"Exit From Level 7",
+                 "point":true,
+                 "rotation":0,
+                 "type":"spawnPoint",
+                 "visible":true,
+                 "width":0,
+                 "x":220,
+                 "y":2302.66666666667
                 }],
          "opacity":0.86,
          "type":"objectgroup",
@@ -234,7 +268,7 @@
                         {
                          "name":"text",
                          "type":"string",
-                         "value":"This door leads nowhere.\nBut it could lead to a level you designed!\nopen up room02 and wire it up!"
+                         "value":"Relaxation Zone - Zero Danger Ahead"
                         }],
                  "rotation":0,
                  "type":"messageBox",
@@ -360,7 +394,7 @@
          "y":0
         }],
  "nextlayerid":11,
- "nextobjectid":168,
+ "nextobjectid":170,
  "orientation":"orthogonal",
  "properties":[
         {
@@ -369,7 +403,7 @@
          "value":"labCaveWall"
         }],
  "renderorder":"right-down",
- "tiledversion":"1.3.2",
+ "tiledversion":"1.3.1",
  "tileheight":8,
  "tilesets":[
         {
