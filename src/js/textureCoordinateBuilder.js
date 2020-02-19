@@ -35,20 +35,43 @@ const textureCoordinateBuilder = function textureCoordinateBuilder() {
             const y1 = (Math.floor(GID / sourceWidthInTiles) * h);
             const y2 = y1 + h ;
 
-                //first vertex (upper left)
-                tileTexCoords[8 * i + 0] = x1;
-                tileTexCoords[8 * i + 1] = y1;
-                //second vertex (lower left)
-                tileTexCoords[8 * i + 2] = x2;
-                tileTexCoords[8 * i + 3] = y1;
-                //third vertex (lower right)
-                tileTexCoords[8 * i + 4] = x1;
-                tileTexCoords[8 * i + 5] = y2;
-                //fourth vertex (upper right)
-                tileTexCoords[8 * i + 6] = x2;
-                tileTexCoords[8 * i + 7] = y2;
+            //first vertex (upper left)
+            tileTexCoords[8 * i + 0] = x1;
+            tileTexCoords[8 * i + 1] = y1;
+            //second vertex (lower left)
+            tileTexCoords[8 * i + 2] = x2;
+            tileTexCoords[8 * i + 3] = y1;
+            //third vertex (lower right)
+            tileTexCoords[8 * i + 4] = x1;
+            tileTexCoords[8 * i + 5] = y2;
+            //fourth vertex (upper right)
+            tileTexCoords[8 * i + 6] = x2;
+            tileTexCoords[8 * i + 7] = y2;
         }
     };
+
+    this.generateFlipCoords = function(sourceWidthInTiles = 60, sourceHightInTiles = 36, fbTexCoords) {
+        const numQuads = sourceWidthInTiles * sourceHightInTiles;
+        for(let i = 0; i < numQuads; i++) {
+            const x1 = (i % sourceWidthInTiles) * (1/sourceWidthInTiles);
+            const x2 = x1 + 1/sourceWidthInTiles;
+            const y1 = 1 - Math.floor(i / sourceWidthInTiles) * (1/sourceHightInTiles);
+            const y2 = y1 - (1/sourceHightInTiles);
+
+            //first vertex (upper left)
+            fbTexCoords[8 * i + 0] = x1;
+            fbTexCoords[8 * i + 1] = y1;
+            //second vertex (lower left)
+            fbTexCoords[8 * i + 2] = x2;
+            fbTexCoords[8 * i + 3] = y1;
+            //third vertex (lower right)
+            fbTexCoords[8 * i + 4] = x1;
+            fbTexCoords[8 * i + 5] = y2;
+            //fourth vertex (upper right)
+            fbTexCoords[8 * i + 6] = x2;
+            fbTexCoords[8 * i + 7] = y2;
+        }
+    }
     
     return this;
 }

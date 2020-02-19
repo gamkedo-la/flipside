@@ -56,9 +56,13 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
     const tileIndexData = indexBuilder.generateIndices(widthInTiles * heightInTiles);
     vertexCount = tileIndexData.length;
     const bkgdIndexData = indexBuilder.generateIndices(widthInBKGDs * heightInBKGDs);
+    const flipColorData = new Float32Array(3 * vertexCount).fill(0.0);//not index data, holds color data for each vertex
+    const flipIndexData = new Uint16Array(tileIndexData.length).fill(0);
 
     const tileIndexBuffer = gl.createBuffer();
     const bkgdIndexBuffer = gl.createBuffer();
+    const flipColorBuffer = gl.createBuffer();//not a buffer for index data
+    const flipIndexBuffer = gl.createBuffer();
 
     //------Set up texture coordinate arrays so we can sample textures---------//
     const texCoordinator = new textureCoordinateBuilder();
@@ -69,6 +73,10 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
     const bkgdTexCoords = new Float32Array(8 * widthInBKGDs * heightInBKGDs).fill(0);
     texCoordinator.generateBKDGCoords(bkgdTexCoords, widthInBKGDs * heightInBKGDs);
     const bkgdTexCoordBuffer = gl.createBuffer();
+
+    const fbTexCoords = new Float32Array(8 * widthInTiles * heightInTiles).fill(0);
+    texCoordinator.generateFlipCoords(widthInTiles, heightInTiles, fbTexCoords);
+    const fbTexCoordBuffer = gl.createBuffer();
 
     //------Build the Vertex and Fragment Shaders--------//
     const getVertexShaderString = function() {
@@ -107,36 +115,23 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
     }
 
     const getFlipVertShaderString = function() {
-        //This is the vertex shader used for the background and tile layers
+        //This is the vertex shader used for the background and tile layers 
 
         return `
         precision mediump float;
 
         attribute vec2 vertPosition;
-
+        attribute vec3 flipColor;
         attribute vec2 fbCoords;
-        attribute vec2 lCoords;
-        attribute vec2 tCoords;
-        attribute vec2 rCoords;
-        attribute vec2 bCoords;
 
+        varying vec3 overlayColor;
         varying vec2 frameBuffCoords;
-        varying vec2 leftCoords;
-        varying vec2 topCoords;
-        varying vec2 rightCoords;
-        varying vec2 bottomCoords;
-
-        uniform vec2 delta;
-
-        varying vec2 vTextureCoord;
 
         void main() {
-            gl_Position = vec4(vertPosition.x + delta.x, vertPosition.y + delta.y, 0.0, 1.0);
+            gl_Position = vec4(vertPosition.x, vertPosition.y, 0.0, 1.0);
+
             frameBuffCoords = fbCoords;
-            leftCoords = lCoords;
-            topCoords = tCoords;
-            rightCoords = rCoords;
-            bottomCoords = bCoords;
+            overlayColor = flipColor;
         }
         `;
     }
@@ -147,36 +142,33 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
         return `
         precision mediump float;
 
-        varying vec2 frameBuffCoords;
-        varying vec2 leftCoords;
-        varying vec2 topCoords;
-        varying vec2 rightCoords;
-        varying vec2 bottomCoords;
-
         uniform sampler2D frameBuffSampler;
-        uniform sampler2D leftSampler;
-        uniform sampler2D topSampler;
-        uniform sampler2D rightSampler;
-        uniform sampler2D bottomSampler;
 
-        uniform vec4 overlayColor;
+        varying vec3 overlayColor;
+        varying vec2 frameBuffCoords;
 
         void main(void) {
-//          1-2*(1-baseLayer)*(1-topLayer);//this is algorithm for "overlay" blending
-
             vec4 baseColor = texture2D(frameBuffSampler, frameBuffCoords);
-            baseColor = 1.0 - 2.0 * (1.0 - baseColor) * (1.0 - overlayColor);
 
-            vec4 lColor = texture2D(leftSampler, leftCoords);
-            vec4 tColor = texture2D(topSampler, topCoords);
-            vec4 rColor = texture2D(rightSampler, rightCoords);
-            vec4 bColor = texture2D(bottomSampler, bottomCoords);
-
-            vec4 flipColor = max(lColor, tColor);
-            flipColor = max(flipColor, rColor);
-            flipColor = max(flipColor, bColor);
-
-            gl_FragColor = max(flipColor * flipColor.a, baseColor * (1.0 - flipColor.a));
+            if(baseColor.r < 0.5) {
+                gl_FragColor.r = 2.0 * baseColor.r * overlayColor.r;
+            } else {
+                gl_FragColor.r = 1.0 - 2.0 * (1.0 - baseColor.r) * (1.0 - overlayColor.r);
+            }
+            
+            if(baseColor.g < 0.5) {
+                gl_FragColor.g = 2.0 * baseColor.g * overlayColor.g;
+            } else {
+                gl_FragColor.g = 1.0 - 2.0 * (1.0 - baseColor.g) * (1.0 - overlayColor.g);
+            }
+            
+            if(baseColor.b < 0.5) {
+                gl_FragColor.b = 2.0 * baseColor.b * overlayColor.b;
+            } else {
+                gl_FragColor.b = 1.0 - 2.0 * (1.0 - baseColor.b) * (1.0 - overlayColor.b);
+            }
+            
+            gl_FragColor.a = 1.0;// = vec4(2.0 * baseColor.rgb * overlayColor, 1.0);
         }
         `;
     }
@@ -216,6 +208,46 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
 
     const tileProgram = getWebGLProgram(getVertexShaderString(), getFragmentShaderString());
     const flipProgram = getWebGLProgram(getFlipVertShaderString(), getFlipFragShaderString());
+
+    //------Set up WebGL to use the uniforms and attributes necessary to draw the background tiles--------//
+    const setUpBkgdAttribs = function() {
+        gl.bindBuffer(gl.ARRAY_BUFFER, bkgdVertexBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, bkgdVertexData, gl.STATIC_DRAW);
+
+        const positionAttribLocation = gl.getAttribLocation(tileProgram, 'vertPosition');
+        gl.vertexAttribPointer(
+            positionAttribLocation, //Attribute location
+            2, //number of elements per attribute
+            gl.FLOAT, //Type of the elements
+            gl.FALSE, //Is data normalized?
+            0 * Float32Array.BYTES_PER_ELEMENT, //Stride
+            0 //Offset into buffer for first element of this type
+        );
+
+        gl.enableVertexAttribArray(positionAttribLocation);
+        
+        const depthUniformLocation = gl.getUniformLocation(tileProgram, 'delta');
+        gl.uniform2fv(depthUniformLocation, bkgdDelta);
+
+        // Tell the shader we bound the texture to texture unit 1
+        const bkgdSamplerUniformLocation = gl.getUniformLocation(tileProgram, 'sampler');
+        gl.uniform1i(bkgdSamplerUniformLocation, bkgdTexture);
+
+        gl.bindBuffer(gl.ARRAY_BUFFER, bkgdTexCoordBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, bkgdTexCoords, gl.STATIC_DRAW);
+
+        const texCoordAttribLocation = gl.getAttribLocation(tileProgram, 'aTextureCoord');
+        gl.vertexAttribPointer(
+            texCoordAttribLocation, //Attribute location
+            2, //number of elements per attribute
+            gl.FLOAT, //Type of the elements
+            gl.FALSE, //Is data normalized?
+            0 * Float32Array.BYTES_PER_ELEMENT, //Stride
+            0 //Offset into buffer for first element of this type
+        );
+
+        gl.enableVertexAttribArray(texCoordAttribLocation);
+    }
 
     //------Set up WebGL to use the uniforms and attributes necessary to draw the main tiles--------//
     const setUpTileAttribs = function(tileData, deltaX, deltaY) {
@@ -260,13 +292,12 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
 
         gl.enableVertexAttribArray(texCoordAttribLocation);
     }
+    //------Set up WebGL to use the uniforms and attributes necessary to draw flipspace--------//
+    const setUpFlipAttribs = function() {
+        gl.bindBuffer(gl.ARRAY_BUFFER, tileVertexBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, tileVertexData, gl.STATIC_DRAW);
 
-    //------Set up WebGL to use the uniforms and attributes necessary to draw the background tiles--------//
-    const setUpBkgdAttribs = function() {
-        gl.bindBuffer(gl.ARRAY_BUFFER, bkgdVertexBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, bkgdVertexData, gl.STATIC_DRAW);
-
-        const positionAttribLocation = gl.getAttribLocation(tileProgram, 'vertPosition');
+        const positionAttribLocation = gl.getAttribLocation(flipProgram, 'vertPosition');
         gl.vertexAttribPointer(
             positionAttribLocation, //Attribute location
             2, //number of elements per attribute
@@ -277,20 +308,17 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
         );
 
         gl.enableVertexAttribArray(positionAttribLocation);
-        
-        const depthUniformLocation = gl.getUniformLocation(tileProgram, 'delta');
-        gl.uniform2fv(depthUniformLocation, bkgdDelta);
 
-        // Tell the shader we bound the texture to texture unit 1
-        const bkgdSamplerUniformLocation = gl.getUniformLocation(tileProgram, 'sampler');
-        gl.uniform1i(bkgdSamplerUniformLocation, bkgdTexture);
+        // Tell the shader we bound the texture to texture unit 0
+        const samplerUniformLocation = gl.getUniformLocation(flipProgram, 'frameBuffSampler');
+        gl.uniform1i(samplerUniformLocation, frameBuffTexIndex);
 
-        gl.bindBuffer(gl.ARRAY_BUFFER, bkgdTexCoordBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, bkgdTexCoords, gl.STATIC_DRAW);
+        gl.bindBuffer(gl.ARRAY_BUFFER, fbTexCoordBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, fbTexCoords, gl.STATIC_DRAW);
 
-        const texCoordAttribLocation = gl.getAttribLocation(tileProgram, 'aTextureCoord');
+        const fbCoordAttribLocation = gl.getAttribLocation(flipProgram, 'fbCoords');
         gl.vertexAttribPointer(
-            texCoordAttribLocation, //Attribute location
+            fbCoordAttribLocation, //Attribute location
             2, //number of elements per attribute
             gl.FLOAT, //Type of the elements
             gl.FALSE, //Is data normalized?
@@ -298,7 +326,22 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
             0 //Offset into buffer for first element of this type
         );
 
-        gl.enableVertexAttribArray(texCoordAttribLocation);
+        gl.enableVertexAttribArray(fbCoordAttribLocation);
+
+        gl.bindBuffer(gl.ARRAY_BUFFER, flipColorBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, flipColorData, gl.STATIC_DRAW);
+
+        const flipColorAttribLocation = gl.getAttribLocation(flipProgram, 'flipColor');
+        gl.vertexAttribPointer(
+            flipColorAttribLocation, //Attribute location
+            3, //number of elements per attribute
+            gl.FLOAT, //Type of the elements
+            gl.FALSE, //Is data normalized?
+            0 * Float32Array.BYTES_PER_ELEMENT, //Stride
+            0 //Offset into buffer for first element of this type
+        );
+
+        gl.enableVertexAttribArray(flipColorAttribLocation);
     }
 
     const drawBackground = function(deltaX, deltaY) {
@@ -320,8 +363,6 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, tileIndexData, gl.STATIC_DRAW);
 
         setUpTileAttribs(tileData, deltaX, deltaY);
-
-        frameBuffTexIndex = texManager.copyFrameBuffer(frameBuffTex, frameBuffTexIndex);
         
         gl.drawElements(
             gl.TRIANGLES, //what to draw triangle strip? triangle fan?
@@ -329,9 +370,27 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
             gl.UNSIGNED_SHORT, //what kind of data are we drawing
             0 //how far into the element array buffer are we going to start drawing?
         );
+
+        frameBuffTexIndex = texManager.copyFrameBuffer(frameBuffTex, frameBuffTexIndex);
     }
 
-    this.getBackgroundImageCanvas = function(tileData, deltaX, deltaY) {
+    const drawFlipspace = function(flipIndices) {
+        const drawCount = vertexGenerator.generateFlipColors(flipIndices, flipColorData, flipIndexData);
+
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, flipIndexBuffer);
+        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, flipIndexData, gl.STATIC_DRAW);
+
+        setUpFlipAttribs();
+
+        gl.drawElements(
+            gl.TRIANGLES, //what to draw triangle strip? triangle fan?
+            drawCount, //how many vertexes are we drawing?
+            gl.UNSIGNED_SHORT, //what kind of data are we drawing
+            0 //how far into the element array buffer are we going to start drawing?
+        );
+    }
+
+    this.getBackgroundImageCanvas = function(tileData, flipIndices, deltaX, deltaY) {
         //Prepare to draw this frame
         gl.clearColor(0.0, 0.0, 0.0, 1.0);//full black
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
@@ -348,7 +407,10 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
     
         drawTiles(tileData, deltaX, deltaY);
 
+        //Prepare to draw flipspace
+        gl.useProgram(flipProgram);
 
+        drawFlipspace(flipIndices);
 
         return webCanvas;
     }

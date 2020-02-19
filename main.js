@@ -383,15 +383,23 @@ function render(dt){
 
         if(USE_GL_RENDERER) {
             const GIDs = [];
+            const flips = [];
+            let tileIndex = 0;
             for(let k = ry0; k < ry0 + 36; k++) {
                 for(let l = rx0; l < rx0 + 60; l++) {
                     const flatIndex = k * G.world.widthInTiles + l;
-                    GIDs.push(G.world.data[flatIndex]-1);
+                    GIDs.push(G.world.data[flatIndex] - 1);
+
+                    if(G.worldFlipped.data[flatIndex] >= 3) {
+                        flips.push(tileIndex);
+                    }
+
+                    tileIndex++;
                 }
             }
             const deltaX = view.x % G.world.tileSize;
             const deltaY = view.y % G.world.tileSize;
-            const backgroundCanvas = G.GLRenderer.getBackgroundImageCanvas(GIDs, deltaX, deltaY);
+            const backgroundCanvas = G.GLRenderer.getBackgroundImageCanvas(GIDs, flips, deltaX, deltaY);
             //the view.x/y % tileSize accounts for sub-tile scrolling
             ctx.drawImage(backgroundCanvas, -(tilePad * G.world.tileSize), -(tilePad * G.world.tileSize));
         }
@@ -412,25 +420,27 @@ function render(dt){
             //if not equal, random chance of 'healing' back to loaded map state.
 
             //an enemy has added some flipspace, begin reverting back           
-                if(G.worldFlipped.data[flatIndex] > loader.tileMaps[G.currentMap].layers[1].data[flatIndex]){
-                    if(coinFlip())G.worldFlipped.data[flatIndex]--;
-                }
+            if(G.worldFlipped.data[flatIndex] > loader.tileMaps[G.currentMap].layers[1].data[flatIndex]){
+                if(coinFlip())G.worldFlipped.data[flatIndex]--;
+            }
             //we've removed flipspace with weapons, begin reverting back    
-                if(G.worldFlipped.data[flatIndex] < loader.tileMaps[G.currentMap].layers[1].data[flatIndex]){
-                    if(coinFlip())G.worldFlipped.data[flatIndex]++;
-                }
+            if(G.worldFlipped.data[flatIndex] < loader.tileMaps[G.currentMap].layers[1].data[flatIndex]){
+                if(coinFlip())G.worldFlipped.data[flatIndex]++;
+            }
             
             
             //flipped area affect, purple/pink stuff----------------------------------------
             if(G.worldFlipped.data[flatIndex] >= 3){
 
-                ctx.drawImage(
-                    Math.random()>0.5? G.img.tiles26: G.img.tiles27,
-                    gid%G.tileSheetSize.height * 8,
-                    Math.floor(gid/G.tileSheetSize.width) * 8,
-                    8,8,
-                    drawX, drawY, 8, 8
+                if(!USE_GL_RENDERER) {
+                    ctx.drawImage(
+                        Math.random()>0.5? G.img.tiles26: G.img.tiles27,
+                        gid%G.tileSheetSize.height * 8,
+                        Math.floor(gid/G.tileSheetSize.width) * 8,
+                        8,8,
+                        drawX, drawY, 8, 8
                     );
+                }
 
                 let Ngid = G.worldFlipped.data[flatIndex - G.world.widthInTiles],
                     Sgid = G.worldFlipped.data[flatIndex + G.world.widthInTiles],
