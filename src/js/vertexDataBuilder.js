@@ -28,7 +28,7 @@ const vertexDataBuilder = function vertexDataBuilder() {
 
     const color1 = [232.0/255.0, 106.0/255.0, 115.0/255.0];
     const color2 = [188.0/255.0, 74.0/255.0, 155.0/255.0];
-    this.generateFlipColors = function(quads, flipColorArray, indexArray) {
+this.generateFlipColors = function(quads, flipColorArray, indexArray) {
         for(let i = 0; i < quads.length; i++) {
             //0, 3, 1, 0, 2, 3
             indexArray[6 * i + 0] = 4 * quads[i] + 0;

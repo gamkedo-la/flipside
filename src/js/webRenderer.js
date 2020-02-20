@@ -56,7 +56,7 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
     const tileIndexData = indexBuilder.generateIndices(widthInTiles * heightInTiles);
     vertexCount = tileIndexData.length;
     const bkgdIndexData = indexBuilder.generateIndices(widthInBKGDs * heightInBKGDs);
-    const flipColorData = new Float32Array(3 * vertexCount).fill(0.0);//not index data, holds color data for each vertex
+    const flipColorData = new Float32Array(3 * tileVertexData.length).fill(0.0);//not index data, holds color data for each vertex
     const flipIndexData = new Uint16Array(tileIndexData.length).fill(0);
 
     const tileIndexBuffer = gl.createBuffer();
@@ -85,9 +85,10 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
         return `
         precision mediump float;
 
+        uniform vec2 delta;
+
         attribute vec2 vertPosition;
         attribute vec2 aTextureCoord;
-        uniform vec2 delta;
 
         varying vec2 vTextureCoord;
 
@@ -120,6 +121,8 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
         return `
         precision mediump float;
 
+        uniform vec2 delta;
+
         attribute vec2 vertPosition;
         attribute vec3 flipColor;
         attribute vec2 fbCoords;
@@ -128,9 +131,9 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
         varying vec2 frameBuffCoords;
 
         void main() {
-            gl_Position = vec4(vertPosition.x, vertPosition.y, 0.0, 1.0);
+            gl_Position = vec4(vertPosition.x + delta.x, vertPosition.y + delta.y, 0.0, 1.0);
 
-            frameBuffCoords = fbCoords;
+            frameBuffCoords = vec2(fbCoords.x + delta.x / 2.0, fbCoords.y + delta.y / 2.0);
             overlayColor = flipColor;
         }
         `;
@@ -268,8 +271,8 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
 
         tileDelta[0] = -(Math.round(deltaX)) / (4 * widthInTiles);
         tileDelta[1] = Math.round(deltaY) / (4 * heightInTiles);
-        const depthUniformLocation = gl.getUniformLocation(tileProgram, 'delta');
-        gl.uniform2fv(depthUniformLocation, tileDelta);
+        const deltaUniformLocation = gl.getUniformLocation(tileProgram, 'delta');
+        gl.uniform2fv(deltaUniformLocation, tileDelta);
 
         // Tell the shader we bound the texture to texture unit 0
         const samplerUniformLocation = gl.getUniformLocation(tileProgram, 'sampler');
@@ -308,6 +311,9 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
         );
 
         gl.enableVertexAttribArray(positionAttribLocation);
+
+        const deltaUniformLocation = gl.getUniformLocation(flipProgram, 'delta');
+        gl.uniform2fv(deltaUniformLocation, tileDelta);
 
         // Tell the shader we bound the texture to texture unit 0
         const samplerUniformLocation = gl.getUniformLocation(flipProgram, 'frameBuffSampler');
