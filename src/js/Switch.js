@@ -5,6 +5,9 @@ import Player from "./player.js";
 
 const Switch = function Switch(obj){
     this.attachedBarricade = obj.properties.find(function(e){return e.name == 'attachedBarricade'}).value;
+    if (!this.attachedBarricade) {
+        console.log("Warning: a Switch is missing an attached Barricade! Check your Tiled object data.");
+    }
     this.name = obj.name;
     this.type = obj.type;
     this.open = false;
@@ -31,9 +34,11 @@ Switch.prototype.update = function update(dt){
 
     this.active = this.withinCheck(G.worldFlipped, function(tile){return tile != 3});
     var barricade = G.world.entities.find(e => e.name == this.attachedBarricade);
-    if(this.active){
-        barricade.open = true;
-    }else barricade.open = false;
+    if (barricade) {
+        if(this.active){
+            barricade.open = true;
+        }else barricade.open = false;
+    }
 
 }
 
