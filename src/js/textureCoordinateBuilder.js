@@ -1,3 +1,5 @@
+import { rndInt } from "./math.js";
+
 //textureCoordinateBuilder
 const textureCoordinateBuilder = function textureCoordinateBuilder() {
     this.generateBKDGCoords = function(coordArray, numQuads) {
@@ -10,13 +12,13 @@ const textureCoordinateBuilder = function textureCoordinateBuilder() {
             //first vertex (upper left)
             coordArray[8 * i + 0] = x1;
             coordArray[8 * i + 1] = y1;
-            //second vertex (lower left)
+            //second vertex (upper right)
             coordArray[8 * i + 2] = x2;
             coordArray[8 * i + 3] = y1;
-            //third vertex (lower right)
+            //third vertex (lower left)
             coordArray[8 * i + 4] = x1;
             coordArray[8 * i + 5] = y2;
-            //fourth vertex (upper right)
+            //fourth vertex (lower right)
             coordArray[8 * i + 6] = x2;
             coordArray[8 * i + 7] = y2;
         }
@@ -61,15 +63,102 @@ const textureCoordinateBuilder = function textureCoordinateBuilder() {
             //first vertex (upper left)
             fbTexCoords[8 * i + 0] = x1;
             fbTexCoords[8 * i + 1] = y1;
-            //second vertex (lower left)
+            //second vertex (upper right)
             fbTexCoords[8 * i + 2] = x2;
             fbTexCoords[8 * i + 3] = y1;
-            //third vertex (lower right)
+            //third vertex (lower left)
             fbTexCoords[8 * i + 4] = x1;
             fbTexCoords[8 * i + 5] = y2;
-            //fourth vertex (upper right)
+            //fourth vertex (lower right)
             fbTexCoords[8 * i + 6] = x2;
             fbTexCoords[8 * i + 7] = y2;
+        }
+    }
+
+    const w = 1/16;//there are 16 tiles of 'flip edges' in each row of the flip image
+    const h = 1/4;//there are 4 rows of flip edges in each column of the flip image 
+    const topOfSEdge = 0/4;//
+    const topOfNEdge = 1/4;
+    const topOfWEdge = 2/4;
+    const topOfEEdge = 3/4;
+    this.generateFlipEdgeCoords = function(widthInTiles, flipTiles, leftTexCoords, topTexCoords, rightTexCoords, bottomTexCoords) {
+        //Need to clear these coordinates each frame to prevent rendering the borders inside the region of flipspace
+        leftTexCoords.fill(0);
+        topTexCoords.fill(0);
+        rightTexCoords.fill(0);
+        bottomTexCoords.fill(0);
+
+        const flipSet = new Set(flipTiles);
+        for(let i = 0; i < flipTiles.length; i++) {//flipColorArray[quads[i] * 12 + 3 * j + 0] = color1[0];
+            const tile = flipTiles[i];
+            const northIndex = flipSet.has(tile - widthInTiles);
+            const southIndex = flipSet.has(tile + widthInTiles);
+            const westIndex = flipSet.has(tile - 1);
+            const eastIndex = flipSet.has(tile + 1);
+
+            if(!northIndex) {//no flipspace to the north
+                const whichTile = rndInt(0, 15);
+                //first vertex (upper left)
+                topTexCoords[tile * 8 + 0] = w * whichTile;
+                topTexCoords[tile * 8 + 1] = topOfNEdge;
+                //second vertex (upper right)
+                topTexCoords[tile * 8 + 2] = w * (whichTile+ 1);
+                topTexCoords[tile * 8 + 3] = topOfNEdge;
+                //third vertex (lower left)
+                topTexCoords[tile * 8 + 4] = w * whichTile;
+                topTexCoords[tile * 8 + 5] = topOfNEdge + h;
+                //fourth vertex (lower right)
+                topTexCoords[tile * 8 + 6] = w * (whichTile + 1);
+                topTexCoords[tile * 8 + 7] = topOfNEdge + h;
+            }
+
+            if(!southIndex) {//no flipspace to the north
+                const whichTile = rndInt(0, 15);
+                //first vertex (upper left)
+                bottomTexCoords[tile * 8 + 0] = w * whichTile;
+                bottomTexCoords[tile * 8 + 1] = topOfSEdge;
+                //second vertex (upper right)
+                bottomTexCoords[tile * 8 + 2] = w * (whichTile+ 1);
+                bottomTexCoords[tile * 8 + 3] = topOfSEdge;
+                //third vertex (lower left)
+                bottomTexCoords[tile * 8 + 4] = w * whichTile;
+                bottomTexCoords[tile * 8 + 5] = topOfSEdge + h;
+                //fourth vertex (lower right)
+                bottomTexCoords[tile * 8 + 6] = w * (whichTile + 1);
+                bottomTexCoords[tile * 8 + 7] = topOfSEdge + h;
+            }
+
+            if(!westIndex) {//no flipspace to the north
+                const whichTile = rndInt(0, 15);
+                //first vertex (upper left)
+                leftTexCoords[tile * 8 + 0] = w * whichTile;
+                leftTexCoords[tile * 8 + 1] = topOfWEdge;
+                //second vertex (upper right)
+                leftTexCoords[tile * 8 + 2] = w * (whichTile+ 1);
+                leftTexCoords[tile * 8 + 3] = topOfWEdge;
+                //third vertex (lower left)
+                leftTexCoords[tile * 8 + 4] = w * whichTile;
+                leftTexCoords[tile * 8 + 5] = topOfWEdge + h;
+                //fourth vertex (lower right)
+                leftTexCoords[tile * 8 + 6] = w * (whichTile + 1);
+                leftTexCoords[tile * 8 + 7] = topOfWEdge + h;
+            }
+
+            if(!eastIndex) {//no flipspace to the north
+                const whichTile = rndInt(0, 15);
+                //first vertex (upper left)
+                rightTexCoords[tile * 8 + 0] = w * whichTile;
+                rightTexCoords[tile * 8 + 1] = topOfEEdge;
+                //second vertex (upper right)
+                rightTexCoords[tile * 8 + 2] = w * (whichTile+ 1);
+                rightTexCoords[tile * 8 + 3] = topOfEEdge;
+                //third vertex (lower left)
+                rightTexCoords[tile * 8 + 4] = w * whichTile;
+                rightTexCoords[tile * 8 + 5] = topOfEEdge + h;
+                //fourth vertex (lower right)
+                rightTexCoords[tile * 8 + 6] = w * (whichTile + 1);
+                rightTexCoords[tile * 8 + 7] = topOfEEdge + h;
+            }
         }
     }
     

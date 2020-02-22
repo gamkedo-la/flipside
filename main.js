@@ -1,3 +1,4 @@
+/* eslint-disable max-depth */
 /* eslint-disable complexity */
 import Stats from './src/js/stats.module.js';
 
@@ -190,7 +191,7 @@ function init(){
 // with optional sound inits as well as essential map loading and game start callbacks
 function soundInit(){
     if(USE_GL_RENDERER) {
-        G.GLRenderer = new WebRenderer(60, 36, G.img.tiles, G.img.labCaveWall);
+        G.GLRenderer = new WebRenderer(60, 36, G.img.tiles, G.img.labCaveWall, G.img.flipSpace);
     }
     //next we load our soundlist, passing in start as a callback once complete.
     //soundloader just gives loader the properties,  loadAudioBuffer actually decodes the files and
@@ -381,58 +382,67 @@ function render(dt){
         ry0 = view.y / G.world.tileSize - tilePad | 0,
         ry1 = (view.y + c.height)/G.world.tileSize + tilePad | 0;
 
-        if(USE_GL_RENDERER) {
-            const GIDs = [];
-            const flips = [];
-            let tileIndex = 0;
-            for(let k = ry0; k < ry0 + 36; k++) {
-                for(let l = rx0; l < rx0 + 60; l++) {
-                    const flatIndex = k * G.world.widthInTiles + l;
-                    GIDs.push(G.world.data[flatIndex] - 1);
+    if(USE_GL_RENDERER) {
+        const GIDs = [];
+        const flips = [];
+        let tileIndex = 0;
+        for(let k = ry0; k < ry0 + 36; k++) {
+            for(let l = rx0; l < rx0 + 60; l++) {
+                const flatIndex = k * G.world.widthInTiles + l;
+                GIDs.push(G.world.data[flatIndex] - 1);
 
-                    if(G.worldFlipped.data[flatIndex] >= 3) {
-                        flips.push(tileIndex);
-                    }
-
-                    tileIndex++;
+                if(G.worldFlipped.data[flatIndex] >= 3) {
+                    flips.push(tileIndex);
                 }
+
+                tileIndex++;
             }
-            const deltaX = view.x % G.world.tileSize;
-            const deltaY = view.y % G.world.tileSize;
-            const backgroundCanvas = G.GLRenderer.getBackgroundImageCanvas(GIDs, flips, deltaX, deltaY);
-            //the view.x/y % tileSize accounts for sub-tile scrolling
-            ctx.drawImage(backgroundCanvas, -(tilePad * G.world.tileSize), -(tilePad * G.world.tileSize));
         }
 
-    //tile render loop! render order is columns.
-    //for each column( i )
-    for(let i = rx0; i < rx1; i++){
-        //render all tiles in the column
-        for(let j = ry0; j < ry1; j++){
+        //an enemy has added some flipspace, begin reverting back           
+        if(G.worldFlipped.data[flatIndex] > loader.tileMaps[G.currentMap].layers[1].data[flatIndex]){
+            if(coinFlip())G.worldFlipped.data[flatIndex]--;
+        }
+        //we've removed flipspace with weapons, begin reverting back    
+        if(G.worldFlipped.data[flatIndex] < loader.tileMaps[G.currentMap].layers[1].data[flatIndex]){
+            if(coinFlip())G.worldFlipped.data[flatIndex]++;
+        }
+        
+        const deltaX = view.x % G.world.tileSize;
+        const deltaY = view.y % G.world.tileSize;
+        const backgroundCanvas = G.GLRenderer.getBackgroundImageCanvas(GIDs, flips, deltaX, deltaY);
+        //the view.x/y % tileSize accounts for sub-tile scrolling
+        ctx.drawImage(backgroundCanvas, -(tilePad * G.world.tileSize), -(tilePad * G.world.tileSize));
 
-            var drawX =     Math.floor(i*8 - view.x),
-                drawY =     Math.floor(j*8 - view.y),
-                flatIndex = j * G.world.widthInTiles + i,
-                gid = G.world.data[flatIndex]-1;
+    } else {//not using the gl_renderer
+        
+        /* tile render loop! render order is columns.
+           for each column( i ) */
+        for(let i = rx0; i < rx1; i++){
+            //render all tiles in the column
+            for(let j = ry0; j < ry1; j++){
 
-            //technically this next bit should be in update not render, but yay optimizing!
-            //check worldFlipped index against loaded map index, since this layer is destructable.
-            //if not equal, random chance of 'healing' back to loaded map state.
+                var drawX =     Math.floor(i*8 - view.x),
+                    drawY =     Math.floor(j*8 - view.y),
+                    flatIndex = j * G.world.widthInTiles + i,
+                    gid = G.world.data[flatIndex]-1;
 
-            //an enemy has added some flipspace, begin reverting back           
-            if(G.worldFlipped.data[flatIndex] > loader.tileMaps[G.currentMap].layers[1].data[flatIndex]){
-                if(coinFlip())G.worldFlipped.data[flatIndex]--;
-            }
-            //we've removed flipspace with weapons, begin reverting back    
-            if(G.worldFlipped.data[flatIndex] < loader.tileMaps[G.currentMap].layers[1].data[flatIndex]){
-                if(coinFlip())G.worldFlipped.data[flatIndex]++;
-            }
-            
-            
-            //flipped area affect, purple/pink stuff----------------------------------------
-            if(G.worldFlipped.data[flatIndex] >= 3){
+                /* technically this next bit should be in update not render, but yay optimizing!
+                   check worldFlipped index against loaded map index, since this layer is destructable.
+                   if not equal, random chance of 'healing' back to loaded map state. */
 
-                if(!USE_GL_RENDERER) {
+                //an enemy has added some flipspace, begin reverting back           
+                if(G.worldFlipped.data[flatIndex] > loader.tileMaps[G.currentMap].layers[1].data[flatIndex]){
+                    if(coinFlip())G.worldFlipped.data[flatIndex]--;
+                }
+                //we've removed flipspace with weapons, begin reverting back    
+                if(G.worldFlipped.data[flatIndex] < loader.tileMaps[G.currentMap].layers[1].data[flatIndex]){
+                    if(coinFlip())G.worldFlipped.data[flatIndex]++;
+                }
+                
+                
+                //flipped area affect, purple/pink stuff----------------------------------------
+                if(G.worldFlipped.data[flatIndex] >= 3){
                     ctx.drawImage(
                         Math.random()>0.5? G.img.tiles26: G.img.tiles27,
                         gid%G.tileSheetSize.height * 8,
@@ -440,48 +450,48 @@ function render(dt){
                         8,8,
                         drawX, drawY, 8, 8
                     );
-                }
 
-                let Ngid = G.worldFlipped.data[flatIndex - G.world.widthInTiles],
-                    Sgid = G.worldFlipped.data[flatIndex + G.world.widthInTiles],
-                    Egid = G.worldFlipped.data[flatIndex + 1],
-                    Wgid = G.worldFlipped.data[flatIndex -1];
-                    //console.log(Ngid, Sgid, Egid, Wgid);
-                if(Ngid < 3){
-                    ctx.drawImage(
-                        G.img.flipSpace, 8*rndInt(0,15), 8, 8, 8, drawX, drawY, G.world.tileSize, G.world.tileSize
+                    let Ngid = G.worldFlipped.data[flatIndex - G.world.widthInTiles],
+                        Sgid = G.worldFlipped.data[flatIndex + G.world.widthInTiles],
+                        Egid = G.worldFlipped.data[flatIndex + 1],
+                        Wgid = G.worldFlipped.data[flatIndex -1];
+                        //console.log(Ngid, Sgid, Egid, Wgid);
+                    if(Ngid < 3){
+                        ctx.drawImage(
+                            G.img.flipSpace, 8*rndInt(0,15), 8, 8, 8, drawX, drawY, G.world.tileSize, G.world.tileSize
                         )
-                }
-                if(Sgid < 3){
-                    ctx.drawImage(
-                        G.img.flipSpace, 8*rndInt(0,15), 0, 8, 8, drawX, drawY, G.world.tileSize, G.world.tileSize
+                    }
+                    if(Sgid < 3){
+                        ctx.drawImage(
+                            G.img.flipSpace, 8*rndInt(0,15), 0, 8, 8, drawX, drawY, G.world.tileSize, G.world.tileSize
                         )
-                }
-                if(Wgid < 3){
-                    ctx.drawImage(
-                        G.img.flipSpace, 8*rndInt(0,15), 16, 8, 8, drawX, drawY, G.world.tileSize, G.world.tileSize
+                    }
+                    if(Wgid < 3){
+                        ctx.drawImage(
+                            G.img.flipSpace, 8*rndInt(0,15), 16, 8, 8, drawX, drawY, G.world.tileSize, G.world.tileSize
                         )
-                }
-                if(Egid < 3){
-                    ctx.drawImage(
-                        G.img.flipSpace, 8*rndInt(0,15), 24, 8, 8, drawX, drawY, G.world.tileSize, G.world.tileSize
+                    }
+                    if(Egid < 3){
+                        ctx.drawImage(
+                            G.img.flipSpace, 8*rndInt(0,15), 24, 8, 8, drawX, drawY, G.world.tileSize, G.world.tileSize
                         )
-                }
-            }else{
-                //normalspace tile draw
-                if(USE_GL_RENDERER) continue;
-                ctx.drawImage(
-                    G.img.tiles,
-                    gid%G.tileSheetSize.height * 8,
-                    Math.floor(gid/G.tileSheetSize.width) * 8,
-                    8,8,
-                    drawX, drawY, 8, 8
+                    }
+                } else {
+                    //normalspace tile draw
+                    ctx.drawImage(
+                        G.img.tiles,
+                        gid%G.tileSheetSize.height * 8,
+                        Math.floor(gid/G.tileSheetSize.width) * 8,
+                        8,8,
+                        drawX, drawY, 8, 8
                     );
-            }
+                }
 
-        }//end column render
+            }//end column render
 
-    }//end x loop
+        }//end x loop
+
+    }//end if using gl_renderer
 
     //render AABB's, including pickups and baddies
     
