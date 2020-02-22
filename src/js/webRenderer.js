@@ -19,6 +19,8 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
     const sourceWidthInTiles = tileImage.width / TILE_SIZE;
     const tileDelta = new Float32Array(2).fill(0);
     const bkgdDelta = new Float32Array(2).fill(0);
+
+    const locations = {tile:{}, flip:{}};
     
     //------Get WebGL---------//
     let gl = webCanvas.getContext('webgl');
@@ -258,57 +260,38 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
         return program;
     }
 
-    const tileProgram = getWebGLProgram(getVertexShaderString(), getFragmentShaderString());
-    const flipProgram = getWebGLProgram(getFlipVertShaderString(), getFlipFragShaderString());
+    const getLocations = function(program, attribs, uniforms) {
+        if(program == tileProgram) {
+            for(let i = 0; i < attribs.length; i++) {
+                locations.tile[attribs[i]] = gl.getAttribLocation(tileProgram, attribs[i]);
+            }
 
-    //------Set up WebGL to use the uniforms and attributes necessary to draw the background tiles--------//
-    const setUpBkgdAttribs = function() {
-        gl.bindBuffer(gl.ARRAY_BUFFER, bkgdVertexBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, bkgdVertexData, gl.STATIC_DRAW);
+            for(let i = 0; i < uniforms.length; i++) {
+                locations.tile[uniforms[i]] = gl.getUniformLocation(tileProgram, uniforms[i]);
+            }
+        } else if(program == flipProgram) {
+            for(let i = 0; i < attribs.length; i++) {
+                locations.flip[attribs[i]] = gl.getAttribLocation(flipProgram, attribs[i]);
+            }
 
-        const positionAttribLocation = gl.getAttribLocation(tileProgram, 'vertPosition');
-        gl.vertexAttribPointer(
-            positionAttribLocation, //Attribute location
-            2, //number of elements per attribute
-            gl.FLOAT, //Type of the elements
-            gl.FALSE, //Is data normalized?
-            0 * Float32Array.BYTES_PER_ELEMENT, //Stride
-            0 //Offset into buffer for first element of this type
-        );
-
-        gl.enableVertexAttribArray(positionAttribLocation);
-        
-        const depthUniformLocation = gl.getUniformLocation(tileProgram, 'delta');
-        gl.uniform2fv(depthUniformLocation, bkgdDelta);
-
-        // Tell the shader we bound the texture to texture unit 1
-        const bkgdSamplerUniformLocation = gl.getUniformLocation(tileProgram, 'sampler');
-        gl.uniform1i(bkgdSamplerUniformLocation, bkgdTexture);
-
-        gl.bindBuffer(gl.ARRAY_BUFFER, bkgdTexCoordBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, bkgdTexCoords, gl.STATIC_DRAW);
-
-        const texCoordAttribLocation = gl.getAttribLocation(tileProgram, 'aTextureCoord');
-        gl.vertexAttribPointer(
-            texCoordAttribLocation, //Attribute location
-            2, //number of elements per attribute
-            gl.FLOAT, //Type of the elements
-            gl.FALSE, //Is data normalized?
-            0 * Float32Array.BYTES_PER_ELEMENT, //Stride
-            0 //Offset into buffer for first element of this type
-        );
-
-        gl.enableVertexAttribArray(texCoordAttribLocation);
+            for(let i = 0; i < uniforms.length; i++) {
+                locations.flip[uniforms[i]] = gl.getUniformLocation(flipProgram, uniforms[i]);
+            }
+        }
     }
 
-    //------Set up WebGL to use the uniforms and attributes necessary to draw the main tiles--------//
-    const setAttribData = function(name, buffer, data, program, elementCount = 2, drawHint = gl.STATIC_DRAW, type = gl.FLOAT, stride = 0, offset = 0) {
+    const tileProgram = getWebGLProgram(getVertexShaderString(), getFragmentShaderString());
+    getLocations(tileProgram, ["vertPosition", "aTextureCoord"], ["delta", "sampler"]);
+    const flipProgram = getWebGLProgram(getFlipVertShaderString(), getFlipFragShaderString());
+    getLocations(flipProgram, ["vertPosition", "fbCoords", "lCoords", "tCoords", "rCoords", "bCoords", "flipColor"], ["delta", "frameBuffSampler", "flipSampler"]);
+
+    //------A function to link and enable attribute data--------//
+    const setAttribData = function(buffer, data, location, elementCount = 2, drawHint = gl.STATIC_DRAW, type = gl.FLOAT, stride = 0, offset = 0) {
         gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
         gl.bufferData(gl.ARRAY_BUFFER, data, drawHint);
 
-        const attribLocation = gl.getAttribLocation(program, name);
         gl.vertexAttribPointer(
-            attribLocation, //Attribute location
+            location, //Attribute location
             elementCount, //number of elements per attribute
             type, //Type of the elements
             gl.FALSE, //Is data normalized?
@@ -316,168 +299,59 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
             offset * Float32Array.BYTES_PER_ELEMENT //Offset into buffer for first element of this type
         );
 
-        gl.enableVertexAttribArray(attribLocation);
+        gl.enableVertexAttribArray(location);
     }
 
+    //------Set up WebGL to use the uniforms and attributes necessary to draw the background tiles--------//
+    const setUpBkgdAttribs = function() {
+        setAttribData(bkgdVertexBuffer, bkgdVertexData, locations.tile.vertPosition);
+        
+        gl.uniform2fv(locations.tile.delta, bkgdDelta);
+
+        // Tell the shader we bound the texture to texture unit 1
+        gl.uniform1i(locations.tile.sampler, bkgdTexture);
+
+        setAttribData(bkgdTexCoordBuffer, bkgdTexCoords, locations.tile.aTextureCoord);
+    }
+
+    //------Set up WebGL to use the uniforms and attributes necessary to draw the main tiles--------//
     const setUpTileAttribs = function(tileData, deltaX, deltaY) {
-        gl.bindBuffer(gl.ARRAY_BUFFER, tileVertexBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, tileVertexData, gl.STATIC_DRAW);
-
-        const positionAttribLocation = gl.getAttribLocation(tileProgram, 'vertPosition');
-        gl.vertexAttribPointer(
-            positionAttribLocation, //Attribute location
-            2, //number of elements per attribute
-            gl.FLOAT, //Type of the elements
-            gl.FALSE, //Is data normalized?
-            0 * Float32Array.BYTES_PER_ELEMENT, //Stride
-            0 //Offset into buffer for first element of this type
-        );
-
-        gl.enableVertexAttribArray(positionAttribLocation);
+        setAttribData(tileVertexBuffer, tileVertexData, locations.tile.vertPosition);
 
         tileDelta[0] = -(Math.round(deltaX)) / (4 * widthInTiles);
         tileDelta[1] = Math.round(deltaY) / (4 * heightInTiles);
-        const deltaUniformLocation = gl.getUniformLocation(tileProgram, 'delta');
-        gl.uniform2fv(deltaUniformLocation, tileDelta);
+        gl.uniform2fv(locations.tile.delta, tileDelta);
 
         // Tell the shader we bound the texture to texture unit 0
-        const samplerUniformLocation = gl.getUniformLocation(tileProgram, 'sampler');
-        gl.uniform1i(samplerUniformLocation, tileTexture);
+        gl.uniform1i(locations.tile.sampler, tileTexture);
 
         texCoordinator.generateTileCoords(sourceWidthInTiles, w, h, tileData, tileTexCoords);
 
-        gl.bindBuffer(gl.ARRAY_BUFFER, tileTexCoordBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, tileTexCoords, gl.STATIC_DRAW);
-
-        const texCoordAttribLocation = gl.getAttribLocation(tileProgram, 'aTextureCoord');
-        gl.vertexAttribPointer(
-            texCoordAttribLocation, //Attribute location
-            2, //number of elements per attribute
-            gl.FLOAT, //Type of the elements
-            gl.FALSE, //Is data normalized?
-            0 * Float32Array.BYTES_PER_ELEMENT, //Stride
-            0 //Offset into buffer for first element of this type
-        );
-
-        gl.enableVertexAttribArray(texCoordAttribLocation);
+        setAttribData(tileTexCoordBuffer, tileTexCoords, locations.tile.aTextureCoord);
     }
     //------Set up WebGL to use the uniforms and attributes necessary to draw flipspace--------//
     const setUpFlipAttribs = function() {
-        gl.bindBuffer(gl.ARRAY_BUFFER, tileVertexBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, tileVertexData, gl.STATIC_DRAW);
+        setAttribData(tileVertexBuffer, tileVertexData, locations.flip.vertPosition);
 
-        const positionAttribLocation = gl.getAttribLocation(flipProgram, 'vertPosition');
-        gl.vertexAttribPointer(
-            positionAttribLocation, //Attribute location
-            2, //number of elements per attribute
-            gl.FLOAT, //Type of the elements
-            gl.FALSE, //Is data normalized?
-            0 * Float32Array.BYTES_PER_ELEMENT, //Stride
-            0 //Offset into buffer for first element of this type
-        );
-
-        gl.enableVertexAttribArray(positionAttribLocation);
-
-        const deltaUniformLocation = gl.getUniformLocation(flipProgram, 'delta');
-        gl.uniform2fv(deltaUniformLocation, tileDelta);
+        gl.uniform2fv(locations.flip.delta, tileDelta);
 
         // Tell the shader we bound the texture to texture unit 0
-        const fbSamplerUniformLocation = gl.getUniformLocation(flipProgram, 'frameBuffSampler');
-        gl.uniform1i(fbSamplerUniformLocation, frameBuffTexIndex);
+        gl.uniform1i(locations.flip.frameBuffSampler, frameBuffTexIndex);
 
-        gl.bindBuffer(gl.ARRAY_BUFFER, fbTexCoordBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, fbTexCoords, gl.STATIC_DRAW);
-
-        const fbCoordAttribLocation = gl.getAttribLocation(flipProgram, 'fbCoords');
-        gl.vertexAttribPointer(
-            fbCoordAttribLocation, //Attribute location
-            2, //number of elements per attribute
-            gl.FLOAT, //Type of the elements
-            gl.FALSE, //Is data normalized?
-            0 * Float32Array.BYTES_PER_ELEMENT, //Stride
-            0 //Offset into buffer for first element of this type
-        );
-
-        gl.enableVertexAttribArray(fbCoordAttribLocation);
+        setAttribData(fbTexCoordBuffer, fbTexCoords, locations.flip.fbCoords);
 
         // Tell the shader we bound the texture to texture unit 0
-        const flipSamplerUniformLocation = gl.getUniformLocation(flipProgram, 'flipSampler');
-        gl.uniform1i(flipSamplerUniformLocation, flipTexture);
+        gl.uniform1i(locations.flip.flipSampler, flipTexture);
 
-        gl.bindBuffer(gl.ARRAY_BUFFER, leftTexCoordBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, leftTexCoords, gl.STATIC_DRAW);
+        setAttribData(leftTexCoordBuffer, leftTexCoords, locations.flip.lCoords);
 
-        const leftFlipAttribLocation = gl.getAttribLocation(flipProgram, 'lCoords');
-        gl.vertexAttribPointer(
-            leftFlipAttribLocation, //Attribute location
-            2, //number of elements per attribute
-            gl.FLOAT, //Type of the elements
-            gl.FALSE, //Is data normalized?
-            0 * Float32Array.BYTES_PER_ELEMENT, //Stride
-            0 //Offset into buffer for first element of this type
-        );
+        setAttribData(topTexCoordBuffer, topTexCoords, locations.flip.tCoords);
 
-        gl.enableVertexAttribArray(leftFlipAttribLocation);
+        setAttribData(rightTexCoordBuffer, rightTexCoords, locations.flip.rCoords);
 
-        gl.bindBuffer(gl.ARRAY_BUFFER, topTexCoordBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, topTexCoords, gl.STATIC_DRAW);
+        setAttribData(bottomTexCoordBuffer, bottomTexCoords, locations.flip.bCoords);
 
-        const topFlipAttribLocation = gl.getAttribLocation(flipProgram, 'tCoords');
-        gl.vertexAttribPointer(
-            topFlipAttribLocation, //Attribute location
-            2, //number of elements per attribute
-            gl.FLOAT, //Type of the elements
-            gl.FALSE, //Is data normalized?
-            0 * Float32Array.BYTES_PER_ELEMENT, //Stride
-            0 //Offset into buffer for first element of this type
-        );
-
-        gl.enableVertexAttribArray(topFlipAttribLocation);
-
-        gl.bindBuffer(gl.ARRAY_BUFFER, rightTexCoordBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, rightTexCoords, gl.STATIC_DRAW);
-
-        const rightFlipAttribLocation = gl.getAttribLocation(flipProgram, 'rCoords');
-        gl.vertexAttribPointer(
-            rightFlipAttribLocation, //Attribute location
-            2, //number of elements per attribute
-            gl.FLOAT, //Type of the elements
-            gl.FALSE, //Is data normalized?
-            0 * Float32Array.BYTES_PER_ELEMENT, //Stride
-            0 //Offset into buffer for first element of this type
-        );
-
-        gl.enableVertexAttribArray(rightFlipAttribLocation);
-
-        gl.bindBuffer(gl.ARRAY_BUFFER, bottomTexCoordBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, bottomTexCoords, gl.STATIC_DRAW);
-
-        const bottomFlipAttribLocation = gl.getAttribLocation(flipProgram, 'bCoords');
-        gl.vertexAttribPointer(
-            bottomFlipAttribLocation, //Attribute location
-            2, //number of elements per attribute
-            gl.FLOAT, //Type of the elements
-            gl.FALSE, //Is data normalized?
-            0 * Float32Array.BYTES_PER_ELEMENT, //Stride
-            0 //Offset into buffer for first element of this type
-        );
-
-        gl.enableVertexAttribArray(bottomFlipAttribLocation);
-
-        gl.bindBuffer(gl.ARRAY_BUFFER, flipColorBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, flipColorData, gl.STATIC_DRAW);
-
-        const flipColorAttribLocation = gl.getAttribLocation(flipProgram, 'flipColor');
-        gl.vertexAttribPointer(
-            flipColorAttribLocation, //Attribute location
-            3, //number of elements per attribute
-            gl.FLOAT, //Type of the elements
-            gl.FALSE, //Is data normalized?
-            0 * Float32Array.BYTES_PER_ELEMENT, //Stride
-            0 //Offset into buffer for first element of this type
-        );
-
-        gl.enableVertexAttribArray(flipColorAttribLocation);
+        setAttribData(flipColorBuffer, flipColorData, locations.flip.flipColor, 3);
     }
 
     const drawBackground = function(deltaX, deltaY) {

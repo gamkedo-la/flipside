@@ -82,12 +82,6 @@ const textureCoordinateBuilder = function textureCoordinateBuilder() {
     const topOfWEdge = 2/4;
     const topOfEEdge = 3/4;
     this.generateFlipEdgeCoords = function(widthInTiles, flipTiles, leftTexCoords, topTexCoords, rightTexCoords, bottomTexCoords) {
-        //Need to clear these coordinates each frame to prevent rendering the borders inside the region of flipspace
-        leftTexCoords.fill(0);
-        topTexCoords.fill(0);
-        rightTexCoords.fill(0);
-        bottomTexCoords.fill(0);
-
         const flipSet = new Set(flipTiles);
         for(let i = 0; i < flipTiles.length; i++) {//flipColorArray[quads[i] * 12 + 3 * j + 0] = color1[0];
             const tile = flipTiles[i];
@@ -110,6 +104,21 @@ const textureCoordinateBuilder = function textureCoordinateBuilder() {
                 //fourth vertex (lower right)
                 topTexCoords[tile * 8 + 6] = w * (whichTile + 1);
                 topTexCoords[tile * 8 + 7] = topOfNEdge + h;
+            } else {
+                //Don't render any edges here becuase there's a flipspace tile above
+
+                //first vertex (upper left)
+                topTexCoords[tile * 8 + 0] = 0.0;
+                topTexCoords[tile * 8 + 1] = 0.0;
+                //second vertex (upper right)
+                topTexCoords[tile * 8 + 2] = 0.0;
+                topTexCoords[tile * 8 + 3] = 0.0;
+                //third vertex (lower left)
+                topTexCoords[tile * 8 + 4] = 0.0;
+                topTexCoords[tile * 8 + 5] = 0.0;
+                //fourth vertex (lower right)
+                topTexCoords[tile * 8 + 6] = 0.0;
+                topTexCoords[tile * 8 + 7] = 0.0;
             }
 
             if(!southIndex) {//no flipspace to the north
@@ -126,6 +135,21 @@ const textureCoordinateBuilder = function textureCoordinateBuilder() {
                 //fourth vertex (lower right)
                 bottomTexCoords[tile * 8 + 6] = w * (whichTile + 1);
                 bottomTexCoords[tile * 8 + 7] = topOfSEdge + h;
+            } else {
+                //Don't render any edges here becuase there's a flipspace tile below
+
+                //first vertex (upper left)
+                bottomTexCoords[tile * 8 + 0] = 0.0;
+                bottomTexCoords[tile * 8 + 1] = 0.0;
+                //second vertex (upper right)
+                bottomTexCoords[tile * 8 + 2] = 0.0;
+                bottomTexCoords[tile * 8 + 3] = 0.0;
+                //third vertex (lower left)
+                bottomTexCoords[tile * 8 + 4] = 0.0;
+                bottomTexCoords[tile * 8 + 5] = 0.0;
+                //fourth vertex (lower right)
+                bottomTexCoords[tile * 8 + 6] = 0.0;
+                bottomTexCoords[tile * 8 + 7] = 0.0;
             }
 
             if(!westIndex) {//no flipspace to the north
@@ -142,6 +166,21 @@ const textureCoordinateBuilder = function textureCoordinateBuilder() {
                 //fourth vertex (lower right)
                 leftTexCoords[tile * 8 + 6] = w * (whichTile + 1);
                 leftTexCoords[tile * 8 + 7] = topOfWEdge + h;
+            } else {
+                //Don't render any edges here becuase there's a flipspace tile to the left
+                
+                //first vertex (upper left)
+                leftTexCoords[tile * 8 + 0] = 0.0;
+                leftTexCoords[tile * 8 + 1] = 0.0;
+                //second vertex (upper right)
+                leftTexCoords[tile * 8 + 2] = 0.0;
+                leftTexCoords[tile * 8 + 3] = 0.0;
+                //third vertex (lower left)
+                leftTexCoords[tile * 8 + 4] = 0.0;
+                leftTexCoords[tile * 8 + 5] = 0.0;
+                //fourth vertex (lower right)
+                leftTexCoords[tile * 8 + 6] = 0.0;
+                leftTexCoords[tile * 8 + 7] = 0.0;
             }
 
             if(!eastIndex) {//no flipspace to the north
@@ -158,6 +197,21 @@ const textureCoordinateBuilder = function textureCoordinateBuilder() {
                 //fourth vertex (lower right)
                 rightTexCoords[tile * 8 + 6] = w * (whichTile + 1);
                 rightTexCoords[tile * 8 + 7] = topOfEEdge + h;
+            } else {
+                //Don't render any edges here becuase there's a flipspace tile to the right
+
+                //first vertex (upper left)
+                rightTexCoords[tile * 8 + 0] = 0.0;
+                rightTexCoords[tile * 8 + 1] = 0.0;
+                //second vertex (upper right)
+                rightTexCoords[tile * 8 + 2] = 0.0;
+                rightTexCoords[tile * 8 + 3] = 0.0;
+                //third vertex (lower left)
+                rightTexCoords[tile * 8 + 4] = 0.0;
+                rightTexCoords[tile * 8 + 5] = 0.0;
+                //fourth vertex (lower right)
+                rightTexCoords[tile * 8 + 6] = 0.0;
+                rightTexCoords[tile * 8 + 7] = 0.0;
             }
         }
     }
