@@ -5,7 +5,8 @@
 ██╔══╝░░██║░░░░░██║██╔═══╝░░╚═══██╗██║██║░░██║██╔══╝░░
 ██║░░░░░███████╗██║██║░░░░░██████╔╝██║██████╔╝███████╗
 ╚═╝░░░░░╚══════╝╚═╝╚═╝░░░░░╚═════╝░╚═╝╚═════╝░╚══════╝
-*
+Flipside - made by the http://hometeamgamedev.com club
+*/
 
 /* eslint-disable max-depth */
 /* eslint-disable complexity */
