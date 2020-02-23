@@ -14,6 +14,7 @@ const Player = {
     timeSinceHit: 0,
     flashTime: 0.1,//seconds
     brightTime: 0,
+    playedFootstep: false,
 
     coyoteTime: 10,
     maxCoyoteTime: 10,
@@ -585,12 +586,18 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
     if(this.vx < -1 && this.input.left && !this.inAir && !this.falling){
         G.Records.playerStats.stepsTaken+= 1;
         this.facingLeft = true;
+        this.playedFootstep = false;
         this.hasPugGun ? this.play('walkLeft') : this.play('walkLeftNoGun');
     }
     if(this.vx > 1 && this.input.right && !this.inAir && !this.falling){
         G.Records.playerStats.stepsTaken+= 1;
         this.facingLeft = false;
+        this.playedFootstep = false;
         this.hasPugGun ? this.play('walkRight') : this.play('walkRightNoGun');
+    }
+    if((G.Records.playerStats.stepsTaken % 18 < 1) && !this.playedFootstep){
+        G.audio.playSound(G.sounds.footstep, 0, 0.5, 1, false);
+        this.playedFootstep = true;
     }
     if(this.falling){
         this.coyoteTime -=1;
@@ -636,7 +643,7 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
             this.jumping = true;
             this.input.jump = false;
             this.pos.y+=5;
-            G.audio.playSound(G.sounds.footstep, 0, 0.5, 1, false)
+            G.audio.playSound(G.sounds.jump, 0, 0.5, 1, false)
         } else {
             this.vy = -this.jumpVel
             this.jumping = true;
