@@ -408,7 +408,8 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
         );
     }
 
-    this.getBackgroundImageCanvas = function(tileData, flipIndices, deltaX, deltaY) {
+    this.getBackgroundImageCanvas = function(paused, tileData, flipIndices, deltaX, deltaY) {
+        if(paused) return webCanvas;
         //Prepare to draw this frame
         gl.clearColor(0.0, 0.0, 0.0, 1.0);//full black
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);

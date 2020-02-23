@@ -421,7 +421,7 @@ function render(dt){
 
         const deltaX = view.x % G.world.tileSize;
         const deltaY = view.y % G.world.tileSize;
-        const backgroundCanvas = G.GLRenderer.getBackgroundImageCanvas(GIDs, flips, deltaX, deltaY);
+        const backgroundCanvas = G.GLRenderer.getBackgroundImageCanvas(paused, GIDs, flips, deltaX, deltaY);
         //the view.x/y % tileSize accounts for sub-tile scrolling
         ctx.drawImage(backgroundCanvas, -(tilePad * G.world.tileSize), -(tilePad * G.world.tileSize));
 
