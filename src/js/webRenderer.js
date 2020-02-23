@@ -135,6 +135,7 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
         precision mediump float;
 
         uniform vec2 delta;
+        uniform float deltaFBCoord;
 
         attribute vec2 vertPosition;
         attribute vec3 flipColor;
@@ -152,9 +153,10 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
         varying vec2 bottomCoords;
 
         void main() {
+            float flipDelta = 0.00777777 * sin(12.5663706 * (vertPosition.y + deltaFBCoord));
             gl_Position = vec4(vertPosition.x + delta.x, vertPosition.y + delta.y, 0.0, 1.0);
 
-            frameBuffCoords = vec2(fbCoords.x + delta.x / 2.0, fbCoords.y + delta.y / 2.0);
+            frameBuffCoords = vec2(fbCoords.x + flipDelta + delta.x / 2.0, fbCoords.y + delta.y / 2.0);
             leftCoords = lCoords;
             topCoords = tCoords;
             rightCoords = rCoords;
@@ -283,7 +285,7 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
     const tileProgram = getWebGLProgram(getVertexShaderString(), getFragmentShaderString());
     getLocations(tileProgram, ["vertPosition", "aTextureCoord"], ["delta", "sampler"]);
     const flipProgram = getWebGLProgram(getFlipVertShaderString(), getFlipFragShaderString());
-    getLocations(flipProgram, ["vertPosition", "fbCoords", "lCoords", "tCoords", "rCoords", "bCoords", "flipColor"], ["delta", "frameBuffSampler", "flipSampler"]);
+    getLocations(flipProgram, ["vertPosition", "fbCoords", "lCoords", "tCoords", "rCoords", "bCoords", "flipColor"], ["delta", "frameBuffSampler", "flipSampler", "deltaFBCoord"]);
 
     //------A function to link and enable attribute data--------//
     const setAttribData = function(buffer, data, location, elementCount = 2, drawHint = gl.STATIC_DRAW, type = gl.FLOAT, stride = 0, offset = 0) {
@@ -330,6 +332,7 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
         setAttribData(tileTexCoordBuffer, tileTexCoords, locations.tile.aTextureCoord);
     }
     //------Set up WebGL to use the uniforms and attributes necessary to draw flipspace--------//
+    let flipDelta = 0.0;
     const setUpFlipAttribs = function() {
         setAttribData(tileVertexBuffer, tileVertexData, locations.flip.vertPosition);
 
@@ -352,6 +355,10 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
         setAttribData(bottomTexCoordBuffer, bottomTexCoords, locations.flip.bCoords);
 
         setAttribData(flipColorBuffer, flipColorData, locations.flip.flipColor, 3);
+
+        flipDelta += 1.0;
+        if(flipDelta > 288.0) flipDelta -= 288.0;
+        gl.uniform1f(locations.flip.deltaFBCoord, flipDelta / 288.0);
     }
 
     const drawBackground = function(deltaX, deltaY) {
