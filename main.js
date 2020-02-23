@@ -19,6 +19,7 @@ import FlipBat from './src/js/flipbat.js';
 import FlipPig from './src/js/flippig.js';
 import FlipBird from './src/js/flipbird.js';
 import RoboTank from './src/js/robotank.js';
+// import Drone from './src/js/drone.js';
 import FlipSpider from './src/js/flipspider.js';
 import Barricade from './src/js/Barricade.js';
 import Switch from './src/js/Switch.js';
@@ -98,6 +99,7 @@ const images = [
     'EnemyTinycrawler',
     'EnemyTinydiver',
     'EnemyRoboTank',
+    // 'EnemyFlipTank',
     'flipspider',
     'flipSpace',
     'msgBox1',
@@ -797,6 +799,9 @@ function processWorldObjects(objects){
             case "flipspider":
                 results.push(new FlipSpider({pos:{x: obj.x, y: obj.y}}).init());
             break;
+            // case "drone":
+            //     results.push(new Drone({pos:{x: obj.x, y: obj.y}}).init());
+            // break;
             case "barricade":
                 // console.log(obj);
                 results.push(new Barricade(obj).init());
