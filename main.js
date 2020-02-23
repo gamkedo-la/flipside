@@ -24,7 +24,7 @@ import FlipSpider from './src/js/flipspider.js';
 import Barricade from './src/js/Barricade.js';
 import Switch from './src/js/Switch.js';
 import MessageBox from './src/js/MessageBox.js';
-// import Drone from './src/js/drone.js';
+import Drone from './src/js/drone.js';
 import GameSaver from './src/js/GameSaver.js';
 import { UIRender, showMessage, handleMessageBox} from './src/js/UI.js';
 import WebRenderer from './src/js/webRenderer.js';
@@ -99,7 +99,7 @@ const images = [
     'EnemyTinycrawler',
     'EnemyTinydiver',
     'EnemyRoboTank',
-    // 'EnemyFlipTank',
+    'EnemyFlipTank',
     'flipspider',
     'flipSpace',
     'msgBox1',
@@ -782,12 +782,9 @@ function processWorldObjects(objects){
         console.log("spawning a " + obj.type);
         switch(obj.type){
             case "flipbat":
-                //console.log(obj);
-                //let height = obj.properties.find(function(e){return e.name == 'pathHeightInTiles'}).value;
                 results.push(new FlipBat(obj).init());
             break;
             case "flippig":
-                //let pathWidth = obj.properties.find(function(e){return e.name == 'pathWidthInTiles'}).value;
                 results.push(new FlipPig(obj).init());
             break;
             case "flipbird":
@@ -799,11 +796,10 @@ function processWorldObjects(objects){
             case "flipspider":
                 results.push(new FlipSpider({pos:{x: obj.x, y: obj.y}}).init());
             break;
-            // case "drone":
-            //     results.push(new Drone({pos:{x: obj.x, y: obj.y}}).init());
-            // break;
+             case "drone":
+                 results.push(new Drone({pos:{x: obj.x, y: obj.y}}).init());
+             break;
             case "barricade":
-                // console.log(obj);
                 results.push(new Barricade(obj).init());
             break;
             case "switch":

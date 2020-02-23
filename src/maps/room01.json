@@ -328,6 +328,18 @@
                  "width":8,
                  "x":2752,
                  "y":1368
+                }, 
+                {
+                 "gid":13,
+                 "height":8,
+                 "id":212,
+                 "name":"RoboTDrone",
+                 "rotation":0,
+                 "type":"drone",
+                 "visible":true,
+                 "width":8,
+                 "x":2216,
+                 "y":1432
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -336,7 +348,7 @@
          "y":0
         }],
  "nextlayerid":11,
- "nextobjectid":212,
+ "nextobjectid":213,
  "orientation":"orthogonal",
  "properties":[
         {
