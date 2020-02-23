@@ -8,66 +8,59 @@ const CROSSFADE_TIME = 0.25;
 
 const AudioGlobal = function AudioGlobal() {
 
-    var initialized = false;
-    var audioCtx, musicBus, soundEffectsBus, filterBus, masterBus;
-    var isMuted;
-    var musicVolume;
-    var soundEffectsVolume;
-    var currentMusicTrack;
+	var initialized = false;
+	var audioCtx, musicBus, soundEffectsBus, filterBus, masterBus;
+	var isMuted;
+	var musicVolume;
+	var soundEffectsVolume;
+	var currentMusicTrack;
 
 //--//Set up WebAudioAPI nodes------------------------------------------------
-    this.init = function() {
+	this.init = function() {
 		if (initialized) return;
 
-        console.log("Initializing Audio...");
-        // note: this causes a browser error if user has not interacted w page yet    
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        this.context = audioCtx;
-        musicBus = audioCtx.createGain();
-        soundEffectsBus = audioCtx.createGain();
-        filterBus = audioCtx.createBiquadFilter();
-        masterBus = audioCtx.createGain();
+		console.log("Initializing Audio...");
+		// note: this causes a browser error if user has not interacted w page yet    
+		audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+		this.context = audioCtx;
+		musicBus = audioCtx.createGain();
+		soundEffectsBus = audioCtx.createGain();
+		filterBus = audioCtx.createBiquadFilter();
+		masterBus = audioCtx.createGain();
 
-        musicVolume = 0.7;
-        soundEffectsVolume = 0.7;
-        // try {
-        // 	musicVolume = localStorage.getItem("musicVolume");
-        // 	soundEffectsVolume = localStorage.getItem("soundEffectsVolume");
-        // }
-        // catch {
-        //	
-        // }
+		musicVolume = 0.7;
+		soundEffectsVolume = 0.7;
 
-        filterBus.frequency.value = FILTER_MAX;
+		filterBus.frequency.value = FILTER_MAX;
 
-        musicBus.gain.value = musicVolume;
-        soundEffectsBus.gain.value = soundEffectsVolume;
-        filterBus.type = "lowpass";
-        musicBus.connect(filterBus);
-        soundEffectsBus.connect(filterBus);
-        filterBus.connect(masterBus);
-        masterBus.connect(audioCtx.destination);
+		musicBus.gain.value = musicVolume;
+		soundEffectsBus.gain.value = soundEffectsVolume;
+		filterBus.type = "lowpass";
+		musicBus.connect(filterBus);
+		soundEffectsBus.connect(filterBus);
+		filterBus.connect(masterBus);
+		masterBus.connect(audioCtx.destination);
 
-	    initialized = true;
-    }
+		initialized = true;
+	}
 
 //--//volume handling functions-----------------------------------------------
 	this.toggleMute = function() {
-        if (!initialized) return;
+		if (!initialized) return;
 
 		var newVol = (masterBus.gain.value === 0 ? 1 : 0);
 		masterBus.gain.linearRampToValueAtTime(newVol, audioCtx.currentTime + 0.03);
 	}
 
 	this.setMute = function(tOrF) {
-        if (!initialized) return;
+		if (!initialized) return;
 
 		var newVol = (tOrF === false ? 1 : 0);
 		masterBus.gain.linearRampToValueAtTime(newVol, audioCtx.currentTime + 0.03);
 	}
 
 	this.setMusicVolume = function(amount) {
-        if (!initialized) return;
+		if (!initialized) return;
 
 		musicVolume = amount;
 		if (musicVolume > 1.0) {
@@ -79,7 +72,7 @@ const AudioGlobal = function AudioGlobal() {
 	}
 
 	this.setSoundEffectsVolume = function(amount) {
-        if (!initialized) return;
+		if (!initialized) return;
 
 		soundEffectsVolume = amount;
 		if (soundEffectsVolume > 1.0) {
@@ -91,14 +84,14 @@ const AudioGlobal = function AudioGlobal() {
 	}
 
 	this.turnVolumeUp = function() {
-        if (!initialized) return;
+		if (!initialized) return;
 
 		this.setMusicVolume(musicVolume + VOLUME_INCREMENT);
 		this.setSoundEffectsVolume(soundEffectsVolume + VOLUME_INCREMENT);
 	}
 
 	this.turnVolumeDown = function() {
-        if (!initialized) return;
+		if (!initialized) return;
 
 		this.setMusicVolume(musicVolume - VOLUME_INCREMENT);
 		this.setSoundEffectsVolume(soundEffectsVolume - VOLUME_INCREMENT);
@@ -106,7 +99,7 @@ const AudioGlobal = function AudioGlobal() {
 
 //--//Audio playback classes--------------------------------------------------
 	this.playSound = function(buffer, pan = 0, vol = 1, rate = 1, loop = false) {
-        if (!initialized) return;
+		if (!initialized) return;
 
 		var source = audioCtx.createBufferSource();
 		var gainNode = audioCtx.createGain();
@@ -141,13 +134,13 @@ const AudioGlobal = function AudioGlobal() {
 		source.loop = true;
 
 		if (currentMusicTrack != null) {
-			currentMusicTrack.volume.gain.linearRampToValueAtTime(0, audioCtx.currentTime + CROSSFADE_TIME);
+			currentMusicTrack.volume.gain.setTargetAtTime(0, audioCtx.currentTime, CROSSFADE_TIME);
 			currentMusicTrack.sound.stop(audioCtx.currentTime + CROSSFADE_TIME);
 		}
 
 		if (fadeIn) {
 			gainNode.gain.value = 0;
-			gainNode.gain.linearRampToValueAtTime(1, audioCtx.currentTime + CROSSFADE_TIME);
+			gainNode.gain.setTargetAtTime(1, audioCtx.currentTime, CROSSFADE_TIME);
 		}
 
 		source.start();
@@ -157,8 +150,13 @@ const AudioGlobal = function AudioGlobal() {
 	}
 
 //--//Gameplay functions------------------------------------------------------
+	this.duckMusic = function (duration, volume = 0) {
+		currentMusicTrack.volume.gain.setTargetAtTime(volume, audioCtx.currentTime, CROSSFADE_TIME);
+		currentMusicTrack.volume.gain.setTargetAtTime(1, audioCtx.currentTime + duration, CROSSFADE_TIME);
+		return;
+	}
 	this.enterFlipside = function() {
-        if (!initialized) return;
+		if (!initialized) return;
 
 		filterBus.frequency.cancelScheduledValues(audioCtx.currentTime);
 		filterBus.frequency.linearRampToValueAtTime(FILTER_MAX/2, audioCtx.currentTime + 0.01);
@@ -166,14 +164,12 @@ const AudioGlobal = function AudioGlobal() {
 	}
 
 	this.exitFlipside = function() {
-        if (!initialized) return;
+		if (!initialized) return;
 
 		filterBus.frequency.cancelScheduledValues(audioCtx.currentTime);
 		filterBus.frequency.linearRampToValueAtTime(FILTER_MIN, audioCtx.currentTime + 0.01);
 		filterBus.frequency.linearRampToValueAtTime(FILTER_MAX, audioCtx.currentTime + FILTER_TRANSITION_TIME*2);
 	}
-
-    // this.init(); // FIXME: defer until after a user interation!
 
     return this;
 }
