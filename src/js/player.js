@@ -649,7 +649,7 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
             this.jumping = true;
             this.input.jump = false;
             this.canJump = false;
-            this.hasHighJump ? G.audio.playSound(G.sounds.highJump, 0, 0.5, 1, false) : G.audio.playSound(G.sounds.jump, 0, 0.5, 1, false)
+            this.hasHighJump ? G.audio.playSound(G.sounds.highJump, 0, 0.8, 1, false) : G.audio.playSound(G.sounds.jump, 0, 0.8, 1, false)
 
         }
 
