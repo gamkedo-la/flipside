@@ -134,7 +134,12 @@ const soundList = [
     { name: "testMusic2", url:"./src/snd/stebsScaryFlipside(2).mp3" },
     { name: "testMusic1", url:"./src/snd/Vanishing.mp3" },
     { name: "playerShoot", url:"./src/snd/playerShoot1.mp3" },
-    { name: "splode1", url:"./src/snd/splode1.mp3"}
+    { name: "splode1", url:"./src/snd/splode1.mp3"},
+    { name: "footstep", url:"./src/snd/footstep.mp3"},
+    { name: "highJump", url:"./src/snd/highJump.mp3"},
+    { name: "jump", url:"./src/snd/jump.mp3"},
+    { name: "playerDeath", url:"./src/snd/playerDeath.mp3"},
+    { name: "playerHit", url:"./src/snd/playerHit.mp3"},
 ]
 
 //retro buffer, for no AA lines, circles, indexed-color raster drawing;
@@ -672,6 +677,9 @@ function handleInput(dt){
     }
     if(Key.justReleased(Key.ONE)){
         player.hasPugGun = !player.hasPugGun;
+    }
+    if(Key.justReleased(Key.TWO)){
+        player.hasHighJump = !player.hasHighJump;
     }
 
 

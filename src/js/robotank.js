@@ -214,7 +214,7 @@ RoboTank.prototype.init = function init(){
 
     //console.log("RoboTank init...");
     this.spritesheet = new SpriteSheet({
-        image: G.img.EnemyRoboTank,
+        image: G.img.EnemyFlipTank,
         frameWidth: ROBOTANK_W,
         frameHeight: ROBOTANK_H,
         animations: {

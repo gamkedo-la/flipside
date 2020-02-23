@@ -23,6 +23,7 @@ const Player = {
     nanitesMax: 3000,
 
     hasPugGun: false,
+    hasHighJump: false,
 
     collideIndex: G.collideIndex,
     hazardTilesStartIndex: G.hazardTilesStartIndex,
@@ -138,7 +139,8 @@ const Player = {
     physicsNormal: {
         maxVel: { x: 130, y: 290 },
         accel: 10,
-        jumpVel: 1500,
+        jumpVel: 170,
+        highJumpVel: 290,
         gravity: G.GRAVITY,
         friction: 0.7
     },
@@ -146,7 +148,7 @@ const Player = {
     physicsFlip: {
         maxVel: { x: 80, y: 80 },
         accel: 10,
-        jumpVel: 1200,
+        jumpVel: 70,
         gravity: 0,
         friction: 0.99
     }
@@ -491,7 +493,7 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
     this.friction = this.physicsNormal.friction;
     this.maxVel = this.physicsNormal.maxVel;
     this.accel = this.physicsNormal.accel;
-    this.jumpVel = this.physicsNormal.jumpVel;
+    this.jumpVel = this.hasHighJump ? this.physicsNormal.highJumpVel : this.physicsNormal.jumpVel;
 
     if(this.input.up){
         this.aimingUp = true;
@@ -634,11 +636,13 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
             this.jumping = true;
             this.input.jump = false;
             this.pos.y+=5;
+            G.audio.playSound(G.sounds.footstep, 0, 0.5, 1, false)
         } else {
             this.vy = -this.jumpVel
             this.jumping = true;
             this.input.jump = false;
             this.canJump = false;
+            this.hasHighJump ? G.audio.playSound(G.sounds.highJump, 0, 0.5, 1, false) : G.audio.playSound(G.sounds.jump, 0, 0.5, 1, false)
 
         }
 
@@ -949,6 +953,7 @@ Player.hurt = function(params){
 
     if(!this.hurtCooldown){
         this.play('pointedUpRightNoGun');
+        G.audio.playSound(G.sounds.playerHit, 0, 0.5, 1, false)
         let hurtParticleCount = 20;
         while(--hurtParticleCount){
             G.particles.spawn(
