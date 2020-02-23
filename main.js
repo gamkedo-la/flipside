@@ -404,18 +404,18 @@ function render(dt){
                 }
 
                 tileIndex++;
+
+                //an enemy has added some flipspace, begin reverting back           
+                if(G.worldFlipped.data[flatIndex] > loader.tileMaps[G.currentMap].layers[1].data[flatIndex]){
+                    if(coinFlip())G.worldFlipped.data[flatIndex]--;
+                }
+                //we've removed flipspace with weapons, begin reverting back    
+                if(G.worldFlipped.data[flatIndex] < loader.tileMaps[G.currentMap].layers[1].data[flatIndex]){
+                    if(coinFlip())G.worldFlipped.data[flatIndex]++;
+                }
             }
         }
 
-        //an enemy has added some flipspace, begin reverting back           
-        if(G.worldFlipped.data[flatIndex] > loader.tileMaps[G.currentMap].layers[1].data[flatIndex]){
-            if(coinFlip())G.worldFlipped.data[flatIndex]--;
-        }
-        //we've removed flipspace with weapons, begin reverting back    
-        if(G.worldFlipped.data[flatIndex] < loader.tileMaps[G.currentMap].layers[1].data[flatIndex]){
-            if(coinFlip())G.worldFlipped.data[flatIndex]++;
-        }
-        
         const deltaX = view.x % G.world.tileSize;
         const deltaY = view.y % G.world.tileSize;
         const backgroundCanvas = G.GLRenderer.getBackgroundImageCanvas(GIDs, flips, deltaX, deltaY);
