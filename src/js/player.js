@@ -14,6 +14,7 @@ const Player = {
     timeSinceHit: 0,
     flashTime: 0.1,//seconds
     brightTime: 0,
+    playedFootstep: false,
 
     coyoteTime: 10,
     maxCoyoteTime: 10,
@@ -23,6 +24,7 @@ const Player = {
     nanitesMax: 3000,
 
     hasPugGun: false,
+    hasHighJump: false,
 
     collideIndex: G.collideIndex,
     hazardTilesStartIndex: G.hazardTilesStartIndex,
@@ -138,7 +140,8 @@ const Player = {
     physicsNormal: {
         maxVel: { x: 130, y: 290 },
         accel: 10,
-        jumpVel: 1500,
+        jumpVel: 170,
+        highJumpVel: 290,
         gravity: G.GRAVITY,
         friction: 0.7
     },
@@ -146,7 +149,7 @@ const Player = {
     physicsFlip: {
         maxVel: { x: 80, y: 80 },
         accel: 10,
-        jumpVel: 1200,
+        jumpVel: 70,
         gravity: 0,
         friction: 0.99
     }
@@ -254,7 +257,7 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
         if(self.rectCollision(door) && self.input.up && self.doorCooldown <= 0){
             //console.log('entered portal');
 
-            self.doorCooldown = 60;
+            self.doorCooldown = 100;
             var wipe = new Transitioner().start('wipe', function(){
                 let destinationMap = door.properties.find(function(prop){return prop.name == 'destinationMap'}).value;
                 let destinationSpawn = door.properties.find(function(prop){return prop.name == 'destinationSpawn'}).value;
@@ -491,7 +494,7 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
     this.friction = this.physicsNormal.friction;
     this.maxVel = this.physicsNormal.maxVel;
     this.accel = this.physicsNormal.accel;
-    this.jumpVel = this.physicsNormal.jumpVel;
+    this.jumpVel = this.hasHighJump ? this.physicsNormal.highJumpVel : this.physicsNormal.jumpVel;
 
     if(this.input.up){
         this.aimingUp = true;
@@ -583,12 +586,18 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
     if(this.vx < -1 && this.input.left && !this.inAir && !this.falling){
         G.Records.playerStats.stepsTaken+= 1;
         this.facingLeft = true;
+        this.playedFootstep = false;
         this.hasPugGun ? this.play('walkLeft') : this.play('walkLeftNoGun');
     }
     if(this.vx > 1 && this.input.right && !this.inAir && !this.falling){
         G.Records.playerStats.stepsTaken+= 1;
         this.facingLeft = false;
+        this.playedFootstep = false;
         this.hasPugGun ? this.play('walkRight') : this.play('walkRightNoGun');
+    }
+    if((G.Records.playerStats.stepsTaken % 18 < 1) && !this.playedFootstep){
+        G.audio.playSound(G.sounds.footstep, 0, 0.5, 1, false);
+        this.playedFootstep = true;
     }
     if(this.falling){
         this.coyoteTime -=1;
@@ -634,11 +643,13 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
             this.jumping = true;
             this.input.jump = false;
             this.pos.y+=5;
+            G.audio.playSound(G.sounds.jump, 0, 0.5, 1, false)
         } else {
             this.vy = -this.jumpVel
             this.jumping = true;
             this.input.jump = false;
             this.canJump = false;
+            this.hasHighJump ? G.audio.playSound(G.sounds.highJump, 0, 0.8, 1, false) : G.audio.playSound(G.sounds.jump, 0, 0.8, 1, false)
 
         }
 
@@ -949,6 +960,7 @@ Player.hurt = function(params){
 
     if(!this.hurtCooldown){
         this.play('pointedUpRightNoGun');
+        G.audio.playSound(G.sounds.playerHit, 0, 0.5, 1, false)
         let hurtParticleCount = 20;
         while(--hurtParticleCount){
             G.particles.spawn(
@@ -1000,7 +1012,7 @@ Player.hurt = function(params){
 
 Player.died = function(params){
     console.log('dead');
-
+    G.audio.playSound(G.sounds.playerDeath, 0, 0.5, 1, false);
     this.health = this.maxHealth;
     if (G.Records && G.Records.playerStats && G.Records.playerStats.totals) {
         G.Records.playerStats.totals.deaths++;

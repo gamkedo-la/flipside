@@ -33,6 +33,7 @@ export const G = {
 
     TRANSITION_DEATH    :           1,
 
+
     //portrait enums
     PORTRAIT_SIZE          :           50,
     PORTRAIT_FLIPBAT    :           1,
@@ -57,6 +58,8 @@ export const G = {
 
     showMessageBox: false,
     messageCooldown: 0,
+    deathCooldown: 0,
+    deathCooldownMax: 180,
 
     showMiniMap: false
 
