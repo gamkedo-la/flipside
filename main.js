@@ -243,7 +243,10 @@ function start(sounds){
 
     //Fire it up!
     requestAnimationFrame(frame);
-    if (soundEnabled) G.music = G.audio.playMusic(G.sounds.testMusic1, true )
+    if (soundEnabled) G.music = G.audio.playMusic(G.sounds.testMusic1)
+    G.music.volume.gain.value = 0.65;
+    console.log(G.music);
+
 }
 
 //game loop--------------------------------------------------------------------

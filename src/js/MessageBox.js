@@ -46,6 +46,7 @@ MessageBox.prototype.update = function update(dt){
         
         if(G.player.input.up){
             showMessage(this.message, this.speaker);
+            if(G.showMessageCooldown)
             G.audio.playSound(G.sounds.test2, 0, 1, 1, false);
         }
         
