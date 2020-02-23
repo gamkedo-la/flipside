@@ -256,7 +256,7 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
         if(self.rectCollision(door) && self.input.up && self.doorCooldown <= 0){
             //console.log('entered portal');
 
-            self.doorCooldown = 60;
+            self.doorCooldown = 100;
             var wipe = new Transitioner().start('wipe', function(){
                 let destinationMap = door.properties.find(function(prop){return prop.name == 'destinationMap'}).value;
                 let destinationSpawn = door.properties.find(function(prop){return prop.name == 'destinationSpawn'}).value;
@@ -1005,7 +1005,7 @@ Player.hurt = function(params){
 
 Player.died = function(params){
     console.log('dead');
-
+    G.audio.playSound(G.sounds.playerDeath, 0, 0.5, 1, false);
     this.health = this.maxHealth;
     if (G.Records && G.Records.playerStats && G.Records.playerStats.totals) {
         G.Records.playerStats.totals.deaths++;

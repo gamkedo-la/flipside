@@ -242,7 +242,7 @@ function start(sounds){
 
     //Fire it up!
     requestAnimationFrame(frame);
-    if (soundEnabled) G.audio.playMusic(G.sounds.testMusic1);
+    if (soundEnabled) G.music = G.audio.playMusic(G.sounds.testMusic1);
 }
 
 //game loop--------------------------------------------------------------------
@@ -834,6 +834,8 @@ function movePlayerToSpawnPoint(currentMap, spawnPoint) {
         player.pos.x = spawnPoint.x;
         player.pos.y = spawnPoint.y;
     }
+    
+    
 }
 
 
