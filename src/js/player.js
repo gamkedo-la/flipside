@@ -596,7 +596,7 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         this.hasPugGun ? this.play('walkRight') : this.play('walkRightNoGun');
     }
     if((G.Records.playerStats.stepsTaken % 18 < 1) && !this.playedFootstep){
-        G.audio.playSound(G.sounds.footstep, 0, 0.5, 1, false);
+        G.audio.playSound(G.sounds.footstep, 0, 1, 1, false);
         this.playedFootstep = true;
     }
     if(this.falling){
@@ -643,13 +643,13 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
             this.jumping = true;
             this.input.jump = false;
             this.pos.y+=5;
-            G.audio.playSound(G.sounds.jump, 0, 0.5, 1, false)
+            G.audio.playSound(G.sounds.jump, 0, 1, 1, false)
         } else {
             this.vy = -this.jumpVel
             this.jumping = true;
             this.input.jump = false;
             this.canJump = false;
-            this.hasHighJump ? G.audio.playSound(G.sounds.highJump, 0, 0.8, 1, false) : G.audio.playSound(G.sounds.jump, 0, 0.8, 1, false)
+            this.hasHighJump ? G.audio.playSound(G.sounds.highJump, 0, 1, 1, false) : G.audio.playSound(G.sounds.jump, 0, 1, 1, false)
 
         }
 
