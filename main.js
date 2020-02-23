@@ -132,7 +132,7 @@ const soundList = [
     { name: "test1", url:"./src/snd/test1.mp3" },
     { name: "test2", url:"./src/snd/test2.mp3" },
     { name: "testMusic2", url:"./src/snd/stebsScaryFlipside(2).mp3" },
-    { name: "testMusic1", url:"./src/snd/Vanishing.mp3" },
+    { name: "testMusic1", url:"./src/snd/klaim-wip-draft2.mp3" },
     { name: "playerShoot", url:"./src/snd/playerShoot1.mp3" },
     { name: "splode1", url:"./src/snd/splode1.mp3"},
     { name: "footstep", url:"./src/snd/footstep.mp3"},
@@ -140,6 +140,7 @@ const soundList = [
     { name: "jump", url:"./src/snd/jump.mp3"},
     { name: "playerDeath", url:"./src/snd/playerDeath.mp3"},
     { name: "playerHit", url:"./src/snd/playerHit.mp3"},
+    { name: "mobHit1", url:"./src/snd/mobHit1.mp3"}
 ]
 
 //retro buffer, for no AA lines, circles, indexed-color raster drawing;

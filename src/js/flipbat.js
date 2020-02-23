@@ -87,6 +87,7 @@ FlipBat.prototype.update = function update(dt){
                 this.wasHit = true;
                 G.bullets.kill(i);
                 this.health--;
+                G.audio.playSound(G.sounds.mobHit1, 0, 0.1, 1, false);
             }
         }
     }
