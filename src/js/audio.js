@@ -6,6 +6,8 @@ const FILTER_Q_CURVE = [0, 1, 0, 1, 0];
 const VOLUME_INCREMENT = 0.1;
 const CROSSFADE_TIME = 0.25;
 const HARDPAN_THRESH = 300;
+const DROPOFF_MIN = 100;
+const DROPOFF_MAX = 400;
 
 const AudioGlobal = function AudioGlobal() {
 
@@ -49,15 +51,15 @@ const AudioGlobal = function AudioGlobal() {
 	this.toggleMute = function() {
 		if (!initialized) return;
 
-		var newVol = (masterBus.gain.value === 0 ? 1 : 0);
-		masterBus.gain.linearRampToValueAtTime(newVol, audioCtx.currentTime + 0.03);
+		var newVolume = (masterBus.gain.value === 0 ? 1 : 0);
+		masterBus.gain.linearRampToValueAtTime(newVolume, audioCtx.currentTime + 0.03);
 	}
 
 	this.setMute = function(tOrF) {
 		if (!initialized) return;
 
-		var newVol = (tOrF === false ? 1 : 0);
-		masterBus.gain.linearRampToValueAtTime(newVol, audioCtx.currentTime + 0.03);
+		var newVolume = (tOrF === false ? 1 : 0);
+		masterBus.gain.linearRampToValueAtTime(newVolume, audioCtx.currentTime + 0.03);
 	}
 
 	this.setMusicVolume = function(amount) {
@@ -158,11 +160,26 @@ const AudioGlobal = function AudioGlobal() {
 	}
 
 	this.calculatePan = function(referanceX, panX) {
-		var newPan = panX - referanceX;
-		if (newPan > HARDPAN_THRESH) newPan = HARDPAN_THRESH;
-		if (newPan < -HARDPAN_THRESH) newPan = -HARDPAN_THRESH;
+		panX -= referanceX;
+		if (panX > HARDPAN_THRESH) panX = HARDPAN_THRESH;
+		if (panX < -HARDPAN_THRESH) panX = -HARDPAN_THRESH;
 
-		return newPan/HARDPAN_THRESH;
+		return panX/HARDPAN_THRESH;
+	}
+
+	this.calcuateVolumeDropoff = function(referancePos, objectPos) {
+		var dx = referancePos.x - objectPos.x;
+		var dy = referancePos.y - objectPos.y;
+		var distance = Math.sqrt(dx * dx + dy * dy);
+
+		var newVolume = 1;
+		if (distance > DROPOFF_MIN && distance <= DROPOFF_MAX) {
+			newVolume = Math.abs((distance - DROPOFF_MIN)/(DROPOFF_MAX - DROPOFF_MIN) - 1);
+		} else if (distance > DROPOFF_MAX) {
+			newVolume = 0;
+		}
+
+		return newVolume;
 	}
 
 	this.getDuration = function(soundReferance) {
