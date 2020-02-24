@@ -155,6 +155,10 @@ const AudioGlobal = function AudioGlobal() {
 		currentMusicTrack.volume.gain.setTargetAtTime(1, audioCtx.currentTime + duration, CROSSFADE_TIME);
 		return;
 	}
+	this.getDuration = function(soundReferance) {
+		return soundReferance.sound.buffer.duration;
+	}
+
 	this.enterFlipside = function() {
 		if (!initialized) return;
 
