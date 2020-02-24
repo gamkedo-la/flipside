@@ -5,6 +5,7 @@ const FILTER_TRANSITION_TIME = 1;
 const FILTER_Q_CURVE = [0, 1, 0, 1, 0];
 const VOLUME_INCREMENT = 0.1;
 const CROSSFADE_TIME = 0.25;
+const HARDPAN_THRESH = 300;
 
 const AudioGlobal = function AudioGlobal() {
 
@@ -155,6 +156,15 @@ const AudioGlobal = function AudioGlobal() {
 		currentMusicTrack.volume.gain.setTargetAtTime(1, audioCtx.currentTime + duration, CROSSFADE_TIME);
 		return;
 	}
+
+	this.calculatePan = function(referanceX, panX) {
+		var newPan = panX - referanceX;
+		if (newPan > HARDPAN_THRESH) newPan = HARDPAN_THRESH;
+		if (newPan < -HARDPAN_THRESH) newPan = -HARDPAN_THRESH;
+
+		return newPan/HARDPAN_THRESH;
+	}
+
 	this.getDuration = function(soundReferance) {
 		return soundReferance.sound.buffer.duration;
 	}
