@@ -11,6 +11,13 @@
  <objecttype name="flippig" color="#d300bb">
   <property name="pathWidthInTiles" type="int" default="5"/>
  </objecttype>
+ <objecttype name="messageBox" color="#1ce1ff">
+  <property name="speaker" type="int" default="0"/>
+  <property name="text" type="string" default="message "/>
+ </objecttype>
+ <objecttype name="note" color="#fd6908">
+  <property name="message" type="string"/>
+ </objecttype>
  <objecttype name="portal" color="#22c803">
   <property name="destinationMap" type="string" default="room01"/>
   <property name="destinationSpawn" type="string" default="enter01"/>
