@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="300" height="120" tilewidth="8" tileheight="8" infinite="0" backgroundcolor="#28283c" nextlayerid="11" nextobjectid="186">
+<map version="1.2" tiledversion="1.3.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="300" height="120" tilewidth="8" tileheight="8" infinite="0" backgroundcolor="#28283c" nextlayerid="11" nextobjectid="187">
  <editorsettings>
   <export target="../../src/maps/room02.json" format="json"/>
  </editorsettings>
@@ -407,7 +407,7 @@
     <property name="destinationSpawn" value="enter01"/>
    </properties>
   </object>
-  <object id="168" name="exitDoor04" type="door" x="370.292" y="386.58" width="31.4167" height="47.5">
+  <object id="168" name="exitDoor04" type="door" x="368" y="384" width="31.4167" height="47.5">
    <properties>
     <property name="destinationMap" value="theArmory"/>
     <property name="destinationSpawn" value="enter01"/>
@@ -525,9 +525,19 @@ hit 2 to toggle high-jump ability. </property>
    <properties>
     <property name="speaker" type="int" value="2"/>
     <property name="text">This door leads nowhere.
-But it could lead to a level you designed!
-open up room02 and wire it up!</property>
+:;'&quot;+=</property>
    </properties>
+  </object>
+  <object id="186" type="note" x="648" y="608">
+   <properties>
+    <property name="message">&lt;-- THE HUB
+Temporary area to connect up WIP maps to. 
+
+--&gt; TEST AREA
+All of the in-game objects are spawned here once, for
+testing purposes. </property>
+   </properties>
+   <point/>
   </object>
  </objectgroup>
 </map>

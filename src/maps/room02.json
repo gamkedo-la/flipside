@@ -173,8 +173,8 @@
                  "type":"door",
                  "visible":true,
                  "width":31.4167,
-                 "x":370.292,
-                 "y":386.58
+                 "x":368,
+                 "y":384
                 }, 
                 {
                  "height":0,
@@ -562,7 +562,7 @@
                         {
                          "name":"text",
                          "type":"string",
-                         "value":"This door leads nowhere.\nBut it could lead to a level you designed!\nopen up room02 and wire it up!"
+                         "value":"This door leads nowhere.\n:;'\"+="
                         }],
                  "rotation":0,
                  "type":"messageBox",
@@ -570,6 +570,24 @@
                  "width":24,
                  "x":328,
                  "y":664
+                }, 
+                {
+                 "height":0,
+                 "id":186,
+                 "name":"",
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"message",
+                         "type":"string",
+                         "value":"<-- THE HUB\nTemporary area to connect up WIP maps to. \n\n--> TEST AREA\nAll of the in-game objects are spawned here once, for\ntesting purposes. "
+                        }],
+                 "rotation":0,
+                 "type":"note",
+                 "visible":true,
+                 "width":0,
+                 "x":648,
+                 "y":608
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -578,7 +596,7 @@
          "y":0
         }],
  "nextlayerid":11,
- "nextobjectid":186,
+ "nextobjectid":187,
  "orientation":"orthogonal",
  "properties":[
         {

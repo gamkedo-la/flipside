@@ -34,9 +34,10 @@ import FlipSpider from './src/js/flipspider.js';
 import Barricade from './src/js/Barricade.js';
 import Switch from './src/js/Switch.js';
 import MessageBox from './src/js/MessageBox.js';
+import Note from './src/js/Note.js';
 import Drone from './src/js/drone.js';
 import GameSaver from './src/js/GameSaver.js';
-import { UIRender, showMessage, handleMessageBox} from './src/js/UI.js';
+import { UIRender, showMessage } from './src/js/UI.js';
 import WebRenderer from './src/js/webRenderer.js';
 
 
@@ -824,8 +825,10 @@ function processWorldObjects(objects){
             break;
             case "messageBox":
                 results.push(new MessageBox(obj));
+            break;
+            case "note":
+                results.push(new Note(obj));
             break
-;                
             default:
                 //nothing
 
@@ -854,7 +857,7 @@ function debugRender(){
     ctx.fillRect(0,232,427,8)
 
     G.tinyFont.drawText({
-    textString: `${G.currentMap}, x ${Math.round(player.pos.x)}, y ${Math.round(player.pos.y)}, vy${G.player.vy.toFixed(3)}`,
+    textString: `${G.currentMap}, x: ${Math.round(player.pos.x)}, y: ${Math.round(player.pos.y)}, vy: ${G.player.vy.toFixed(3)}`,
     pos: {x: 4, y: 233},
     spacing: 0
     })
