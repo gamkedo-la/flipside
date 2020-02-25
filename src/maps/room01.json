@@ -1,5 +1,5 @@
 { "backgroundcolor":"#28283c",
- "compressionlevel":-1,
+ "compressionlevel":0,
  "editorsettings":
     {
      "export":
@@ -52,18 +52,6 @@
          "id":3,
          "name":"effects and spawns",
          "objects":[
-                {
-                 "height":0,
-                 "id":8,
-                 "name":"PlayerStart",
-                 "point":true,
-                 "rotation":0,
-                 "type":"spawnPoint",
-                 "visible":true,
-                 "width":0,
-                 "x":2152,
-                 "y":1472
-                }, 
                 {
                  "height":0,
                  "id":23,

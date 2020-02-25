@@ -33,6 +33,9 @@ export const G = {
 
     TRANSITION_DEATH    :           1,
 
+    PLAYER_STARTMAP     :       'room02',
+    PLAYER_STARTSPAWN   :       'PlayerStart',
+
 
     //portrait enums
     PORTRAIT_SIZE          :           50,

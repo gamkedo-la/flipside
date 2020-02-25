@@ -1220,9 +1220,6 @@
 </data>
  </layer>
  <objectgroup id="3" name="effects and spawns">
-  <object id="8" name="PlayerStart" type="spawnPoint" x="2152" y="1472">
-   <point/>
-  </object>
   <object id="23" name="enterLeft" type="spawnPoint" x="1776" y="1472">
    <point/>
   </object>

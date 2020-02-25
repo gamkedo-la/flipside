@@ -20,8 +20,8 @@ const GameSaver = function GameSaver() {
 
     this.GameSaveObject = function GameSaveObject() {
         //Add additional properties to save to this default object
-        this.map = 'room01';
-        this.spawnPoint = "PlayerStart";
+        this.map = G.PLAYER_STARTMAP;
+        this.spawnPoint = G.PLAYER_STARTSPAWN;
         this.maxHealth = 100;
         this.Records = new Records();
 

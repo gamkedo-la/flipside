@@ -104,6 +104,7 @@ const images = [
     'player',
     'playerRight',
     'smallFont',
+    '3x5font',
     'labCaveWall',
     'EnemyTinyflyer',
     'EnemyTinycrawler',
@@ -122,21 +123,6 @@ const images = [
     'face3'
 ]
 
-// const maps = [
-//     //map loader assumes JSON files. TMX maps are are at /rawAssets/maps,  exported maps loaded
-//     //from this array are located in /src/maps/*.json.
-//     'room01',
-//     'room02',
-//     'room03',
-//     'room04',
-//     'room05',
-//     'room06',
-//     'room07',
-//     'room08',
-//     'room09',
-//     'room10',
-
-// ]
  //sounds list!---------------------------------------------------------------
 const soundList = [
     { name: "test1", url:"./src/snd/test1.mp3" },
@@ -241,6 +227,15 @@ function start(sounds){
         characterHeight: 9,
         characterWidth: 6,
         image: G.img.smallFont
+        //remaining options are in spriteFont defaults
+    })
+
+    G.tinyFont = new spriteFont({
+        width: 320,
+        height: 240,
+        characterHeight: 6,
+        characterWidth: 4,
+        image: G.img["3x5font"]
         //remaining options are in spriteFont defaults
     })
 
@@ -576,7 +571,7 @@ function render(dt){
      })
 
     UIRender();
-    //debugRender();
+    debugRender();
     if(G.showMiniMap){
         
         //G.ctx.fillStyle = 'rgba(0,0,0,0.7)';
@@ -856,11 +851,11 @@ function movePlayerToSpawnPoint(currentMap, spawnPoint) {
 function debugRender(){
 
     ctx.fillStyle='rgba(0,0,0,0.6)';
-    ctx.fillRect(0,228,427,12)
+    ctx.fillRect(0,232,427,8)
 
-    G.gameFont.drawText({
+    G.tinyFont.drawText({
     textString: `${G.currentMap}, x ${Math.round(player.pos.x)}, y ${Math.round(player.pos.y)}, vy${G.player.vy.toFixed(3)}`,
-    pos: {x: 4, y: 230},
+    pos: {x: 4, y: 233},
     spacing: 0
     })
 
