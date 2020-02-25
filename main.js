@@ -818,10 +818,10 @@ function processWorldObjects(objects){
                  results.push(new Drone({pos:{x: obj.x, y: obj.y}}).init());
              break;
             case "barricade":
-                results.push(new Barricade(obj).init());
+                results.push(new Barricade(obj));
             break;
             case "switch":
-                results.push(new Switch(obj).init());
+                results.push(new Switch(obj));
             break;
             case "messageBox":
                 results.push(new MessageBox(obj));

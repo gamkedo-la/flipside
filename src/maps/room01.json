@@ -144,34 +144,6 @@
          "name":"game objects",
          "objects":[
                 {
-                 "height":88,
-                 "id":148,
-                 "name":"barricade00",
-                 "rotation":0,
-                 "type":"barricade",
-                 "visible":true,
-                 "width":16,
-                 "x":1864,
-                 "y":1416
-                }, 
-                {
-                 "height":16,
-                 "id":155,
-                 "name":"switch0",
-                 "properties":[
-                        {
-                         "name":"attachedBarricade",
-                         "type":"string",
-                         "value":"barricade00"
-                        }],
-                 "rotation":0,
-                 "type":"switch",
-                 "visible":true,
-                 "width":16,
-                 "x":1896,
-                 "y":1464
-                }, 
-                {
                  "gid":12,
                  "height":8,
                  "id":198,

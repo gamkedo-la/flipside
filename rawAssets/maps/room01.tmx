@@ -1241,12 +1241,6 @@
   <object id="193" gid="18" x="504" y="344" width="8" height="8"/>
  </objectgroup>
  <objectgroup id="6" name="game objects">
-  <object id="148" name="barricade00" type="barricade" x="1864" y="1416" width="16" height="88"/>
-  <object id="155" name="switch0" type="switch" x="1896" y="1464" width="16" height="16">
-   <properties>
-    <property name="attachedBarricade" value="barricade00"/>
-   </properties>
-  </object>
   <object id="198" name="Flipbird" type="flipbird" gid="12" x="2592" y="1456" width="8" height="8"/>
   <object id="200" name="I fart in your general direction" type="flippig" gid="11" x="2712" y="1504" width="8" height="8">
    <properties>

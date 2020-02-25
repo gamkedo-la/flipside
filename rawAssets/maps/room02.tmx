@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="300" height="120" tilewidth="8" tileheight="8" infinite="0" backgroundcolor="#28283c" nextlayerid="11" nextobjectid="189">
+<map version="1.2" tiledversion="1.3.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="300" height="120" tilewidth="8" tileheight="8" infinite="0" backgroundcolor="#28283c" nextlayerid="11" nextobjectid="193">
  <editorsettings>
   <export target="../../src/maps/room02.json" format="json"/>
  </editorsettings>
@@ -475,8 +475,8 @@ open up room02 and wire it up!</property>
 Flipspace creature infestation</property>
    </properties>
   </object>
-  <object id="170" name="barricade00" type="barricade" x="1376" y="528" width="16" height="88"/>
-  <object id="171" name="switch0" type="switch" x="1336" y="592" width="16" height="16">
+  <object id="170" name="barricade00" type="barricade" x="1024" y="600" width="16" height="88"/>
+  <object id="171" name="switch0" type="switch" x="984" y="664" width="16" height="16">
    <properties>
     <property name="attachedBarricade" value="barricade00"/>
    </properties>
@@ -537,6 +537,12 @@ Curently:
     <property name="message" value="Press &lt;UP&gt; to interact"/>
    </properties>
    <point/>
+  </object>
+  <object id="191" name="barricade01" type="barricade" x="1376" y="528" width="16" height="88"/>
+  <object id="192" name="switch1" type="switch" x="1336" y="592" width="16" height="16">
+   <properties>
+    <property name="attachedBarricade" value="barricade01"/>
+   </properties>
   </object>
  </objectgroup>
 </map>

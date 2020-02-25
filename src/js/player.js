@@ -1024,7 +1024,7 @@ Player.died = function(params){
 
     self.doorCooldown = 60;
     var wipe = new Transitioner().start(G.TRANSITION_DEATH, function(){
-        G.loadMap({map:'room01', spawnPoint:'PlayerStart'});
+        G.loadMap({map:G.PLAYER_STARTMAP, spawnPoint:G.PLAYER_STARTSPAWN});
     });
 }
 
