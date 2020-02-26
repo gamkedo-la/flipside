@@ -842,6 +842,10 @@ function processWorldObjects(objects){
 function movePlayerToSpawnPoint(currentMap, spawnPoint) {
     if(spawnPoint.x == undefined) {
         let spawn = loader.tileMaps[currentMap].layers[3].objects.find(function(e){return e.name == spawnPoint});
+        if (!spawn) {
+            console.log("ERROR: missing spawn point ["+spawnPoint+"] in tiled data! ignoring.")
+            return;
+        }
         player.pos.x = spawn.x;
         player.pos.y = spawn.y;
     } else {
