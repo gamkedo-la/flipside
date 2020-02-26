@@ -400,6 +400,8 @@ function render(dt){
         ry1 = (view.y + c.height)/G.world.tileSize + tilePad | 0;
 
     if(USE_GL_RENDERER) {
+        rx0 = view.x/G.world.tileSize | 0;
+        ry0 = view.y / G.world.tileSize | 0;
         const GIDs = [];
         const flips = [];
         let tileIndex = 0;
@@ -429,7 +431,7 @@ function render(dt){
         const deltaY = view.y % G.world.tileSize;
         const backgroundCanvas = G.GLRenderer.getBackgroundImageCanvas(paused, GIDs, flips, deltaX, deltaY);
         //the view.x/y % tileSize accounts for sub-tile scrolling
-        ctx.drawImage(backgroundCanvas, -(tilePad * G.world.tileSize), -(tilePad * G.world.tileSize));
+        ctx.drawImage(backgroundCanvas, 0, 0);
 
     } else {//not using the gl_renderer
         
