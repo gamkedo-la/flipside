@@ -6,8 +6,8 @@ const FILTER_Q_CURVE = [0, 1, 0, 1, 0];
 const VOLUME_INCREMENT = 0.1;
 const CROSSFADE_TIME = 0.25;
 const HARDPAN_THRESH = 300;
-const DROPOFF_MIN = 50;
-const DROPOFF_MAX = 100;
+const DROPOFF_MIN = 100;
+const DROPOFF_MAX = 400;
 
 const AudioGlobal = function AudioGlobal() {
 
