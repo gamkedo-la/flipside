@@ -52,6 +52,27 @@ const textureCoordinateBuilder = function textureCoordinateBuilder() {
         }
     };
 
+    this.generateEntityCoords = function(frameNumber, frameWidth, textureWidth, entityIndex, entityTexCoords) {
+        //assume all textures are single row texture strips (i.e. no height data required)
+        const x1 = frameNumber * frameWidth / textureWidth;
+        const x2 = x1 + frameWidth / textureWidth;
+        const y1 = 0;
+        const y2 = 1;
+
+        //first vertex (upper left)
+        entityTexCoords[8 * entityIndex + 0] = x1;
+        entityTexCoords[8 * entityIndex + 1] = y1;
+        //second vertex (upper right)
+        entityTexCoords[8 * entityIndex + 2] = x2;
+        entityTexCoords[8 * entityIndex + 3] = y1;
+        //third vertex (lower left)
+        entityTexCoords[8 * entityIndex + 4] = x1;
+        entityTexCoords[8 * entityIndex + 5] = y2;
+        //fourth vertex (lower right)
+        entityTexCoords[8 * entityIndex + 6] = x2;
+        entityTexCoords[8 * entityIndex + 7] = y2;
+    }
+
     this.generateFlipCoords = function(sourceWidthInTiles = 60, sourceHightInTiles = 36, fbTexCoords) {
         const numQuads = sourceWidthInTiles * sourceHightInTiles;
         for(let i = 0; i < numQuads; i++) {

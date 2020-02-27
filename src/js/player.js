@@ -819,6 +819,10 @@ Player.play = function play(animationName){
     }
 }
 
+Player.getSpriteSheetFrame = function getSpriteSheetFrame() {
+    return this.currentAnimation.frames[this.currentAnimation.currentFrame];
+}
+
 Player.init = function init(){
     let { img, MSG } = G;
 
