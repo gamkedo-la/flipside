@@ -54,21 +54,27 @@ const vertexDataBuilder = function vertexDataBuilder() {
         return (6 * quads.length);
     }
 
+    this.generateEntityQuads = function(entities, totalWidth, totalHeight, entityVertexData) {
+        for(let i = 0; i < entities.length; i++) {
+            //frameNumber, frameWidth, textureWidth, entityIndex, entityTexCoords
+            const x1 = 0.0;
+            const x2 = entities[i].width * 2.0 / (totalWidth);
+            const y1 = 1.0;
+            const y2 = 1.0 - entities[i].height * 2.0 / (totalHeight);
+
+            //Player is always at the front of this array/buffer
+            entityVertexData[((i + 1) * 8) + 0] = x1;
+            entityVertexData[((i + 1) * 8) + 1] = y1;
+            entityVertexData[((i + 1) * 8) + 2] = x2;
+            entityVertexData[((i + 1) * 8) + 3] = y1;
+            entityVertexData[((i + 1) * 8) + 4] = x1;
+            entityVertexData[((i + 1) * 8) + 5] = y2;
+            entityVertexData[((i + 1) * 8) + 6] = x2;
+            entityVertexData[((i + 1) * 8) + 7] = y2;
+        }
+    }
+
     return this;
 }
 
 export default vertexDataBuilder;
-
-        //232.0/255.0, 106.0/255.0, 115.0/255.0, 1.0; 
-        //188.0/255.0, 74.0/255.0, 155.0/255.0, 1.0
-/*        for(let i = 0; i < indices.length / 2; i++) {
-            if(Math.random() > 0.5) {
-                flipColorArray[3 * indices[i] + 0] = color1[0];
-                flipColorArray[3 * indices[i] + 1] = color1[1];
-                flipColorArray[3 * indices[i] + 2] = color1[2];
-            }  else {
-                flipColorArray[3 * indices[i] + 0] = color2[0];
-                flipColorArray[3 * indices[i] + 1] = color2[1];
-                flipColorArray[3 * indices[i] + 2] = color2[2];
-            }
-        }*/

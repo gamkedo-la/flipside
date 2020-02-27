@@ -220,6 +220,9 @@ function start(sounds){
 
     //create player spritesheet and animations, and set a default animation
     player.init();
+    if(USE_GL_RENDERER) {
+        G.GLRenderer.setPlayerData(G.player.spritesheet.frame.width, G.player.spritesheet.frame.height, G.player.spritesheet.image, G.player.spritesheet._f);
+    }
 
     //create spriteFont
     G.gameFont = new spriteFont({
@@ -427,9 +430,11 @@ function render(dt){
             }
         }
 
+        const x = Math.floor(G.player.pos.x-G.player.width/2-G.view.x)-4;
+        const y = Math.floor(G.player.pos.y-G.player.height/2-G.view.y-3) + 90;//No idea why this is the magic number
         const deltaX = view.x % G.world.tileSize;
         const deltaY = view.y % G.world.tileSize;
-        const backgroundCanvas = G.GLRenderer.getBackgroundImageCanvas(paused, GIDs, flips, deltaX, deltaY);
+        const backgroundCanvas = G.GLRenderer.getBackgroundImageCanvas(paused, GIDs, flips, deltaX, deltaY, x, y, G.player.getSpriteSheetFrame(), false,  null);
         //the view.x/y % tileSize accounts for sub-tile scrolling
         ctx.drawImage(backgroundCanvas, 0, 0);
 
@@ -516,7 +521,9 @@ function render(dt){
     
 
     //render player;
-    player.render();
+    if(!USE_GL_RENDERER) {
+        player.render();
+    }
 
     G.world.entities.forEach(function(e){
         if(inView(e.pos.x, e.pos.y)){

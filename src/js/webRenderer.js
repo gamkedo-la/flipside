@@ -7,6 +7,8 @@ import textureCoordinateBuilder from './textureCoordinateBuilder.js';
 const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage, bkgdImage, flipImage) {
     //------Set up some basic constants---------//
     const TILE_SIZE = 8;
+    const MAX_ENTITIES = 50;//assume no more than 49 enemies on screen at the same time
+    const BRIGHTNESS = 155.0 / 255.0;
     const webCanvas = document.createElement('canvas');
     webCanvas.width = widthInTiles * TILE_SIZE;
     webCanvas.height = heightInTiles * TILE_SIZE;
@@ -20,7 +22,8 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
     const tileDelta = new Float32Array(2).fill(0);
     const bkgdDelta = new Float32Array(2).fill(0);
 
-    const locations = {tile:{}, flip:{}};
+    const locations = {tile:{}, flip:{}, entity:{}};
+    const entities = {player:{}, flipbat:{}, flippig:{}, flipbird:{}, robotank:{}};
     
     //------Get WebGL---------//
     let gl = webCanvas.getContext('webgl');
@@ -39,6 +42,7 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
     const flipTexture = texManager.setUpTexture(flipImage);
     let frameBuffTexIndex = null;
     const frameBuffTex = gl.createTexture();
+    let entityTexture;//FIXME: Right now just using the player texture
     
     //------Set up the geometry, one quad per tile---------//
     let vertexCount = 0;//not just vertsPerRow * numRows because we revisit some vertices and they need to be counted
@@ -50,9 +54,13 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
     let startY = ((heightInBKGDs * bkgdImage.height) - webCanvas.height) / 2;
     startY = 1 + startY / webCanvas.height;
     const bkgdVertexData = vertexGenerator.generateQuads(widthInBKGDs, heightInBKGDs, startX, startY);
+    const entityVertexData = new Float32Array(8 * MAX_ENTITIES).fill(0);
+    const entityPosData = new Float32Array(8 * MAX_ENTITIES).fill(0);
 
     const tileVertexBuffer = gl.createBuffer();
     const bkgdVertexBuffer = gl.createBuffer();
+    const entityVertexBuffer = gl.createBuffer();
+    const entityPosBuffer = gl.createBuffer();
 
     //------Set up index arrays so we draw elements---------//
     const indexBuilder = new indexDataBuilder();
@@ -61,11 +69,13 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
     const bkgdIndexData = indexBuilder.generateIndices(widthInBKGDs * heightInBKGDs);
     const flipColorData = new Float32Array(3 * tileVertexData.length).fill(0.0);//not index data, holds color data for each vertex
     const flipIndexData = new Uint16Array(tileIndexData.length).fill(0);
+    const entityIndexData = indexBuilder.generateIndices(8 * MAX_ENTITIES);
 
     const tileIndexBuffer = gl.createBuffer();
     const bkgdIndexBuffer = gl.createBuffer();
     const flipColorBuffer = gl.createBuffer();//not a buffer for index data
     const flipIndexBuffer = gl.createBuffer();
+    const entityIndexBuffer = gl.createBuffer();
 
     //------Set up texture coordinate arrays so we can sample textures---------//
     const texCoordinator = new textureCoordinateBuilder();
@@ -90,6 +100,8 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
     const bottomTexCoords = new Float32Array(8 * widthInTiles * heightInTiles).fill(0);
     const bottomTexCoordBuffer = gl.createBuffer();
 
+    const entityTexCoords = new Float32Array(8 * MAX_ENTITIES).fill(0);//assume no more than 49 enemies on screen
+    const entityTexCoordBuffer = gl.createBuffer();
 
     //------Build the Vertex and Fragment Shaders--------//
     const getVertexShaderString = function() {
@@ -229,6 +241,41 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
         `;
     }
 
+    const getEntityVertexShaderString = function() {
+        return `
+            precision mediump float;
+
+            attribute vec2 deltaPos;
+            attribute vec2 vertPosition;
+            attribute vec2 aTextureCoord;
+
+            varying vec2 vTextureCoord;
+
+            void main() {
+                gl_Position = vec4(vertPosition.x + deltaPos.x, vertPosition.y + deltaPos.y, 0.0, 1.0);
+                vTextureCoord = aTextureCoord;
+            }
+        `;
+    }
+
+    const getEntityFragShaderString = function() {
+        return `
+            precision mediump float;
+
+            varying vec2 vTextureCoord;
+
+            uniform sampler2D sampler;
+            uniform float brightness;
+
+            void main(void) {
+                gl_FragColor = texture2D(sampler, vTextureCoord);
+                gl_FragColor.r = clamp(gl_FragColor.r + brightness, 0.0, 1.0);
+                gl_FragColor.g = clamp(gl_FragColor.g + brightness, 0.0, 1.0);
+                gl_FragColor.b = clamp(gl_FragColor.b + brightness, 0.0, 1.0);
+            }
+        `;
+    }
+
     //------Build a program using the two shaders--------//
     const getWebGLProgram = function(vertShaderString, fragShaderString) {
         const vertexShader = gl.createShader(gl.VERTEX_SHADER);
@@ -279,6 +326,14 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
             for(let i = 0; i < uniforms.length; i++) {
                 locations.flip[uniforms[i]] = gl.getUniformLocation(flipProgram, uniforms[i]);
             }
+        }  else if(program == entityProgram) {
+            for(let i = 0; i < attribs.length; i++) {
+                locations.entity[attribs[i]] = gl.getAttribLocation(entityProgram, attribs[i]);
+            }
+
+            for(let i = 0; i < uniforms.length; i++) {
+                locations.entity[uniforms[i]] = gl.getUniformLocation(entityProgram, uniforms[i]);
+            }
         }
     }
 
@@ -286,6 +341,8 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
     getLocations(tileProgram, ["vertPosition", "aTextureCoord"], ["delta", "sampler"]);
     const flipProgram = getWebGLProgram(getFlipVertShaderString(), getFlipFragShaderString());
     getLocations(flipProgram, ["vertPosition", "fbCoords", "lCoords", "tCoords", "rCoords", "bCoords", "flipColor"], ["delta", "frameBuffSampler", "flipSampler", "deltaFBCoord"]);
+    const entityProgram = getWebGLProgram(getEntityVertexShaderString(), getEntityFragShaderString());
+    getLocations(entityProgram, ["vertPosition", "aTextureCoord", "deltaPos"], ["sampler", "brightness"])
 
     //------A function to link and enable attribute data--------//
     const setAttribData = function(buffer, data, location, elementCount = 2, drawHint = gl.STATIC_DRAW, type = gl.FLOAT, stride = 0, offset = 0) {
@@ -361,6 +418,31 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
         gl.uniform1f(locations.flip.deltaFBCoord, flipDelta / 288.0);
     }
 
+    const setUpEntityAttribs = function(playerBright, playerFrame, enemies) {
+        texCoordinator.generateEntityCoords(playerFrame, entities.player.frameWidth, entities.player.textureWidth, 0, entityTexCoords);
+
+        if(enemies != null) {
+            for(let i = 0; i < enemies.length; i++) {
+                vertexDataBuilder.generateEntityQuads(enemies, widthInTiles * TILE_SIZE, heightInTiles * TILE_SIZE, entityVertexData);
+                texCoordinator.generateEntityCoords(enemies[i].frame, enemies[i].frameWidth, enemies[i].textureWidth, i + 1, entityTexCoords);
+            }    
+        }
+
+        setAttribData(entityVertexBuffer, entityVertexData, locations.entity.vertPosition);
+        setAttribData(entityPosBuffer, entityPosData, locations.entity.deltaPos);
+
+        // Tell the shader which texture point we bound the combined entity texture to 
+        gl.uniform1i(locations.entity.sampler, entityTexture);
+
+        if(playerBright) {
+            gl.uniform1f(locations.entity.brightness, BRIGHTNESS);
+        } else {
+            gl.uniform1f(locations.entity.brightness, 0.0);
+        }
+
+        setAttribData(entityTexCoordBuffer, entityTexCoords, locations.entity.aTextureCoord);
+    }
+
     const drawBackground = function(deltaX, deltaY) {
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, bkgdIndexBuffer);
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, bkgdIndexData, gl.STATIC_DRAW);
@@ -408,7 +490,77 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
         );
     }
 
-    this.getBackgroundImageCanvas = function(paused, tileData, flipIndices, deltaX, deltaY) {
+    const drawEntities = function(playerX, playerY, playerFrame, playerBright, enemies = []) {
+        //Start by setting up to draw the player since the player is always on screen
+
+        let drawCount = 6;
+        if(enemies != null) {
+            drawCount += 6 * enemies.length;
+
+            for(let i = 0; i < enemies.length; i++) {
+                //need to update entity vertex data (this changes because the width and height of entity frames are different)
+                entityVertexData
+                
+                entityPosData[(i + 1) * 2] = enemies[i].posX;
+                entityPosData[((i + 1) * 2) + 1] = enemies[i].posY;
+                entityPosData[((i + 1) * 2) + 2] = enemies[i].posX;
+                entityPosData[((i + 1) * 2) + 3] = enemies[i].posY;
+                entityPosData[((i + 1) * 2) + 4] = enemies[i].posX;
+                entityPosData[((i + 1) * 2) + 5] = enemies[i].posY;
+                entityPosData[((i + 1) * 2) + 6] = enemies[i].posX;
+                entityPosData[((i + 1) * 2) + 7] = enemies[i].posY;
+            }
+        }
+
+        entityPosData[0] = playerX;
+        entityPosData[1] = playerY;
+        entityPosData[2] = playerX;
+        entityPosData[3] = playerY;
+        entityPosData[4] = playerX;
+        entityPosData[5] = playerY;
+        entityPosData[6] = playerX;
+        entityPosData[7] = playerY;
+
+        //don't need to update entity index data (it's all just quads, so the order doesn't change, just how many we're drawing)
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, entityIndexBuffer);
+        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, entityIndexData, gl.STATIC_DRAW);
+
+        setUpEntityAttribs(playerBright, playerFrame, enemies);
+
+        gl.drawElements(
+            gl.TRIANGLES, //what to draw triangle strip? triangle fan?
+            drawCount, //how many vertexes are we drawing?
+            gl.UNSIGNED_SHORT, //what kind of data are we drawing
+            0 //how far into the element array buffer are we going to start drawing?
+        );
+    }
+
+    this.setPlayerData = function(width, height, image, frameCount) {
+        //TODO: I'll need all entity images in a single texture
+        entities.player.width = width;
+        entities.player.height = height;
+        entityTexture = texManager.setUpTexture(image);//FIXME: will need to combine all entities into a single texture
+        entities.player.texure = texManager.setUpTexture(image);
+        entities.player.textureWidth = image.width;
+        entities.player.frameWidth = image.width / frameCount;
+        
+        const x1 = 0.0;
+        const x2 = width * 2.0 / (widthInTiles * TILE_SIZE);
+        const y1 = (height * 2.0) / (heightInTiles * TILE_SIZE);
+        const y2 = 0.0;
+
+        //Player is always at the front of this array/buffer
+        entityVertexData[0] = x1;
+        entityVertexData[1] = y1;
+        entityVertexData[2] = x2;
+        entityVertexData[3] = y1;
+        entityVertexData[4] = x1;
+        entityVertexData[5] = y2;
+        entityVertexData[6] = x2;
+        entityVertexData[7] = y2;
+    }
+
+    this.getBackgroundImageCanvas = function(paused, tileData, flipIndices, deltaX, deltaY, playerX, playerY, playerFrame, playerBright = false, enemies = null) {
         if(paused) return webCanvas;
         //Prepare to draw this frame
         gl.clearColor(0.0, 0.0, 0.0, 1.0);//full black
@@ -428,8 +580,11 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
 
         //Prepare to draw flipspace
         gl.useProgram(flipProgram);
-
         drawFlipspace(flipIndices);
+
+        //Prepare to draw entities (player and enemies)
+        gl.useProgram(entityProgram);
+        drawEntities(2 * playerX / (widthInTiles * TILE_SIZE) - 1, 2 * playerY / (heightInTiles * TILE_SIZE) - 1, playerFrame, playerBright, enemies);
 
         return webCanvas;
     }
