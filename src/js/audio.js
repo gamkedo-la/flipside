@@ -159,17 +159,17 @@ const AudioGlobal = function AudioGlobal() {
 		return;
 	}
 
-	this.calculatePan = function(referanceX, panX) {
-		panX -= referanceX;
+	this.calculatePan = function(panX) {
+		panX -= G.view.x + G.view.w/2;
 		if (panX > HARDPAN_THRESH) panX = HARDPAN_THRESH;
 		if (panX < -HARDPAN_THRESH) panX = -HARDPAN_THRESH;
 
 		return panX/HARDPAN_THRESH;
 	}
 
-	this.calcuateVolumeDropoff = function(referancePos, objectPos) {
-		var dx = referancePos.x - objectPos.x;
-		var dy = referancePos.y - objectPos.y;
+	this.calcuateVolumeDropoff = function(objectPos) {
+		var dx = (G.view.x + G.view.w/2) - objectPos.x;
+		var dy = (G.view.y + G.view.h/2) - objectPos.y;
 		var distance = Math.sqrt(dx * dx + dy * dy);
 
 		var newVolume = 1;

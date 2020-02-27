@@ -87,7 +87,7 @@ FlipBat.prototype.update = function update(dt){
                 this.wasHit = true;
                 G.bullets.kill(i);
                 this.health--;
-                G.audio.playSound(G.sounds.mobHit1, 0, 0.1, 1, false);
+                G.audio.playSound(G.sounds.mobHit1, G.audio.calculatePan(this.pos.x), G.audio.calcuateVolumeDropoff(this.pos)*0.1, 1, false);
             }
         }
     }
@@ -156,7 +156,7 @@ FlipBat.prototype.init = function init(){
 }
 
 FlipBat.prototype.kill = function kill(){
-    G.audio.playSound(G.sounds.splode1, range(this.pos.x-G.view.x, 0,427,-1,1), 0.5, 1, false);
+    G.audio.playSound(G.sounds.splode1, G.audio.calculatePan(this.pos.x), G.audio.calcuateVolumeDropoff(this.pos)*0.5, 1, false);
     //splodey splode
     let splodeCount = 32;
     while(--splodeCount){
