@@ -224,7 +224,7 @@ Slime.prototype.init = function init(){
 
 Slime.prototype.kill = function kill(){
     //splodey splode
-    G.audio.playSound(G.sounds.splode1, range(this.pos.x-G.view.x, 0,427,-1,1), 0.5, 1, false);
+    G.audio.playSound(G.sounds.splode1, G.audio.calculatePan(this.pos.x), G.audio.calcuateVolumeDropoff(this.pos)*0.5, 1, false);
     let splodeCount = 32;
             while(--splodeCount){
                 G.particles.spawn(

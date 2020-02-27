@@ -530,7 +530,7 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         if(this.input.primaryFire && !this.gunCooldown){ //fire gun
             this.gunCooldown = this.gunCooldownMax;
             this.muzzleFlash();
-            G.audio.playSound(G.sounds.playerShoot, 0, 0.5, 1, false);
+            G.audio.playSound(G.sounds.playerShoot, G.audio.calculatePan(this.pos.x), G.audio.calcuateVolumeDropoff(this.pos)*0.5, 1, false);
             G.bullets.spawn(
                 this.facingLeft ? this.pos.x+this.gunOffset.leftX : this.pos.x+this.gunOffset.rightX,
                 this.pos.y + this.gunOffset.y,
@@ -596,7 +596,7 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         this.hasPugGun ? this.play('walkRight') : this.play('walkRightNoGun');
     }
     if((G.Records.playerStats.stepsTaken % 18 < 1) && !this.playedFootstep){
-        G.audio.playSound(G.sounds.footstep, 0, 1, 1, false);
+        G.audio.playSound(G.sounds.footstep, G.audio.calculatePan(this.pos.x), G.audio.calcuateVolumeDropoff(this.pos)*1, 1, false);
         this.playedFootstep = true;
     }
     if(this.falling){
@@ -643,13 +643,13 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
             this.jumping = true;
             this.input.jump = false;
             this.pos.y+=5;
-            G.audio.playSound(G.sounds.jump, 0, 1, 1, false)
+            G.audio.playSound(G.sounds.jump, G.audio.calculatePan(this.pos.x), G.audio.calcuateVolumeDropoff(this.pos)*1, 1, false)
         } else {
             this.vy = -this.jumpVel
             this.jumping = true;
             this.input.jump = false;
             this.canJump = false;
-            this.hasHighJump ? G.audio.playSound(G.sounds.highJump, 0, 1, 1, false) : G.audio.playSound(G.sounds.jump, 0, 1, 1, false)
+            this.hasHighJump ? G.audio.playSound(G.sounds.highJump, G.audio.calculatePan(this.pos.x), G.audio.calcuateVolumeDropoff(this.pos)*1, 1, false) : G.audio.playSound(G.sounds.jump, G.audio.calculatePan(this.pos.x), G.audio.calcuateVolumeDropoff(this.pos)*1, 1, false)
 
         }
 
@@ -960,7 +960,7 @@ Player.hurt = function(params){
 
     if(!this.hurtCooldown){
         this.play('pointedUpRightNoGun');
-        G.audio.playSound(G.sounds.playerHit, 0, 0.5, 1, false)
+        G.audio.playSound(G.sounds.playerHit, G.audio.calculatePan(this.pos.x), G.audio.calcuateVolumeDropoff(this.pos)*0.5, 1, false)
         let hurtParticleCount = 20;
         while(--hurtParticleCount){
             G.particles.spawn(
@@ -1012,7 +1012,7 @@ Player.hurt = function(params){
 
 Player.died = function(params){
     console.log('dead');
-    G.audio.playSound(G.sounds.playerDeath, 0, 0.5, 1, false);
+    G.audio.playSound(G.sounds.playerDeath, G.audio.calculatePan(this.pos.x), G.audio.calcuateVolumeDropoff(this.pos)*0.5, 1, false);
     this.health = this.maxHealth;
     if (G.Records && G.Records.playerStats && G.Records.playerStats.totals) {
         G.Records.playerStats.totals.deaths++;

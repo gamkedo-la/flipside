@@ -6,7 +6,7 @@ const FILTER_Q_CURVE = [0, 1, 0, 1, 0];
 const VOLUME_INCREMENT = 0.1;
 const CROSSFADE_TIME = 0.25;
 const HARDPAN_THRESH = 300;
-const DROPOFF_MIN = 100;
+const DROPOFF_MIN = 75;
 const DROPOFF_MAX = 400;
 
 const AudioGlobal = function AudioGlobal() {
@@ -160,7 +160,7 @@ const AudioGlobal = function AudioGlobal() {
 	}
 
 	this.calculatePan = function(panX) {
-		panX -= G.view.x + G.view.w/2;
+		panX -= G.view.x + G.c.width/2;
 		if (panX > HARDPAN_THRESH) panX = HARDPAN_THRESH;
 		if (panX < -HARDPAN_THRESH) panX = -HARDPAN_THRESH;
 
@@ -168,8 +168,8 @@ const AudioGlobal = function AudioGlobal() {
 	}
 
 	this.calcuateVolumeDropoff = function(objectPos) {
-		var dx = (G.view.x + G.view.w/2) - objectPos.x;
-		var dy = (G.view.y + G.view.h/2) - objectPos.y;
+		var dx = (G.view.x + G.c.width/2) - objectPos.x;
+		var dy = (G.view.y + G.c.height/2) - objectPos.y;
 		var distance = Math.sqrt(dx * dx + dy * dy);
 
 		var newVolume = 1;
