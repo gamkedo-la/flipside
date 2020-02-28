@@ -695,13 +695,17 @@ function handleInput(dt){
         player.input.secondaryFire = false;
     }
     if(Key.justReleased(Key.ONE)){
+        console.log("CHEAT KEY: toggling gun");
         player.hasPugGun = !player.hasPugGun;
     }
     if(Key.justReleased(Key.TWO)){
+        console.log("CHEAT KEY: toggling highjump");
         player.hasHighJump = !player.hasHighJump;
     }
-
-
+    if(Key.justReleased(Key.THREE)){
+        console.log("CHEAT KEY: clearing localstorage savegame");
+        localStorage.removeItem("flipside-game1");
+    }
     if(Key.justReleased(Key.m)){
         audio.toggleMute();
     }
