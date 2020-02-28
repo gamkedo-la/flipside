@@ -6,8 +6,8 @@ const FILTER_Q_CURVE = [0, 1, 0, 1, 0];
 const VOLUME_INCREMENT = 0.1;
 const CROSSFADE_TIME = 0.25;
 const HARDPAN_THRESH = 300;
-const DROPOFF_MIN = 75;
-const DROPOFF_MAX = 400;
+const DROPOFF_MIN = 100;
+const DROPOFF_MAX = 500;
 
 const AudioGlobal = function AudioGlobal() {
 
@@ -22,7 +22,7 @@ const AudioGlobal = function AudioGlobal() {
 	this.init = function() {
 		if (initialized) return;
 
-		console.log("Initializing Audio...");
+		//console.log("Initializing Audio...");
 		// note: this causes a browser error if user has not interacted w page yet    
 		audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 		this.context = audioCtx;
@@ -52,14 +52,14 @@ const AudioGlobal = function AudioGlobal() {
 		if (!initialized) return;
 
 		var newVolume = (masterBus.gain.value === 0 ? 1 : 0);
-		masterBus.gain.linearRampToValueAtTime(newVolume, audioCtx.currentTime + 0.03);
+		masterBus.gain.setTargetAtTime(newVolume, audioCtx.currentTime, 0.03);
 	}
 
 	this.setMute = function(tOrF) {
 		if (!initialized) return;
 
 		var newVolume = (tOrF === false ? 1 : 0);
-		masterBus.gain.linearRampToValueAtTime(newVolume, audioCtx.currentTime + 0.03);
+		masterBus.gain.setTargetAtTime(newVolume, audioCtx.currentTime, 0.03);
 	}
 
 	this.setMusicVolume = function(amount) {
@@ -71,7 +71,7 @@ const AudioGlobal = function AudioGlobal() {
 		} else if (musicVolume < 0.0) {
 			musicVolume = 0.0;
 		}
-		musicBus.gain.linearRampToValueAtTime(musicVolume, audioCtx.currentTime + 0.03);
+		musicBus.gain.setTargetAtTime(Math.pow(musicVolume, 2), audioCtx.currentTime, 0.03);
 	}
 
 	this.setSoundEffectsVolume = function(amount) {
@@ -83,7 +83,7 @@ const AudioGlobal = function AudioGlobal() {
 		} else if (soundEffectsVolume < 0.0) {
 			soundEffectsVolume = 0.0;
 		}
-		soundEffectsBus.gain.linearRampToValueAtTime(soundEffectsVolume, audioCtx.currentTime + 0.03);
+		soundEffectsBus.gain.setTargetAtTime(Math.pow(soundEffectsVolume, 2), audioCtx.currentTime, 0.03);
 	}
 
 	this.turnVolumeUp = function() {
@@ -179,7 +179,7 @@ const AudioGlobal = function AudioGlobal() {
 			newVolume = 0;
 		}
 
-		return newVolume;
+		return Math.pow(newVolume, 2);
 	}
 
 	this.getDuration = function(soundReferance) {
