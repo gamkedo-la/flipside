@@ -185,7 +185,7 @@ ParticlePool.prototype.update = function update(dt){
         //if life is zero, skip update, increment i 1 tuple. 
         //we don't delete particles, we just don't update or draw them
         
-        if(this.pool[i]<=0){i+=this.tuple; this.kill(i)}
+        if(this.pool[i]<=0){this.kill(i); i+=this.tuple; }
         else{
             switch(this.pool[i+G.PARTICLE_TYPE]){
                 case G.PICKUP_NANITE: {
