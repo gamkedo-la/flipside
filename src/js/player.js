@@ -332,9 +332,6 @@ Player.zapWalls = function() {
 
 Player.render = function render(dt, world, worldFlipped, worldForeground){
 
-    // temp debug test - bolts that collide with walls!
-    //this.zapWalls();
-
     if(this.inTheFlip){
         let x = this.pos.x + this.flipBar.xOffset - G.view.x;
         let y = this.pos.y + this.flipBar.yOffset - G.view.y;
@@ -370,7 +367,7 @@ Player.inTheFlipPhysics = function inTheFlipPhysics(dt, world, worldFlipped){
         G.particles.spawn(
             this.pos.x,
             this.pos.y,
-            -this.vxx,
+            -this.vx,
             -this.vy,
             22,
             3,
