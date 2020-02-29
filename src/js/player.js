@@ -6,6 +6,12 @@ import { rectCollision, pointInRect } from './util.js';
 import { showMessage } from "./UI.js";
 import G from './G.js';
 
+// we tweak the bbox size in tileCollisionCheck()
+// so we can fit in a five tile high tunnel which visually looks correct
+// set to 0 for default behaviour, bbox is same size as the art
+const EXTRA_HEADROOM = 8; // pixels of hair that is allowed to intersect with the ceiling in 
+// note that we may want to do the same mod to withinCheck, getTiles, rectCollision? maybe!
+
 const Player = {
     spritesheet:{},
     currentAnimation:{},
@@ -48,7 +54,7 @@ const Player = {
     },
 
     width: 18,
-    height: 41,
+    height: 41,// the art is 41, but visually players expect to be able to fit in a tunnel 5 tiles high, 40px
 
     health: 100,
     maxHealth: 100,
@@ -187,6 +193,7 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
     this.prevX = this.pos.x;
     this.prevY = this.pos.y;
 
+    // these defaults are updated in tileCollisionCheck
     this.rect.top = this.pos.y - this.height/2;
     this.rect.bottom = this.pos.y + this.height/2;
     this.rect.left = this.pos.x - this.width/2;
@@ -732,8 +739,9 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
 }
 
 Player.tileCollisionCheck = function tileCollisionCheck(world, tileCheck){
+    
     //update body edges
-    this.rect.top = this.pos.y - this.height/2;
+    this.rect.top = this.pos.y - this.height/2 + EXTRA_HEADROOM;
     this.rect.bottom = this.pos.y + this.height/2;
     this.rect.left = this.pos.x - this.width/2;
     this.rect.right = this.pos.x + this.width/2;
