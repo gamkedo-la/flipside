@@ -434,7 +434,7 @@ function render(dt){
         const y = Math.floor(G.player.pos.y-G.player.height/2-G.view.y-3) + 90;//No idea why this is the magic number
         const deltaX = view.x % G.world.tileSize;
         const deltaY = view.y % G.world.tileSize;
-        const backgroundCanvas = G.GLRenderer.getBackgroundImageCanvas(paused, GIDs, flips, deltaX, deltaY, x, y, G.player.getSpriteSheetFrame(), false,  null);
+        const backgroundCanvas = G.GLRenderer.getBackgroundImageCanvas(paused, GIDs, flips, deltaX, deltaY, x, y, G.player.getSpriteSheetFrame(), G.player.wasHit,  null);
         //the view.x/y % tileSize accounts for sub-tile scrolling
         ctx.drawImage(backgroundCanvas, 0, 0);
 

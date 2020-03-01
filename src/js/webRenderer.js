@@ -560,6 +560,10 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
         entityVertexData[7] = y2;
     }
 
+    this.prepareEntitySpriteSheet = function(imageData) {
+        
+    }
+
     this.getBackgroundImageCanvas = function(paused, tileData, flipIndices, deltaX, deltaY, playerX, playerY, playerFrame, playerBright = false, enemies = null) {
         if(paused) return webCanvas;
         //Prepare to draw this frame
