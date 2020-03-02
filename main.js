@@ -42,7 +42,7 @@ import WebRenderer from './src/js/webRenderer.js';
 
 
 
-const USE_GL_RENDERER = false;
+const USE_GL_RENDERER = true;
 const invertedMosaicEffectEnabled = false;
 const soundEnabled = true;
 

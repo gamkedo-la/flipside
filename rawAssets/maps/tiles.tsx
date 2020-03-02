@@ -8,6 +8,7 @@
   <terrain name="dirt3" tile="1218"/>
   <terrain name="dirtWall" tile="0"/>
   <terrain name="dirt4" tile="1218"/>
+  <terrain name="flipwall" tile="0"/>
  </terraintypes>
  <tile id="9" type="flipbat"/>
  <tile id="10" type="flippig"/>
@@ -41,6 +42,13 @@
  <tile id="308" terrain="4,,4,4"/>
  <tile id="309" terrain=",,4,4"/>
  <tile id="310" terrain=",,4,4"/>
+ <tile id="312" terrain=",6,6,6"/>
+ <tile id="313" terrain=",,,6"/>
+ <tile id="314" terrain=",,6,6"/>
+ <tile id="315" terrain=",,6,"/>
+ <tile id="316" terrain="6,,6,6"/>
+ <tile id="317" terrain=",,6,6"/>
+ <tile id="318" terrain=",,6,6"/>
  <tile id="320" terrain=",,,4"/>
  <tile id="321" terrain=",4,4,4"/>
  <tile id="322" terrain="4,4,4,4"/>
@@ -48,6 +56,13 @@
  <tile id="324" terrain=",,4,"/>
  <tile id="325" terrain="4,4,,"/>
  <tile id="326" terrain="4,4,,"/>
+ <tile id="328" terrain=",,,6"/>
+ <tile id="329" terrain=",6,6,6"/>
+ <tile id="330" terrain="6,6,6,6"/>
+ <tile id="331" terrain="6,,6,6"/>
+ <tile id="332" terrain=",,6,"/>
+ <tile id="333" terrain="6,6,,"/>
+ <tile id="334" terrain="6,6,,"/>
  <tile id="336" terrain=",4,,4"/>
  <tile id="337" terrain="4,4,4,4"/>
  <tile id="338" terrain="4,4,4,4"/>
@@ -55,6 +70,13 @@
  <tile id="340" terrain="4,,4,"/>
  <tile id="341" terrain=",4,,4"/>
  <tile id="342" terrain="4,,4,"/>
+ <tile id="344" terrain=",6,,6"/>
+ <tile id="345" terrain="6,6,6,6"/>
+ <tile id="346" terrain="6,6,6,6"/>
+ <tile id="347" terrain="6,6,6,6"/>
+ <tile id="348" terrain="6,,6,"/>
+ <tile id="349" terrain=",6,,6"/>
+ <tile id="350" terrain="6,,6,"/>
  <tile id="352" terrain=",4,,"/>
  <tile id="353" terrain="4,4,,4"/>
  <tile id="354" terrain="4,4,4,4"/>
@@ -62,11 +84,23 @@
  <tile id="356" terrain="4,,,"/>
  <tile id="357" terrain=",4,,4"/>
  <tile id="358" terrain="4,,4,"/>
+ <tile id="360" terrain=",6,,"/>
+ <tile id="361" terrain="6,6,,6"/>
+ <tile id="362" terrain="6,6,6,6"/>
+ <tile id="363" terrain="6,6,6,"/>
+ <tile id="364" terrain="6,,,"/>
+ <tile id="365" terrain=",6,,6"/>
+ <tile id="366" terrain="6,,6,"/>
  <tile id="368" terrain="4,4,,4"/>
  <tile id="369" terrain=",4,,"/>
  <tile id="370" terrain="4,4,,"/>
  <tile id="371" terrain="4,,,"/>
  <tile id="372" terrain="4,4,4,"/>
+ <tile id="376" terrain="6,6,,6"/>
+ <tile id="377" terrain=",6,,"/>
+ <tile id="378" terrain="6,6,,"/>
+ <tile id="379" terrain="6,,,"/>
+ <tile id="380" terrain="6,6,6,"/>
  <tile id="1111" terrain=",,,1"/>
  <tile id="1112" terrain=",,1,1"/>
  <tile id="1113" terrain=",,1,"/>
