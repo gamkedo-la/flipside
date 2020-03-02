@@ -221,7 +221,17 @@ function start(sounds){
     //create player spritesheet and animations, and set a default animation
     player.init();
     if(USE_GL_RENDERER) {
-        G.GLRenderer.setPlayerData(G.player.spritesheet.frame.width, G.player.spritesheet.frame.height, G.player.spritesheet.image, G.player.spritesheet._f);
+        const entityData = {
+            player: {
+                image:G.player.spritesheet.image,
+                frameCount:G.player.spritesheet._f
+            },
+            flipbat: {
+                image:G.img.EnemyTinyflyer,
+                frameCount:8 
+            }
+        }
+        G.GLRenderer.prepareEntityData(entityData);
     }
 
     //create spriteFont
