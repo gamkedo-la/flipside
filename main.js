@@ -221,7 +221,17 @@ function start(sounds){
     //create player spritesheet and animations, and set a default animation
     player.init();
     if(USE_GL_RENDERER) {
-        G.GLRenderer.setPlayerData(G.player.spritesheet.frame.width, G.player.spritesheet.frame.height, G.player.spritesheet.image, G.player.spritesheet._f);
+        const entityData = {
+            player: {
+                image:G.player.spritesheet.image,
+                frameCount:G.player.spritesheet._f
+            },
+            flipbat: {
+                image:G.img.EnemyTinyflyer,
+                frameCount:8 
+            }
+        }
+        G.GLRenderer.prepareEntityData(entityData);
     }
 
     //create spriteFont
@@ -434,7 +444,7 @@ function render(dt){
         const y = Math.floor(G.player.pos.y-G.player.height/2-G.view.y-3) + 90;//No idea why this is the magic number
         const deltaX = view.x % G.world.tileSize;
         const deltaY = view.y % G.world.tileSize;
-        const backgroundCanvas = G.GLRenderer.getBackgroundImageCanvas(paused, GIDs, flips, deltaX, deltaY, x, y, G.player.getSpriteSheetFrame(), false,  null);
+        const backgroundCanvas = G.GLRenderer.getBackgroundImageCanvas(paused, GIDs, flips, deltaX, deltaY, x, y, G.player.getSpriteSheetFrame(), G.player.wasHit,  null);
         //the view.x/y % tileSize accounts for sub-tile scrolling
         ctx.drawImage(backgroundCanvas, 0, 0);
 

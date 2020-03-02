@@ -42,7 +42,7 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
     const flipTexture = texManager.setUpTexture(flipImage);
     let frameBuffTexIndex = null;
     const frameBuffTex = gl.createTexture();
-    let entityTexture;//FIXME: Right now just using the player texture
+//    let entityTexture;//FIXME: Right now just using the player texture
     
     //------Set up the geometry, one quad per tile---------//
     let vertexCount = 0;//not just vertsPerRow * numRows because we revisit some vertices and they need to be counted
@@ -419,7 +419,8 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
     }
 
     const setUpEntityAttribs = function(playerBright, playerFrame, enemies) {
-        texCoordinator.generateEntityCoords(playerFrame, entities.player.frameWidth, entities.player.textureWidth, 0, entityTexCoords);
+        //frameNumber, frameWidth, frameTop, frameHeight, textureWidth, textureHeight, entityIndex, entityTexCoords
+        texCoordinator.generateEntityCoords(playerFrame, entities.player.frameWidth, entities.player.frameY, entities.player.frameHeight, entities.textureWidth, entities.textureHeight, 0, entityTexCoords);
 
         if(enemies != null) {
             for(let i = 0; i < enemies.length; i++) {
@@ -432,7 +433,8 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
         setAttribData(entityPosBuffer, entityPosData, locations.entity.deltaPos);
 
         // Tell the shader which texture point we bound the combined entity texture to 
-        gl.uniform1i(locations.entity.sampler, entityTexture);
+//        gl.uniform1i(locations.entity.sampler, entityTexture);
+        gl.uniform1i(locations.entity.sampler, entities.texture);
 
         if(playerBright) {
             gl.uniform1f(locations.entity.brightness, BRIGHTNESS);
@@ -535,29 +537,51 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
         );
     }
 
-    this.setPlayerData = function(width, height, image, frameCount) {
-        //TODO: I'll need all entity images in a single texture
-        entities.player.width = width;
-        entities.player.height = height;
-        entityTexture = texManager.setUpTexture(image);//FIXME: will need to combine all entities into a single texture
-        entities.player.texure = texManager.setUpTexture(image);
-        entities.player.textureWidth = image.width;
-        entities.player.frameWidth = image.width / frameCount;
-        
-        const x1 = 0.0;
-        const x2 = width * 2.0 / (widthInTiles * TILE_SIZE);
-        const y1 = (height * 2.0) / (heightInTiles * TILE_SIZE);
-        const y2 = 0.0;
+    this.prepareEntityData = function(entityData) {
+        const entityCanvas = document.createElement('canvas');
+        let maxWidth = 0;
+        let totalHeight = 0;
+        for(let key in entityData) {
+            if(entityData[key].image.width > maxWidth) {
+                maxWidth = entityData[key].image.width;
+            }
+
+            totalHeight += (entityData[key].image.height + 1);
+        }
+
+        entityCanvas.width = maxWidth;
+        entityCanvas.height = totalHeight;
+        const entityContext = entityCanvas.getContext("2d");
+
+        let currentHeight = 0;
+        for(let key in entityData) {
+            entities[key].frameX = 0;//all starting at zero for now
+            entities[key].frameY = currentHeight;
+            entities[key].frameWidth = entityData[key].image.width / entityData[key].frameCount;
+            entities[key].frameHeight = entityData[key].image.height;
+            entities[key].vert_x1 = 0.0;
+            entities[key].vert_x2 = entities[key].frameWidth * 2.0 / (widthInTiles * TILE_SIZE);
+            entities[key].vert_y1 = (entityData[key].image.height * 2.0) / (heightInTiles * TILE_SIZE);
+            entities[key].vert_y2 = 0.0;
+
+            entityContext.drawImage(entityData[key].image, 0, currentHeight);
+            currentHeight += entityData[key].image.height + 1;
+        }
+
+        entities.texture = texManager.setUpTexture(entityCanvas);
+        entities.textureWidth = entityCanvas.width;
+        entities.textureHeight = entityCanvas.height;
 
         //Player is always at the front of this array/buffer
-        entityVertexData[0] = x1;
-        entityVertexData[1] = y1;
-        entityVertexData[2] = x2;
-        entityVertexData[3] = y1;
-        entityVertexData[4] = x1;
-        entityVertexData[5] = y2;
-        entityVertexData[6] = x2;
-        entityVertexData[7] = y2;
+        entityVertexData[0] = entities.player.vert_x1;
+        entityVertexData[1] = entities.player.vert_y1;
+        entityVertexData[2] = entities.player.vert_x2;
+        entityVertexData[3] = entities.player.vert_y1;
+        entityVertexData[4] = entities.player.vert_x1;
+        entityVertexData[5] = entities.player.vert_y2;
+        entityVertexData[6] = entities.player.vert_x2;
+        entityVertexData[7] = entities.player.vert_y2;
+
     }
 
     this.getBackgroundImageCanvas = function(paused, tileData, flipIndices, deltaX, deltaY, playerX, playerY, playerFrame, playerBright = false, enemies = null) {

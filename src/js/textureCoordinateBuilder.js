@@ -52,12 +52,11 @@ const textureCoordinateBuilder = function textureCoordinateBuilder() {
         }
     };
 
-    this.generateEntityCoords = function(frameNumber, frameWidth, textureWidth, entityIndex, entityTexCoords) {
-        //assume all textures are single row texture strips (i.e. no height data required)
+    this.generateEntityCoords = function(frameNumber, frameWidth, frameTop, frameHeight, textureWidth, textureHeight, entityIndex, entityTexCoords) {
         const x1 = frameNumber * frameWidth / textureWidth;
         const x2 = x1 + frameWidth / textureWidth;
-        const y1 = 0;
-        const y2 = 1;
+        const y1 = frameTop / textureHeight;
+        const y2 = y1 + frameHeight / textureHeight;
 
         //first vertex (upper left)
         entityTexCoords[8 * entityIndex + 0] = x1;
