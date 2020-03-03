@@ -2,6 +2,7 @@ import GLTextureManager from './GLTextureManager.js';
 import vertexDataBuilder from './vertexDataBuilder.js';
 import indexDataBuilder from './indexDataBuilder.js';
 import textureCoordinateBuilder from './textureCoordinateBuilder.js';
+import G from './G.js';
 
 //Make some webGL stuff here
 const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage, bkgdImage, flipImage) {
@@ -9,6 +10,7 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
     const TILE_SIZE = 8;
     const MAX_ENTITIES = 50;//assume no more than 49 enemies on screen at the same time
     const BRIGHTNESS = 155.0 / 255.0;
+    let BASELINE = null;//Need a reference frame for flipspace 'waviness' effect to prevent jumping from affecting it
     const webCanvas = document.createElement('canvas');
     webCanvas.width = widthInTiles * TILE_SIZE;
     webCanvas.height = heightInTiles * TILE_SIZE;
@@ -415,7 +417,7 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
 
         flipDelta += 1.0;
         if(flipDelta > 288.0) flipDelta -= 288.0;
-        gl.uniform1f(locations.flip.deltaFBCoord, flipDelta / 288.0);
+        gl.uniform1f(locations.flip.deltaFBCoord, (flipDelta - Math.round(2*(G.view.y - BASELINE))) / 288.0);
     }
 
     const setUpEntityAttribs = function(playerBright, playerFrame, enemies) {
@@ -586,6 +588,7 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
 
     this.getBackgroundImageCanvas = function(paused, tileData, flipIndices, deltaX, deltaY, playerX, playerY, playerFrame, playerBright = false, enemies = null) {
         if(paused) return webCanvas;
+        if(BASELINE == null) BASELINE = G.view.y;
         //Prepare to draw this frame
         gl.clearColor(0.0, 0.0, 0.0, 1.0);//full black
         gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
