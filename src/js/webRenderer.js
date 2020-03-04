@@ -611,7 +611,9 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
 
         //Prepare to draw entities (player and enemies)
         gl.useProgram(entityProgram);
-        drawEntities(2 * playerX / (widthInTiles * TILE_SIZE) - 1, 2 * playerY / (heightInTiles * TILE_SIZE) - 1, playerFrame, playerBright, enemies);
+        const playXPos = 2 * playerX / (widthInTiles * TILE_SIZE) - 1;
+        const playYPos = -(2 * playerY / (heightInTiles * TILE_SIZE) - 1);
+        drawEntities(playXPos, playYPos, playerFrame, playerBright, enemies);
 
         return webCanvas;
     }

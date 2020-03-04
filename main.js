@@ -441,7 +441,7 @@ function render(dt){
         }
 
         const x = Math.floor(G.player.pos.x-G.player.width/2-G.view.x)-4;
-        const y = Math.floor(G.player.pos.y-G.player.height/2-G.view.y-3) + 90;//No idea why this is the magic number
+        const y = Math.floor(G.player.pos.y-G.player.height/2-G.view.y-3) + 45;//No idea why this is the magic number
         const deltaX = view.x % G.world.tileSize;
         const deltaY = view.y % G.world.tileSize;
         const backgroundCanvas = G.GLRenderer.getBackgroundImageCanvas(paused, GIDs, flips, deltaX, deltaY, x, y, G.player.getSpriteSheetFrame(), G.player.wasHit,  null);
