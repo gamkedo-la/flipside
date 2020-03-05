@@ -56,8 +56,8 @@ const Player = {
     width: 18,
     height: 41,// the art is 41, but visually players expect to be able to fit in a tunnel 5 tiles high, 40px
 
-    health: 100,
-    maxHealth: 100,
+    health: 50,
+    maxHealth: 50,
 
     //when we shoot flipspace tiles, this is how long before they heal
     flipRemovedCooldown: 240,
@@ -87,7 +87,7 @@ const Player = {
     submergedInFlip: false,
 
     flipTimer: 0,
-    flipTimeMax: 200,
+    flipTimeMax: 100,
 
     hurtCooldown: 0,
     hurtCooldownMax: 30,
@@ -226,8 +226,12 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
     }
 
     if(this.health < 0){
-        MSG.dispatch("died", {x: this.pos.x, y: this.pos.y});
+        this.play('dissolveDeath');
+        if(this.getSpriteSheetFrame() == 59){
+            MSG.dispatch("died", {x: this.pos.x, y: this.pos.y});
+        }
     }
+
 
 
     //---flipped world checks
@@ -618,7 +622,10 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
     }
 
     if(this.input.down && ( this.inAir || this.falling ) ){
-        this.play('pointedDown');
+        if(this.hasPugGun){
+            this.play('pointedDown');
+        }
+        
     }
     if(this.input.up){
         if(this.hasPugGun){
@@ -843,6 +850,10 @@ Player.init = function init(){
         frameWidth: 31,
         frameHeight: 45,
         animations: {
+            dissolveDeath: {
+                frames: '40..59',
+                frameRate: 12
+            },
             idleLeft: {
                 frames: '22..27',
                 frameRate: 5
@@ -852,11 +863,11 @@ Player.init = function init(){
                 frameRate: 5
             },
             idleLeftNoGun: {
-                frames: '68..69',
+                frames: '78..79',
                 frameRate: 1
             },
             idleRightNoGun: {
-                frames: '70..71',
+                frames: '80..81',
                 frameRate: 1
             },
             walkRight: {
@@ -868,11 +879,11 @@ Player.init = function init(){
                 frameRate: 16
             },
             walkRightNoGun: {
-                frames: '50..57',
+                frames: '60..67',
                 frameRate: 12
             },
             walkLeftNoGun: {
-                frames: '58..65',
+                frames: '68..75',
                 frameRate: 12
             },
             fallingLeft:{
@@ -882,10 +893,10 @@ Player.init = function init(){
                 frames: 30
             },
             fallingLeftNoGun:{
-                frames: 67
+                frames: 77
             },
             fallingRightNoGun: {
-                frames: 66
+                frames: 76
             },
             airLeft: {
                 frames: 29
@@ -894,10 +905,10 @@ Player.init = function init(){
                 frames: 28
             },
             airLeftNoGun: {
-                frames: 67
+                frames: 77
             },
             airRightNoGun: {
-                frames: 66
+                frames: 76
             },
             crouchLeft: {
                 frames: 33
@@ -912,16 +923,16 @@ Player.init = function init(){
                 frames: 35
             },
             crouchLeftNoGun: {
-                frames: 73
+                frames: 83
             },
             crouchRightNoGun: {
-                frames: 72
+                frames: 82
             },
             pointedUpRightNoGun: {
-                frames: 74
+                frames: 84
             },
             pointedUpLeftNoGun: {
-                frames: 75
+                frames: 85
             },
             pointedDown: {
                 frames: 36
