@@ -183,18 +183,23 @@ G.MSG.addEventListener('achievement',  function (event) { showMessage(`ACHIEVEME
 loader.loadInitialMapData(G.currentMap, init);
 
 function init(){
-
+    G.imagesTotal = images.length;
+    G.soundsTotal = soundList.length;
+    
     G.img = loader.loadImages(images, soundInit);
 
     G.world = new World();
     G.worldFlipped = new World();
     G.worldForeground = new World();
 
+    
+
 }
 
 // this not not ONLY the sound inits, it is init step two after images have downloaded
 // with optional sound inits as well as essential map loading and game start callbacks
 function soundInit(){
+    
     if(USE_GL_RENDERER) {
         G.GLRenderer = new WebRenderer(60, 36, G.img.tiles, G.img.labCaveWall, G.img.flipSpace);
     }

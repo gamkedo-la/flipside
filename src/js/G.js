@@ -1,4 +1,9 @@
 export const G = {
+    //loading totals
+    imagesLoaded        :           0,
+    soundsLoaded        :           0,
+    imagesTotal         :           0,
+    soundsTotal         :           0,
     //particle types
     JETBUBBLE          :           1,
     CROSSBUBBLE        :           2,
