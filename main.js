@@ -192,7 +192,9 @@ function init(){
     G.worldFlipped = new World();
     G.worldForeground = new World();
 
-    
+    if(G.imagesLoaded != G.imagesTotal && G.soundsTotal != soundList.length){
+        requestAnimationFrame(drawLoadingScreen);
+    }
 
 }
 
@@ -309,7 +311,7 @@ function frame(){
     }
 
 }
-G.frame = frame;
+//G.frame = frame;
 
 //game loop steps--------------------------------------------------------------------
 
@@ -377,6 +379,10 @@ function update(dt){
 function drawPauseMenu() {
     
     ctx.drawImage(G.img.pauseScreen, 0,0);
+}
+
+function drawTitleScreen() {
+
 }
 
 function render(dt){
@@ -643,14 +649,6 @@ function render(dt){
         G.rb.ctx.clearRect(0,0,427,240);
         drawPauseMenu();
     }
-
-   
-
-    
-    
-    
-
-    
 
 }//end render
 

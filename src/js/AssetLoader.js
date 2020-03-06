@@ -1,3 +1,5 @@
+import G from "./G.js";
+
 const AssetLoader = function AssetLoader(){
     this.images = {};
     this.brightImages = {};
@@ -27,6 +29,7 @@ AssetLoader.prototype.loadImages = function loadImages(names, callback) {
         result[name] = document.createElement('img');
         result[name].addEventListener('load', onload);
         result[name].src = "src/img/" + name + ".png";
+        G.imagesLoaded++;
     }
     
     return result;
@@ -142,7 +145,7 @@ AssetLoader.prototype.soundLoader = function ({context, urlList, callback} = {})
     this.urlList = urlList;
     this.onSoundsLoaded = callback;
     
-    this.loadCount = 0;
+    this.loadCount = G.soundsLoaded;
   }
   
   AssetLoader.prototype.loadBuffer = function(url, key) {
@@ -163,6 +166,7 @@ AssetLoader.prototype.soundLoader = function ({context, urlList, callback} = {})
             return;
           }
           loader.sounds[key] = buffer;
+          ++G.soundsLoaded;
           if (++loader.loadCount == loader.urlList.length)
             loader.onSoundsLoaded(loader.sounds);
         },

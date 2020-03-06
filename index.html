@@ -10,6 +10,16 @@
 </head>
 <body>
     <canvas id = 'c'></canvas>
+    <script>
+        ctx = c.getContext('2d');
+        console.log('loading...')
+        ctx.fillStyle="rgb(50,0,100)"
+        ctx.fillRect(0,0,c.width, c.height);
+        ctx.font = '30px Arial';
+        ctx.fillStyle = 'white';
+        ctx.textAlign = 'center';
+        ctx.fillText('Loading...', c.width/2, c.height/2);
+    </script>
     <script type="module" src = 'main.js'></script>
     <script src="src/js/mapLoader.js"></script>
 </body>
