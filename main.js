@@ -118,6 +118,7 @@ const images = [
     'msgBox2',
     'msgBox3',
     'pauseScreen',
+    'titleScreen',
     'portraits',
     'face1',
     'face2',
@@ -268,7 +269,7 @@ function start(sounds){
     G.img.tiles27 = preRenderBlendedSprite({img:G.img.tiles, blendmode:'overlay', color:"rgba(188, 74, 155, 1)"});
 
     //Fire it up!
-    requestAnimationFrame(frame);
+    requestAnimationFrame(drawTitleScreen);
     if (soundEnabled) G.music = G.audio.playMusic(G.sounds.testMusic1)
     G.music.volume.gain.value = 0.65;
     console.log(G.music);
@@ -382,7 +383,21 @@ function drawPauseMenu() {
 }
 
 function drawTitleScreen() {
-
+    Key.update();
+    ctx.drawImage(G.img.titleScreen, 0,0);
+    G.gameFont.drawText({
+        textString: 'press c to continue',
+        pos: { x: 60, y: 160 },
+        spacing: 0
+        })
+    if(Key.isDown(Key.c)){
+        requestAnimationFrame(frame);
+        return;
+    }else{
+        requestAnimationFrame(drawTitleScreen);
+    }
+    
+    
 }
 
 function render(dt){
@@ -776,7 +791,7 @@ function loadMap({map, spawnPoint}){
 
     G.currentMap = map;
 }
-G.loadMap = loadMap
+//G.loadMap = loadMap
 
 function loadFromConsole(loadedMap, spawnPoint) {
     let { loader, currentMap, world, worldFlipped, worldForeground } = G;
