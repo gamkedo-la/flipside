@@ -184,8 +184,13 @@ G.MSG.addEventListener('achievement',  function (event) { showMessage(`ACHIEVEME
 loader.loadInitialMapData(G.currentMap, init);
 
 function init(){
+    console.log("Main init begins...")
+
     G.imagesTotal = images.length;
     G.soundsTotal = soundList.length;
+    
+    console.log("Images loaded: "+G.imagesLoaded+"/"+G.imagesTotal);
+    console.log("Sounds loaded: "+G.soundsTotal+"/"+soundList.length);
     
     G.img = loader.loadImages(images, soundInit);
 
@@ -195,6 +200,8 @@ function init(){
 
     if(G.imagesLoaded != G.imagesTotal && G.soundsTotal != soundList.length){
         requestAnimationFrame(drawLoadingScreen);
+    } else {
+        console.log("No drawLoadingScreen required: everything loaded already.");
     }
 
 }

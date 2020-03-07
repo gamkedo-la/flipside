@@ -5,6 +5,7 @@ const loading = function Loading(dt){
     this.total = 0;
     this.loaded = 0;
     this.render = function render(dt){
+        console.log("loading.render");
         //if loaded != total
             //draw text "Loading..."
             //draw progress bar based on total-loading
@@ -13,6 +14,7 @@ const loading = function Loading(dt){
         
     };
     this.update = function update(dt){
+        console.log("loading.update");
         
         //get total initial maps, sounds, image counts from G.loader
         //populate Total var

@@ -21,6 +21,7 @@ AssetLoader.prototype.loadImages = function loadImages(names, callback) {
                 this.images = result;
                 self.prepareBrightImages(result);
                 callback();
+                G.imagesLoaded++;
             }
         }
     
@@ -29,7 +30,7 @@ AssetLoader.prototype.loadImages = function loadImages(names, callback) {
         result[name] = document.createElement('img');
         result[name].addEventListener('load', onload);
         result[name].src = "src/img/" + name + ".png";
-        G.imagesLoaded++;
+        //G.imagesLoaded++; // not yet! wait till it is fully loaded
     }
     
     return result;
