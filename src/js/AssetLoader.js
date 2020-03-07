@@ -17,11 +17,11 @@ AssetLoader.prototype.loadImages = function loadImages(names, callback) {
         count  = names.length,
         self = this,
         onload = function() {
+            G.imagesLoaded++; // used by the loading Screen
             if(--count == 0){
                 this.images = result;
                 self.prepareBrightImages(result);
                 callback();
-                G.imagesLoaded++;
             }
         }
     
