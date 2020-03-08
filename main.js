@@ -319,7 +319,7 @@ function frame(){
     }
 
 }
-//G.frame = frame;
+G.frame = frame;
 
 //game loop steps--------------------------------------------------------------------
 
@@ -798,7 +798,7 @@ function loadMap({map, spawnPoint}){
 
     G.currentMap = map;
 }
-//G.loadMap = loadMap
+G.loadMap = loadMap
 
 function loadFromConsole(loadedMap, spawnPoint) {
     let { loader, currentMap, world, worldFlipped, worldForeground } = G;
