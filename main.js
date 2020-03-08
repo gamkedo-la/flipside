@@ -112,6 +112,7 @@ const images = [
     'EnemyTinydiver',
     'EnemyRoboTank',
     'EnemyFlipTank',
+    'EnemyFlipSlime',
     'flipspider',
     'flipSpace',
     'msgBox1',
@@ -241,9 +242,37 @@ function start(sounds){
                 image:G.player.spritesheet.image,
                 frameCount:G.player.spritesheet._f
             },
-            flipbat: {
+            EnemyTinyflyer: {
                 image:G.img.EnemyTinyflyer,
                 frameCount:8 
+            },
+            EnemyTinydiver: {
+                image:G.img.EnemyTinydiver,
+                frameCount:4 
+            },
+            EnemyTinydrone: {
+                image:G.img.EnemyFlipTank,
+                frameCount:4 
+            },
+            EnemyTinycrawler: {
+                image:G.img.EnemyTinycrawler,
+                frameCount:16 
+            },
+            flipspider: {
+                image:G.img.flipspider,
+                frameCount:16 
+            },
+            EnemyFlipTank: {
+                image:G.img.EnemyFlipTank,
+                frameCount:4  
+            },
+            EnemyRoboTank: {
+                image:G.img.EnemyRoboTank,
+                frameCount:4 
+            },
+            EnemyFlipSlime: {
+                image:G.img.EnemyFlipSlime,
+                frameCount:9 
             }
         }
         G.GLRenderer.prepareEntityData(entityData);
@@ -407,6 +436,18 @@ function drawTitleScreen() {
     
 }
 
+function isEnemyType(type) {
+    return ((type == "EnemyTinyflyer") ||
+            (type == "EnemyTinycrawler") ||
+            (type == "EnemyTinydiver") ||
+            (type == "EnemyTinydrone") ||
+            (type == "flipspider") ||
+            (type == "EnemyRoboTank") ||
+            (type == "EnemyFlipTank") ||
+            (type == "EnemyFlipSlime") ||
+            (type == "EnemyFlipSlime"))
+}
+
 function render(dt){
     
 
@@ -477,7 +518,21 @@ function render(dt){
         const y = Math.floor(G.player.pos.y-G.player.height/2-G.view.y-3) + 45;//No idea why this is the magic number
         const deltaX = view.x % G.world.tileSize;
         const deltaY = view.y % G.world.tileSize;
-        const backgroundCanvas = G.GLRenderer.getBackgroundImageCanvas(paused, GIDs, flips, deltaX, deltaY, x, y, G.player.getSpriteSheetFrame(), G.player.wasHit,  null);
+
+        const enemies = [];
+        G.world.entities.forEach(function(e){
+            if(inView(e.pos.x, e.pos.y)){
+//                console.log(e.type);
+                if(isEnemyType(e.type)) {
+                    const enemyX = Math.floor(e.pos.x-e.width/2-G.view.x + e.drawOffset.x);
+                    const enemyY = Math.floor(e.pos.y+e.height/2-G.view.y + e.drawOffset.y);
+//                    const enemyX = Math.floor(e.pos.x-e.width/2-G.view.x)-4;
+//                    const enemyY = Math.floor(e.pos.y-e.height/2-G.view.y-3) + 45;
+                    enemies.push({type: e.type, posX:enemyX, posY:enemyY, frame:e.getSpriteSheetFrame()})
+                }
+            }
+        });
+        const backgroundCanvas = G.GLRenderer.getBackgroundImageCanvas(paused, GIDs, flips, deltaX, deltaY, x, y, G.player.getSpriteSheetFrame(), G.player.wasHit,  enemies);
         //the view.x/y % tileSize accounts for sub-tile scrolling
         ctx.drawImage(backgroundCanvas, 0, 0);
 
@@ -563,16 +618,15 @@ function render(dt){
     //render AABB's, including pickups and baddies
     
 
-    //render player;
-    if(!USE_GL_RENDERER) {
-        player.render();
-    }
-
     G.world.entities.forEach(function(e){
         if(inView(e.pos.x, e.pos.y)){
-            e.render();
+            e.render(USE_GL_RENDERER);
         }
     });
+
+    //render player;
+    player.render(USE_GL_RENDERER);
+
     //render foreground tiles if any in front of player-----------------------------------
     for(let i = rx0; i < rx1; i++){
         for(let j = ry0; j < ry1; j++){

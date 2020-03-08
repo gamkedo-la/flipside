@@ -14,6 +14,7 @@ const ROBO_FIRE_DIST = 64; // shoot at the player if we get closer than this
 // patrols the area near pos, back and forth horizontally
 const RoboTank = function RoboTank({pos}={}){
     this.start = pos;
+    this.type = "EnemyFlipTank";
     this.currentAnimation = 'idle';
     this.target = {x: pos.x + 24, y: pos.y };
     this.speed = 0.001;
@@ -23,7 +24,7 @@ const RoboTank = function RoboTank({pos}={}){
     this.health = 32;
     this.healthMax = 32;
     this.pos = {x: pos.x, y: pos.y-11}; // put feet where bottom of Tiled icon appears
-    this.drawOffset = {x: 4, y: -2}; // center the sprite when rendering
+    this.drawOffset = {x: 4, y: -1}; // center the sprite when rendering
     this.gunOffset = {leftX: -14, rightX: 20, y: -3}; // where bullets come from
     this.wasHit = false;
     this.timeSinceHit = 0;
@@ -177,7 +178,7 @@ RoboTank.prototype.update = function update(dt){
 
 }
 
-RoboTank.prototype.render = function render(dt){
+RoboTank.prototype.render = function render(glRender, dt){
     //console.log("Robotank is rendering at "+this.pos.x.toFixed(1)+','+this.pos.y.toFixed(1))
     if(this.health < this.healthMax){
         let fillWidth = range(this.health, 0, this.healthMax, 0, this.healthBar.width);
@@ -187,12 +188,15 @@ RoboTank.prototype.render = function render(dt){
             this.healthBar.height,
             8)
     }
-    this.currentAnimation.render({
-        x: Math.floor(this.pos.x-this.width/2-G.view.x + this.drawOffset.x),
-        y: Math.floor(this.pos.y-this.height/2-G.view.y + this.drawOffset.y),
-        width: ROBOTANK_W,
-        height: ROBOTANK_H
-    });
+
+    if(!glRender) {
+        this.currentAnimation.render({
+            x: Math.floor(this.pos.x-this.width/2-G.view.x + this.drawOffset.x),
+            y: Math.floor(this.pos.y-this.height/2-G.view.y + this.drawOffset.y),
+            width: ROBOTANK_W,
+            height: ROBOTANK_H
+        });
+    }
 
     if (ROBO_DEBUG) {
         // draw collision box
@@ -208,6 +212,10 @@ RoboTank.prototype.play = function play(animationName){
     if (!this.currentAnimation.loop){
         this.currentAnimation.reset();
     }
+}
+
+RoboTank.prototype.getSpriteSheetFrame = function getSpriteSheetFrame() {
+    return this.currentAnimation.frames[this.currentAnimation.currentFrame];
 }
 
 RoboTank.prototype.init = function init(){

@@ -9,16 +9,17 @@ const MAX_SPEED = 500;
 const FlipBat = function FlipBat(obj){
     this.height = obj.properties.find(function(e){return e.name == 'pathHeightInTiles'}).value;
     this.name = obj.name;
+    this.type = "EnemyTinyflyer";
     this.start = {x: obj.x, y: obj.y};
     this.target = {x: obj.x, y: obj.y + this.height * 8}
     this.pos = {x: obj.x, y: obj.y};
     this.speed = 30;
     this.width = 12;
-    this.height = 12;
+    this.height = 29;
     this.rect = {};
     this.health = 32;
     this.healthMax = 32;
-    this.drawOffset = {x: -7, y: -13}
+    this.drawOffset = {x: -7, y: -0}
     this.lerpAmount = 0;
     this.movingDown = true
     this.wasHit = false;
@@ -97,7 +98,7 @@ FlipBat.prototype.update = function update(dt){
 
 }
 
-FlipBat.prototype.render = function render(dt){
+FlipBat.prototype.render = function render(glRender, dt) {
     if(this.health < this.healthMax){
         let fillWidth = range(this.health, 0, this.healthMax, 0, this.healthBar.width);
         G.gameFont.drawText({
@@ -112,12 +113,15 @@ FlipBat.prototype.render = function render(dt){
             this.healthBar.height,
             8)
     }
-    this.currentAnimation.render({
-        x: Math.floor(this.pos.x-this.width/2-G.view.x + this.drawOffset.x),
-        y: Math.floor(this.pos.y-this.height/2-G.view.y + this.drawOffset.y),
-        width: 22,
-        height: 29
-    })
+
+    if(!glRender) {
+        this.currentAnimation.render({
+            x: Math.floor(this.pos.x-this.width/2-G.view.x + this.drawOffset.x),
+            y: Math.floor(this.pos.y-this.height/2-G.view.y + this.drawOffset.y),
+            width: 22,
+            height: 29
+        })
+    }
 
    // G.rb.rect(this.rect.left-G.view.x, this.rect.top-G.view.y, this.width, this.height, 11);
 }
@@ -128,6 +132,10 @@ FlipBat.prototype.play = function play(animationName){
     if (!this.currentAnimation.loop){
         this.currentAnimation.reset();
     }
+}
+
+FlipBat.prototype.getSpriteSheetFrame = function getSpriteSheetFrame() {
+    return this.currentAnimation.frames[this.currentAnimation.currentFrame];
 }
 
 FlipBat.prototype.init = function init(){
