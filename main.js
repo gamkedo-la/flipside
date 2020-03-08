@@ -348,7 +348,7 @@ function frame(){
     }
 
 }
-//G.frame = frame;
+G.frame = frame;
 
 //game loop steps--------------------------------------------------------------------
 
@@ -422,11 +422,11 @@ function drawTitleScreen() {
     Key.update();
     ctx.drawImage(G.img.titleScreen, 0,0);
     G.gameFont.drawText({
-        textString: 'press c to continue',
-        pos: { x: 60, y: 160 },
+        textString: 'press z to continue',
+        pos: { x: 150, y: 200 },
         spacing: 0
         })
-    if(Key.isDown(Key.c)){
+    if(Key.isDown(Key.z)){
         requestAnimationFrame(frame);
         return;
     }else{
@@ -849,7 +849,7 @@ function loadMap({map, spawnPoint}){
 
     G.currentMap = map;
 }
-//G.loadMap = loadMap
+G.loadMap = loadMap
 
 function loadFromConsole(loadedMap, spawnPoint) {
     let { loader, currentMap, world, worldFlipped, worldForeground } = G;
