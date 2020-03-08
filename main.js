@@ -393,11 +393,11 @@ function drawTitleScreen() {
     Key.update();
     ctx.drawImage(G.img.titleScreen, 0,0);
     G.gameFont.drawText({
-        textString: 'press c to continue',
-        pos: { x: 60, y: 160 },
+        textString: 'press z to continue',
+        pos: { x: 150, y: 200 },
         spacing: 0
         })
-    if(Key.isDown(Key.c)){
+    if(Key.isDown(Key.z)){
         requestAnimationFrame(frame);
         return;
     }else{
