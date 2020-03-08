@@ -17,6 +17,7 @@ const ROBO_FIRE_DIST = 64; // shoot at the player if we get closer than this
 
 // patrols the area near pos, back and forth horizontally
 const Slime = function Slime({pos}={}){
+    this.type = "EnemyFlipSlime";
     this.start = pos;
     this.currentAnimation = 'idle';
     this.target = {x: pos.x + 24, y: pos.y };
@@ -165,7 +166,7 @@ Slime.prototype.update = function update(dt){
 
 }
 
-Slime.prototype.render = function render(dt){
+Slime.prototype.render = function render(glRender, dt){
     //console.log("Robotank is rendering at "+this.pos.x.toFixed(1)+','+this.pos.y.toFixed(1))
     if(this.health < this.healthMax){
         let fillWidth = range(this.health, 0, this.healthMax, 0, this.healthBar.width);
@@ -175,12 +176,15 @@ Slime.prototype.render = function render(dt){
             this.healthBar.height,
             8)
     }
-    this.currentAnimation.render({
-        x: Math.floor(this.pos.x-this.width/2-G.view.x + this.drawOffset.x),
-        y: Math.floor(this.pos.y-this.height/2-G.view.y + this.drawOffset.y),
-        width: ROBOTANK_W,
-        height: ROBOTANK_H
-    });
+
+    if(!glRender) {
+        this.currentAnimation.render({
+            x: Math.floor(this.pos.x-this.width/2-G.view.x + this.drawOffset.x),
+            y: Math.floor(this.pos.y-this.height/2-G.view.y + this.drawOffset.y),
+            width: ROBOTANK_W,
+            height: ROBOTANK_H
+        });
+    }
 
     if (ROBO_DEBUG) {
         // draw collision box
@@ -196,6 +200,10 @@ Slime.prototype.play = function play(animationName){
     if (!this.currentAnimation.loop){
         this.currentAnimation.reset();
     }
+}
+
+Slime.prototype.getSpriteSheetFrame = function getSpriteSheetFrame() {
+    return this.currentAnimation.frames[this.currentAnimation.currentFrame];
 }
 
 Slime.prototype.init = function init(){

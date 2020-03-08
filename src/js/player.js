@@ -341,7 +341,7 @@ Player.zapWalls = function() {
 
 }
 
-Player.render = function render(dt, world, worldFlipped, worldForeground){
+Player.render = function render(glRenderer, dt, world, worldFlipped, worldForeground){
 
     if(this.inTheFlip){
         let x = this.pos.x + this.flipBar.xOffset - G.view.x;
@@ -352,12 +352,15 @@ Player.render = function render(dt, world, worldFlipped, worldForeground){
         G.ctx.fillRect(x, y, w, h);
     }
 
-    this.currentAnimation.render({
-        x: Math.floor(this.pos.x-this.width/2-G.view.x)-4,
-        y: Math.floor(this.pos.y-this.height/2-G.view.y-3),
-        width: 31,
-        height: 45
-    })
+    if(!glRenderer) {
+        this.currentAnimation.render({
+            x: Math.floor(this.pos.x-this.width/2-G.view.x)-4,
+            y: Math.floor(this.pos.y-this.height/2-G.view.y-3),
+            width: 31,
+            height: 45
+        })
+    }
+    
     let dX = this.pos.x-G.view.x, dY = this.rect.bottom-G.view.y
     //G.rb.line(dX, dY, dX, dY-3, 11);
 

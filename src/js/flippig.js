@@ -12,11 +12,12 @@ const PIG = function PIG(obj){
     this.target = {x: obj.x + this.pathWidth*8, y: obj.y }
     
     this.name = obj.name;
+    this.type = "EnemyTinycrawler";
     
     this.speed = 20;
     //width and height are hitbox, not the sprite
     this.width = 30;
-    this.height = 20;
+    this.height = 30;
     this.rect = {};
     this.health = 32;
     this.healthMax = 32;
@@ -28,7 +29,7 @@ const PIG = function PIG(obj){
 
     //Tiled xy is upper-left of tileObject and can't be changed in-editor
     //modifying actual position here to compensate
-    this.pos = {x: obj.x, y: obj.y-6};
+    this.pos = {x: obj.x, y: obj.y-1};
         
     this.drawOffset = {x:4, y:-12}; 
 
@@ -99,7 +100,7 @@ PIG.prototype.update = function update(dt){
 
 }
 
-PIG.prototype.render = function render(dt){
+PIG.prototype.render = function render(glRender, dt){
     //console.log("PIG is rendering at "+this.pos.x.toFixed(1)+','+this.pos.y.toFixed(1))
     if(this.health < this.healthMax){
         let fillWidth = range(this.health, 0, this.healthMax, 0, this.healthBar.width);
@@ -109,12 +110,15 @@ PIG.prototype.render = function render(dt){
             this.healthBar.height,
             8)
     }
-    this.currentAnimation.render({
-        x: Math.floor(this.pos.x-this.width/2-G.view.x + this.drawOffset.x),
-        y: Math.floor(this.pos.y-this.height/2-G.view.y + this.drawOffset.y),
-        // width: PIG_W,
-        // height: PIG_H
-    })
+
+    if(!glRender) {
+        this.currentAnimation.render({
+            x: Math.floor(this.pos.x-this.width/2-G.view.x + this.drawOffset.x),
+            y: Math.floor(this.pos.y-this.height/2-G.view.y + this.drawOffset.y),
+            width: this.width,
+            height: this.height
+        })
+    }
 
   //  G.rb.rect(this.rect.left-G.view.x, this.rect.top-G.view.y, this.width, this.height, 11);
 }
@@ -124,6 +128,10 @@ PIG.prototype.play = function play(animationName){
     if (!this.currentAnimation.loop){
         this.currentAnimation.reset();
     }
+}
+
+PIG.prototype.getSpriteSheetFrame = function getSpriteSheetFrame() {
+    return this.currentAnimation.frames[this.currentAnimation.currentFrame];
 }
 
 PIG.prototype.init = function init(){

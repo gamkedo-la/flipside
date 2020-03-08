@@ -25,7 +25,7 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
     const bkgdDelta = new Float32Array(2).fill(0);
 
     const locations = {tile:{}, flip:{}, entity:{}};
-    const entities = {player:{}, flipbat:{}, flippig:{}, flipbird:{}, robotank:{}};
+    const entities = {player:{}, EnemyTinyflyer:{}, EnemyTinycrawler:{}, EnemyTinydiver:{}, EnemyTinydrone:{}, EnemyFlipTank:{}, EnemyRoboTank:{}, EnemyFlipSlime:{}, flipspider:{}};
     
     //------Get WebGL---------//
     let gl = webCanvas.getContext('webgl');
@@ -71,7 +71,7 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
     const bkgdIndexData = indexBuilder.generateIndices(widthInBKGDs * heightInBKGDs);
     const flipColorData = new Float32Array(3 * tileVertexData.length).fill(0.0);//not index data, holds color data for each vertex
     const flipIndexData = new Uint16Array(tileIndexData.length).fill(0);
-    const entityIndexData = indexBuilder.generateIndices(8 * MAX_ENTITIES);
+    const entityIndexData = indexBuilder.generateIndices(6 * MAX_ENTITIES);
 
     const tileIndexBuffer = gl.createBuffer();
     const bkgdIndexBuffer = gl.createBuffer();
@@ -426,8 +426,18 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
 
         if(enemies != null) {
             for(let i = 0; i < enemies.length; i++) {
-                vertexDataBuilder.generateEntityQuads(enemies, widthInTiles * TILE_SIZE, heightInTiles * TILE_SIZE, entityVertexData);
-                texCoordinator.generateEntityCoords(enemies[i].frame, enemies[i].frameWidth, enemies[i].textureWidth, i + 1, entityTexCoords);
+                const enemy = enemies[i];
+                const key = enemy.type;
+                entityVertexData[(8 * (i + 1)) + 0] = entities[key].vert_x1;
+                entityVertexData[(8 * (i + 1)) + 1] = entities[key].vert_y1;
+                entityVertexData[(8 * (i + 1)) + 2] = entities[key].vert_x2;
+                entityVertexData[(8 * (i + 1)) + 3] = entities[key].vert_y1;
+                entityVertexData[(8 * (i + 1)) + 4] = entities[key].vert_x1;
+                entityVertexData[(8 * (i + 1)) + 5] = entities[key].vert_y2;
+                entityVertexData[(8 * (i + 1)) + 6] = entities[key].vert_x2;
+                entityVertexData[(8 * (i + 1)) + 7] = entities[key].vert_y2;
+//                vertexDataBuilder.generateEntityQuads(enemies, widthInTiles * TILE_SIZE, heightInTiles * TILE_SIZE, entityVertexData);
+                texCoordinator.generateEntityCoords(enemy.frame, entities[key].frameWidth, entities[key].frameY, entities[key].frameHeight, entities.textureWidth, entities.textureHeight, i + 1, entityTexCoords);
             }    
         }
 
@@ -503,16 +513,20 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
 
             for(let i = 0; i < enemies.length; i++) {
                 //need to update entity vertex data (this changes because the width and height of entity frames are different)
-                entityVertexData
+//                entityVertexData
+
+                const enemyXPos = 2 * enemies[i].posX / (widthInTiles * TILE_SIZE) - 1;
+//                const enemyYPos = -(2 * (enemies[i].posY + 20) / (heightInTiles * TILE_SIZE) - 1);
+                const enemyYPos = -(2 * (enemies[i].posY) / (heightInTiles * TILE_SIZE) - 1);
                 
-                entityPosData[(i + 1) * 2] = enemies[i].posX;
-                entityPosData[((i + 1) * 2) + 1] = enemies[i].posY;
-                entityPosData[((i + 1) * 2) + 2] = enemies[i].posX;
-                entityPosData[((i + 1) * 2) + 3] = enemies[i].posY;
-                entityPosData[((i + 1) * 2) + 4] = enemies[i].posX;
-                entityPosData[((i + 1) * 2) + 5] = enemies[i].posY;
-                entityPosData[((i + 1) * 2) + 6] = enemies[i].posX;
-                entityPosData[((i + 1) * 2) + 7] = enemies[i].posY;
+                entityPosData[((i + 1) * 8) + 0] = enemyXPos;
+                entityPosData[((i + 1) * 8) + 1] = enemyYPos;
+                entityPosData[((i + 1) * 8) + 2] = enemyXPos;
+                entityPosData[((i + 1) * 8) + 3] = enemyYPos;
+                entityPosData[((i + 1) * 8) + 4] = enemyXPos;
+                entityPosData[((i + 1) * 8) + 5] = enemyYPos;
+                entityPosData[((i + 1) * 8) + 6] = enemyXPos;
+                entityPosData[((i + 1) * 8) + 7] = enemyYPos;
             }
         }
 
@@ -583,7 +597,6 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
         entityVertexData[5] = entities.player.vert_y2;
         entityVertexData[6] = entities.player.vert_x2;
         entityVertexData[7] = entities.player.vert_y2;
-
     }
 
     this.getBackgroundImageCanvas = function(paused, tileData, flipIndices, deltaX, deltaY, playerX, playerY, playerFrame, playerBright = false, enemies = null) {

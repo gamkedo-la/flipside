@@ -19,6 +19,7 @@ const DRONE_FIRE_DIST = 64;
 // Patrols the area near pos, back and forth horizontally
 const Drone = function Drone({pos}={}){
     this.start = pos;
+    this.type = "EnemyTinydrone";//May need to change, there is no image yet
     this.currentAnimation = 'idle';
     this.target = {x: pos.x + 24, y: pos.y };
     this.speed = 0.001;
@@ -176,7 +177,7 @@ Drone.prototype.update = function update(dt){
     }
 }
 
-Drone.prototype.render = function render(dt){
+Drone.prototype.render = function render(glRender, dt){
     // Draw health bar
     if(this.health < this.healthMax){
         let fillWidth = range(this.health, 0, this.healthMax, 0, this.healthBar.width);
@@ -187,13 +188,15 @@ Drone.prototype.render = function render(dt){
             8)
     }
 
-    // Draw the drone
-    this.currentAnimation.render({
-        x: Math.floor(this.pos.x-this.width/2-G.view.x + this.drawOffset.x),
-        y: Math.floor(this.pos.y-this.height/2-G.view.y + this.drawOffset.y),
-        width: DRONE_W,
-        height: DRONE_H
-    });
+    if(!glRender) {
+        // Draw the drone
+        this.currentAnimation.render({
+            x: Math.floor(this.pos.x-this.width/2-G.view.x + this.drawOffset.x),
+            y: Math.floor(this.pos.y-this.height/2-G.view.y + this.drawOffset.y),
+            width: DRONE_W,
+            height: DRONE_H
+        });
+    }
 
     if (DRONE_DEBUG) {
         // Draw collision box
@@ -209,6 +212,10 @@ Drone.prototype.play = function play(animationName){
     if (!this.currentAnimation.loop){
         this.currentAnimation.reset();
     }
+}
+
+Drone.prototype.getSpriteSheetFrame = function getSpriteSheetFrame() {
+    return this.currentAnimation.frames[this.currentAnimation.currentFrame];
 }
 
 Drone.prototype.init = function init(){

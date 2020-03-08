@@ -14,6 +14,7 @@ const SPIDER_FIRE_DIST = 32; // shoot at the player if we get closer than this
 // patrols the area near pos, back and forth horizontally
 const FlipSpider = function FlipSpider({pos}={}){
     this.start = pos;
+    this.type = "flipspider";
     this.currentAnimation = 'idle';
     this.target = {x: pos.x + 24, y: pos.y };
     this.speed = 0.001;
@@ -287,7 +288,7 @@ FlipSpider.prototype.zapWalls = function() {
 
 }
 
-FlipSpider.prototype.render = function render(dt){
+FlipSpider.prototype.render = function render(glRender, dt){
     //console.log("FlipSpider is rendering at "+this.pos.x.toFixed(1)+','+this.pos.y.toFixed(1))
 
     this.zapWalls(); // legs raycast to walls/floors/ceilings
@@ -300,12 +301,15 @@ FlipSpider.prototype.render = function render(dt){
             this.healthBar.height,
             8)
     }
-    this.currentAnimation.render({
-        x: Math.floor(this.pos.x-this.width/2-G.view.x + this.drawOffset.x),
-        y: Math.floor(this.pos.y-this.height/2-G.view.y + this.drawOffset.y),
-        width: FlipSpider_W,
-        height: FlipSpider_H
-    });
+
+    if(!glRender) {
+        this.currentAnimation.render({
+            x: Math.floor(this.pos.x-this.width/2-G.view.x + this.drawOffset.x),
+            y: Math.floor(this.pos.y-this.height/2-G.view.y + this.drawOffset.y),
+            width: FlipSpider_W,
+            height: FlipSpider_H
+        });
+    }
 
     if (SPIDER_DEBUG) {
         // draw collision box
@@ -321,6 +325,10 @@ FlipSpider.prototype.play = function play(animationName){
     if (!this.currentAnimation.loop){
         this.currentAnimation.reset();
     }
+}
+
+FlipSpider.prototype.getSpriteSheetFrame = function getSpriteSheetFrame() {
+    return this.currentAnimation.frames[this.currentAnimation.currentFrame];
 }
 
 FlipSpider.prototype.init = function init(){

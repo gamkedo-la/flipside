@@ -9,9 +9,10 @@ import G from './G.js';
 
 // patrols the area near pos, back and forth horizontally
 const BIRD = function BIRD({pos}={}){
+    this.type = "EnemyTinydiver";
     this.start = pos;
     this.target = {x: Player.pos.x, y: Player.pos.y }
-    this.pos = {x: pos.x, y: pos.y};
+    this.pos = {x: pos.x, y: pos.y + 6};
     this.vel = {x:0, y:0};
     this.width = 18;
     this.height = 27;
@@ -143,7 +144,7 @@ BIRD.prototype.update = function update(dt){
     if(this.health <= 0){ this.kill(); }
 }
 
-BIRD.prototype.render = function render(dt){
+BIRD.prototype.render = function render(glRender, dt){
     if(this.health < this.healthMax){
         let fillWidth = range(this.health, 0, this.healthMax, 0, this.healthBar.width);
         G.rb.fillRect(this.pos.x + this.healthBar.xOffset - G.view.x,
@@ -152,12 +153,15 @@ BIRD.prototype.render = function render(dt){
             this.healthBar.height,
             8);
     }
-    this.currentAnimation.render({
-        x: Math.floor(this.pos.x-this.width/2-G.view.x + this.drawOffset.x),
-        y: Math.floor(this.pos.y-this.height/2-G.view.y + this.drawOffset.y),
-        width: this.width,
-        height: this.height
-    })
+
+    if(!glRender) {
+        this.currentAnimation.render({
+            x: Math.floor(this.pos.x-this.width/2-G.view.x + this.drawOffset.x),
+            y: Math.floor(this.pos.y-this.height/2-G.view.y + this.drawOffset.y),
+            width: this.width,
+            height: this.height
+        })
+    }
 }
 
 BIRD.prototype.play = function play(animationName){
@@ -165,6 +169,10 @@ BIRD.prototype.play = function play(animationName){
     if (!this.currentAnimation.loop){
         this.currentAnimation.reset();
     }
+}
+
+BIRD.prototype.getSpriteSheetFrame = function getSpriteSheetFrame() {
+    return this.currentAnimation.frames[this.currentAnimation.currentFrame];
 }
 
 BIRD.prototype.init = function init(){
