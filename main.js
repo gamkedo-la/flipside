@@ -490,12 +490,14 @@ function render(dt){
         rx0 = view.x/G.world.tileSize | 0;
         ry0 = view.y / G.world.tileSize | 0;
         const GIDs = [];
+        const foreGIDs = [];
         const flips = [];
         let tileIndex = 0;
         for(let k = ry0; k < ry0 + 36; k++) {
             for(let l = rx0; l < rx0 + 60; l++) {
                 const flatIndex = k * G.world.widthInTiles + l;
                 GIDs.push(G.world.data[flatIndex] - 1);
+                foreGIDs.push(G.worldForeground.data[flatIndex] - 1);
 
                 if(G.worldFlipped.data[flatIndex] >= 3) {
                     flips.push(tileIndex);
@@ -529,7 +531,7 @@ function render(dt){
                 }
             }
         });
-        const backgroundCanvas = G.GLRenderer.getBackgroundImageCanvas(paused, GIDs, flips, deltaX, deltaY, x, y, G.player.getSpriteSheetFrame(), G.player.wasHit,  enemies);
+        const backgroundCanvas = G.GLRenderer.getBackgroundImageCanvas(paused, GIDs, flips, foreGIDs, deltaX, deltaY, x, y, G.player.getSpriteSheetFrame(), G.player.wasHit,  enemies);
         //the view.x/y % tileSize accounts for sub-tile scrolling
         ctx.drawImage(backgroundCanvas, 0, 0);
 
@@ -558,7 +560,6 @@ function render(dt){
                 if(G.worldFlipped.data[flatIndex] < loader.tileMaps[G.currentMap].layers[1].data[flatIndex]){
                     if(coinFlip())G.worldFlipped.data[flatIndex]++;
                 }
-                
                 
                 //flipped area affect, purple/pink stuff----------------------------------------
                 if(G.worldFlipped.data[flatIndex] >= 3){
@@ -625,26 +626,28 @@ function render(dt){
     player.render(USE_GL_RENDERER);
 
     //render foreground tiles if any in front of player-----------------------------------
-    for(let i = rx0; i < rx1; i++){
-        for(let j = ry0; j < ry1; j++){
-            let drawX =     Math.floor(i*8 - view.x),
-                drawY =     Math.floor(j*8 - view.y),
-                flatIndex = j * G.world.widthInTiles + i,
-                gidFore = G.worldForeground.data[flatIndex];
-
-            if(gidFore > 0)gidFore -=1;
-            if(G.worldForeground.data[flatIndex]){
-                ctx.drawImage(
-                    G.img.tiles,
-                    gidFore%G.tileSheetSize.height * 8,
-                    Math.floor(gidFore/G.tileSheetSize.width) * 8,
-                    8,8,
-                    drawX, drawY, 8, 8
-                    );
-                //drawTile(drawX, drawY, worldForeground, gidFore, img.tiles);
-             }
-        }//end column render
-    }//end x loop
+    if(!USE_GL_RENDERER) {
+        for(let i = rx0; i < rx1; i++){
+            for(let j = ry0; j < ry1; j++){
+                let drawX =     Math.floor(i*8 - view.x),
+                    drawY =     Math.floor(j*8 - view.y),
+                    flatIndex = j * G.world.widthInTiles + i,
+                    gidFore = G.worldForeground.data[flatIndex];
+    
+                if(gidFore > 0)gidFore -=1;
+                if(G.worldForeground.data[flatIndex]){
+                    ctx.drawImage(
+                        G.img.tiles,
+                        gidFore%G.tileSheetSize.height * 8,
+                        Math.floor(gidFore/G.tileSheetSize.width) * 8,
+                        8,8,
+                        drawX, drawY, 8, 8
+                        );
+                    //drawTile(drawX, drawY, worldForeground, gidFore, img.tiles);
+                 }
+            }//end column render
+        }//end x loop
+    }
 
     
 
