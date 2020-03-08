@@ -102,8 +102,11 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
     const bottomTexCoords = new Float32Array(8 * widthInTiles * heightInTiles).fill(0);
     const bottomTexCoordBuffer = gl.createBuffer();
 
-    const entityTexCoords = new Float32Array(8 * MAX_ENTITIES).fill(0);//assume no more than 49 enemies on screen
+    const entityTexCoords = new Float32Array(8 * MAX_ENTITIES).fill(0);
     const entityTexCoordBuffer = gl.createBuffer();
+    const entityBrightData = new Float32Array(4 * MAX_ENTITIES).fill(0);
+    const entityBrightBuffer = gl.createBuffer();
+
 
     //------Build the Vertex and Fragment Shaders--------//
     const getVertexShaderString = function() {
@@ -250,12 +253,15 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
             attribute vec2 deltaPos;
             attribute vec2 vertPosition;
             attribute vec2 aTextureCoord;
+            attribute float bright;
 
             varying vec2 vTextureCoord;
+            varying float brightness;
 
             void main() {
                 gl_Position = vec4(vertPosition.x + deltaPos.x, vertPosition.y + deltaPos.y, 0.0, 1.0);
                 vTextureCoord = aTextureCoord;
+                brightness = bright;
             }
         `;
     }
@@ -265,9 +271,9 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
             precision mediump float;
 
             varying vec2 vTextureCoord;
+            varying float brightness;
 
             uniform sampler2D sampler;
-            uniform float brightness;
 
             void main(void) {
                 gl_FragColor = texture2D(sampler, vTextureCoord);
@@ -344,7 +350,7 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
     const flipProgram = getWebGLProgram(getFlipVertShaderString(), getFlipFragShaderString());
     getLocations(flipProgram, ["vertPosition", "fbCoords", "lCoords", "tCoords", "rCoords", "bCoords", "flipColor"], ["delta", "frameBuffSampler", "flipSampler", "deltaFBCoord"]);
     const entityProgram = getWebGLProgram(getEntityVertexShaderString(), getEntityFragShaderString());
-    getLocations(entityProgram, ["vertPosition", "aTextureCoord", "deltaPos"], ["sampler", "brightness"])
+    getLocations(entityProgram, ["vertPosition", "aTextureCoord", "deltaPos", "bright"], ["sampler"])
 
     //------A function to link and enable attribute data--------//
     const setAttribData = function(buffer, data, location, elementCount = 2, drawHint = gl.STATIC_DRAW, type = gl.FLOAT, stride = 0, offset = 0) {
@@ -436,8 +442,20 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
                 entityVertexData[(8 * (i + 1)) + 5] = entities[key].vert_y2;
                 entityVertexData[(8 * (i + 1)) + 6] = entities[key].vert_x2;
                 entityVertexData[(8 * (i + 1)) + 7] = entities[key].vert_y2;
-//                vertexDataBuilder.generateEntityQuads(enemies, widthInTiles * TILE_SIZE, heightInTiles * TILE_SIZE, entityVertexData);
+
                 texCoordinator.generateEntityCoords(enemy.frame, entities[key].frameWidth, entities[key].frameY, entities[key].frameHeight, entities.textureWidth, entities.textureHeight, i + 1, entityTexCoords);
+
+                if(enemy.isBright) {
+                    entityBrightData[(4 * (i + 1)) + 0] = BRIGHTNESS;
+                    entityBrightData[(4 * (i + 1)) + 1] = BRIGHTNESS;
+                    entityBrightData[(4 * (i + 1)) + 2] = BRIGHTNESS;
+                    entityBrightData[(4 * (i + 1)) + 3] = BRIGHTNESS;
+                } else {
+                    entityBrightData[(4 * (i + 1)) + 0] = 0.0;
+                    entityBrightData[(4 * (i + 1)) + 1] = 0.0;
+                    entityBrightData[(4 * (i + 1)) + 2] = 0.0;
+                    entityBrightData[(4 * (i + 1)) + 3] = 0.0;
+                }
             }    
         }
 
@@ -448,13 +466,21 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
 //        gl.uniform1i(locations.entity.sampler, entityTexture);
         gl.uniform1i(locations.entity.sampler, entities.texture);
 
+        setAttribData(entityTexCoordBuffer, entityTexCoords, locations.entity.aTextureCoord);
+
         if(playerBright) {
-            gl.uniform1f(locations.entity.brightness, BRIGHTNESS);
+            entityBrightData[0] = BRIGHTNESS;
+            entityBrightData[1] = BRIGHTNESS;
+            entityBrightData[2] = BRIGHTNESS;
+            entityBrightData[3] = BRIGHTNESS;
         } else {
-            gl.uniform1f(locations.entity.brightness, 0.0);
+            entityBrightData[0] = 0.0;
+            entityBrightData[1] = 0.0;
+            entityBrightData[2] = 0.0;
+            entityBrightData[3] = 0.0;
         }
 
-        setAttribData(entityTexCoordBuffer, entityTexCoords, locations.entity.aTextureCoord);
+        setAttribData(entityBrightBuffer, entityBrightData, locations.entity.bright, 1);
     }
 
     const drawBackground = function(deltaX, deltaY) {

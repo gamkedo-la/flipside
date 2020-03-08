@@ -522,13 +522,10 @@ function render(dt){
         const enemies = [];
         G.world.entities.forEach(function(e){
             if(inView(e.pos.x, e.pos.y)){
-//                console.log(e.type);
                 if(isEnemyType(e.type)) {
                     const enemyX = Math.floor(e.pos.x-e.width/2-G.view.x + e.drawOffset.x);
                     const enemyY = Math.floor(e.pos.y+e.height/2-G.view.y + e.drawOffset.y);
-//                    const enemyX = Math.floor(e.pos.x-e.width/2-G.view.x)-4;
-//                    const enemyY = Math.floor(e.pos.y-e.height/2-G.view.y-3) + 45;
-                    enemies.push({type: e.type, posX:enemyX, posY:enemyY, frame:e.getSpriteSheetFrame()})
+                    enemies.push({type: e.type, posX:enemyX, posY:enemyY, frame:e.getSpriteSheetFrame(), isBright:e.wasHit})
                 }
             }
         });
