@@ -225,7 +225,7 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
         this.normalPhysics(dt, world, worldFlipped);
     }
 
-    if(this.health < 0){
+    if(this.health <= 0){
         this.play('dissolveDeath');
         if(this.getSpriteSheetFrame() == 59){
             MSG.dispatch("died", {x: this.pos.x, y: this.pos.y});
@@ -300,7 +300,7 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
                         G.PICKUP_DEATH
                     )
                 G.pickups.kill(i);
-                G.audio.playSound(G.sounds.test2, 0, 0.2, 1, false);
+                G.audio.playSound(G.sounds.test2, 0, 0.03, 1, false);
                 this.nanitesCollected += 1;
 
             }
@@ -967,18 +967,18 @@ Player.rectCollision = function(body) {
 
 //player event handlers------------------------------------------------------------
 
-Player.flipMosaic = function() {
-    if (!G.mosaicFlipped) return; // might not be enabled
-    if (this.inTheFlip) {
-        // inverted deepnight pixel bevels
-        G.mosaic.canvas.style.display = 'none';
-        G.mosaicFlipped.canvas.style.display = 'block';
-    } else {
-        // normal deepnight pixel bevels
-        G.mosaic.canvas.style.display = 'block';
-        G.mosaicFlipped.canvas.style.display = 'none';
-    }
-}
+// Player.flipMosaic = function() {
+//     if (!G.mosaicFlipped) return; // might not be enabled
+//     if (this.inTheFlip) {
+//         // inverted deepnight pixel bevels
+//         G.mosaic.canvas.style.display = 'none';
+//         G.mosaicFlipped.canvas.style.display = 'block';
+//     } else {
+//         // normal deepnight pixel bevels
+//         G.mosaic.canvas.style.display = 'block';
+//         G.mosaicFlipped.canvas.style.display = 'none';
+//     }
+// }
 
 Player.hurt = function(params){
 
@@ -1088,18 +1088,19 @@ while(--particles){
 }
 }
 
-Player.gotPugGun = function() {
-    let particles = 10;
+Player.getPowerUp = function() {
+    //this.hasPugGun = true;
+    let particles = 20;
     while(--particles){
         G.particles.spawn(
             this.pos.x,
             this.pos.y,
             -this.vx/4+rndFloat(-20, 20),
-            -this.vy/4+rndFloat(-20, 20),
+            -this.vy/4+rndFloat(0, -40),
             22,
             3,
             3,
-            40,
+            60,
             G.BIGPOWERUP
         )
     }

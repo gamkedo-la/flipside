@@ -142,13 +142,22 @@ ParticlePool.prototype.draw = function draw(){
                             );
                     break;
 
-                    case G.PICKUP_DEATH: //enemydeath
+                    case G.PICKUP_DEATH: 
                         G.rb.fillRect(
                             this.pool[i+1]-G.view.x,
                             this.pool[i+2]-G.view.y,
                             this.pool[i]/4,
                             this.pool[i]/4,
                             rndOneFrom([10,11,12,13])
+                            );
+                    break;
+
+                    case G.BIGPOWERUP: 
+                        G.rb.circle(
+                            this.pool[i+1]-G.view.x,
+                            this.pool[i+2]-G.view.y,
+                            this.pool[i]/3,
+                            7
                             );
                     break;
         

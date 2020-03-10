@@ -130,8 +130,8 @@ const images = [
 const soundList = [
     { name: "test1", url:"./src/snd/test1.mp3" },
     { name: "test2", url:"./src/snd/test2.mp3" },
-    { name: "testMusic2", url:"./src/snd/stebsScaryFlipside(2).mp3" },
-    { name: "testMusic1", url:"./src/snd/klaim-wip-draft2.mp3" },
+    { name: "testMusic1", url:"./src/snd/stebsScaryFlipside(2).mp3" },
+    { name: "testMusic2", url:"./src/snd/klaim-wip-draft2.mp3" },
     { name: "playerShoot", url:"./src/snd/playerShoot1.mp3" },
     { name: "splode1", url:"./src/snd/splode1.mp3"},
     { name: "footstep", url:"./src/snd/footstep.mp3"},
@@ -782,10 +782,12 @@ function handleInput(dt){
     }
     if(Key.justReleased(Key.ONE)){
         console.log("CHEAT KEY: toggling gun");
+        player.getPowerUp();
         player.hasPugGun = !player.hasPugGun;
     }
     if(Key.justReleased(Key.TWO)){
         console.log("CHEAT KEY: toggling highjump");
+        player.getPowerUp();
         player.hasHighJump = !player.hasHighJump;
     }
     if(Key.justReleased(Key.THREE)){
