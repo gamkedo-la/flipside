@@ -300,6 +300,7 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
                         G.PICKUP_DEATH
                     )
                 G.pickups.kill(i);
+                G.audio.playSound(G.sounds.test2, 0, 0.2, 1, false);
                 this.nanitesCollected += 1;
 
             }

@@ -750,7 +750,7 @@ function handleInput(dt){
     if(Key.justReleased(Key.c)){
         G.showMessageBox = false;
     }
-    if(Key.justReleased(Key.m)){
+    if(Key.justReleased(Key.p)){
         G.showMiniMap = !G.showMiniMap
     }
     if(Key.isDown(Key.z) || Key.isDown(Key.p) || Key.isDown(Key.SPACE)){
