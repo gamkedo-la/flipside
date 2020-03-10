@@ -131,7 +131,7 @@ const soundList = [
     { name: "test1", url:"./src/snd/test1.mp3" },
     { name: "test2", url:"./src/snd/test2.mp3" },
     { name: "testMusic2", url:"./src/snd/stebsScaryFlipside(2).mp3" },
-    { name: "testMusic1", url:"./src/snd/klaim-wip-draft2.mp3" },
+    { name: "testMusic1", url:"./src/snd/klaim-layers_of_cool_lasers-no_guitar_solo-ingame_version.mp3" },
     { name: "playerShoot", url:"./src/snd/playerShoot1.mp3" },
     { name: "splode1", url:"./src/snd/splode1.mp3"},
     { name: "footstep", url:"./src/snd/footstep.mp3"},
@@ -189,10 +189,10 @@ function init(){
 
     G.imagesTotal = images.length;
     G.soundsTotal = soundList.length;
-    
+
     console.log("Images loaded: "+G.imagesLoaded+"/"+G.imagesTotal);
     console.log("Sounds loaded: "+G.soundsTotal+"/"+soundList.length);
-    
+
     G.img = loader.loadImages(images, soundInit);
 
     G.world = new World();
@@ -210,7 +210,7 @@ function init(){
 // this not not ONLY the sound inits, it is init step two after images have downloaded
 // with optional sound inits as well as essential map loading and game start callbacks
 function soundInit(){
-    
+
     if(USE_GL_RENDERER) {
         G.GLRenderer = new WebRenderer(60, 36, G.img.tiles, G.img.labCaveWall, G.img.flipSpace);
     }
@@ -244,35 +244,35 @@ function start(sounds){
             },
             EnemyTinyflyer: {
                 image:G.img.EnemyTinyflyer,
-                frameCount:8 
+                frameCount:8
             },
             EnemyTinydiver: {
                 image:G.img.EnemyTinydiver,
-                frameCount:4 
+                frameCount:4
             },
             EnemyTinydrone: {
                 image:G.img.EnemyFlipTank,
-                frameCount:4 
+                frameCount:4
             },
             EnemyTinycrawler: {
                 image:G.img.EnemyTinycrawler,
-                frameCount:16 
+                frameCount:16
             },
             flipspider: {
                 image:G.img.flipspider,
-                frameCount:16 
+                frameCount:16
             },
             EnemyFlipTank: {
                 image:G.img.EnemyFlipTank,
-                frameCount:4  
+                frameCount:4
             },
             EnemyRoboTank: {
                 image:G.img.EnemyRoboTank,
-                frameCount:4 
+                frameCount:4
             },
             EnemyFlipSlime: {
                 image:G.img.EnemyFlipSlime,
-                frameCount:9 
+                frameCount:9
             }
         }
         G.GLRenderer.prepareEntityData(entityData);
@@ -404,17 +404,17 @@ function update(dt){
                     Math.floor(G.bullets.pool[i+2]/8),
                      2, -G.FLIPSPACE_TIME);
                 G.bullets.kill(i);
-                
+
             }
         }
     }
     //---end bullet collision checks-----------------------------------------------------
-    
+
 
 }
 
 function drawPauseMenu() {
-    
+
     ctx.drawImage(G.img.pauseScreen, 0,0);
 }
 
@@ -432,8 +432,8 @@ function drawTitleScreen() {
     }else{
         requestAnimationFrame(drawTitleScreen);
     }
-    
-    
+
+
 }
 
 function isEnemyType(type) {
@@ -449,7 +449,7 @@ function isEnemyType(type) {
 }
 
 function render(dt){
-    
+
 
     //let {world, worldFlipped, worldForeground, img, rb } = G;
     //draw all the things
@@ -505,11 +505,11 @@ function render(dt){
 
                 tileIndex++;
 
-                //an enemy has added some flipspace, begin reverting back           
+                //an enemy has added some flipspace, begin reverting back
                 if(G.worldFlipped.data[flatIndex] > loader.tileMaps[G.currentMap].layers[1].data[flatIndex]){
                     if(coinFlip())G.worldFlipped.data[flatIndex]--;
                 }
-                //we've removed flipspace with weapons, begin reverting back    
+                //we've removed flipspace with weapons, begin reverting back
                 if(G.worldFlipped.data[flatIndex] < loader.tileMaps[G.currentMap].layers[1].data[flatIndex]){
                     if(coinFlip())G.worldFlipped.data[flatIndex]++;
                 }
@@ -536,7 +536,7 @@ function render(dt){
         ctx.drawImage(backgroundCanvas, 0, 0);
 
     } else {//not using the gl_renderer
-        
+
         /* tile render loop! render order is columns.
            for each column( i ) */
         for(let i = rx0; i < rx1; i++){
@@ -552,15 +552,15 @@ function render(dt){
                    check worldFlipped index against loaded map index, since this layer is destructable.
                    if not equal, random chance of 'healing' back to loaded map state. */
 
-                //an enemy has added some flipspace, begin reverting back           
+                //an enemy has added some flipspace, begin reverting back
                 if(G.worldFlipped.data[flatIndex] > loader.tileMaps[G.currentMap].layers[1].data[flatIndex]){
                     if(coinFlip())G.worldFlipped.data[flatIndex]--;
                 }
-                //we've removed flipspace with weapons, begin reverting back    
+                //we've removed flipspace with weapons, begin reverting back
                 if(G.worldFlipped.data[flatIndex] < loader.tileMaps[G.currentMap].layers[1].data[flatIndex]){
                     if(coinFlip())G.worldFlipped.data[flatIndex]++;
                 }
-                
+
                 //flipped area affect, purple/pink stuff----------------------------------------
                 if(G.worldFlipped.data[flatIndex] >= 3){
                     ctx.drawImage(
@@ -614,7 +614,7 @@ function render(dt){
     }//end if using gl_renderer
 
     //render AABB's, including pickups and baddies
-    
+
 
     G.world.entities.forEach(function(e){
         if(inView(e.pos.x, e.pos.y)){
@@ -633,7 +633,7 @@ function render(dt){
                     drawY =     Math.floor(j*8 - view.y),
                     flatIndex = j * G.world.widthInTiles + i,
                     gidFore = G.worldForeground.data[flatIndex];
-    
+
                 if(gidFore > 0)gidFore -=1;
                 if(G.worldForeground.data[flatIndex]){
                     ctx.drawImage(
@@ -649,7 +649,7 @@ function render(dt){
         }//end x loop
     }
 
-    
+
 
     G.particles.draw();
     G.bullets.draw();
@@ -680,7 +680,7 @@ function render(dt){
     UIRender();
     debugRender();
     if(G.showMiniMap){
-        
+
         //G.ctx.fillStyle = 'rgba(0,0,0,0.7)';
         //G.ctx.fillRect(0,0,G.c.width, G.c.height);
         let px = Math.round(G.player.pos.x / 8),
@@ -701,7 +701,7 @@ function render(dt){
 
                 let lx = x + xStart;
                 let ly = y + yStart;
-                
+
                     //and position isn't outside the tilemap
                     if(lx < G.world.widthInTiles && lx > 0 && ly > 0 && ly < G.world.heightInTiles){
                         //optimize by pre-rendering tiny tilemap at 1px or just hardcoding a few tile types
@@ -712,15 +712,15 @@ function render(dt){
                             1,1,
                             x,y, 1, 1
                             );
-                    }       
-                
+                    }
+
             }
         }
         G.rb.fillRect(px-xStart-1, py-yStart-2, 3, 5, 9);
     }
 
-    G.rb.render(); 
-    
+    G.rb.render();
+
     if (paused) {
         G.rb.ctx.clearRect(0,0,427,240);
         drawPauseMenu();
@@ -832,9 +832,9 @@ function handleCamera(dt){
 }
 
 function loadMap({map, spawnPoint}){
-    
+
     console.log("Loading map: " + map);
-    
+
     let { loader, currentMap, world, worldFlipped, worldForeground } = G;
 
     currentMap = map;
@@ -952,8 +952,8 @@ function movePlayerToSpawnPoint(currentMap, spawnPoint) {
         player.pos.x = spawnPoint.x;
         player.pos.y = spawnPoint.y;
     }
-    
-    
+
+
 }
 
 
