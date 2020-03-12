@@ -206,11 +206,6 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
             MSG.dispatch("hurt", {amount: 1, type: 'groundHazard', x: this.pos.x, y: this.pos.y});
     };
 
-    // pickups (keys/health etc)
-    // if(this.tileCollisionCheck(worldForeground, function(tile){ return tile == TILE_KEY; } )) {
-    //    MSG.dispatch("pickup", {amount: 1, type: 'key', x: this.pos.x, y: this.pos.y});
-    // };
-
     if(this.hurtCooldown)this.hurtCooldown--;
 
     if(this.inTheFlip){
