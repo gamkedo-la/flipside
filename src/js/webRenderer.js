@@ -509,8 +509,6 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
             gl.UNSIGNED_SHORT, //what kind of data are we drawing
             0 //how far into the element array buffer are we going to start drawing?
         );
-
-        frameBuffTexIndex = texManager.copyFrameBuffer(frameBuffTex, frameBuffTexIndex);
     }
 
     const drawFlipspace = function(flipIndices) {
@@ -644,15 +642,17 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
     
         drawTiles(tileData, deltaX, deltaY);
 
-        //Prepare to draw flipspace
-        gl.useProgram(flipProgram);
-        drawFlipspace(flipIndices);
-
         //Prepare to draw entities (player and enemies)
         gl.useProgram(entityProgram);
         const playXPos = 2 * playerX / (widthInTiles * TILE_SIZE) - 1;
         const playYPos = -(2 * playerY / (heightInTiles * TILE_SIZE) - 1);
         drawEntities(playXPos, playYPos, playerFrame, playerBright, enemies);
+
+        frameBuffTexIndex = texManager.copyFrameBuffer(frameBuffTex, frameBuffTexIndex);
+        
+        //Prepare to draw flipspace
+        gl.useProgram(flipProgram);
+        drawFlipspace(flipIndices);
 
         gl.useProgram(tileProgram);
         drawTiles(foreTiles, deltaX, deltaY);
