@@ -625,7 +625,7 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
         entityVertexData[7] = entities.player.vert_y2;
     }
 
-    this.getBackgroundImageCanvas = function(paused, tileData, flipIndices, deltaX, deltaY, playerX, playerY, playerFrame, playerBright = false, enemies = null) {
+    this.getBackgroundImageCanvas = function(paused, tileData, flipIndices, foreTiles, deltaX, deltaY, playerX, playerY, playerFrame, playerBright = false, enemies = null) {
         if(paused) return webCanvas;
         if(BASELINE == null) BASELINE = G.view.y;
         //Prepare to draw this frame
@@ -653,6 +653,9 @@ const WebRenderer = function WebRenderer(widthInTiles, heightInTiles, tileImage,
         const playXPos = 2 * playerX / (widthInTiles * TILE_SIZE) - 1;
         const playYPos = -(2 * playerY / (heightInTiles * TILE_SIZE) - 1);
         drawEntities(playXPos, playYPos, playerFrame, playerBright, enemies);
+
+        gl.useProgram(tileProgram);
+        drawTiles(foreTiles, deltaX, deltaY);
 
         return webCanvas;
     }
