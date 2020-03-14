@@ -10,6 +10,7 @@ class Animation {
     
     this.frameRate = frameRate;
 
+    this.noInterrupt = false;
     
     this.loop = loop;
 
@@ -37,12 +38,16 @@ class Animation {
   reset() {
     this.currentFrame = 0;
     this.accumulator = 0;
+    this.noInterrupt = this.noInterruptState;
   }
 
   update(dt = 1/60) {
 
     // if the animation doesn't loop we stop at the last frame
-    if (!this.loop && this.currentFrame == this.frames.length-1) return;
+    if (!this.loop && this.currentFrame == this.frames.length-1){
+      this.noInterrupt = false;
+      return;
+    } 
 
     this.accumulator += dt;
 

@@ -224,6 +224,7 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
     }
 
     if(this.health <= 0){
+        
         this.play('dissolveDeath');
         if(this.getSpriteSheetFrame() == 59){
             MSG.dispatch("died", {x: this.pos.x, y: this.pos.y});
@@ -236,7 +237,8 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
     if( this.withinCheck(worldFlipped, function(tile){return tile >= 3}) ){
             if(!this.inTheFlip){
                 MSG.dispatch('crossed');
-                this.facingLeft ? this.play('EVTransformLeft') : this.play('EVTransformRight')
+                this.facingLeft ? this.play('EVTransformLeft') : this.play('EVTransformRight');
+                this.currentAnimation.noInterrupt = true;
                 this.inTheFlip = true;
                 this.flipTimer = this.flipTimeMax;
                 if (G.audio) G.audio.enterFlipside();
@@ -244,7 +246,8 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
     }else{
         if(this.inTheFlip){
             MSG.dispatch('crossed');
-            this.facingLeft ? this.play('EVTransformLeftOut') : this.play('EVTransformRightOut')
+            this.facingLeft ? this.play('EVTransformLeftOut') : this.play('EVTransformRight');
+            this.currentAnimation.noInterrupt = true;
             this.flipSpaceWalkTimer = this.flipSpaceWalkTimerMax;
             this.inTheFlip = false;
             if (G.audio) G.audio.exitFlipside();
@@ -842,11 +845,10 @@ Player.getTiles = function getTiles(world){
 }
 
 Player.play = function play(animationName){
-    // if(!this.spritesheetV2.animations[animationName]){
+    if(!this.currentAnimation.noInterrupt){
         this.currentAnimation = this.spritesheet.animations[animationName];
-    // } else {
-    //     this.currentAnimation = this.spritesheetV2.animations[animationName];
-    // }
+    }
+   
     if (!this.currentAnimation.loop){
         this.currentAnimation.reset();
     }
@@ -874,22 +876,26 @@ Player.init = function init(){
             EVTransformRight: {
                 frames: '86..105',
                 frameRate: 30,
-                loop: false
+                loop: false,
+                noInterrupt: true
             },
             EVTransformLeft: {
                 frames: '106..125',
                 frameRate: 30,
-                loop: false
+                loop: false,
+                noInterrupt: true
             },
             EVTransformRightOut: {
                 frames: '105..86',
                 frameRate: 30,
-                loop: false
+                loop: false,
+                noInterrupt: true
             },
             EVTransformLeftOut: {
                 frames: '125..106',
                 frameRate: 30,
-                loop: false
+                loop: false,
+                noInterrupt: true
             },
             EVLeft:{
                 frames: 125
@@ -899,8 +905,8 @@ Player.init = function init(){
             },
             dissolveDeath: {
                 frames: '40..59',
-                frameRate: 12,
-                loop: false
+                frameRate: 12
+                
             },
             idleLeft: {
                 frames: '22..27',
@@ -1066,6 +1072,7 @@ Player.hurt = function(params){
 }//end player.hurt
 
 Player.died = function(params){
+    
     console.log('dead');
     G.audio.playSound(G.sounds.playerDeath, G.audio.calculatePan(this.pos.x), G.audio.calcuateVolumeDropoff(this.pos)*0.5, 1, false);
     this.health = this.maxHealth;
@@ -1079,6 +1086,7 @@ Player.died = function(params){
 
     self.doorCooldown = 60;
     var wipe = new Transitioner().start(G.TRANSITION_DEATH, function(){
+        G.player.spritesheet.animations.dissolveDeath.reset();
         G.loadMap({map:G.PLAYER_STARTMAP, spawnPoint:G.PLAYER_STARTSPAWN});
     });
 }
