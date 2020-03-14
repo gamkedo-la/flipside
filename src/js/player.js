@@ -236,6 +236,7 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
     if( this.withinCheck(worldFlipped, function(tile){return tile >= 3}) ){
             if(!this.inTheFlip){
                 MSG.dispatch('crossed');
+                this.facingLeft ? this.play('EVTransformLeft') : this.play('EVTransformRight')
                 this.inTheFlip = true;
                 this.flipTimer = this.flipTimeMax;
                 if (G.audio) G.audio.enterFlipside();
@@ -243,6 +244,7 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
     }else{
         if(this.inTheFlip){
             MSG.dispatch('crossed');
+            this.facingLeft ? this.play('EVTransformLeftOut') : this.play('EVTransformRightOut')
             this.flipSpaceWalkTimer = this.flipSpaceWalkTimerMax;
             this.inTheFlip = false;
             if (G.audio) G.audio.exitFlipside();
@@ -370,6 +372,10 @@ Player.inTheFlipPhysics = function inTheFlipPhysics(dt, world, worldFlipped){
     this.maxVel = this.physicsFlip.maxVel;
     this.accel = this.physicsFlip.accel;
     this.jumpVel = this.physicsFlip.jumpVel;
+
+    if(this.vx > 0){
+        //this.play('EVRight');
+    }
 
     if(this.input.primaryFire){
 
@@ -865,9 +871,36 @@ Player.init = function init(){
         frameWidth: 31,
         frameHeight: 45,
         animations: {
+            EVTransformRight: {
+                frames: '86..105',
+                frameRate: 30,
+                loop: false
+            },
+            EVTransformLeft: {
+                frames: '106..125',
+                frameRate: 30,
+                loop: false
+            },
+            EVTransformRightOut: {
+                frames: '105..86',
+                frameRate: 30,
+                loop: false
+            },
+            EVTransformLeftOut: {
+                frames: '125..106',
+                frameRate: 30,
+                loop: false
+            },
+            EVLeft:{
+                frames: 125
+            },
+            EVRight:{
+                frames: 105
+            },
             dissolveDeath: {
                 frames: '40..59',
-                frameRate: 12
+                frameRate: 12,
+                loop: false
             },
             idleLeft: {
                 frames: '22..27',
