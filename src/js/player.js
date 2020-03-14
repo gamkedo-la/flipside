@@ -18,6 +18,8 @@ const Player = {
     facingLeft: false,
     wasHit: false,
     timeSinceHit: 0,
+    flipSpaceWalkTimer: 20,
+    flipSpaceWalkTimerMax: 20,
     flashTime: 0.1,//seconds
     brightTime: 0,
     playedFootstep: false,
@@ -29,8 +31,8 @@ const Player = {
     nanitesCollected: 0,
     nanitesMax: 3000,
 
-    hasPugGun: false,
-    hasHighJump: false,
+    hasPugGun: true,
+    hasHighJump: true,
 
     collideIndex: G.collideIndex,
     hazardTilesStartIndex: G.hazardTilesStartIndex,
@@ -78,6 +80,7 @@ const Player = {
 
     falling: false,
     fallthru: false,
+    fallthruflip: false,
     jumping: false,
     crouching: false,
     aimingUp: false,
@@ -87,7 +90,7 @@ const Player = {
     submergedInFlip: false,
 
     flipTimer: 0,
-    flipTimeMax: 100,
+    flipTimeMax: 5000,
 
     hurtCooldown: 0,
     hurtCooldownMax: 30,
@@ -240,6 +243,7 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
     }else{
         if(this.inTheFlip){
             MSG.dispatch('crossed');
+            this.flipSpaceWalkTimer = this.flipSpaceWalkTimerMax;
             this.inTheFlip = false;
             if (G.audio) G.audio.exitFlipside();
         }
@@ -716,6 +720,20 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         }
     }
 
+    if(!this.fallthruflip && this.prevY < this.pos.y){
+        let gid = G.worldFlipped.pixelToTileID(this.pos.x,(this.pos.y+this.height/2)-3)
+        if(gid >= 3){
+        //console.log('cloud');
+        this.falling = false;
+        this.jumping = false;
+        this.vy = 0;
+        this.pos.y = this.prevY;
+        this.flipSpaceWalkTimer--;
+        } 
+    }
+
+    this.fallthruflip = this.flipSpaceWalkTimer <= 0
+    
 
     //------------------------------------------------------------------------------------
 
@@ -959,19 +977,6 @@ Player.rectCollision = function(body) {
 
 
 //player event handlers------------------------------------------------------------
-
-// Player.flipMosaic = function() {
-//     if (!G.mosaicFlipped) return; // might not be enabled
-//     if (this.inTheFlip) {
-//         // inverted deepnight pixel bevels
-//         G.mosaic.canvas.style.display = 'none';
-//         G.mosaicFlipped.canvas.style.display = 'block';
-//     } else {
-//         // normal deepnight pixel bevels
-//         G.mosaic.canvas.style.display = 'block';
-//         G.mosaicFlipped.canvas.style.display = 'none';
-//     }
-// }
 
 Player.hurt = function(params){
 
