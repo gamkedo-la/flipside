@@ -697,7 +697,7 @@
     <property name="pathWidthInTiles" type="int" value="13"/>
    </properties>
   </object>
-  <object id="171" name="Bzzzzzzzzz....DIE..zzzzz" type="flipbat" gid="10" x="993.667" y="1339.67" width="8" height="8">
+  <object id="171" name="Bzzzzzzzzz....DIE..zzzzz" type="flipbat" gid="10" x="994.667" y="1319.17" width="8" height="8">
    <properties>
     <property name="pathHeightInTiles" type="int" value="4"/>
    </properties>
@@ -827,12 +827,12 @@
     <property name="pathWidthInTiles" type="int" value="13"/>
    </properties>
   </object>
-  <object id="230" name="Bzzzzzzzzz....DIE..zzzzz" type="flipbat" gid="10" x="936.333" y="158.667" width="8" height="8">
+  <object id="230" name="Bzzzzzzzzz....DIE..zzzzz" type="flipbat" gid="10" x="935.833" y="134.667" width="8" height="8">
    <properties>
     <property name="pathHeightInTiles" type="int" value="4"/>
    </properties>
   </object>
-  <object id="231" name="Bzzzzzzzzz....DIE..zzzzz" type="flipbat" gid="10" x="1161" y="159.333" width="8" height="8">
+  <object id="231" name="Bzzzzzzzzz....DIE..zzzzz" type="flipbat" gid="10" x="1160" y="138.833" width="8" height="8">
    <properties>
     <property name="pathHeightInTiles" type="int" value="4"/>
    </properties>
@@ -842,37 +842,37 @@
     <property name="pathHeightInTiles" type="int" value="4"/>
    </properties>
   </object>
-  <object id="233" name="Bzzzzzzzzz....DIE..zzzzz" type="flipbat" gid="10" x="1300.67" y="265.333" width="8" height="8">
+  <object id="233" name="Bzzzzzzzzz....DIE..zzzzz" type="flipbat" gid="10" x="1300.17" y="239.333" width="8" height="8">
    <properties>
     <property name="pathHeightInTiles" type="int" value="4"/>
    </properties>
   </object>
-  <object id="234" name="Bzzzzzzzzz....DIE..zzzzz" type="flipbat" gid="10" x="1085.33" y="262.667" width="8" height="8">
+  <object id="234" name="Bzzzzzzzzz....DIE..zzzzz" type="flipbat" gid="10" x="1085.83" y="240.667" width="8" height="8">
    <properties>
     <property name="pathHeightInTiles" type="int" value="4"/>
    </properties>
   </object>
-  <object id="235" name="Bzzzzzzzzz....DIE..zzzzz" type="flipbat" gid="10" x="891.333" y="263.333" width="8" height="8">
+  <object id="235" name="Bzzzzzzzzz....DIE..zzzzz" type="flipbat" gid="10" x="891.833" y="239.833" width="8" height="8">
    <properties>
     <property name="pathHeightInTiles" type="int" value="4"/>
    </properties>
   </object>
-  <object id="236" name="Bzzzzzzzzz....DIE..zzzzz" type="flipbat" gid="10" x="760.667" y="261" width="8" height="8">
+  <object id="236" name="Bzzzzzzzzz....DIE..zzzzz" type="flipbat" gid="10" x="761.667" y="241.5" width="8" height="8">
    <properties>
     <property name="pathHeightInTiles" type="int" value="4"/>
    </properties>
   </object>
-  <object id="237" name="Bzzzzzzzzz....DIE..zzzzz" type="flipbat" gid="10" x="520.667" y="263" width="8" height="8">
+  <object id="237" name="Bzzzzzzzzz....DIE..zzzzz" type="flipbat" gid="10" x="518.667" y="241.5" width="8" height="8">
    <properties>
     <property name="pathHeightInTiles" type="int" value="4"/>
    </properties>
   </object>
-  <object id="238" name="Bzzzzzzzzz....DIE..zzzzz" type="flipbat" gid="10" x="328.667" y="261.667" width="8" height="8">
+  <object id="238" name="Bzzzzzzzzz....DIE..zzzzz" type="flipbat" gid="10" x="419.167" y="227.167" width="8" height="8">
    <properties>
     <property name="pathHeightInTiles" type="int" value="4"/>
    </properties>
   </object>
-  <object id="239" name="There's so much good to eat here!" type="flippig" gid="11" x="359" y="286.333" width="8" height="8">
+  <object id="239" name="There's so much good to eat here!" type="flippig" gid="11" x="471.5" y="286.833" width="8" height="8">
    <properties>
     <property name="pathWidthInTiles" type="int" value="13"/>
    </properties>
@@ -888,7 +888,7 @@
    </properties>
   </object>
   <object id="242" name="RoboDrone" type="drone" gid="13" x="696.667" y="512.333" width="8" height="8"/>
-  <object id="243" name="RoboDrone" type="drone" gid="13" x="471.667" y="278" width="8" height="8"/>
-  <object id="244" name="RoboDrone" type="drone" gid="13" x="1208.33" y="278.333" width="8" height="8"/>
+  <object id="243" name="RoboDrone" type="drone" gid="13" x="379.667" y="271.5" width="8" height="8"/>
+  <object id="244" name="RoboDrone" type="drone" gid="13" x="1207.83" y="270.333" width="8" height="8"/>
  </objectgroup>
 </map>
