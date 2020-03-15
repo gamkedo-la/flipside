@@ -26,6 +26,8 @@ const Player = {
 
     coyoteTime: 10,
     maxCoyoteTime: 10,
+    transformCooldown: 0,
+    transformCooldownMax: 40,
     canJump: true,
 
     nanitesCollected: 0,
@@ -167,6 +169,7 @@ const Player = {
 Player.update = function update(dt, world, worldFlipped, worldForeground){
     this.world = world;
     this.fallthru = false;
+    this.transformCooldown--;
     const { MSG } = G;
 
     if(this.wasHit) {
@@ -211,6 +214,41 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
 
     if(this.hurtCooldown)this.hurtCooldown--;
 
+   
+
+    if(this.health <= 0){
+        
+        this.play('dissolveDeath');
+        if(this.getSpriteSheetFrame() == 59){
+            MSG.dispatch("died", {x: this.pos.x, y: this.pos.y});
+        }
+    }
+
+ 
+
+    //---flipped world checks
+    if( this.withinCheck(worldFlipped, function(tile){return tile >= 3}) ){
+            if(!this.inTheFlip){
+                MSG.dispatch('crossed');
+                this.facingLeft ? this.play('EVTransformLeft') : this.play('EVTransformRight');
+                this.currentAnimation.noInterrupt = true;
+                this.inTheFlip = true;
+                this.flipTimer = this.flipTimeMax;
+                this.transformCooldown = this.transformCooldownMax;
+                if (G.audio) G.audio.enterFlipside();
+            }
+    }else{
+        if(this.inTheFlip){
+            MSG.dispatch('crossed');
+            this.facingLeft ? this.play('EVTransformLeftOut') : this.play('EVTransformRightOut');
+            this.currentAnimation.noInterrupt = true;
+            this.flipSpaceWalkTimer = this.flipSpaceWalkTimerMax;
+            this.transformCooldown = this.transformCooldownMax;
+            this.inTheFlip = false;
+            if (G.audio) G.audio.exitFlipside();
+        }
+    }
+
     if(this.inTheFlip){
         this.inTheFlipPhysics(dt, world, worldFlipped);
 
@@ -223,36 +261,7 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
         this.normalPhysics(dt, world, worldFlipped);
     }
 
-    if(this.health <= 0){
-        
-        this.play('dissolveDeath');
-        if(this.getSpriteSheetFrame() == 59){
-            MSG.dispatch("died", {x: this.pos.x, y: this.pos.y});
-        }
-    }
 
-
-
-    //---flipped world checks
-    if( this.withinCheck(worldFlipped, function(tile){return tile >= 3}) ){
-            if(!this.inTheFlip){
-                MSG.dispatch('crossed');
-                this.facingLeft ? this.play('EVTransformLeft') : this.play('EVTransformRight');
-                this.currentAnimation.noInterrupt = true;
-                this.inTheFlip = true;
-                this.flipTimer = this.flipTimeMax;
-                if (G.audio) G.audio.enterFlipside();
-            }
-    }else{
-        if(this.inTheFlip){
-            MSG.dispatch('crossed');
-            this.facingLeft ? this.play('EVTransformLeftOut') : this.play('EVTransformRight');
-            this.currentAnimation.noInterrupt = true;
-            this.flipSpaceWalkTimer = this.flipSpaceWalkTimerMax;
-            this.inTheFlip = false;
-            if (G.audio) G.audio.exitFlipside();
-        }
-    }
     var self = this;
     //check exits for overlap------------------------
     world.portals.forEach(function(portal){
@@ -343,6 +352,8 @@ Player.zapWalls = function() {
         width, chaos, segs, rgba, true);
 
 }
+
+
 
 Player.render = function render(glRenderer, dt, world, worldFlipped, worldForeground){
 
@@ -575,29 +586,35 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         //this.falling = true;
         // console.log("in Air!")
         this.inAir = true;
-        if(this.hasPugGun){
-            this.facingLeft ? this.play('airLeft') : this.play('airRight');
-        }else{
-            this.facingLeft ? this.play('airLeftNoGun') : this.play('airRightNoGun');
+        if(this.transformCooldown < 0){
+            if(this.hasPugGun){
+                this.facingLeft ? this.play('airLeft') : this.play('airRight');
+            }else{
+                this.facingLeft ? this.play('airLeftNoGun') : this.play('airRightNoGun');
+            }
         }
         
     }
     if(this.vy > 10){
         this.falling = true;
-        if(this.hasPugGun){
-            this.facingLeft ? this.play('fallingLeft') : this.play('fallingRight');
-        }else{
-            this.facingLeft ? this.play('fallingLeftNoGun') : this.play('fallingRightNoGun');
+        if(this.transformCooldown < 0){
+            if(this.hasPugGun){
+                this.facingLeft ? this.play('fallingLeft') : this.play('fallingRight');
+            }else{
+                this.facingLeft ? this.play('fallingLeftNoGun') : this.play('fallingRightNoGun');
+            }
         }
         
         // console.log("Falling!!")
     }
     if(Math.abs(this.vx) < 0.9 && !this.inAir && !this.falling){
-        if(this.hasPugGun){
-            this.facingLeft ? this.play('idleLeft') : this.play('idleRight');
-        }
-        else{
-            this.facingLeft ? this.play('idleLeftNoGun') : this.play('idleRightNoGun');
+        if(this.transformCooldown < 0){
+            if(this.hasPugGun){
+                this.facingLeft ? this.play('idleLeft') : this.play('idleRight');
+            }
+            else{
+                this.facingLeft ? this.play('idleLeftNoGun') : this.play('idleRightNoGun');
+            }
         }
         
     }
@@ -605,13 +622,17 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
         G.Records.playerStats.stepsTaken+= 1;
         this.facingLeft = true;
         this.playedFootstep = false;
-        this.hasPugGun ? this.play('walkLeft') : this.play('walkLeftNoGun');
+        if(this.transformCooldown < 0){
+            this.hasPugGun ? this.play('walkLeft') : this.play('walkLeftNoGun');
+        }
     }
     if(this.vx > 1 && this.input.right && !this.inAir && !this.falling){
         G.Records.playerStats.stepsTaken+= 1;
         this.facingLeft = false;
         this.playedFootstep = false;
-        this.hasPugGun ? this.play('walkRight') : this.play('walkRightNoGun');
+        if(this.transformCooldown < 0){
+            this.hasPugGun ? this.play('walkRight') : this.play('walkRightNoGun');
+        }
     }
     if((G.Records.playerStats.stepsTaken % 18 < 1) && !this.playedFootstep){
         G.audio.playSound(G.sounds.footstep, G.audio.calculatePan(this.pos.x), G.audio.calcuateVolumeDropoff(this.pos)*1, 1, false);
@@ -845,9 +866,9 @@ Player.getTiles = function getTiles(world){
 }
 
 Player.play = function play(animationName){
-    if(!this.currentAnimation.noInterrupt){
+    //if(this.currentAnimation.done){
         this.currentAnimation = this.spritesheet.animations[animationName];
-    }
+   // }
    
     if (!this.currentAnimation.loop){
         this.currentAnimation.reset();
