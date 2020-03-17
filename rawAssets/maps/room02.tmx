@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="300" height="120" tilewidth="8" tileheight="8" infinite="0" backgroundcolor="#28283c" nextlayerid="11" nextobjectid="216">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="300" height="120" tilewidth="8" tileheight="8" infinite="0" backgroundcolor="#28283c" nextlayerid="11" nextobjectid="220">
  <editorsettings>
   <export target="../../src/maps/room02.json" format="json"/>
  </editorsettings>
@@ -431,10 +431,10 @@
   <object id="198" name="FromBunker" type="spawnPoint" x="72" y="656">
    <point/>
   </object>
-  <object id="199" name="ToBunker" type="door" x="32" y="640" width="31.4167" height="47.5">
+  <object id="199" name="DebugWarp1" type="door" x="120" y="640" width="31.4167" height="47.5">
    <properties>
     <property name="destinationMap" value="bunker"/>
-    <property name="destinationSpawn" value="PlayerStart"/>
+    <property name="destinationSpawn" value="Checkpoint1"/>
    </properties>
   </object>
   <object id="214" name="exitDoor05" type="door" x="352" y="896" width="31.4167" height="47.5">
@@ -445,6 +445,18 @@
   </object>
   <object id="215" name="enterUnderground" type="spawnPoint" x="368" y="920">
    <point/>
+  </object>
+  <object id="216" name="ToBunker" type="door" x="28.2917" y="630.583" width="31.4167" height="47.5">
+   <properties>
+    <property name="destinationMap" value="bunker"/>
+    <property name="destinationSpawn" value="PlayerStart"/>
+   </properties>
+  </object>
+  <object id="217" name="DebugWarp2" type="door" x="192" y="640" width="31.4167" height="47.5">
+   <properties>
+    <property name="destinationMap" value="bunker"/>
+    <property name="destinationSpawn" value="Checkpoint2"/>
+   </properties>
   </object>
  </objectgroup>
  <objectgroup id="6" name="game objects">
@@ -648,6 +660,18 @@ open up room02 and wire it up!</property>
 But it could lead to a level you designed!
 open up room02 and wire it up!</property>
    </properties>
+  </object>
+  <object id="218" name="DebugWarpTXT" type="note" x="120" y="664">
+   <properties>
+    <property name="message" value="Debug Warp 1"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="219" name="DebugWarpTXT" type="note" x="192" y="664">
+   <properties>
+    <property name="message" value="Debug Warp 2"/>
+   </properties>
+   <point/>
   </object>
  </objectgroup>
 </map>
