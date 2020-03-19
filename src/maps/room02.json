@@ -367,6 +367,226 @@
                  "width":31.4167,
                  "x":920,
                  "y":256
+                }, 
+                {
+                 "height":47.5,
+                 "id":222,
+                 "name":"Level 6",
+                 "properties":[
+                        {
+                         "name":"destinationMap",
+                         "type":"string",
+                         "value":"room06"
+                        }, 
+                        {
+                         "name":"destinationSpawn",
+                         "type":"string",
+                         "value":"PlayerStart"
+                        }],
+                 "rotation":0,
+                 "type":"door",
+                 "visible":true,
+                 "width":31.4167,
+                 "x":368,
+                 "y":256
+                }, 
+                {
+                 "height":47.5,
+                 "id":223,
+                 "name":"Level 9",
+                 "properties":[
+                        {
+                         "name":"destinationMap",
+                         "type":"string",
+                         "value":"room09"
+                        }, 
+                        {
+                         "name":"destinationSpawn",
+                         "type":"string",
+                         "value":"PlayerStart"
+                        }],
+                 "rotation":0,
+                 "type":"door",
+                 "visible":true,
+                 "width":31.4167,
+                 "x":736,
+                 "y":256
+                }, 
+                {
+                 "height":47.5,
+                 "id":224,
+                 "name":"Level 11",
+                 "properties":[
+                        {
+                         "name":"destinationMap",
+                         "type":"string",
+                         "value":"room11"
+                        }, 
+                        {
+                         "name":"destinationSpawn",
+                         "type":"string",
+                         "value":"PlayerStart"
+                        }],
+                 "rotation":0,
+                 "type":"door",
+                 "visible":true,
+                 "width":31.4167,
+                 "x":1104,
+                 "y":256
+                }, 
+                {
+                 "height":47.5,
+                 "id":225,
+                 "name":"Level 12",
+                 "properties":[
+                        {
+                         "name":"destinationMap",
+                         "type":"string",
+                         "value":"room12"
+                        }, 
+                        {
+                         "name":"destinationSpawn",
+                         "type":"string",
+                         "value":"PlayerStart"
+                        }],
+                 "rotation":0,
+                 "type":"door",
+                 "visible":true,
+                 "width":31.4167,
+                 "x":1288,
+                 "y":256
+                }, 
+                {
+                 "height":47.5,
+                 "id":226,
+                 "name":"Level 13",
+                 "properties":[
+                        {
+                         "name":"destinationMap",
+                         "type":"string",
+                         "value":"room13"
+                        }, 
+                        {
+                         "name":"destinationSpawn",
+                         "type":"string",
+                         "value":"PlayerStart"
+                        }],
+                 "rotation":0,
+                 "type":"door",
+                 "visible":true,
+                 "width":31.4167,
+                 "x":1472,
+                 "y":256
+                }, 
+                {
+                 "height":47.5,
+                 "id":227,
+                 "name":"Level 14",
+                 "properties":[
+                        {
+                         "name":"destinationMap",
+                         "type":"string",
+                         "value":"room14"
+                        }, 
+                        {
+                         "name":"destinationSpawn",
+                         "type":"string",
+                         "value":"PlayerStart"
+                        }],
+                 "rotation":0,
+                 "type":"door",
+                 "visible":true,
+                 "width":31.4167,
+                 "x":1656,
+                 "y":256
+                }, 
+                {
+                 "height":47.5,
+                 "id":228,
+                 "name":"Level 15",
+                 "properties":[
+                        {
+                         "name":"destinationMap",
+                         "type":"string",
+                         "value":"room15"
+                        }, 
+                        {
+                         "name":"destinationSpawn",
+                         "type":"string",
+                         "value":"PlayerStart"
+                        }],
+                 "rotation":0,
+                 "type":"door",
+                 "visible":true,
+                 "width":31.4167,
+                 "x":1840,
+                 "y":256
+                }, 
+                {
+                 "height":47.5,
+                 "id":229,
+                 "name":"Level 16",
+                 "properties":[
+                        {
+                         "name":"destinationMap",
+                         "type":"string",
+                         "value":"room16"
+                        }, 
+                        {
+                         "name":"destinationSpawn",
+                         "type":"string",
+                         "value":"PlayerStart"
+                        }],
+                 "rotation":0,
+                 "type":"door",
+                 "visible":true,
+                 "width":31.4167,
+                 "x":2024,
+                 "y":256
+                }, 
+                {
+                 "height":47.5,
+                 "id":230,
+                 "name":"Level 8",
+                 "properties":[
+                        {
+                         "name":"destinationMap",
+                         "type":"string",
+                         "value":"room08"
+                        }, 
+                        {
+                         "name":"destinationSpawn",
+                         "type":"string",
+                         "value":"PlayerStart"
+                        }],
+                 "rotation":0,
+                 "type":"door",
+                 "visible":true,
+                 "width":31.4167,
+                 "x":552,
+                 "y":256
+                }, 
+                {
+                 "height":47.5,
+                 "id":231,
+                 "name":"Level 7",
+                 "properties":[
+                        {
+                         "name":"destinationMap",
+                         "type":"string",
+                         "value":"room07"
+                        }, 
+                        {
+                         "name":"destinationSpawn",
+                         "type":"string",
+                         "value":"PlayerStart"
+                        }],
+                 "rotation":0,
+                 "type":"door",
+                 "visible":true,
+                 "width":31.4167,
+                 "x":176,
+                 "y":192
                 }],
          "opacity":0.86,
          "type":"objectgroup",
@@ -1008,7 +1228,7 @@
          "y":0
         }],
  "nextlayerid":11,
- "nextobjectid":222,
+ "nextobjectid":232,
  "orientation":"orthogonal",
  "properties":[
         {
