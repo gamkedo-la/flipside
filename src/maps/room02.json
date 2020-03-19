@@ -321,8 +321,8 @@
                  "type":"door",
                  "visible":true,
                  "width":31.4167,
-                 "x":28.29165,
-                 "y":630.583333333333
+                 "x":32,
+                 "y":640
                 }, 
                 {
                  "height":47.5,
@@ -345,6 +345,28 @@
                  "width":31.4167,
                  "x":192,
                  "y":640
+                }, 
+                {
+                 "height":47.5,
+                 "id":221,
+                 "name":"Level 10",
+                 "properties":[
+                        {
+                         "name":"destinationMap",
+                         "type":"string",
+                         "value":"room10"
+                        }, 
+                        {
+                         "name":"destinationSpawn",
+                         "type":"string",
+                         "value":"PlayerStart"
+                        }],
+                 "rotation":0,
+                 "type":"door",
+                 "visible":true,
+                 "width":31.4167,
+                 "x":920,
+                 "y":256
                 }],
          "opacity":0.86,
          "type":"objectgroup",
@@ -824,7 +846,7 @@
                         {
                          "name":"text",
                          "type":"string",
-                         "value":"This door leads nowhere.\nBut it could lead to a level you designed!\nopen up room02 and wire it up!"
+                         "value":"LEVEL 10"
                         }],
                  "rotation":0,
                  "type":"messageBox",
@@ -1008,7 +1030,7 @@
          "y":0
         }],
  "nextlayerid":11,
- "nextobjectid":220,
+ "nextobjectid":222,
  "orientation":"orthogonal",
  "properties":[
         {
