@@ -1,5 +1,5 @@
 { "backgroundcolor":"#28283c",
- "compressionlevel":0,
+ "compressionlevel":-1,
  "editorsettings":
     {
      "export":
@@ -123,14 +123,14 @@
                 {
                  "height":0,
                  "id":166,
-                 "name":"enter04",
+                 "name":"enter06",
                  "point":true,
                  "rotation":0,
                  "type":"spawnPoint",
                  "visible":true,
                  "width":0,
                  "x":384,
-                 "y":408
+                 "y":267
                 }, 
                 {
                  "height":47.5,
@@ -381,7 +381,7 @@
                         {
                          "name":"destinationSpawn",
                          "type":"string",
-                         "value":"PlayerStart"
+                         "value":"enter01"
                         }],
                  "rotation":0,
                  "type":"door",
@@ -587,6 +587,18 @@
                  "width":31.4167,
                  "x":176,
                  "y":192
+                }, 
+                {
+                 "height":0,
+                 "id":232,
+                 "name":"enter04",
+                 "point":true,
+                 "rotation":0,
+                 "type":"spawnPoint",
+                 "visible":true,
+                 "width":0,
+                 "x":386,
+                 "y":394
                 }],
          "opacity":0.86,
          "type":"objectgroup",
@@ -1228,7 +1240,7 @@
          "y":0
         }],
  "nextlayerid":11,
- "nextobjectid":232,
+ "nextobjectid":233,
  "orientation":"orthogonal",
  "properties":[
         {
