@@ -132,6 +132,7 @@ const soundList = [
     { name: "test2", url:"./src/snd/test2.mp3" },
     { name: "testMusic2", url:"./src/snd/stebsScaryFlipside(2).mp3" },
     { name: "testMusic1", url:"./src/snd/klaim-layers_of_cool_lasers-no_guitar_solo-ingame_version.mp3" },
+    { name: "testMusic3", url:"./src/snd/klaim-layers_of_cool_lasers-ingame_version.mp3" },
     { name: "playerShoot", url:"./src/snd/playerShoot1.mp3" },
     { name: "splode1", url:"./src/snd/splode1.mp3"},
     { name: "footstep", url:"./src/snd/footstep.mp3"},

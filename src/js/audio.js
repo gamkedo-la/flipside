@@ -17,6 +17,7 @@ const AudioGlobal = function AudioGlobal() {
 	var musicVolume;
 	var soundEffectsVolume;
 	var currentMusicTrack;
+	var musicStartTime = 0;
 
 //--//Set up WebAudioAPI nodes------------------------------------------------
 	this.init = function() {
@@ -123,7 +124,7 @@ const AudioGlobal = function AudioGlobal() {
 		return {sound: source, volume: gainNode, pan: panNode};
 	}
 
-	this.playMusic = function(buffer, fadeIn = false) {
+	this.playMusic = function(buffer) {
         if (!initialized) return;
 
 		var source = audioCtx.createBufferSource();
@@ -141,13 +142,46 @@ const AudioGlobal = function AudioGlobal() {
 			currentMusicTrack.sound.stop(audioCtx.currentTime + CROSSFADE_TIME);
 		}
 
-		if (fadeIn) {
-			gainNode.gain.value = 0;
-			gainNode.gain.setTargetAtTime(1, audioCtx.currentTime, CROSSFADE_TIME);
-		}
-
 		source.start();
 		currentMusicTrack = {sound: source, volume: gainNode};
+
+		musicStartTime = audioCtx.currentTime;
+
+
+		return {sound: source, volume: gainNode};
+	}
+
+	this.swapMusic = function(buffer) {
+        if (!initialized) return;
+
+		var source = audioCtx.createBufferSource();
+		var gainNode = audioCtx.createGain();
+
+		var startTime = audioCtx.currentTime - musicStartTime;
+		while(startTime >= buffer.duration) {
+			startTime -= buffer.duration;
+		}
+
+		source.connect(gainNode);
+		gainNode.connect(musicBus);
+
+		source.buffer = buffer;
+
+		source.loop = true;
+
+		if (currentMusicTrack != null) {
+			currentMusicTrack.volume.gain.setTargetAtTime(0, audioCtx.currentTime, CROSSFADE_TIME);
+			currentMusicTrack.sound.stop(audioCtx.currentTime + CROSSFADE_TIME);
+		}
+
+		gainNode.gain.value = 0;
+		gainNode.gain.setTargetAtTime(1, audioCtx.currentTime, CROSSFADE_TIME);
+
+		source.start(audioCtx.currentTime, startTime);
+		currentMusicTrack = {sound: source, volume: gainNode};
+
+		musicStartTime = audioCtx.currentTime - startTime;
+
 
 		return {sound: source, volume: gainNode};
 	}
