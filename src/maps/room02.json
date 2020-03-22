@@ -469,7 +469,7 @@
                         {
                          "name":"destinationSpawn",
                          "type":"string",
-                         "value":"PlayerStart"
+                         "value":"enterTopLeft"
                         }],
                  "rotation":0,
                  "type":"door",
