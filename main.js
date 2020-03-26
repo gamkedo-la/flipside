@@ -309,7 +309,7 @@ function start(sounds){
     requestAnimationFrame(drawTitleScreen);
     if (soundEnabled) G.music = G.audio.playMusic(G.sounds.testMusic1)
     G.music.volume.gain.value = 0.65;
-    console.log(G.music);
+    //console.log(G.music);
 
 }
 
@@ -902,7 +902,7 @@ function processWorldObjects(objects){
     let results = [];
     // console.log(objects);
     objects.forEach(function(obj){
-        console.log("spawning a " + obj.type);
+        //console.log("spawning a " + obj.type);
         switch(obj.type){
             case "flipbat":
                 results.push(new FlipBat(obj).init());

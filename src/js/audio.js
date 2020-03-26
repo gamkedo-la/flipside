@@ -25,7 +25,7 @@ const AudioGlobal = function AudioGlobal() {
 
 		//console.log("Initializing Audio...");
 		// note: this causes a browser error if user has not interacted w page yet    
-		audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+		audioCtx = new (window.AudioContext || window.webkitAudioContext)(); // FIXME: error in chrome
 		this.context = audioCtx;
 		musicBus = audioCtx.createGain();
 		soundEffectsBus = audioCtx.createGain();
@@ -142,7 +142,7 @@ const AudioGlobal = function AudioGlobal() {
 			currentMusicTrack.sound.stop(audioCtx.currentTime + CROSSFADE_TIME);
 		}
 
-		source.start();
+		source.start(); // FIXME: causes errors in chrome
 		currentMusicTrack = {sound: source, volume: gainNode};
 
 		musicStartTime = audioCtx.currentTime;
