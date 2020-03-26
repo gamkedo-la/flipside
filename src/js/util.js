@@ -43,6 +43,7 @@ export const Key = {
     },
 
     onKeydown(event) {
+        if (/* not global: soundEnabled &&*/ G.audio && !G.audio.initialized) G.audio.init(); // FIX browser permission errors
         this._pressed[event.keyCode] = true;
     },
 

@@ -159,6 +159,8 @@ AssetLoader.prototype.soundLoader = function ({context, urlList, callback} = {})
   
     request.onload = function() {
       // Asynchronously decode the audio file data in request.response
+      // FIXME: G.audio has to be initialized for this to run!
+      // but it is very unlikely to be ready yet
       loader.context.decodeAudioData(
         request.response,
         function(buffer) {

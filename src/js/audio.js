@@ -11,7 +11,7 @@ const DROPOFF_MAX = 500;
 
 const AudioGlobal = function AudioGlobal() {
 
-	var initialized = false;
+	this.initialized = false;
 	var audioCtx, musicBus, soundEffectsBus, filterBus, masterBus;
 	var isMuted;
 	var musicVolume;
@@ -21,9 +21,9 @@ const AudioGlobal = function AudioGlobal() {
 
 //--//Set up WebAudioAPI nodes------------------------------------------------
 	this.init = function() {
-		if (initialized) return;
+		if (this.initialized) return;
 
-		//console.log("Initializing Audio...");
+		console.log("Initializing Audio...");
 		// note: this causes a browser error if user has not interacted w page yet    
 		audioCtx = new (window.AudioContext || window.webkitAudioContext)(); // FIXME: error in chrome
 		this.context = audioCtx;
@@ -45,26 +45,26 @@ const AudioGlobal = function AudioGlobal() {
 		filterBus.connect(masterBus);
 		masterBus.connect(audioCtx.destination);
 
-		initialized = true;
+		this.initialized = true;
 	}
 
 //--//volume handling functions-----------------------------------------------
 	this.toggleMute = function() {
-		if (!initialized) return;
+		if (!this.initialized) return;
 
 		var newVolume = (masterBus.gain.value === 0 ? 1 : 0);
 		masterBus.gain.setTargetAtTime(newVolume, audioCtx.currentTime, 0.03);
 	}
 
 	this.setMute = function(tOrF) {
-		if (!initialized) return;
+		if (!this.initialized) return;
 
 		var newVolume = (tOrF === false ? 1 : 0);
 		masterBus.gain.setTargetAtTime(newVolume, audioCtx.currentTime, 0.03);
 	}
 
 	this.setMusicVolume = function(amount) {
-		if (!initialized) return;
+		if (!this.initialized) return;
 
 		musicVolume = amount;
 		if (musicVolume > 1.0) {
@@ -76,7 +76,7 @@ const AudioGlobal = function AudioGlobal() {
 	}
 
 	this.setSoundEffectsVolume = function(amount) {
-		if (!initialized) return;
+		if (!this.initialized) return;
 
 		soundEffectsVolume = amount;
 		if (soundEffectsVolume > 1.0) {
@@ -88,14 +88,14 @@ const AudioGlobal = function AudioGlobal() {
 	}
 
 	this.turnVolumeUp = function() {
-		if (!initialized) return;
+		if (!this.initialized) return;
 
 		this.setMusicVolume(musicVolume + VOLUME_INCREMENT);
 		this.setSoundEffectsVolume(soundEffectsVolume + VOLUME_INCREMENT);
 	}
 
 	this.turnVolumeDown = function() {
-		if (!initialized) return;
+		if (!this.initialized) return;
 
 		this.setMusicVolume(musicVolume - VOLUME_INCREMENT);
 		this.setSoundEffectsVolume(soundEffectsVolume - VOLUME_INCREMENT);
@@ -103,7 +103,7 @@ const AudioGlobal = function AudioGlobal() {
 
 //--//Audio playback classes--------------------------------------------------
 	this.playSound = function(buffer, pan = 0, vol = 1, rate = 1, loop = false) {
-		if (!initialized) return;
+		if (!this.initialized) return;
 
 		var source = audioCtx.createBufferSource();
 		var gainNode = audioCtx.createGain();
@@ -125,7 +125,7 @@ const AudioGlobal = function AudioGlobal() {
 	}
 
 	this.playMusic = function(buffer) {
-        if (!initialized) return;
+        if (!this.initialized) return;
 
 		var source = audioCtx.createBufferSource();
 		var gainNode = audioCtx.createGain();
@@ -152,7 +152,7 @@ const AudioGlobal = function AudioGlobal() {
 	}
 
 	this.swapMusic = function(buffer) {
-        if (!initialized) return;
+        if (!this.initialized) return;
 
 		var source = audioCtx.createBufferSource();
 		var gainNode = audioCtx.createGain();
@@ -221,7 +221,7 @@ const AudioGlobal = function AudioGlobal() {
 	}
 
 	this.enterFlipside = function() {
-		if (!initialized) return;
+		if (!this.initialized) return;
 
 		filterBus.frequency.cancelScheduledValues(audioCtx.currentTime);
 		filterBus.frequency.linearRampToValueAtTime(FILTER_MAX/2, audioCtx.currentTime + 0.01);
@@ -229,7 +229,7 @@ const AudioGlobal = function AudioGlobal() {
 	}
 
 	this.exitFlipside = function() {
-		if (!initialized) return;
+		if (!this.initialized) return;
 
 		filterBus.frequency.cancelScheduledValues(audioCtx.currentTime);
 		filterBus.frequency.linearRampToValueAtTime(FILTER_MIN, audioCtx.currentTime + 0.01);

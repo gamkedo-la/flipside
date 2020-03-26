@@ -84,7 +84,9 @@ G.loader = new AssetLoader();
 
 if (soundEnabled) {
     G.audio = new AudioGlobal();
+    // THIS LINE SHOULD BE REMOVED: ---v
     G.audio.init(); // FIXME: defer to after the first click/keypress to avoid browser error
+    // HOWEVER, AssetLoader.loadBuffer expects audio to be running before page has loaded
 }
 G.lightning = new ElectricityRenderer();
 G.saver = new GameSaver();
@@ -177,7 +179,9 @@ window.addEventListener('blur',     function (event) { paused = true; }, false);
 window.addEventListener('focus',    function (event) { paused = false; }, false);
 
 
-window.addEventListener('click', function(event) { if (soundEnabled) audio.context.resume(); }, false); //Temporary fix for chrome not strting the audio context until user interaction
+window.addEventListener('click', function(event) { 
+    if (soundEnabled && G.audio && !G.audio.initialized) G.audio.init(); // FIX browser permission errors
+    if (soundEnabled) audio.context.resume(); }, false); //Temporary fix for chrome not strting the audio context until user interaction
 
 G.MSG.addEventListener('achievement',  function (event) { showMessage(`ACHIEVEMENT GET: ${event.detail.title}`) });
 
