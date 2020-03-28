@@ -101,7 +101,6 @@ PIG.prototype.update = function update(dt){
 }
 
 PIG.prototype.render = function render(glRender, dt){
-    //console.log("PIG is rendering at "+this.pos.x.toFixed(1)+','+this.pos.y.toFixed(1))
     if(this.health < this.healthMax){
         let fillWidth = range(this.health, 0, this.healthMax, 0, this.healthBar.width);
         G.rb.fillRect(this.pos.x + this.healthBar.xOffset - G.view.x,
@@ -119,8 +118,6 @@ PIG.prototype.render = function render(glRender, dt){
             height: this.height
         })
     }
-
-  //  G.rb.rect(this.rect.left-G.view.x, this.rect.top-G.view.y, this.width, this.height, 11);
 }
 
 PIG.prototype.play = function play(animationName){
@@ -150,6 +147,7 @@ PIG.prototype.init = function init(){
             }
         }
     })
+
     //must have an anim set at start, or .currentAnimation is null
     this.play('idleLeft');
     
@@ -164,7 +162,7 @@ PIG.prototype.kill = function kill(){
         G.particles.spawn(
             this.pos.x+rndInt(-15,15),
             this.pos.y-10+rndInt(-5,5),
-            rndFloat(-.3, .3), 
+            rndFloat(-0.3, 0.3), 
             rndFloat(-1, -1.5),
             26,
             2,
@@ -175,21 +173,20 @@ PIG.prototype.kill = function kill(){
     }
 
     let dropCount = 5;
-            while(--dropCount){
-                G.pickups.spawn(
-                    this.pos.x+rndInt(-5,5),
-                    this.pos.y-10+rndInt(-5,5),
-                    rndFloat(-30, 30), 
-                    rndFloat(-30),
-                    11,
-                    6,
-                    6,
-                    180,
-                    G.PICKUP_NANITE
-                )
-            }
+    while(--dropCount){
+        G.pickups.spawn(
+            this.pos.x+rndInt(-5,5),
+            this.pos.y-10+rndInt(-5,5),
+            rndFloat(-30, 30), 
+            rndFloat(-30),
+            11,
+            6,
+            6,
+            180,
+            G.PICKUP_NANITE
+        )
+    }
 
-    
     G.world.entities.splice(G.world.entities.indexOf(this), 1);
 }
 

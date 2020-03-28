@@ -198,7 +198,35 @@
          "draworder":"topdown",
          "id":6,
          "name":"game objects",
-         "objects":[],
+         "objects":[
+                {
+                 "gid":11,
+                 "height":8,
+                 "id":79,
+                 "name":"There's so much good to eat here!",
+                 "properties":[
+                        {
+                         "name":"clockwisePath",
+                         "type":"int",
+                         "value":1
+                        }, 
+                        {
+                         "name":"pathHeightInTiles",
+                         "type":"int",
+                         "value":3
+                        }, 
+                        {
+                         "name":"pathWidthInTiles",
+                         "type":"int",
+                         "value":7
+                        }],
+                 "rotation":0,
+                 "type":"flipslime",
+                 "visible":true,
+                 "width":8,
+                 "x":111.727272727273,
+                 "y":270.090909090909
+                }],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
@@ -206,7 +234,7 @@
          "y":0
         }],
  "nextlayerid":7,
- "nextobjectid":79,
+ "nextobjectid":80,
  "orientation":"orthogonal",
  "properties":[
         {

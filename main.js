@@ -31,6 +31,7 @@ import FlipBird from './src/js/flipbird.js';
 import RoboTank from './src/js/robotank.js';
 // import Drone from './src/js/drone.js';
 import FlipSpider from './src/js/flipspider.js';
+import FlipSlime from './src/js/slime.js';
 import Barricade from './src/js/Barricade.js';
 import Switch from './src/js/Switch.js';
 import MessageBox from './src/js/MessageBox.js';
@@ -277,7 +278,7 @@ function start(sounds){
             },
             EnemyFlipSlime: {
                 image:G.img.EnemyFlipSlime,
-                frameCount:9
+                frameCount:16
             }
         }
         G.GLRenderer.prepareEntityData(entityData);
@@ -449,7 +450,6 @@ function isEnemyType(type) {
             (type == "flipspider") ||
             (type == "EnemyRoboTank") ||
             (type == "EnemyFlipTank") ||
-            (type == "EnemyFlipSlime") ||
             (type == "EnemyFlipSlime"))
 }
 
@@ -922,6 +922,9 @@ function processWorldObjects(objects){
             break;
             case "flipspider":
                 results.push(new FlipSpider({pos:{x: obj.x, y: obj.y}}).init());
+            break;
+            case "flipslime":
+                results.push(new FlipSlime(obj).init());
             break;
              case "drone":
                  results.push(new Drone({pos:{x: obj.x, y: obj.y}}).init());
