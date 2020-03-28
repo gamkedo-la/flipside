@@ -278,7 +278,7 @@ function start(sounds){
             },
             EnemyFlipSlime: {
                 image:G.img.EnemyFlipSlime,
-                frameCount:16
+                frameCount:32
             }
         }
         G.GLRenderer.prepareEntityData(entityData);

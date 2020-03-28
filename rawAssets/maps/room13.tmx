@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="200" height="200" tilewidth="8" tileheight="8" infinite="0" backgroundcolor="#28283c" nextlayerid="7" nextobjectid="80">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="200" height="200" tilewidth="8" tileheight="8" infinite="0" backgroundcolor="#28283c" nextlayerid="7" nextobjectid="183">
  <editorsettings>
   <export target="../../src/maps/room13.json" format="json"/>
  </editorsettings>
@@ -658,9 +658,674 @@
   </object>
  </objectgroup>
  <objectgroup id="6" name="game objects">
-  <object id="79" name="There's so much good to eat here!" type="flipslime" gid="11" x="111.727" y="270.091" width="8" height="8">
+  <object id="80" name="Ho hum de dum" type="flipslime" gid="15" x="112.363" y="271.636" width="8" height="8">
    <properties>
-    <property name="clockwisePath" type="int" value="1"/>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="82" name="Ho hum de dum" type="flipslime" gid="15" x="176.333" y="336.333" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="83" name="Ho hum de dum" type="flipslime" gid="15" x="103.75" y="384" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="84" name="Ho hum de dum" type="flipslime" gid="15" x="168" y="455.5" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="85" name="Ho hum de dum" type="flipslime" gid="15" x="111.25" y="511.75" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="86" name="Ho hum de dum" type="flipslime" gid="15" x="160.25" y="616.25" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="87" name="Ho hum de dum" type="flipslime" gid="15" x="128.25" y="727.5" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="88" name="Ho hum de dum" type="flipslime" gid="15" x="144" y="839.75" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="89" name="Ho hum de dum" type="flipslime" gid="15" x="112.25" y="895.5" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="90" name="Ho hum de dum" type="flipslime" gid="15" x="176" y="952.25" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="91" name="Ho hum de dum" type="flipslime" gid="15" x="104.25" y="991.25" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="92" name="Ho hum de dum" type="flipslime" gid="15" x="192" y="1063.5" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="93" name="Ho hum de dum" type="flipslime" gid="15" x="120.5" y="1103.75" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="94" name="Ho hum de dum" type="flipslime" gid="15" x="191.5" y="1175.5" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="95" name="Ho hum de dum" type="flipslime" gid="15" x="111.5" y="1216" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="96" name="Ho hum de dum" type="flipslime" gid="15" x="144.25" y="1272" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="97" name="Ho hum de dum" type="flipslime" gid="15" x="104.5" y="1328" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="98" name="Ho hum de dum" type="flipslime" gid="15" x="192.25" y="1343.75" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="99" name="Ho hum de dum" type="flipslime" gid="15" x="120.25" y="1408" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="100" name="Ho hum de dum" type="flipslime" gid="15" x="192" y="1455.75" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="101" name="Ho hum de dum" type="flipslime" gid="15" x="456.25" y="823.5" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="102" name="Ho hum de dum" type="flipslime" gid="15" x="552" y="832" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="103" name="Ho hum de dum" type="flipslime" gid="15" x="528.25" y="888" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="104" name="Ho hum de dum" type="flipslime" gid="15" x="447.75" y="920" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="105" name="Ho hum de dum" type="flipslime" gid="15" x="504.5" y="983.75" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="107" name="Ho hum de dum" type="flipslime" gid="15" x="592.5" y="943.75" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="108" name="Ho hum de dum" type="flipslime" gid="15" x="647.75" y="871.5" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="110" name="Ho hum de dum" type="flipslime" gid="15" x="599.75" y="1040.25" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="111" name="Ho hum de dum" type="flipslime" gid="15" x="655.75" y="1096" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="112" name="Ho hum de dum" type="flipslime" gid="15" x="399.75" y="1023.75" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="113" name="Ho hum de dum" type="flipslime" gid="15" x="448.5" y="1079.5" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="114" name="Ho hum de dum" type="flipslime" gid="15" x="408.5" y="1135.75" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="115" name="Ho hum de dum" type="flipslime" gid="15" x="512.75" y="1136" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="116" name="Ho hum de dum" type="flipslime" gid="15" x="592" y="1151.75" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="117" name="Ho hum de dum" type="flipslime" gid="15" x="608.25" y="1247.75" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="118" name="Ho hum de dum" type="flipslime" gid="15" x="520.5" y="1191.75" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="119" name="Ho hum de dum" type="flipslime" gid="15" x="448.25" y="1208" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="120" name="Ho hum de dum" type="flipslime" gid="15" x="520.5" y="1288" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="121" name="Ho hum de dum" type="flipslime" gid="15" x="408.5" y="1320" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="122" name="Ho hum de dum" type="flipslime" gid="15" x="496.5" y="1343.5" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="123" name="Ho hum de dum" type="flipslime" gid="15" x="656.5" y="1303.75" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="124" name="Ho hum de dum" type="flipslime" gid="15" x="608.5" y="1360" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="126" name="Ho hum de dum" type="flipslime" gid="15" x="592.5" y="1440.25" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="127" name="Ho hum de dum" type="flipslime" gid="15" x="520.25" y="1463.75" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="128" name="Ho hum de dum" type="flipslime" gid="15" x="448.5" y="1399.75" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="129" name="Ho hum de dum" type="flipslime" gid="15" x="976.5" y="847.5" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="130" name="Ho hum de dum" type="flipslime" gid="15" x="896.5" y="895.5" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="131" name="Ho hum de dum" type="flipslime" gid="15" x="936.5" y="951.5" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="132" name="Ho hum de dum" type="flipslime" gid="15" x="1064" y="903.75" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="133" name="Ho hum de dum" type="flipslime" gid="15" x="1080.75" y="823.5" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="134" name="Ho hum de dum" type="flipslime" gid="15" x="1136.75" y="959.75" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="135" name="Ho hum de dum" type="flipslime" gid="15" x="1032.75" y="1015.75" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="136" name="Ho hum de dum" type="flipslime" gid="15" x="1104.25" y="1071.25" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="137" name="Ho hum de dum" type="flipslime" gid="15" x="960.25" y="1047.5" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="138" name="Ho hum de dum" type="flipslime" gid="15" x="864.25" y="1008.25" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="139" name="Ho hum de dum" type="flipslime" gid="15" x="944.25" y="1103.75" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="140" name="Ho hum de dum" type="flipslime" gid="15" x="1023.75" y="1159.75" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="141" name="Ho hum de dum" type="flipslime" gid="15" x="863.75" y="1160.25" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="142" name="Ho hum de dum" type="flipslime" gid="15" x="1152.75" y="1184" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="143" name="Ho hum de dum" type="flipslime" gid="15" x="1080.25" y="1239.75" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="144" name="Ho hum de dum" type="flipslime" gid="15" x="1008" y="1295.75" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="145" name="Ho hum de dum" type="flipslime" gid="15" x="968.5" y="1240" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="146" name="Ho hum de dum" type="flipslime" gid="15" x="888.5" y="1216" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="147" name="Ho hum de dum" type="flipslime" gid="15" x="936.75" y="1327.5" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="148" name="Ho hum de dum" type="flipslime" gid="15" x="864.75" y="1383.75" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="149" name="Ho hum de dum" type="flipslime" gid="15" x="936.25" y="1431.5" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="150" name="Ho hum de dum" type="flipslime" gid="15" x="1032.5" y="1352" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="151" name="Ho hum de dum" type="flipslime" gid="15" x="1008.5" y="1448" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="152" name="Ho hum de dum" type="flipslime" gid="15" x="1103.75" y="1407.75" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="154" name="Ho hum de dum" type="flipslime" gid="15" x="1135.5" y="1352" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="155" name="Ho hum de dum" type="flipslime" gid="15" x="1432.5" y="1471.75" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="156" name="Ho hum de dum" type="flipslime" gid="15" x="1360.5" y="1423.75" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="158" name="Ho hum de dum" type="flipslime" gid="15" x="1376.5" y="1368" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="159" name="Ho hum de dum" type="flipslime" gid="15" x="1448.5" y="1319.5" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="160" name="Ho hum de dum" type="flipslime" gid="15" x="1392.75" y="1239.75" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="161" name="Ho hum de dum" type="flipslime" gid="15" x="1440.75" y="1183.75" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="162" name="Ho hum de dum" type="flipslime" gid="15" x="1360.75" y="1128" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="163" name="Ho hum de dum" type="flipslime" gid="15" x="1376.75" y="1071.75" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="164" name="Ho hum de dum" type="flipslime" gid="15" x="1448.5" y="1031.5" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="165" name="Ho hum de dum" type="flipslime" gid="15" x="1360.25" y="976" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="167" name="Ho hum de dum" type="flipslime" gid="15" x="1408" y="919.75" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="168" name="Ho hum de dum" type="flipslime" gid="15" x="1448.5" y="800" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="169" name="Ho hum de dum" type="flipslime" gid="15" x="1376.75" y="743.75" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="170" name="Ho hum de dum" type="flipslime" gid="15" x="1448.75" y="711.75" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="171" name="Ho hum de dum" type="flipslime" gid="15" x="1360.75" y="632" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="172" name="Ho hum de dum" type="flipslime" gid="15" x="1432.75" y="600" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="173" name="Ho hum de dum" type="flipslime" gid="15" x="1360.75" y="567.5" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="174" name="Ho hum de dum" type="flipslime" gid="15" x="1448.5" y="543.75" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="175" name="Ho hum de dum" type="flipslime" gid="15" x="1376.25" y="511.5" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="176" name="Ho hum de dum" type="flipslime" gid="15" x="1407.75" y="456" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="177" name="Ho hum de dum" type="flipslime" gid="15" x="1448.5" y="344" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="178" name="Ho hum de dum" type="flipslime" gid="15" x="1376.25" y="319.75" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="179" name="Ho hum de dum" type="flipslime" gid="15" x="1360.75" y="264" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="false"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="180" name="Ho hum de dum" type="flipslime" gid="15" x="1432.5" y="207.5" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="181" name="Ho hum de dum" type="flipslime" gid="15" x="1360.5" y="191.75" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
+  <object id="182" name="Ho hum de dum" type="flipslime" gid="15" x="136.364" y="175.636" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
     <property name="pathHeightInTiles" type="int" value="3"/>
     <property name="pathWidthInTiles" type="int" value="7"/>
    </properties>

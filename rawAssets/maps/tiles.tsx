@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.2" tiledversion="1.3.2" name="tiles" tilewidth="8" tileheight="8" tilecount="4096" columns="16">
+<tileset version="1.2" tiledversion="1.3.1" name="tiles" tilewidth="8" tileheight="8" tilecount="4096" columns="16">
  <image source="../../src/img/tiles.png" width="128" height="2048"/>
  <terraintypes>
   <terrain name="bgLabWallPanel" tile="224"/>
@@ -14,6 +14,13 @@
  <tile id="10" type="flippig"/>
  <tile id="11" type="flipbird"/>
  <tile id="12" type="robotank"/>
+ <tile id="14" type="flipslime">
+  <properties>
+   <property name="clockwisePath" type="bool" value="true"/>
+   <property name="pathHeightInTiles" type="int" value="3"/>
+   <property name="pathWidthInTiles" type="int" value="7"/>
+  </properties>
+ </tile>
  <tile id="148" terrain="4,4,4,4"/>
  <tile id="149" terrain="4,4,4,4"/>
  <tile id="164" terrain="4,4,4,4"/>

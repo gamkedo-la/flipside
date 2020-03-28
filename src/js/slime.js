@@ -118,6 +118,9 @@ Slime.prototype.update = function update(dt){
             } else {
                 //at the top => need to move left
                 this.pos.x = this.pos.x - this.speed * dt;
+                if(this.currentAnimation != this.spritesheet.animations.CCWLeft) {
+                    this.play("CCWLeft");
+                }
             }
         } else {
             //we're near the bottom of the path
@@ -130,6 +133,9 @@ Slime.prototype.update = function update(dt){
             } else {
                 //at the bottom => need to move right
                 this.pos.x = this.pos.x + this.speed * dt;
+                if(this.currentAnimation != this.spritesheet.animations.CCWRight) {
+                    this.play("CCWRight");
+                }
             }
         }
     } else if((this.pos.y >= this.start.y) && (this.pos.y <= this.start.y + this.pathHeight * 8)){
@@ -145,6 +151,9 @@ Slime.prototype.update = function update(dt){
             } else {
                 //at the left side => need to move down
                 this.pos.y = this.pos.y + this.speed * dt;
+                if(this.currentAnimation != this.spritesheet.animations.CCWDown) {
+                    this.play("CCWDown");
+                }
             }
         } else {
             //we're near the right side of the path
@@ -157,6 +166,9 @@ Slime.prototype.update = function update(dt){
             } else {
                 //at the right side => need to move up
                 this.pos.y = this.pos.y - this.speed * dt;
+                if(this.currentAnimation != this.spritesheet.animations.CCWUp) {
+                    this.play("CCWUp");
+                }
             }
         }
     } else {
@@ -170,6 +182,7 @@ Slime.prototype.update = function update(dt){
             } else {
                 //upper left => need to start moving down
                 this.pos.y = this.pos.y + this.speed * dt;
+                this.play("CCWDown");
             }
         } else if((this.pos.x >= this.start.x + this.pathWidth * 8) && (this.pos.y <= this.start.y)) {
             //Upper right corner
@@ -180,6 +193,7 @@ Slime.prototype.update = function update(dt){
             } else {
                 //upper right => need to start moving left
                 this.pos.x = this.pos.x - this.speed * dt;
+                this.play("CCWLeft");
             }
         } else if((this.pos.x >= this.start.x + this.pathWidth * 8) && (this.pos.y >= this.start.y + this.pathHeight * 8)) {
             //Lower right corner
@@ -190,6 +204,7 @@ Slime.prototype.update = function update(dt){
             } else {
                 //lower right => need to start moving up
                 this.pos.y = this.pos.y - this.speed * dt;
+                this.play("CCWUp");
             }
         } else if((this.pos.x <= this.start.x) && (this.pos.y >= this.start.y + this.pathHeight * 8)) {
             //Lower left corner
@@ -200,6 +215,7 @@ Slime.prototype.update = function update(dt){
             } else {
                 //lower left => need to start moving right
                 this.pos.x = this.pos.x + this.speed * dt;
+                this.play("CCWRight");
             }
         }
     }
@@ -287,6 +303,22 @@ Slime.prototype.init = function init(){
             },
             clockwiseUp: {
                 frames: '12..15',
+                frameRate: 4
+            },
+            CCWLeft: {
+                frames: '16..19',
+                frameRate: 4
+            },
+            CCWDown: {
+                frames: '20..23',
+                frameRate: 4
+            },
+            CCWRight: {
+                frames: '24..27',
+                frameRate: 4
+            },
+            CCWUp: {
+                frames: '28..31',
                 frameRate: 4
             }
         }
