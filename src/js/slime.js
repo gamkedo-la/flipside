@@ -219,13 +219,64 @@ Slime.prototype.update = function update(dt){
             }
         }
     }
-
-    this.rect = {
-        top: this.pos.y - this.width/2,
-        left: this.pos.x - this.height/2,
-        right: this.pos.x + this.height/2,
-        bottom: this.pos.y + this.height/2
+    if(this.currentAnimation == this.spritesheet.animations.clockwiseRight) {
+        this.rect = {//update collision rect based on current animation
+            top: this.pos.y - 7,
+            left: this.pos.x - 13,
+            right: this.pos.x + 13,
+            bottom: this.pos.y + 2
+        } 
+    } else if(this.currentAnimation == this.spritesheet.animations.clockwiseDown) {
+        this.rect = {//update collision rect based on current animation
+            top: this.pos.y - 7,
+            left: this.pos.x - 8,
+            right: this.pos.x + 1,
+            bottom: this.pos.y + 13
+        }
+    } else if(this.currentAnimation == this.spritesheet.animations.clockwiseLeft) {
+        this.rect = {//update collision rect based on current animation
+            top: this.pos.y - 7,
+            left: this.pos.x - 13,
+            right: this.pos.x +13,
+            bottom: this.pos.y + 2
+        }
+    } else if(this.currentAnimation == this.spritesheet.animations.clockwiseUp) {
+        this.rect = {//update collision rect based on current animation
+            top: this.pos.y - 13,
+            left: this.pos.x - 9,
+            right: this.pos.x,
+            bottom: this.pos.y + 13
+        }
+    } else if(this.currentAnimation == this.spritesheet.animations.CCWDown) {
+        this.rect = {//update collision rect based on current animation
+            top: this.pos.y - 13,
+            left: this.pos.x - 9,
+            right: this.pos.x,
+            bottom: this.pos.y + 13
+        }
+    } else if(this.currentAnimation == this.spritesheet.animations.CCWRight) {
+        this.rect = {//update collision rect based on current animation
+            top: this.pos.y - 7,
+            left: this.pos.x - 13,
+            right: this.pos.x + 13,
+            bottom: this.pos.y + 2
+        }
+    } else if(this.currentAnimation == this.spritesheet.animations.CCWUp) {
+        this.rect = {//update collision rect based on current animation
+            top: this.pos.y - 13,
+            left: this.pos.x - 8,
+            right: this.pos.x + 1,
+            bottom: this.pos.y + 13
+        }
+    } else if(this.currentAnimation == this.spritesheet.animations.CCWLeft) {
+        this.rect = {//update collision rect based on current animation
+            top: this.pos.y - 7,
+            left: this.pos.x - 13,
+            right: this.pos.x + 13,
+            bottom: this.pos.y + 2
+        }
     }
+
     var self = this;
     
     if(rectCollision(this.rect, G.player.rect)) {
@@ -253,6 +304,8 @@ Slime.prototype.update = function update(dt){
 }
 
 Slime.prototype.render = function render(glRender, dt){
+//    G.rb.rect(this.rect.left-G.view.x, this.rect.top-G.view.y, this.rect.right - this.rect.left, this.rect.bottom - this.rect.top, 11);
+
     if(this.health < this.healthMax){
         let fillWidth = range(this.health, 0, this.healthMax, 0, this.healthBar.width);
         G.rb.fillRect(this.pos.x + this.healthBar.xOffset - G.view.x,
