@@ -57,6 +57,8 @@ ParticlePool.prototype.draw = function draw(){
         if(this.pool[i+8] == 0) continue;
         
         if(inView(this.pool[i+1],this.pool[i+2])){
+            let color;
+            let pcolor;
 
             switch(this.pool[i+8]) {
                 case  G.JET: //jetbubble
@@ -67,62 +69,6 @@ ParticlePool.prototype.draw = function draw(){
                         27
                         );
                     break;
-<<<<<<< HEAD
-
-                    case G.EVSMOKE: //enemydeath
-                        G.rb.fillCircle(
-                            this.pool[i+1]-G.view.x,
-                            this.pool[i+2]-G.view.y,
-                            this.pool[i]/2,
-                            rndOneFrom([24,25,26])
-                            );
-                    break;
-        
-                    case G.BULLET: //bullet
-                        G.rb.fillCircle(
-                            this.pool[i+1]-G.view.x,
-                            this.pool[i+2]-G.view.y,
-                            2,
-                            rndOneFrom([22,9,10])
-                            );
-                        break;
-        
-                    case G.FIRE: //fire
-                        let color = range(this.pool[i], 0, 19, 0, 9);
-                        G.rb.fillCircle(
-                            this.pool[i+1]-G.view.x,
-                            this.pool[i+2]-G.view.y,
-                            2,
-                            color
-                            );
-                        G.rb.pset(
-                            this.pool[i+1]-G.view.x + rndInt(-2,-2),
-                            this.pool[i+2]-G.view.y + rndInt(-3,3),
-                            color);
-                        break;
-
-                    case G.POISONPARTICLE: // like fire, but a different color
-                        let pcolor = range(this.pool[i], 24, 26, 27, 30); // FIXME: I don't understand this function, these values produced unexpected ranges
-                        G.rb.fillCircle(
-                            this.pool[i+1]-G.view.x,
-                            this.pool[i+2]-G.view.y,
-                            2,
-                            pcolor
-                            );
-                        G.rb.pset(
-                            this.pool[i+1]-G.view.x + rndInt(-2,-2),
-                            this.pool[i+2]-G.view.y + rndInt(-3,3),
-                            pcolor);
-                        break;                        
-
-                    case G.PICKUP_NANITE: //enemydeath
-                        G.rb.fillRect(
-                            this.pool[i+1]-G.view.x,
-                            this.pool[i+2]-G.view.y,
-                            3,3,
-                            rndOneFrom([10,11,12,13])
-                            );
-=======
                 case  2: //crossbubble
                     G.rb.circle(
                         this.pool[i+1]-G.view.x,
@@ -130,7 +76,6 @@ ParticlePool.prototype.draw = function draw(){
                         this.pool[i]/4,
                         26
                         );
->>>>>>> ccbb471ec8aaf0301efdfaec3cc3afeab2dd0537
                     break;
     
                 case G.ENEMYDEATH: //enemydeath
@@ -161,7 +106,7 @@ ParticlePool.prototype.draw = function draw(){
                     break;
     
                 case G.FIRE: //fire
-                    let color = range(this.pool[i], 0, 19, 0, 9);
+                    color = range(this.pool[i], 0, 19, 0, 9);
                     G.rb.fillCircle(
                         this.pool[i+1]-G.view.x,
                         this.pool[i+2]-G.view.y,
@@ -175,7 +120,7 @@ ParticlePool.prototype.draw = function draw(){
                     break;
 
                 case G.POISONPARTICLE: // like fire, but a different color
-                    let pcolor = range(this.pool[i], 24, 26, 27, 30); // FIXME: I don't understand this function, these values produced unexpected ranges
+                    pcolor = range(this.pool[i], 24, 26, 27, 30); // FIXME: I don't understand this function, these values produced unexpected ranges
                     G.rb.fillCircle(
                         this.pool[i+1]-G.view.x,
                         this.pool[i+2]-G.view.y,
@@ -195,6 +140,21 @@ ParticlePool.prototype.draw = function draw(){
                         3,3,
                         rndOneFrom([10,11,12,13])
                         );
+                break;
+
+                case G.PICKUP_HEALTH: //enemydeath
+                    pcolor = 50;
+                    G.rb.fillCircle(
+                        this.pool[i+1]-G.view.x,
+                        this.pool[i+2]-G.view.y,
+                        2,
+                        pcolor
+                        );
+                    pcolor = 5;
+                    G.rb.pset(
+                        this.pool[i+1]-G.view.x + rndInt(-2,-2),
+                        this.pool[i+2]-G.view.y + rndInt(-3,3),
+                        pcolor);
                 break;
 
                 case G.PICKUP_DEATH: 
