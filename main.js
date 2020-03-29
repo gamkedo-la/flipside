@@ -977,3 +977,7 @@ function debugRender(){
 
     //G.rb.rect(player.rect.left-G.view.x, player.rect.top-G.view.y, player.rect.right-player.rect.left, player.rect.bottom-player.rect.top, 22)
 }
+
+function flipspacebolts(){
+    
+}

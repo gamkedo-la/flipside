@@ -16,7 +16,8 @@ export const G = {
     MUZZLESMOKE        :           9,
     FLIPSPACE_DEATH    :          10,
     POISONPARTICLE     :          11,
-    BIGPOWERUP         :          12,   
+    BIGPOWERUP         :          12,
+    EVSMOKE            :          13,   
 
 //particle buffer params
     PARTICLE_X         :           1,

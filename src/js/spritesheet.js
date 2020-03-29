@@ -72,7 +72,6 @@ class SpriteSheet {
         frames: sequence,
         frameRate,
         loop,
-        noInterrupt: false
       });
     }
   }

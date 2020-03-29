@@ -110,8 +110,8 @@ const Player = {
     bulletDown: 300,
 
     flipBar: {
-        xOffset: -12,
-        yOffset: -18,
+        xOffset: -16,
+        yOffset: -27,
         width: 40,
         height: 4
     },
@@ -172,6 +172,9 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
     this.transformCooldown--;
     const { MSG } = G;
 
+    
+
+
     if(this.wasHit) {
         this.spritesheet.image = G.loader.brightImages.player
         this.timeSinceHit += dt;
@@ -205,6 +208,18 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
     this.rect.left = this.pos.x - this.width/2;
     this.rect.right = this.pos.x + this.width/2;
 
+    if(this.inTheFlip){
+        this.inTheFlipPhysics(dt, world, worldFlipped);
+
+        if(this.flipTimer){
+            this.flipTimer--;
+        }else{
+                MSG.dispatch("hurt", {amount: 10, type: 'flipSpace', x: this.pos.x, y: this.pos.y});
+        }
+    }else{
+        this.normalPhysics(dt, world, worldFlipped);
+    }
+
 
     // dangerous tiles
     var self = this;
@@ -217,7 +232,13 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
    
 
     if(this.health <= 0){
-        
+        this.vx = 0;
+        this.vy = 0;
+        this.input.jump = false;
+        this.input.down = false;
+        this.input.left = false;
+        this.input.right = false;
+        this.input.up = false;
         this.play('dissolveDeath');
         if(this.getSpriteSheetFrame() == 59){
             MSG.dispatch("died", {x: this.pos.x, y: this.pos.y});
@@ -249,18 +270,7 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
         }
     }
 
-    if(this.inTheFlip){
-        this.inTheFlipPhysics(dt, world, worldFlipped);
-
-        if(this.flipTimer){
-            this.flipTimer--;
-        }else{
-                MSG.dispatch("hurt", {amount: 10, type: 'flipSpace', x: this.pos.x, y: this.pos.y});
-        }
-    }else{
-        this.normalPhysics(dt, world, worldFlipped);
-    }
-
+    
 
     var self = this;
     //check exits for overlap------------------------
@@ -396,28 +406,62 @@ Player.inTheFlipPhysics = function inTheFlipPhysics(dt, world, worldFlipped){
         let gunLeft = this.pos.x - 6;
         let gunRight = this.pos.x + 6;
         let gunYoffset = -1;
-        G.particles.spawn(
-            this.pos.x,
-            this.pos.y,
-            -this.vx,
-            -this.vy,
-            22,
-            3,
-            3,
-            50,
-            1
-        )
+        
         if(this.input.down){
             this.vy += this.accel;
+            G.particles.spawn(
+                this.pos.x + rndInt(-9,9),
+                this.pos.y - 10,
+                -this.vx,
+                -this.vy,
+                22,
+                3,
+                3,
+                10,
+                G.EVSMOKE
+            )
         }
         if(this.input.up){
             this.vy -= this.accel;
+            G.particles.spawn(
+                this.pos.x + rndInt(-9,9),
+                this.pos.y + 10,
+                -this.vx,
+                -this.vy,
+                22,
+                3,
+                3,
+                10,
+                G.EVSMOKE
+            )
         }
         if(this.input.left){
             this.vx -= this.accel;
+            G.particles.spawn(
+                this.pos.x + 10,
+                this.pos.y + rndInt(-9,9),
+                -this.vx,
+                -this.vy,
+                22,
+                3,
+                3,
+                10,
+                G.EVSMOKE
+            )
         }
         if(this.input.right){
             this.vx += this.accel;
+            G.particles.spawn(
+                this.pos.x - 10,
+                this.pos.y + rndInt(-9,9),
+                -this.vx,
+                -this.vy,
+                22,
+                3,
+                3,
+                10,
+                G.EVSMOKE
+            )
         }
     }
 
@@ -866,9 +910,9 @@ Player.getTiles = function getTiles(world){
 }
 
 Player.play = function play(animationName){
-    //if(this.currentAnimation.done){
+   
         this.currentAnimation = this.spritesheet.animations[animationName];
-   // }
+  
    
     if (!this.currentAnimation.loop){
         this.currentAnimation.reset();

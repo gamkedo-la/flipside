@@ -95,6 +95,15 @@ ParticlePool.prototype.draw = function draw(){
                             rndOneFrom([23,22,37])
                             );
                     break;
+
+                    case G.EVSMOKE: //enemydeath
+                        G.rb.fillCircle(
+                            this.pool[i+1]-G.view.x,
+                            this.pool[i+2]-G.view.y,
+                            this.pool[i]/2,
+                            rndOneFrom([24,25,26])
+                            );
+                    break;
         
                     case G.BULLET: //bullet
                         G.rb.fillCircle(
