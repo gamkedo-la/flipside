@@ -48,33 +48,37 @@ Barricade.prototype.render = function render(dt){
         G.ctx.save();
         G.ctx.globalCompositeOperation = 'screen';
 
+
+        // draws realy short lines with massive width instead of long lines w thin width 
+        // maybe use Math.min(this.width,this.height);? no...
+        var beamWidth = this.width; // FIXME: GIANT on long horizontal barriers
         G.lightning.bolt(
             this.pos.x+this.width/2-G.view.x,
             this.pos.y-G.view.y,
             this.pos.x+this.width/2-G.view.x, 
             this.pos.y+this.height-G.view.y,
-            this.width, 2, 3, 'rgba(255,0,0, 0.5)'
+            beamWidth, 0.25 /*2*/, 3, 'rgba(255,0,0, 0.5)'
             )
         G.lightning.bolt(
             this.pos.x+this.width/2-G.view.x,
             this.pos.y-G.view.y,
             this.pos.x+this.width/2-G.view.x, 
             this.pos.y+this.height-G.view.y,
-            this.width*0.7, 1, 3, 'rgba(255,0,0, 0.5)'
+            beamWidth*0.7, 0.25 /*1*/, 3, 'rgba(255,0,0, 0.5)'
             )
         G.lightning.bolt(
             this.pos.x+this.width/2-G.view.x,
             this.pos.y-G.view.y,
             this.pos.x+this.width/2-G.view.x, 
             this.pos.y+this.height-G.view.y,
-            this.width*0.6, 0, 2, 'rgba(255,128,0, 0.5)'
+            beamWidth*0.6, 0, 2, 'rgba(255,128,0, 0.5)'
             )
         G.lightning.bolt(
             this.pos.x+this.width/2-G.view.x,
             this.pos.y-G.view.y,
             this.pos.x+this.width/2-G.view.x, 
             this.pos.y+this.height-G.view.y,
-            this.width*0.4, 0, 2, 'rgba(255,128,0, 0.5)'
+            beamWidth*0.4, 0, 2, 'rgba(255,128,0, 0.5)'
             )
 
         G.ctx.restore();

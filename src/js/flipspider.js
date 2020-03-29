@@ -3,6 +3,7 @@
 import { rectCollision, pointInRect } from "./util.js";
 import { rndFloat, rndInt, range } from "./math.js";
 import SpriteSheet from './spritesheet.js';
+import G from './G.js';
 
 const FlipSpider_W = 30;//32;
 const FlipSpider_H = 30;//26;
@@ -21,8 +22,8 @@ const FlipSpider = function FlipSpider({pos}={}){
     this.width = FlipSpider_W; // note: width and height are hitbox, not drawsize
     this.height = FlipSpider_H;
     this.rect = {};
-    this.health = 32;
-    this.healthMax = 32;
+    this.health = 4;
+    this.healthMax = 4;
     this.pos = {x: pos.x, y: pos.y-11}; // put feet where bottom of Tiled icon appears
     this.drawOffset = {x: -4, y: -2}; // center the sprite when rendering
     this.gunOffset = {leftX: -20, rightX: 10, y: -2}; // where bullets come from
@@ -362,35 +363,35 @@ FlipSpider.prototype.kill = function kill(){
     //splodey splode
     G.audio.playSound(G.sounds.splode1, G.audio.calculatePan(this.pos.x), G.audio.calcuateVolumeDropoff(this.pos)*0.5, 1, false);
     let splodeCount = 32;
-            while(--splodeCount){
-                G.particles.spawn(
-                    this.pos.x,
-                    this.pos.y,
-                    rndFloat(-1.5, 1.5), 
-                    rndFloat(-0.5, 1.5),
-                    27,
-                    2,
-                    2,
-                    15,
-                    3
-                )
-            }
+    while(--splodeCount){
+        G.particles.spawn(
+            this.pos.x,
+            this.pos.y,
+            rndFloat(-1.5, 1.5), 
+            rndFloat(-0.5, 1.5),
+            27,
+            2,
+            2,
+            15,
+            3
+        )
+    }
     
-            let dropCount = 10;
-            while(--dropCount){
-                G.pickups.spawn(
-                    this.pos.x+rndInt(-5,5),
-                    this.pos.y-10+rndInt(-5,5),
-                    rndFloat(-30, 30), 
-                    rndFloat(-30),
-                    11,
-                    6,
-                    6,
-                    180,
-                    G.PICKUP_NANITE
-                )
-            }
-
+    let dropCount = 10;
+    const dropType = (rndInt(0,10) < 5 ? G.PICKUP_NANITE : G.PICKUP_HEALTH);
+    while(--dropCount) {
+        G.pickups.spawn(
+            this.pos.x+rndInt(-5,5),
+            this.pos.y-10+rndInt(-5,5),
+            rndFloat(-30, 30), 
+            rndFloat(-30),
+            11,
+            6,
+            6,
+            180,
+            dropType
+        )
+    }
     
     G.world.entities.splice(G.world.entities.indexOf(this), 1);
 }

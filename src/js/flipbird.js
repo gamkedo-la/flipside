@@ -17,8 +17,8 @@ const BIRD = function BIRD({pos}={}){
     this.width = 18;
     this.height = 27;
     this.rect = {};
-    this.health = 32;
-    this.healthMax = 32;
+    this.health = 2;
+    this.healthMax = 2;
     this.isDiving = false;
     this.diveCount = 0;
     this.gravity = 5;
@@ -224,19 +224,20 @@ BIRD.prototype.kill = function kill(){
 
 
     let dropCount = 5;
-            while(--dropCount){
-                G.pickups.spawn(
-                    this.pos.x+rndInt(-5,5),
-                    this.pos.y-10+rndInt(-5,5),
-                    rndFloat(-30, 30), 
-                    rndFloat(-30),
-                    11,
-                    6,
-                    6,
-                    180,
-                    G.PICKUP_NANITE
-                )
-            }
+    const dropType = (rndInt(0,10) < 5 ? G.PICKUP_NANITE : G.PICKUP_HEALTH);
+    while(--dropCount) {
+        G.pickups.spawn(
+            this.pos.x+rndInt(-5,5),
+            this.pos.y-10+rndInt(-5,5),
+            rndFloat(-30, 30), 
+            rndFloat(-30),
+            11,
+            6,
+            6,
+            180,
+            dropType
+        )
+    }
 
     G.world.entities.splice(G.world.entities.indexOf(this), 1);
 }

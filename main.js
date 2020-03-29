@@ -31,6 +31,7 @@ import FlipBird from './src/js/flipbird.js';
 import RoboTank from './src/js/robotank.js';
 // import Drone from './src/js/drone.js';
 import FlipSpider from './src/js/flipspider.js';
+import FlipSlime from './src/js/slime.js';
 import Barricade from './src/js/Barricade.js';
 import Switch from './src/js/Switch.js';
 import MessageBox from './src/js/MessageBox.js';
@@ -84,7 +85,9 @@ G.loader = new AssetLoader();
 
 if (soundEnabled) {
     G.audio = new AudioGlobal();
+    // THIS LINE SHOULD BE REMOVED: ---v
     G.audio.init(); // FIXME: defer to after the first click/keypress to avoid browser error
+    // HOWEVER, AssetLoader.loadBuffer expects audio to be running before page has loaded
 }
 G.lightning = new ElectricityRenderer();
 G.saver = new GameSaver();
@@ -132,6 +135,7 @@ const soundList = [
     { name: "test2", url:"./src/snd/test2.mp3" },
     { name: "testMusic2", url:"./src/snd/stebsScaryFlipside(2).mp3" },
     { name: "testMusic1", url:"./src/snd/klaim-layers_of_cool_lasers-no_guitar_solo-ingame_version.mp3" },
+    { name: "testMusic3", url:"./src/snd/klaim-layers_of_cool_lasers-ingame_version.mp3" },
     { name: "playerShoot", url:"./src/snd/playerShoot1.mp3" },
     { name: "splode1", url:"./src/snd/splode1.mp3"},
     { name: "footstep", url:"./src/snd/footstep.mp3"},
@@ -176,7 +180,9 @@ window.addEventListener('blur',     function (event) { paused = true; }, false);
 window.addEventListener('focus',    function (event) { paused = false; }, false);
 
 
-window.addEventListener('click', function(event) { if (soundEnabled) audio.context.resume(); }, false); //Temporary fix for chrome not strting the audio context until user interaction
+window.addEventListener('click', function(event) { 
+    if (soundEnabled && G.audio && !G.audio.initialized) G.audio.init(); // FIX browser permission errors
+    if (soundEnabled) audio.context.resume(); }, false); //Temporary fix for chrome not strting the audio context until user interaction
 
 G.MSG.addEventListener('achievement',  function (event) { showMessage(`ACHIEVEMENT GET: ${event.detail.title}`) });
 
@@ -272,7 +278,7 @@ function start(sounds){
             },
             EnemyFlipSlime: {
                 image:G.img.EnemyFlipSlime,
-                frameCount:9
+                frameCount:32
             }
         }
         G.GLRenderer.prepareEntityData(entityData);
@@ -308,7 +314,7 @@ function start(sounds){
     requestAnimationFrame(drawTitleScreen);
     if (soundEnabled) G.music = G.audio.playMusic(G.sounds.testMusic1)
     G.music.volume.gain.value = 0.65;
-    console.log(G.music);
+    //console.log(G.music);
 
 }
 
@@ -393,19 +399,18 @@ function update(dt){
 
     //---bullet collision checks-----------------------------------------------------
     for(let i = 0; i < G.bullets.pool.length; i+= G.bullets.tuple){
-        if(G.bullets.pool[i]==0){i+=G.bullets.tuple}else{
-            if(G.world.pixelToTileID(G.bullets.pool[i+1], G.bullets.pool[i+2]) > G.player.collideIndex){
-                G.bullets.kill(i);
-            }
-            //console.log(G.worldFlipped.pixelToTileID(G.bullets.pool[i+1], G.bullets.pool[i+2]));
-            if(G.worldFlipped.pixelToTileID(G.bullets.pool[i+1], G.bullets.pool[i+2]) >= 3){
-                G.worldFlipped.tileFillCircle(
-                    Math.floor(G.bullets.pool[i+1]/8),
-                    Math.floor(G.bullets.pool[i+2]/8),
-                     2, -G.FLIPSPACE_TIME);
-                G.bullets.kill(i);
+        if(G.bullets.pool[i+8] == 0) continue;
 
-            }
+        if(G.world.pixelToTileID(G.bullets.pool[i+1], G.bullets.pool[i+2]) > G.player.collideIndex){
+            G.bullets.kill(i);
+        }
+        //console.log(G.worldFlipped.pixelToTileID(G.bullets.pool[i+1], G.bullets.pool[i+2]));
+        if(G.worldFlipped.pixelToTileID(G.bullets.pool[i+1], G.bullets.pool[i+2]) >= 3){
+            G.worldFlipped.tileFillCircle(
+                Math.floor(G.bullets.pool[i+1]/8),
+                Math.floor(G.bullets.pool[i+2]/8),
+                 2, -G.FLIPSPACE_TIME);
+            G.bullets.kill(i);
         }
     }
     //---end bullet collision checks-----------------------------------------------------
@@ -444,7 +449,6 @@ function isEnemyType(type) {
             (type == "flipspider") ||
             (type == "EnemyRoboTank") ||
             (type == "EnemyFlipTank") ||
-            (type == "EnemyFlipSlime") ||
             (type == "EnemyFlipSlime"))
 }
 
@@ -901,7 +905,7 @@ function processWorldObjects(objects){
     let results = [];
     // console.log(objects);
     objects.forEach(function(obj){
-        console.log("spawning a " + obj.type);
+        //console.log("spawning a " + obj.type);
         switch(obj.type){
             case "flipbat":
                 results.push(new FlipBat(obj).init());
@@ -917,6 +921,9 @@ function processWorldObjects(objects){
             break;
             case "flipspider":
                 results.push(new FlipSpider({pos:{x: obj.x, y: obj.y}}).init());
+            break;
+            case "flipslime":
+                results.push(new FlipSlime(obj).init());
             break;
              case "drone":
                  results.push(new Drone({pos:{x: obj.x, y: obj.y}}).init());

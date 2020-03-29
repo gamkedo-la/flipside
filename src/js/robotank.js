@@ -21,8 +21,8 @@ const RoboTank = function RoboTank({pos}={}){
     this.width = ROBOTANK_W; // note: width and height are hitbox, not drawsize
     this.height = ROBOTANK_H;
     this.rect = {};
-    this.health = 32;
-    this.healthMax = 32;
+    this.health = 5;
+    this.healthMax = 5;
     this.pos = {x: pos.x, y: pos.y-11}; // put feet where bottom of Tiled icon appears
     this.drawOffset = {x: 4, y: -1}; // center the sprite when rendering
     this.gunOffset = {leftX: -14, rightX: 20, y: -3}; // where bullets come from
@@ -260,21 +260,21 @@ RoboTank.prototype.kill = function kill(){
                 )
             }
     
-            let dropCount = 10;
-            while(--dropCount){
-                G.pickups.spawn(
-                    this.pos.x+rndInt(-5,5),
-                    this.pos.y-10+rndInt(-5,5),
-                    rndFloat(-30, 30), 
-                    rndFloat(-30),
-                    11,
-                    6,
-                    6,
-                    180,
-                    G.PICKUP_NANITE
-                )
-            }
-
+    let dropCount = 10;
+    const dropType = (rndInt(0,10) < 5 ? G.PICKUP_NANITE : G.PICKUP_HEALTH);
+    while(--dropCount) {
+        G.pickups.spawn(
+            this.pos.x+rndInt(-5,5),
+            this.pos.y-10+rndInt(-5,5),
+            rndFloat(-30, 30), 
+            rndFloat(-30),
+            11,
+            6,
+            6,
+            180,
+            dropType
+        )
+    }
     
     G.world.entities.splice(G.world.entities.indexOf(this), 1);
 }

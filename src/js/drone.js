@@ -5,6 +5,7 @@
 import { rectCollision, pointInRect } from "./util.js";
 import { rndFloat, rndInt, range } from "./math.js";
 import SpriteSheet from './spritesheet.js';
+import G from './G.js';
 
 const DRONE_W = 32;
 const DRONE_H = 26;
@@ -27,8 +28,8 @@ const Drone = function Drone({pos}={}){
     this.width = DRONE_W; 
     this.height = DRONE_H;
     this.rect = {};
-    this.health = 32;
-    this.healthMax = 32;
+    this.health = 5;
+    this.healthMax = 5;
     this.pos = {x: pos.x, y: pos.y-11};
     // Center the sprite when rendering
     this.drawOffset = {x: 4, y: -2}; 
@@ -262,7 +263,8 @@ Drone.prototype.kill = function kill(){
     }
     
     let dropCount = 10;
-    while(--dropCount){
+    const dropType = (rndInt(0,10) < 5 ? G.PICKUP_NANITE : G.PICKUP_HEALTH);
+    while(--dropCount) {
         G.pickups.spawn(
             this.pos.x+rndInt(-5,5),
             this.pos.y-10+rndInt(-5,5),
@@ -272,7 +274,7 @@ Drone.prototype.kill = function kill(){
             6,
             6,
             180,
-            G.PICKUP_NANITE
+            dropType
         )
     }
     

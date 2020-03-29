@@ -1,44 +1,38 @@
+/* eslint-disable complexity */
 
-// RoboTank - a horizontally patrolling tank unit
+// Slime - a patrolling enemy unit
 
 import { rectCollision, pointInRect } from "./util.js";
 import { rndFloat, rndInt, range } from "./math.js";
 import SpriteSheet from './spritesheet.js';
-import RoboTank from "./robotank.js";
-
-// FIXME: these var names are from RoboTank.js and may overwrite globals
-// FIXME: REFACTOR - rename all via search n replace
-const ROBOTANK_W = 32;
-const ROBOTANK_H = 26;
-const ROBO_SPEED = 0.25;
-const ROBO_DEBUG = false; // set to true for verbose debug info
-const ROBO_SEEK_DIST = 16; // only seek player if farther away than this
-const ROBO_FIRE_DIST = 64; // shoot at the player if we get closer than this
+import G from './G.js'
 
 // patrols the area near pos, back and forth horizontally
-const Slime = function Slime({pos}={}){
+const Slime = function Slime(obj){
     this.type = "EnemyFlipSlime";
-    this.start = pos;
-    this.currentAnimation = 'idle';
-    this.target = {x: pos.x + 24, y: pos.y };
-    this.speed = 0.001;
-    this.width = ROBOTANK_W; // note: width and height are hitbox, not drawsize
-    this.height = ROBOTANK_H;
+    this.start = {x:obj.x, y:obj.y};
+    this.pathWidth = obj.properties.find(function(e){return e.name == 'pathWidthInTiles'}).value;
+    this.pathHeight = obj.properties.find(function(e){return e.name == 'pathHeightInTiles'}).value;
+    this.clockwisePath = obj.properties.find(function(e){return e.name == 'clockwisePath'}).value;
+    this.currentAnimation = 'clockwiseRight';
+    this.target = {x: obj.x + this.pathWidth * 8, y: obj.y };
+    this.speed = 10;
+    this.width = 30; // note: width and height are hitbox, not drawsize
+    this.height = 30;
     this.rect = {};
-    this.health = 32;
-    this.healthMax = 32;
-    this.pos = {x: pos.x, y: pos.y-11}; // put feet where bottom of Tiled icon appears
-    this.drawOffset = {x: 4, y: -2}; // center the sprite when rendering
-    this.gunOffset = {leftX: -14, rightX: 20, y: -3}; // where bullets come from
+    this.health = 2;
+    this.healthMax = 2;
+    this.pos = {x: obj.x, y: obj.y}; // put feet where bottom of Tiled icon appears
+    this.drawOffset = {x: 0, y: 0}; // center the sprite when rendering
     this.wasHit = false;
     this.timeSinceHit = 0;
-    this.flashTime = 0.05;//seconds
+    this.flashTime = 0.1;//seconds
     this.brightTime = 0;
 
     this.healthBar = {
         xOffset: 0,
-        yOffset: -ROBOTANK_H,
-        width: ROBOTANK_W, 
+        yOffset: -30,
+        width: 30, 
         height: 2
     }
     return this;
@@ -78,8 +72,6 @@ Slime.prototype.canWalkForward = function() {
     this.debugY = ty * G.world.tileSize - G.view.y;
     this.debugC = blocked ? 4 : 11; // reddish or greenish
 
-    if (ROBO_DEBUG) console.log('RoboTank debug: canWalkForward '+(blocked?'BLOCKED ':'ok ')+this.pos.x.toFixed(1)+','+this.pos.y.toFixed(1)+' says tile '+tx+','+ty+' is tile #' + tileHit);
-
     return !blocked; 
 }
 
@@ -87,20 +79,20 @@ Slime.prototype.canWalkForward = function() {
 
 Slime.prototype.update = function update(dt){
     if(this.wasHit) {
-        this.spritesheet.image = G.loader.brightImages.EnemyRoboTank;
+        this.spritesheet.image = G.loader.brightImages.EnemyFlipSlime;
         this.timeSinceHit += dt;
         this.brightTime += dt;
         if(this.timeSinceHit > this.flashTime) {
             this.timeSinceHit = 0;
             this.wasHit = false;
-            this.spritesheet.image = G.img.EnemyRoboTank;
+            this.spritesheet.image = G.img.EnemyFlipSlime;
         } else {
             if(this.brightTime > this.flashTime / 5) {
                 this.brightImages = 0;
-                if(this.spritesheet.image == G.img.EnemyRoboTank) {
-                    this.spritesheet.image = G.img.EnemyRoboTank;
+                if(this.spritesheet.image == G.img.EnemyFlipSlime) {
+                    this.spritesheet.image = G.img.EnemyFlipSlime;
                 } else {
-                    this.spritesheet.image = G.loader.brightImages.EnemyRoboTank;
+                    this.spritesheet.image = G.loader.brightImages.EnemyFlipSlime;
                 }
             }
             
@@ -113,36 +105,184 @@ Slime.prototype.update = function update(dt){
         this.pos = this.start;
     }
 
-    // simple ai - follow with fall avoidance
-    this.goingLeft = G.player.pos.x > this.pos.x; // try to move toward the player
-    let horizDist = Math.abs(G.player.pos.x - this.pos.x);
-
-    // ultra simplistic movement for now
-    if (horizDist > ROBO_SEEK_DIST && this.canWalkForward()) {
-        this.pos.x += this.goingLeft ? ROBO_SPEED : -ROBO_SPEED;
+    if((this.pos.x >= this.start.x) && (this.pos.x <= this.start.x + this.pathWidth * 8)) {
+        //we're need to keep moving either left or right
+        if(this.pos.y < this.start.y + this.pathHeight * 4) {
+            //we're near the top of the path
+            if(this.clockwisePath) {
+                //at the top => need to move right
+                this.pos.x = this.pos.x + this.speed * dt;
+                if(this.currentAnimation != this.spritesheet.animations.clockwiseRight) {
+                    this.play("clockwiseRight");
+                }
+            } else {
+                //at the top => need to move left
+                this.pos.x = this.pos.x - this.speed * dt;
+                if(this.currentAnimation != this.spritesheet.animations.CCWLeft) {
+                    this.play("CCWLeft");
+                }
+            }
+        } else {
+            //we're near the bottom of the path
+            if(this.clockwisePath) {
+                //at the bottom => need to move left
+                this.pos.x = this.pos.x - this.speed * dt;
+                if(this.currentAnimation != this.spritesheet.animations.clockwiseLeft) {
+                    this.play("clockwiseLeft");
+                }
+            } else {
+                //at the bottom => need to move right
+                this.pos.x = this.pos.x + this.speed * dt;
+                if(this.currentAnimation != this.spritesheet.animations.CCWRight) {
+                    this.play("CCWRight");
+                }
+            }
+        }
+    } else if((this.pos.y >= this.start.y) && (this.pos.y <= this.start.y + this.pathHeight * 8)){
+        //Need to keep moving up or down
+        if(this.pos.x < this.start.x + this.pathWidth * 4) {
+            //we're near the left side of the path
+            if(this.clockwisePath) {
+                //at the left side => need to move up
+                this.pos.y = this.pos.y - this.speed * dt;
+                if(this.currentAnimation != this.spritesheet.animations.clockwiseUp) {
+                    this.play("clockwiseUp");
+                }
+            } else {
+                //at the left side => need to move down
+                this.pos.y = this.pos.y + this.speed * dt;
+                if(this.currentAnimation != this.spritesheet.animations.CCWDown) {
+                    this.play("CCWDown");
+                }
+            }
+        } else {
+            //we're near the right side of the path
+            if(this.clockwisePath) {
+                //at the right side => need to move down
+                this.pos.y = this.pos.y + this.speed * dt;
+                if(this.currentAnimation != this.spritesheet.animations.clockwiseDown) {
+                    this.play("clockwiseDown");
+                }
+            } else {
+                //at the right side => need to move up
+                this.pos.y = this.pos.y - this.speed * dt;
+                if(this.currentAnimation != this.spritesheet.animations.CCWUp) {
+                    this.play("CCWUp");
+                }
+            }
+        }
+    } else {
+        //Time to turn
+        if((this.pos.x <= this.start.x) && (this.pos.y <= this.start.y)) {
+            //Upper left corner
+            if(this.clockwisePath) {
+                //upper left => need to start moving right
+                this.pos.x = this.pos.x + this.speed * dt;
+                this.play("clockwiseRight");
+            } else {
+                //upper left => need to start moving down
+                this.pos.y = this.pos.y + this.speed * dt;
+                this.play("CCWDown");
+            }
+        } else if((this.pos.x >= this.start.x + this.pathWidth * 8) && (this.pos.y <= this.start.y)) {
+            //Upper right corner
+            if(this.clockwisePath) {
+                //upper right => need to start moving down
+                this.pos.y = this.pos.y + this.speed * dt;
+                this.play("clockwiseDown");
+            } else {
+                //upper right => need to start moving left
+                this.pos.x = this.pos.x - this.speed * dt;
+                this.play("CCWLeft");
+            }
+        } else if((this.pos.x >= this.start.x + this.pathWidth * 8) && (this.pos.y >= this.start.y + this.pathHeight * 8)) {
+            //Lower right corner
+            if(this.clockwisePath) {
+                //lower right => need to start moving left
+                this.pos.x = this.pos.x - this.speed * dt;
+                this.play("clockwiseLeft");
+            } else {
+                //lower right => need to start moving up
+                this.pos.y = this.pos.y - this.speed * dt;
+                this.play("CCWUp");
+            }
+        } else if((this.pos.x <= this.start.x) && (this.pos.y >= this.start.y + this.pathHeight * 8)) {
+            //Lower left corner
+            if(this.clockwisePath) {
+                //lower left => need to start moving up
+                this.pos.y = this.pos.y - this.speed * dt;
+                this.play("clockwiseUp");
+            } else {
+                //lower left => need to start moving right
+                this.pos.x = this.pos.x + this.speed * dt;
+                this.play("CCWRight");
+            }
+        }
+    }
+    if(this.currentAnimation == this.spritesheet.animations.clockwiseRight) {
+        this.rect = {//update collision rect based on current animation
+            top: this.pos.y - 7,
+            left: this.pos.x - 13,
+            right: this.pos.x + 13,
+            bottom: this.pos.y + 2
+        } 
+    } else if(this.currentAnimation == this.spritesheet.animations.clockwiseDown) {
+        this.rect = {//update collision rect based on current animation
+            top: this.pos.y - 7,
+            left: this.pos.x - 8,
+            right: this.pos.x + 1,
+            bottom: this.pos.y + 13
+        }
+    } else if(this.currentAnimation == this.spritesheet.animations.clockwiseLeft) {
+        this.rect = {//update collision rect based on current animation
+            top: this.pos.y - 7,
+            left: this.pos.x - 13,
+            right: this.pos.x +13,
+            bottom: this.pos.y + 2
+        }
+    } else if(this.currentAnimation == this.spritesheet.animations.clockwiseUp) {
+        this.rect = {//update collision rect based on current animation
+            top: this.pos.y - 13,
+            left: this.pos.x - 9,
+            right: this.pos.x,
+            bottom: this.pos.y + 13
+        }
+    } else if(this.currentAnimation == this.spritesheet.animations.CCWDown) {
+        this.rect = {//update collision rect based on current animation
+            top: this.pos.y - 13,
+            left: this.pos.x - 9,
+            right: this.pos.x,
+            bottom: this.pos.y + 13
+        }
+    } else if(this.currentAnimation == this.spritesheet.animations.CCWRight) {
+        this.rect = {//update collision rect based on current animation
+            top: this.pos.y - 7,
+            left: this.pos.x - 13,
+            right: this.pos.x + 13,
+            bottom: this.pos.y + 2
+        }
+    } else if(this.currentAnimation == this.spritesheet.animations.CCWUp) {
+        this.rect = {//update collision rect based on current animation
+            top: this.pos.y - 13,
+            left: this.pos.x - 8,
+            right: this.pos.x + 1,
+            bottom: this.pos.y + 13
+        }
+    } else if(this.currentAnimation == this.spritesheet.animations.CCWLeft) {
+        this.rect = {//update collision rect based on current animation
+            top: this.pos.y - 7,
+            left: this.pos.x - 13,
+            right: this.pos.x + 13,
+            bottom: this.pos.y + 2
+        }
     }
 
-    // maybe shoot the player
-    if (horizDist < ROBO_FIRE_DIST) {
-        //if (Math.random()<0.02) {
-            this.flameThrower();
-        //}
-    }
-    
-    // oscillate like a sin wave if player not nearby
-    //this.pos.x = Math.round(lerp(this.start.x, this.target.x, Math.sin(performance.now()*this.speed)));
-    //this.pos.y = Math.round(lerp(this.start.y, this.target.y, Math.sin(performance.now()*this.speed)));
-
-    this.rect = {
-        top: this.pos.y - this.width/2,
-        left: this.pos.x - this.height/2,
-        right: this.pos.x + this.height/2,
-        bottom: this.pos.y + this.height/2
-    }
     var self = this;
     
-    if(rectCollision(this.rect, G.player.rect)){
+    if(rectCollision(this.rect, G.player.rect)) {
         G.MSG.dispatch('hurt', {amount: 5});
+        //FIXME: Do we have a slime portrait?
+//        G.MSG.dispatch('hurt', {amount: 5, message:{text: this.name, speaker:G.PORTRAIT_FLIPPIG}});
     }
 
     // look at player
@@ -158,16 +298,14 @@ Slime.prototype.update = function update(dt){
         }
     }
 
-    // look in direction of movement
-    this.goingLeft ? this.play('idleLeft') : this.play('idleRight');
-
     if(this.health <=0){ this.kill(); }
 
 
 }
 
 Slime.prototype.render = function render(glRender, dt){
-    //console.log("Robotank is rendering at "+this.pos.x.toFixed(1)+','+this.pos.y.toFixed(1))
+//    G.rb.rect(this.rect.left-G.view.x, this.rect.top-G.view.y, this.rect.right - this.rect.left, this.rect.bottom - this.rect.top, 11);
+
     if(this.health < this.healthMax){
         let fillWidth = range(this.health, 0, this.healthMax, 0, this.healthBar.width);
         G.rb.fillRect(this.pos.x + this.healthBar.xOffset - G.view.x,
@@ -181,18 +319,10 @@ Slime.prototype.render = function render(glRender, dt){
         this.currentAnimation.render({
             x: Math.floor(this.pos.x-this.width/2-G.view.x + this.drawOffset.x),
             y: Math.floor(this.pos.y-this.height/2-G.view.y + this.drawOffset.y),
-            width: ROBOTANK_W,
-            height: ROBOTANK_H
+            width: this.width,
+            height: this.height
         });
     }
-
-    if (ROBO_DEBUG) {
-        // draw collision box
-        G.rb.rect(this.rect.left-G.view.x, this.rect.top-G.view.y, this.width, this.height, 11);
-        // draw "this wall/gap got in my way" tile
-        if (this.debugC) G.rb.fillRect(this.debugX,this.debugY,G.world.tileSize,G.world.tileSize,this.debugC);
-    }
-    //G.rb.rect(this.rect.left-G.view.x, this.rect.top-G.view.y, this.width, this.height, 11);
 }
 
 Slime.prototype.play = function play(animationName){
@@ -207,25 +337,48 @@ Slime.prototype.getSpriteSheetFrame = function getSpriteSheetFrame() {
 }
 
 Slime.prototype.init = function init(){
-
-    //console.log("RoboTank init...");
     this.spritesheet = new SpriteSheet({
-        image: G.img.EnemyRoboTank,
-        frameWidth: ROBOTANK_W,
-        frameHeight: ROBOTANK_H,
+        image: G.img.EnemyFlipSlime,
+        frameWidth: 30,
+        frameHeight: 30,
         animations: {
-            idleRight: {
-                frames: '0..1',
+            clockwiseRight: {
+                frames: '0..3',
                 frameRate: 4
             },
-            idleLeft: {
-                frames: '2..3',
+            clockwiseLeft: {
+                frames: '8..11',
+                frameRate: 4
+            },
+            clockwiseDown: {
+                frames: '4..7',
+                frameRate: 4
+            },
+            clockwiseUp: {
+                frames: '12..15',
+                frameRate: 4
+            },
+            CCWLeft: {
+                frames: '16..19',
+                frameRate: 4
+            },
+            CCWDown: {
+                frames: '20..23',
+                frameRate: 4
+            },
+            CCWRight: {
+                frames: '24..27',
+                frameRate: 4
+            },
+            CCWUp: {
+                frames: '28..31',
                 frameRate: 4
             }
         }
     })
+
     //must have an anim set at start, or .currentAnimation is null
-    this.play('idleLeft');
+    this.play('clockwiseRight');
     
     return this;
 }
@@ -234,36 +387,36 @@ Slime.prototype.kill = function kill(){
     //splodey splode
     G.audio.playSound(G.sounds.splode1, G.audio.calculatePan(this.pos.x), G.audio.calcuateVolumeDropoff(this.pos)*0.5, 1, false);
     let splodeCount = 32;
-            while(--splodeCount){
-                G.particles.spawn(
-                    this.pos.x,
-                    this.pos.y,
-                    rndFloat(-1.5, 1.5), 
-                    rndFloat(-0.5, 1.5),
-                    27,
-                    2,
-                    2,
-                    15,
-                    3
-                )
-            }
+    while(--splodeCount){
+        G.particles.spawn(
+            this.pos.x,
+            this.pos.y,
+            rndFloat(-1.5, 1.5), 
+            rndFloat(-0.5, 1.5),
+            27,
+            2,
+            2,
+            15,
+            3
+        )
+    }
     
-            let dropCount = 10;
-            while(--dropCount){
-                G.pickups.spawn(
-                    this.pos.x+rndInt(-5,5),
-                    this.pos.y-10+rndInt(-5,5),
-                    rndFloat(-30, 30), 
-                    rndFloat(-30),
-                    11,
-                    6,
-                    6,
-                    180,
-                    G.PICKUP_NANITE
-                )
-            }
+    let dropCount = 5;
+    const dropType = (rndInt(0,10) < 5 ? G.PICKUP_NANITE : G.PICKUP_HEALTH);
+    while(--dropCount) {
+        G.pickups.spawn(
+            this.pos.x+rndInt(-5,5),
+            this.pos.y-10+rndInt(-5,5),
+            rndFloat(-30, 30), 
+            rndFloat(-30),
+            11,
+            6,
+            6,
+            180,
+            dropType
+        )
+    }
 
-    
     G.world.entities.splice(G.world.entities.indexOf(this), 1);
 }
 
