@@ -399,19 +399,18 @@ function update(dt){
 
     //---bullet collision checks-----------------------------------------------------
     for(let i = 0; i < G.bullets.pool.length; i+= G.bullets.tuple){
-        if(G.bullets.pool[i]==0){i+=G.bullets.tuple}else{
-            if(G.world.pixelToTileID(G.bullets.pool[i+1], G.bullets.pool[i+2]) > G.player.collideIndex){
-                G.bullets.kill(i);
-            }
-            //console.log(G.worldFlipped.pixelToTileID(G.bullets.pool[i+1], G.bullets.pool[i+2]));
-            if(G.worldFlipped.pixelToTileID(G.bullets.pool[i+1], G.bullets.pool[i+2]) >= 3){
-                G.worldFlipped.tileFillCircle(
-                    Math.floor(G.bullets.pool[i+1]/8),
-                    Math.floor(G.bullets.pool[i+2]/8),
-                     2, -G.FLIPSPACE_TIME);
-                G.bullets.kill(i);
+        if(G.bullets.pool[i+8] == 0) continue;
 
-            }
+        if(G.world.pixelToTileID(G.bullets.pool[i+1], G.bullets.pool[i+2]) > G.player.collideIndex){
+            G.bullets.kill(i);
+        }
+        //console.log(G.worldFlipped.pixelToTileID(G.bullets.pool[i+1], G.bullets.pool[i+2]));
+        if(G.worldFlipped.pixelToTileID(G.bullets.pool[i+1], G.bullets.pool[i+2]) >= 3){
+            G.worldFlipped.tileFillCircle(
+                Math.floor(G.bullets.pool[i+1]/8),
+                Math.floor(G.bullets.pool[i+2]/8),
+                 2, -G.FLIPSPACE_TIME);
+            G.bullets.kill(i);
         }
     }
     //---end bullet collision checks-----------------------------------------------------

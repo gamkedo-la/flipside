@@ -1,5 +1,5 @@
 { "backgroundcolor":"#28283c",
- "compressionlevel":0,
+ "compressionlevel":-1,
  "editorsettings":
     {
      "export":
@@ -579,7 +579,7 @@
                         {
                          "name":"destinationSpawn",
                          "type":"string",
-                         "value":"PlayerStart"
+                         "value":"enter01"
                         }],
                  "rotation":0,
                  "type":"door",

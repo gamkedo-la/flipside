@@ -16,7 +16,12 @@ export const G = {
     MUZZLESMOKE        :           9,
     FLIPSPACE_DEATH    :          10,
     POISONPARTICLE     :          11,
-    BIGPOWERUP         :          12,   
+    BIGPOWERUP         :          12, 
+    MESSAGE            :          13,
+    MUZZLEFLASH        :          14,
+    DUST               :          15,
+    PLAYER_HURT        :          16,
+    PLAYER_PICKED_UP   :          17,
 
 //particle buffer params
     PARTICLE_X         :           1,

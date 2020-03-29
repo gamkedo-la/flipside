@@ -521,7 +521,7 @@
   <object id="231" name="Level 7" type="door" x="176" y="192" width="31.4167" height="47.5">
    <properties>
     <property name="destinationMap" value="room07"/>
-    <property name="destinationSpawn" value="PlayerStart"/>
+    <property name="destinationSpawn" value="enter01"/>
    </properties>
   </object>
   <object id="232" name="enter04" type="spawnPoint" x="386" y="394">

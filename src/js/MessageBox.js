@@ -40,7 +40,7 @@ MessageBox.prototype.update = function update(dt){
                 1,
                 2,
                 10,
-                0
+                G.MESSAGE
             )
         }
         

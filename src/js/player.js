@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import { clamp } from './math.js';
 import SpriteSheet from './spritesheet.js';
 import { rndFloat, rndInt, range } from './math.js';
@@ -294,7 +295,7 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
 
     //check pickups for overlap, and pick them up
     for(let i = 0; i < G.pickups.pool.length; i+= G.bullets.tuple){
-        if(G.pickups.pool[i]>=0){
+        if(G.pickups.pool[i]>0){
 
             if(pointInRect(G.pickups.pool[i+1], G.pickups.pool[i+2], this.rect)){
                 let x = G.pickups.pool[i+1],
@@ -308,11 +309,21 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
                         1,
                         1,
                         25,
-                        G.PICKUP_DEATH
+                        G.PICKUP_DEATH  //this pick up is dead because we picked it up
                     )
+
+                if(G.pickups.pool[i+8] == G.PICKUP_NANITE) {
+                    this.nanitesCollected += 1;
+                } else if(G.pickups.pool[i+8] == G.PICKUP_HEALTH) {
+                    console.log("Picked up some health");
+                    this.health += 5;
+                    if(this.health > this.maxHealth) {
+                        this.health = this.maxHealth;
+                    }
+                }
                 G.pickups.kill(i);
                 G.audio.playSound(G.sounds.test2, 0, 0.03, 1, false);
-                this.nanitesCollected += 1;
+                
 
             }
         }
@@ -492,7 +503,7 @@ Player.muzzleFlash = function() {
             2,
             2,
             4,
-            0
+            G.MUZZLEFLASH
             ) ;
     }
 }
@@ -512,7 +523,7 @@ Player.landedFX = function() {
             1,
             1,
             25,
-            0
+            G.DUST
         ) ;
     }
 }
@@ -569,7 +580,7 @@ Player.normalPhysics = function normalPhysics(dt, world, worldFlipped){
                 3,
                 3,
                 50,
-                4
+                G.BULLET
             )
         } else if (this.gunCooldown) {
             this.gunCooldown--;
@@ -1054,7 +1065,7 @@ Player.hurt = function(params){
                 2,
                 2,
                 20,
-                0
+                G.PLAYER_HURT
             )
         }
 
@@ -1126,7 +1137,7 @@ Player.pickup = function(params){
             1,
             1,
             30,
-            0
+            G.PLAYER_PICKED_UP
         )
     }
 }

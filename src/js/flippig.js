@@ -19,8 +19,8 @@ const PIG = function PIG(obj){
     this.width = 30;
     this.height = 30;
     this.rect = {};
-    this.health = 32;
-    this.healthMax = 32;
+    this.health = 3;
+    this.healthMax = 3;
     this.movingRight = true;
     this.wasHit = false;
     this.timeSinceHit = 0;
@@ -173,7 +173,8 @@ PIG.prototype.kill = function kill(){
     }
 
     let dropCount = 5;
-    while(--dropCount){
+    const dropType = (rndInt(0,10) < 5 ? G.PICKUP_NANITE : G.PICKUP_HEALTH);
+    while(--dropCount) {
         G.pickups.spawn(
             this.pos.x+rndInt(-5,5),
             this.pos.y-10+rndInt(-5,5),
@@ -183,7 +184,7 @@ PIG.prototype.kill = function kill(){
             6,
             6,
             180,
-            G.PICKUP_NANITE
+            dropType
         )
     }
 

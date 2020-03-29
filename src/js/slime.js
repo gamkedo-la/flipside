@@ -20,8 +20,8 @@ const Slime = function Slime(obj){
     this.width = 30; // note: width and height are hitbox, not drawsize
     this.height = 30;
     this.rect = {};
-    this.health = 32;
-    this.healthMax = 32;
+    this.health = 2;
+    this.healthMax = 2;
     this.pos = {x: obj.x, y: obj.y}; // put feet where bottom of Tiled icon appears
     this.drawOffset = {x: 0, y: 0}; // center the sprite when rendering
     this.wasHit = false;
@@ -401,8 +401,9 @@ Slime.prototype.kill = function kill(){
         )
     }
     
-    let dropCount = 10;
-    while(--dropCount){
+    let dropCount = 5;
+    const dropType = (rndInt(0,10) < 5 ? G.PICKUP_NANITE : G.PICKUP_HEALTH);
+    while(--dropCount) {
         G.pickups.spawn(
             this.pos.x+rndInt(-5,5),
             this.pos.y-10+rndInt(-5,5),
@@ -412,7 +413,7 @@ Slime.prototype.kill = function kill(){
             6,
             6,
             180,
-            G.PICKUP_NANITE
+            dropType
         )
     }
 
