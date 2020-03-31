@@ -31,7 +31,7 @@ const Slime = function Slime(obj){
 
     this.healthBar = {
         xOffset: 0,
-        yOffset: -30,
+        yOffset: -15,
         width: 30, 
         height: 2
     }
@@ -221,7 +221,7 @@ Slime.prototype.update = function update(dt){
     }
     if(this.currentAnimation == this.spritesheet.animations.clockwiseRight) {
         this.rect = {//update collision rect based on current animation
-            top: this.pos.y - 15,
+            top: this.pos.y - 12,
             left: this.pos.x - 13,
             right: this.pos.x + 13,
             bottom: this.pos.y + 3
@@ -230,48 +230,48 @@ Slime.prototype.update = function update(dt){
         this.rect = {//update collision rect based on current animation
             top: this.pos.y - 7,
             left: this.pos.x - 9,
-            right: this.pos.x + 9,
+            right: this.pos.x,
             bottom: this.pos.y + 13
         }
     } else if(this.currentAnimation == this.spritesheet.animations.clockwiseLeft) {
         this.rect = {//update collision rect based on current animation
             top: this.pos.y - 8,
             left: this.pos.x - 13,
-            right: this.pos.x + 13,
-            bottom: this.pos.y + 10
+            right: this.pos.x + 10,
+            bottom: this.pos.y + 2
         }
     } else if(this.currentAnimation == this.spritesheet.animations.clockwiseUp) {
         this.rect = {//update collision rect based on current animation
             top: this.pos.y - 13,
-            left: this.pos.x - 17,
+            left: this.pos.x - 10,
             right: this.pos.x + 1,
             bottom: this.pos.y + 13
         }
     } else if(this.currentAnimation == this.spritesheet.animations.CCWDown) {
         this.rect = {//update collision rect based on current animation
             top: this.pos.y - 13,
-            left: this.pos.x - 17,
+            left: this.pos.x - 10,
             right: this.pos.x + 1,
             bottom: this.pos.y + 13
         }
     } else if(this.currentAnimation == this.spritesheet.animations.CCWRight) {
         this.rect = {//update collision rect based on current animation
             top: this.pos.y - 8,
-            left: this.pos.x - 13,
+            left: this.pos.x - 10,
             right: this.pos.x + 13,
-            bottom: this.pos.y + 10
+            bottom: this.pos.y + 2
         }
     } else if(this.currentAnimation == this.spritesheet.animations.CCWUp) {
         this.rect = {//update collision rect based on current animation
             top: this.pos.y - 13,
             left: this.pos.x - 9,
-            right: this.pos.x + 9,
+            right: this.pos.x,
             bottom: this.pos.y + 13
         }
     } else if(this.currentAnimation == this.spritesheet.animations.CCWLeft) {
         this.rect = {//update collision rect based on current animation
             top: this.pos.y - 15,
-            left: this.pos.x - 13,
+            left: this.pos.x - 10,
             right: this.pos.x + 13,
             bottom: this.pos.y + 3
         }
@@ -290,8 +290,9 @@ Slime.prototype.update = function update(dt){
 
     for(let i = 0; i < G.bullets.pool.length; i+= G.bullets.tuple){
         if(G.bullets.pool[i]>=0) {
-            if(pointInRect(G.bullets.pool[i+G.PARTICLE_X], G.bullets.pool[i+G.PARTICLE_Y], this.rect)){
-                G.bullets.kill(i)
+            if(rectCollision({left:G.bullets.pool[i+G.PARTICLE_X] - 3, right:G.bullets.pool[i+G.PARTICLE_X] + 3, top:G.bullets.pool[i+G.PARTICLE_Y] - 3, bottom:G.bullets.pool[i+G.PARTICLE_Y] + 3}, this.rect)) {
+//                if(pointInRect(G.bullets.pool[i+G.PARTICLE_X], G.bullets.pool[i+G.PARTICLE_Y], this.rect)){
+                    G.bullets.kill(i)
                 this.wasHit = true;
                 this.health--;
             }
@@ -304,15 +305,49 @@ Slime.prototype.update = function update(dt){
 }
 
 Slime.prototype.render = function render(glRender, dt){
-    G.rb.rect(this.rect.left-G.view.x, this.rect.top-G.view.y, this.rect.right - this.rect.left, this.rect.bottom - this.rect.top, 11);
+//    G.rb.rect(this.rect.left-G.view.x, this.rect.top-G.view.y, this.rect.right - this.rect.left, this.rect.bottom - this.rect.top, 11);
 
-    if(this.health < this.healthMax){
+    if(this.health < this.healthMax) {
         let fillWidth = range(this.health, 0, this.healthMax, 0, this.healthBar.width);
-        G.rb.fillRect(this.pos.x + this.healthBar.xOffset - G.view.x,
-            this.pos.y + this.healthBar.yOffset - G.view.y,
+        let fillHeight = this.healthBar.height;
+        let offsetX = this.healthBar.xOffset;
+        let offsetY = this.healthBar.yOffset;
+        if(this.currentAnimation ==  this.spritesheet.animations.clockwiseDown) {
+            offsetX = -this.healthBar.yOffset / 2;
+            offsetY = -this.healthBar.xOffset;
+            fillWidth = this.healthBar.height;
+            fillHeight = range(this.health, 0, this.healthMax, 0, this.healthBar.width);
+        } else if(this.currentAnimation ==  this.spritesheet.animations.clockwiseUp) {
+            offsetX = this.healthBar.yOffset;
+            offsetY = -this.healthBar.width / 2;
+            fillWidth = this.healthBar.height;
+            fillHeight = range(this.health, 0, this.healthMax, 0, this.healthBar.width);
+        } else if(this.currentAnimation ==  this.spritesheet.animations.clockwiseLeft) {
+            offsetX = -this.healthBar.width/2;
+            offsetY = -this.healthBar.yOffset/2;
+        } else if(this.currentAnimation ==  this.spritesheet.animations.CCWUp) {
+            offsetX = -this.healthBar.yOffset / 2;
+            offsetY = -this.healthBar.width / 2;
+            fillWidth = this.healthBar.height;
+            fillHeight = range(this.health, 0, this.healthMax, 0, this.healthBar.width);
+        } else if(this.currentAnimation ==  this.spritesheet.animations.CCWDown) {
+            offsetX = this.healthBar.yOffset;
+            offsetY = this.healthBar.xOffset;
+            fillWidth = this.healthBar.height;
+            fillHeight = range(this.health, 0, this.healthMax, 0, this.healthBar.width);
+        } else if(this.currentAnimation ==  this.spritesheet.animations.CCWRight) {
+            offsetX = this.healthBar.xOffset;
+            offsetY = -this.healthBar.yOffset/2;
+        }  else if(this.currentAnimation ==  this.spritesheet.animations.CCWLeft) {
+            offsetX = -this.healthBar.width/2;
+            offsetY = this.healthBar.yOffset;
+        }
+
+        G.rb.fillRect(this.pos.x + offsetX - G.view.x,
+            this.pos.y + offsetY - G.view.y,
             fillWidth,
-            this.healthBar.height,
-            8)
+            fillHeight,
+            8);
     }
 
     if(!glRender) {
