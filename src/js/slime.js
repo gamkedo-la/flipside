@@ -221,59 +221,59 @@ Slime.prototype.update = function update(dt){
     }
     if(this.currentAnimation == this.spritesheet.animations.clockwiseRight) {
         this.rect = {//update collision rect based on current animation
-            top: this.pos.y - 7,
+            top: this.pos.y - 15,
             left: this.pos.x - 13,
             right: this.pos.x + 13,
-            bottom: this.pos.y + 2
+            bottom: this.pos.y + 3
         } 
     } else if(this.currentAnimation == this.spritesheet.animations.clockwiseDown) {
         this.rect = {//update collision rect based on current animation
             top: this.pos.y - 7,
-            left: this.pos.x - 8,
-            right: this.pos.x + 1,
+            left: this.pos.x - 9,
+            right: this.pos.x + 9,
             bottom: this.pos.y + 13
         }
     } else if(this.currentAnimation == this.spritesheet.animations.clockwiseLeft) {
         this.rect = {//update collision rect based on current animation
-            top: this.pos.y - 7,
+            top: this.pos.y - 8,
             left: this.pos.x - 13,
-            right: this.pos.x +13,
-            bottom: this.pos.y + 2
+            right: this.pos.x + 13,
+            bottom: this.pos.y + 10
         }
     } else if(this.currentAnimation == this.spritesheet.animations.clockwiseUp) {
         this.rect = {//update collision rect based on current animation
             top: this.pos.y - 13,
-            left: this.pos.x - 9,
-            right: this.pos.x,
+            left: this.pos.x - 17,
+            right: this.pos.x + 1,
             bottom: this.pos.y + 13
         }
     } else if(this.currentAnimation == this.spritesheet.animations.CCWDown) {
         this.rect = {//update collision rect based on current animation
             top: this.pos.y - 13,
-            left: this.pos.x - 9,
-            right: this.pos.x,
+            left: this.pos.x - 17,
+            right: this.pos.x + 1,
             bottom: this.pos.y + 13
         }
     } else if(this.currentAnimation == this.spritesheet.animations.CCWRight) {
         this.rect = {//update collision rect based on current animation
-            top: this.pos.y - 7,
+            top: this.pos.y - 8,
             left: this.pos.x - 13,
             right: this.pos.x + 13,
-            bottom: this.pos.y + 2
+            bottom: this.pos.y + 10
         }
     } else if(this.currentAnimation == this.spritesheet.animations.CCWUp) {
         this.rect = {//update collision rect based on current animation
             top: this.pos.y - 13,
-            left: this.pos.x - 8,
-            right: this.pos.x + 1,
+            left: this.pos.x - 9,
+            right: this.pos.x + 9,
             bottom: this.pos.y + 13
         }
     } else if(this.currentAnimation == this.spritesheet.animations.CCWLeft) {
         this.rect = {//update collision rect based on current animation
-            top: this.pos.y - 7,
+            top: this.pos.y - 15,
             left: this.pos.x - 13,
             right: this.pos.x + 13,
-            bottom: this.pos.y + 2
+            bottom: this.pos.y + 3
         }
     }
 
@@ -289,7 +289,7 @@ Slime.prototype.update = function update(dt){
     // G.player.pos.x < this.pos.x ? this.play('idleRight') : this.play('idleLeft');
 
     for(let i = 0; i < G.bullets.pool.length; i+= G.bullets.tuple){
-        if(G.bullets.pool[i]>=0){
+        if(G.bullets.pool[i]>=0) {
             if(pointInRect(G.bullets.pool[i+G.PARTICLE_X], G.bullets.pool[i+G.PARTICLE_Y], this.rect)){
                 G.bullets.kill(i)
                 this.wasHit = true;
@@ -304,7 +304,7 @@ Slime.prototype.update = function update(dt){
 }
 
 Slime.prototype.render = function render(glRender, dt){
-//    G.rb.rect(this.rect.left-G.view.x, this.rect.top-G.view.y, this.rect.right - this.rect.left, this.rect.bottom - this.rect.top, 11);
+    G.rb.rect(this.rect.left-G.view.x, this.rect.top-G.view.y, this.rect.right - this.rect.left, this.rect.bottom - this.rect.top, 11);
 
     if(this.health < this.healthMax){
         let fillWidth = range(this.health, 0, this.healthMax, 0, this.healthBar.width);
