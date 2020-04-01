@@ -423,6 +423,71 @@ function drawPauseMenu() {
     ctx.drawImage(G.img.pauseScreen, 0,0);
 }
 
+const greetsTXT = // inspired by cracktro leet greet loadscreen scrollers
+    "Welcome to Flipside! A HomeTeam GameDev production "+
+    "by Ryan Malm and a team of 20 people. "+
+    "Greets go out to: Tynter, Jamsers, Kissa, Eudoxus, DonMess, Leo, Keeva, and the funky fresh street beat party crew in the t-dot."
+var txtWidth = greetsTXT.length*7; // guess pixel width of string
+var greetsX = -999999999;
+var greetsY = 0;
+var rainbow;
+
+// rainbow generator
+function generateRainbowColours()
+{
+    var size = 32;
+    rainbow = new Array(size);
+    for (var i = 0; i < size; i++) {
+        var red = sin_to_hex(i, 0 * Math.PI * 2 / 3); // 0   deg
+        var blue = sin_to_hex(i, 1 * Math.PI * 2 / 3); // 120 deg
+        var green = sin_to_hex(i, 2 * Math.PI * 2 / 3); // 240 deg
+        rainbow[i] = "#" + red + green + blue;
+    }
+    function sin_to_hex(i, phase) {
+        var sin = Math.sin(Math.PI / size * 2 * i + phase);
+        var int = Math.floor(sin * 127) + 128;
+        var hex = int.toString(16);
+        return hex.length === 1 ? "0" + hex : hex;
+    }
+}
+
+function leetGreetz() {
+
+    if (rainbow==undefined) generateRainbowColours();
+    
+    greetsX--;
+    if (greetsX <= -txtWidth) greetsX = c.width;
+    greetsY = c.height - 17;
+    
+    // works great for entire string
+    // G.gameFont.drawText({textString:greetsTXT,pos:{x:greetsX,y:greetsY},spacing:0});
+
+    // sin wave warp each letter
+    var char = '';
+    var xofs = 0;
+    var yofs = 0;
+    var charWidth = 7;
+    var waveSize = 8;
+    var waveSpeed = 0.05;
+    var charX = 0;
+    var charY = 0;
+    for (var n=0; n<greetsTXT.length; n++) {
+
+        char = greetsTXT[n];
+        xofs = n * charWidth;
+        yofs = Math.cos((greetsX+xofs)*waveSpeed)*waveSize;
+        charX = Math.round(greetsX+xofs);
+        charY = Math.round(greetsY+yofs);
+        
+        //ctx.fillStyle = rainbow[n % rainbow.length]; // does not work on sprites
+        //ctx.globalAplha = 0.1;
+        G.gameFont.drawText({textString:char,pos:{x:charX,y:charY},spacing:0});
+
+    }
+    //ctx.globalAplha = 1;
+    //ctx.fillStyle = "white";
+}
+
 function drawTitleScreen() {
     Key.update();
     ctx.drawImage(G.img.titleScreen, 0,0);
@@ -430,7 +495,10 @@ function drawTitleScreen() {
         textString: 'press z to continue',
         pos: { x: 150, y: 200 },
         spacing: 0
-        })
+        });
+    
+    leetGreetz();
+
     if(Key.isDown(Key.z)){
         requestAnimationFrame(frame);
         return;
