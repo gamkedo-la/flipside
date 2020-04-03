@@ -40,8 +40,7 @@ import Drone from './src/js/drone.js';
 import GameSaver from './src/js/GameSaver.js';
 import { UIRender, showMessage } from './src/js/UI.js';
 import WebRenderer from './src/js/webRenderer.js';
-
-
+import Credits from './src/js/credits.js';
 
 const USE_GL_RENDERER = true;
 const invertedMosaicEffectEnabled = false;
@@ -204,6 +203,9 @@ function init(){
     G.world = new World();
     G.worldFlipped = new World();
     G.worldForeground = new World();
+
+    G.credits = new Credits();
+    G.credits.wrapCredits(); // slicing to fit screen width
 
     if(G.imagesLoaded != G.imagesTotal && G.soundsTotal != soundList.length){
         requestAnimationFrame(drawLoadingScreen);
@@ -488,24 +490,11 @@ function leetGreetz() {
     //ctx.fillStyle = "white";
 }
 
-var showCreditsToggleLock = false;
-var showCreditsNow = false;
 function drawTitleScreen() {
     Key.update();
 
-    if(showCreditsNow) {
-        ctx.fillStyle="black";
-        ctx.fillRect(0,0,G.c.width,G.c.height);
-        G.gameFont.drawText({
-            textString: 'credits text',
-            pos: { x: 150, y: 190 },
-            spacing: 0
-            });
-        G.gameFont.drawText({
-            textString: 'press c to exit credits ',
-            pos: { x: 120, y: 230 },
-            spacing: 0
-            });
+    if(G.credits.showCreditsNow) {
+        G.credits.drawCredits();
     } else {
         ctx.drawImage(G.img.titleScreen, 0,0);
 
@@ -524,14 +513,14 @@ function drawTitleScreen() {
     }
 
     if(Key.isDown(Key.c)){
-        if(showCreditsToggleLock==false) {
-            showCreditsToggleLock = true;
+        if(G.credits.showCreditsToggleLock==false) {
+            G.credits.showCreditsToggleLock = true;
         }
     } else {
-        if(showCreditsToggleLock) {
-            showCreditsNow = !showCreditsNow;
+        if(G.credits.showCreditsToggleLock) {
+            G.credits.showCreditsNow = !G.credits.showCreditsNow;
         }
-        showCreditsToggleLock = false;
+        G.credits.showCreditsToggleLock = false;
     }
 
     if(Key.isDown(Key.z)){
