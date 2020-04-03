@@ -488,16 +488,51 @@ function leetGreetz() {
     //ctx.fillStyle = "white";
 }
 
+var showCreditsToggleLock = false;
+var showCreditsNow = false;
 function drawTitleScreen() {
     Key.update();
-    ctx.drawImage(G.img.titleScreen, 0,0);
-    G.gameFont.drawText({
-        textString: 'press z to continue',
-        pos: { x: 150, y: 200 },
-        spacing: 0
-        });
-    
-    leetGreetz();
+
+    if(showCreditsNow) {
+        ctx.fillStyle="black";
+        ctx.fillRect(0,0,G.c.width,G.c.height);
+        G.gameFont.drawText({
+            textString: 'credits text',
+            pos: { x: 150, y: 190 },
+            spacing: 0
+            });
+        G.gameFont.drawText({
+            textString: 'press c to exit credits ',
+            pos: { x: 120, y: 230 },
+            spacing: 0
+            });
+    } else {
+        ctx.drawImage(G.img.titleScreen, 0,0);
+
+        G.gameFont.drawText({
+            textString: 'press z to continue',
+            pos: { x: 150, y: 190 },
+            spacing: 0
+            });
+        G.gameFont.drawText({
+            textString: 'press c for credits ',
+            pos: { x: 150, y: 200 },
+            spacing: 0
+            });
+        
+        leetGreetz();
+    }
+
+    if(Key.isDown(Key.c)){
+        if(showCreditsToggleLock==false) {
+            showCreditsToggleLock = true;
+        }
+    } else {
+        if(showCreditsToggleLock) {
+            showCreditsNow = !showCreditsNow;
+        }
+        showCreditsToggleLock = false;
+    }
 
     if(Key.isDown(Key.z)){
         requestAnimationFrame(frame);
