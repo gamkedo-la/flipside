@@ -85,6 +85,40 @@
                  "width":31.4167,
                  "x":40.9583,
                  "y":120.159
+                }, 
+                {
+                 "height":72,
+                 "id":246,
+                 "name":"exitRight",
+                 "properties":[
+                        {
+                         "name":"destinationMap",
+                         "type":"string",
+                         "value":"room04a"
+                        }, 
+                        {
+                         "name":"destinationSpawn",
+                         "type":"string",
+                         "value":"enter01"
+                        }],
+                 "rotation":0,
+                 "type":"portal",
+                 "visible":true,
+                 "width":38,
+                 "x":1561.33333333333,
+                 "y":112
+                }, 
+                {
+                 "height":0,
+                 "id":247,
+                 "name":"enterUpperRight",
+                 "point":true,
+                 "rotation":0,
+                 "type":"spawnPoint",
+                 "visible":true,
+                 "width":0,
+                 "x":1540.66666666667,
+                 "y":183.333333333333
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -97,28 +131,6 @@
          "id":6,
          "name":"game objects",
          "objects":[
-                {
-                 "height":72,
-                 "id":140,
-                 "name":"exitRight",
-                 "properties":[
-                        {
-                         "name":"destinationMap",
-                         "type":"string",
-                         "value":"room04"
-                        }, 
-                        {
-                         "name":"destinationSpawn",
-                         "type":"string",
-                         "value":"enter01"
-                        }],
-                 "rotation":0,
-                 "type":"portal",
-                 "visible":true,
-                 "width":32,
-                 "x":1568,
-                 "y":112
-                }, 
                 {
                  "height":57,
                  "id":148,
@@ -293,7 +305,7 @@
                  "gid":13,
                  "height":8,
                  "id":161,
-                 "name":"RoboTank",
+                 "name":"You will be assimilated",
                  "rotation":0,
                  "type":"robotank",
                  "visible":true,
@@ -389,7 +401,7 @@
                  "gid":13,
                  "height":8,
                  "id":169,
-                 "name":"RoboTank",
+                 "name":"Resistence is futile",
                  "rotation":0,
                  "type":"robotank",
                  "visible":true,
@@ -516,18 +528,6 @@
                  "width":8,
                  "x":1352.33,
                  "y":287.667
-                }, 
-                {
-                 "gid":13,
-                 "height":8,
-                 "id":179,
-                 "name":"RoboTank",
-                 "rotation":0,
-                 "type":"robotank",
-                 "visible":true,
-                 "width":8,
-                 "x":1544.67,
-                 "y":206
                 }, 
                 {
                  "gid":13,
@@ -869,7 +869,7 @@
                  "gid":13,
                  "height":8,
                  "id":204,
-                 "name":"RoboTank",
+                 "name":"Does not compute",
                  "rotation":0,
                  "type":"robotank",
                  "visible":true,
@@ -1258,24 +1258,6 @@
                 {
                  "gid":10,
                  "height":8,
-                 "id":232,
-                 "name":"Bzzzzzzzzz....DIE..zzzzz",
-                 "properties":[
-                        {
-                         "name":"pathHeightInTiles",
-                         "type":"int",
-                         "value":4
-                        }],
-                 "rotation":0,
-                 "type":"flipbat",
-                 "visible":true,
-                 "width":8,
-                 "x":1537.67,
-                 "y":176.333
-                }, 
-                {
-                 "gid":10,
-                 "height":8,
                  "id":233,
                  "name":"Bzzzzzzzzz....DIE..zzzzz",
                  "properties":[
@@ -1451,7 +1433,7 @@
                  "gid":13,
                  "height":8,
                  "id":243,
-                 "name":"RoboDrone",
+                 "name":"I spy with my eye...",
                  "rotation":0,
                  "type":"drone",
                  "visible":true,
@@ -1478,7 +1460,7 @@
          "y":0
         }],
  "nextlayerid":7,
- "nextobjectid":245,
+ "nextobjectid":248,
  "orientation":"orthogonal",
  "properties":[
         {
