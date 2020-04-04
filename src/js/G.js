@@ -28,6 +28,7 @@ export const G = {
     PLAYER_GUN_PICKUP  :          21,
     PLAYER_EVSUIT_PICKUP:         22,
     PLAYER_EVGUN_PICKUP:          23,
+    EVSMOKE             :           24,
 
 //particle buffer params
     PARTICLE_X         :           1,

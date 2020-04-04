@@ -255,8 +255,10 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
     if( this.withinCheck(worldFlipped, function(tile){return tile >= 3}) ){
             if(!this.inTheFlip){
                 MSG.dispatch('crossed');
-                this.facingLeft ? this.play('EVTransformLeft') : this.play('EVTransformRight');
-                this.currentAnimation.noInterrupt = true;
+                if(this.hasEVSuit){
+                    this.facingLeft ? this.play('EVTransformLeft') : this.play('EVTransformRight');
+                }
+                //this.currentAnimation.noInterrupt = true;
                 this.inTheFlip = true;
                 this.flipTimer = this.flipTimeMax;
                 this.transformCooldown = this.transformCooldownMax;
@@ -265,8 +267,10 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
     }else{
         if(this.inTheFlip){
             MSG.dispatch('crossed');
-            this.facingLeft ? this.play('EVTransformLeftOut') : this.play('EVTransformRightOut');
-            this.currentAnimation.noInterrupt = true;
+            if(this.hasEVSuit){
+                this.facingLeft ? this.play('EVTransformLeftOut') : this.play('EVTransformRightOut');
+            }
+            //this.currentAnimation.noInterrupt = true;
             this.flipSpaceWalkTimer = this.flipSpaceWalkTimerMax;
             this.transformCooldown = this.transformCooldownMax;
             this.inTheFlip = false;
@@ -410,95 +414,87 @@ Player.inTheFlipPhysics = function inTheFlipPhysics(dt, world, worldFlipped){
     this.accel = this.physicsFlip.accel;
     this.jumpVel = this.physicsFlip.jumpVel;
 
-    if(this.vx > 0){
-        //this.play('EVRight');
-    }
+    
+    if(this.hasEVSuit && this.transformCooldown < 0){
+     
+       this.facingLeft ? this.play('EVIdleLeft') : ('EVIdleRight');
+        if(this.vx < 0.05){ this.play('EVFlyLeft') }
+        if(this.vx > 0.05){ this.play('EVFlyRight') }
+        if(this.input.jump){
 
-    if(this.input.primaryFire){
-
-        let gunLeft = this.pos.x - 6;
-        let gunRight = this.pos.x + 6;
-        let gunYoffset = -1;
-        
-        if(this.input.down){
-            this.vy += this.accel;
-            G.particles.spawn(
-                this.pos.x + rndInt(-9,9),
-                this.pos.y - 10,
-                -this.vx,
-                -this.vy,
-                22,
-                3,
-                3,
-                10,
-                G.EVSMOKE
-            )
-        }
-        if(this.input.up){
-            this.vy -= this.accel;
-            G.particles.spawn(
-                this.pos.x + rndInt(-9,9),
-                this.pos.y + 10,
-                -this.vx,
-                -this.vy,
-                22,
-                3,
-                3,
-                10,
-                G.EVSMOKE
-            )
-        }
-        if(this.input.left){
-            this.vx -= this.accel;
-            G.particles.spawn(
-                this.pos.x + 10,
-                this.pos.y + rndInt(-9,9),
-                -this.vx,
-                -this.vy,
-                22,
-                3,
-                3,
-                10,
-                G.EVSMOKE
-            )
-        }
-        if(this.input.right){
-            this.vx += this.accel;
-            G.particles.spawn(
-                this.pos.x - 10,
-                this.pos.y + rndInt(-9,9),
-                -this.vx,
-                -this.vy,
-                22,
-                3,
-                3,
-                10,
-                G.EVSMOKE
-            )
+            let gunLeft = this.pos.x - 6;
+            let gunRight = this.pos.x + 6;
+            let gunYoffset = -1;
+            
+            if(this.input.down){
+                this.vy += this.accel;
+                G.particles.spawn(
+                    this.pos.x + rndInt(-9,9),
+                    this.pos.y - 10,
+                    -this.vx,
+                    -this.vy,
+                    22,
+                    3,
+                    3,
+                    10,
+                    G.EVSMOKE
+                )
+            }
+            if(this.input.up){
+                this.vy -= this.accel;
+                G.particles.spawn(
+                    this.pos.x + rndInt(-9,9),
+                    this.pos.y + 10,
+                    -this.vx,
+                    -this.vy,
+                    22,
+                    3,
+                    3,
+                    10,
+                    G.EVSMOKE
+                )
+            }
+            if(this.input.left){
+                this.vx -= this.accel;
+                G.particles.spawn(
+                    this.pos.x + 10,
+                    this.pos.y + rndInt(-9,9),
+                    -this.vx,
+                    -this.vy,
+                    22,
+                    3,
+                    3,
+                    10,
+                    G.EVSMOKE
+                )
+            }
+            if(this.input.right){
+                this.vx += this.accel;
+                G.particles.spawn(
+                    this.pos.x - 10,
+                    this.pos.y + rndInt(-9,9),
+                    -this.vx,
+                    -this.vy,
+                    22,
+                    3,
+                    3,
+                    10,
+                    G.EVSMOKE
+                )
+            }
         }
     }
+   
 
     if(this.vy < 0){
         this.falling = true;
     }
+    
+    this.vx *= this.friction;
 
-    // if(this.input.left ){
-    //     this.vx -= this.accel;
-    // }
-    // else if(this.input.right ){
-    //     this.vx += this.accel;
-    // }
-    else{this.vx *= this.friction}
-
-    if(this.input.jump && !this.jumping){
-        this.vy = -this.jumpVel
-        this.jumping = true;
-         this.input.jump = false;
-    }
-    else{
-        this.vy += this.gravity;
-        this.vy *= this.friction;
-    }
+    this.vy += this.gravity;
+    this.vy *= this.friction;
+    
 
     this.vx = clamp(this.vx, -this.maxVel.x, this.maxVel.x);
     this.vy = clamp(this.vy, -this.maxVel.y, this.maxVel.y);
@@ -980,6 +976,22 @@ Player.init = function init(){
             },
             EVRight:{
                 frames: 105
+            },
+            EVIdleLeft:{
+                frames: '135..137',
+                frameRate: 5
+            },
+            EVIdleRight:{
+                frames: [132, 133, 134, 133],
+                frameRate: 5
+            },
+            EVFlyLeft:{
+                frames: [129, 130, 131, 130],
+                frameRate: 5
+            },
+            EVFlyRight:{
+                frames: [126, 127, 128, 127],
+                frameRate: 5
             },
             dissolveDeath: {
                 frames: '40..59',
