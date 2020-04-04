@@ -490,7 +490,7 @@
   </object>
   <object id="226" name="Level 13" type="door" x="1472" y="256" width="31.4167" height="47.5">
    <properties>
-    <property name="destinationMap" value="room13"/>
+    <property name="destinationMap" value="room14"/>
     <property name="destinationSpawn" value="enterTopLeft"/>
    </properties>
   </object>
@@ -514,7 +514,7 @@
   </object>
   <object id="230" name="Level 8" type="door" x="552" y="256" width="31.4167" height="47.5">
    <properties>
-    <property name="destinationMap" value="room13"/>
+    <property name="destinationMap" value="room14"/>
     <property name="destinationSpawn" value="enterBottomLeft"/>
    </properties>
   </object>

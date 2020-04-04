@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="200" height="200" tilewidth="8" tileheight="8" infinite="0" backgroundcolor="#28283c" nextlayerid="7" nextobjectid="185">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="200" height="200" tilewidth="8" tileheight="8" infinite="0" backgroundcolor="#28283c" nextlayerid="7" nextobjectid="186">
  <editorsettings>
   <export target="../../src/maps/room13.json" format="json"/>
  </editorsettings>
@@ -620,13 +620,13 @@
 </data>
  </layer>
  <objectgroup id="3" name="effects and spawns">
-  <object id="23" name="enterTopLeft" type="spawnPoint" x="60.0909" y="103.637">
+  <object id="23" name="enterTopLeft" type="spawnPoint" x="48.7576" y="104.304">
    <point/>
   </object>
   <object id="51" name="exitTopLeft" type="door" x="31.0303" y="96.0606" width="33.3333" height="48">
    <properties>
-    <property name="destinationMap" value="room02"/>
-    <property name="destinationSpawn" value="enter13TopLeft"/>
+    <property name="destinationMap" value="room14"/>
+    <property name="destinationSpawn" value="enter14TopRight"/>
    </properties>
   </object>
   <object id="55" name="exitBottomRight" type="door" x="1535.27" y="1472.54" width="33" height="47.6667">
@@ -649,8 +649,8 @@
   </object>
   <object id="74" name="exitBottomLeft" type="door" x="31.9697" y="1472.03" width="32.3333" height="48">
    <properties>
-    <property name="destinationMap" value="room02"/>
-    <property name="destinationSpawn" value="enter13BottomLeft"/>
+    <property name="destinationMap" value="room14"/>
+    <property name="destinationSpawn" value="enter14BottomRight"/>
    </properties>
   </object>
   <object id="78" name="enterBottomLeft" type="spawnPoint" x="48.061" y="1479.15">
@@ -1332,5 +1332,12 @@
   </object>
   <object id="183" name="HealthBox" type="healthbox" gid="8" x="240" y="232" width="8" height="8"/>
   <object id="184" name="NaniteBox" type="nanitebox" gid="9" x="168" y="167" width="8" height="8"/>
+  <object id="185" name="Ho hum de dum" type="flipslime" gid="15" x="177.333" y="332" width="8" height="8">
+   <properties>
+    <property name="clockwisePath" type="bool" value="true"/>
+    <property name="pathHeightInTiles" type="int" value="3"/>
+    <property name="pathWidthInTiles" type="int" value="7"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

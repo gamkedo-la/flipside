@@ -61,8 +61,8 @@
                  "type":"spawnPoint",
                  "visible":true,
                  "width":0,
-                 "x":60.0909,
-                 "y":103.637
+                 "x":48.7575666666667,
+                 "y":104.303666666667
                 }, 
                 {
                  "height":48,
@@ -72,12 +72,12 @@
                         {
                          "name":"destinationMap",
                          "type":"string",
-                         "value":"room02"
+                         "value":"room14"
                         }, 
                         {
                          "name":"destinationSpawn",
                          "type":"string",
-                         "value":"enter13TopLeft"
+                         "value":"enter14TopRight"
                         }],
                  "rotation":0,
                  "type":"door",
@@ -152,7 +152,7 @@
                  "visible":true,
                  "width":32,
                  "x":1535,
-                 "y":102.9091
+                 "y":102.909
                 }, 
                 {
                  "height":48,
@@ -162,12 +162,12 @@
                         {
                          "name":"destinationMap",
                          "type":"string",
-                         "value":"room02"
+                         "value":"room14"
                         }, 
                         {
                          "name":"destinationSpawn",
                          "type":"string",
-                         "value":"enter13BottomLeft"
+                         "value":"enter14BottomRight"
                         }],
                  "rotation":0,
                  "type":"door",
@@ -2910,6 +2910,34 @@
                  "width":8,
                  "x":168,
                  "y":167
+                }, 
+                {
+                 "gid":15,
+                 "height":8,
+                 "id":185,
+                 "name":"Ho hum de dum",
+                 "properties":[
+                        {
+                         "name":"clockwisePath",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
+                         "name":"pathHeightInTiles",
+                         "type":"int",
+                         "value":3
+                        }, 
+                        {
+                         "name":"pathWidthInTiles",
+                         "type":"int",
+                         "value":7
+                        }],
+                 "rotation":0,
+                 "type":"flipslime",
+                 "visible":true,
+                 "width":8,
+                 "x":177.333333333333,
+                 "y":332
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -2918,7 +2946,7 @@
          "y":0
         }],
  "nextlayerid":7,
- "nextobjectid":185,
+ "nextobjectid":186,
  "orientation":"orthogonal",
  "properties":[
         {
