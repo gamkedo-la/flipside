@@ -322,25 +322,49 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
                         25,
                         G.PICKUP_DEATH  //this pick up is dead because we picked it up
                     )
+                switch(G.pickups.pool[G.PARTICLE_TYPE]){
 
-                if(G.pickups.pool[i+8] == G.PICKUP_NANITE) {
-                    this.nanitesCollected += 1;
-                } else if(G.pickups.pool[i+8] == G.PICKUP_HEALTH) {
-                    console.log("Picked up some health");
-                    this.health += 5;
-                    if(this.health > this.maxHealth) {
-                        this.health = this.maxHealth;
-                    }
+                    case G.PICKUP_NANITE:
+                        this.nanitesCollected++;
+                    break;
+
+                    case G.PICKUP_HEALTH:
+                        this.health += 5;
+                        if(this.health > this.maxHealth) {
+                            this.health = this.maxHealth;
+                        }
+                    break;
+
+                    case G.PLAYER_ITEM_NANITE:
+                        this.nanitesCollected += 20;
+                    break;
+
+                    case G.PLAYER_ITEM_HEALTH:
+                        this.health += 20;
+                        if(this.health > this.maxHealth) {
+                            this.health = this.maxHealth;
+                        }
+                    break;
+                    
                 }
-                if(G.pickups.pool[i+8] == G.PLAYER_ITEM_NANITE) {
-                    this.nanitesCollected += 20;
-                } else if(G.pickups.pool[i+8] == G.PICKUP_HEALTH) {
-                    console.log("Picked up some health");
-                    this.health += 20;
-                    if(this.health > this.maxHealth) {
-                        this.health = this.maxHealth;
-                    }
-                }
+                // if(G.pickups.pool[i+8] == G.PICKUP_NANITE) {
+                //     this.nanitesCollected += 1;
+                // } else if(G.pickups.pool[i+8] == G.PICKUP_HEALTH) {
+                //     console.log("Picked up some health");
+                //     this.health += 5;
+                //     if(this.health > this.maxHealth) {
+                //         this.health = this.maxHealth;
+                //     }
+                // }
+                // if(G.pickups.pool[i+8] == G.PLAYER_ITEM_NANITE) {
+                //     this.nanitesCollected += 20;
+                // } else if(G.pickups.pool[i+8] == G.PICKUP_HEALTH) {
+                //     console.log("Picked up some health");
+                //     this.health += 20;
+                //     if(this.health > this.maxHealth) {
+                //         this.health = this.maxHealth;
+                //     }
+                // }
                 G.pickups.kill(i);
                 G.audio.playSound(G.sounds.test2, 0, 1, 1, false);
                 
