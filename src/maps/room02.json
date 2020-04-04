@@ -1240,6 +1240,174 @@
                  "width":24,
                  "x":1976,
                  "y":280
+                }, 
+                {
+                 "gid":8,
+                 "height":8,
+                 "id":237,
+                 "name":"HealthBox",
+                 "rotation":0,
+                 "type":"healthbox",
+                 "visible":true,
+                 "width":8,
+                 "x":760,
+                 "y":672
+                }, 
+                {
+                 "gid":9,
+                 "height":8,
+                 "id":238,
+                 "name":"NaniteBox",
+                 "rotation":0,
+                 "type":"nanitebox",
+                 "visible":true,
+                 "width":8,
+                 "x":696,
+                 "y":672
+                }, 
+                {
+                 "gid":8,
+                 "height":8,
+                 "id":239,
+                 "name":"HealthBox",
+                 "rotation":0,
+                 "type":"healthbox",
+                 "visible":true,
+                 "width":8,
+                 "x":728,
+                 "y":672
+                }, 
+                {
+                 "gid":9,
+                 "height":8,
+                 "id":240,
+                 "name":"NaniteBox",
+                 "rotation":0,
+                 "type":"nanitebox",
+                 "visible":true,
+                 "width":8,
+                 "x":672,
+                 "y":672
+                }, 
+                {
+                 "gid":8,
+                 "height":8,
+                 "id":241,
+                 "name":"HealthBox",
+                 "rotation":0,
+                 "type":"healthbox",
+                 "visible":true,
+                 "width":8,
+                 "x":840,
+                 "y":680
+                }, 
+                {
+                 "gid":8,
+                 "height":8,
+                 "id":242,
+                 "name":"HealthBox",
+                 "rotation":0,
+                 "type":"healthbox",
+                 "visible":true,
+                 "width":8,
+                 "x":856,
+                 "y":680
+                }, 
+                {
+                 "gid":8,
+                 "height":8,
+                 "id":243,
+                 "name":"HealthBox",
+                 "rotation":0,
+                 "type":"healthbox",
+                 "visible":true,
+                 "width":8,
+                 "x":840,
+                 "y":664
+                }, 
+                {
+                 "gid":8,
+                 "height":8,
+                 "id":244,
+                 "name":"HealthBox",
+                 "rotation":0,
+                 "type":"healthbox",
+                 "visible":true,
+                 "width":8,
+                 "x":856,
+                 "y":664
+                }, 
+                {
+                 "gid":9,
+                 "height":8,
+                 "id":245,
+                 "name":"NaniteBox",
+                 "rotation":0,
+                 "type":"nanitebox",
+                 "visible":true,
+                 "width":8,
+                 "x":704,
+                 "y":672
+                }, 
+                {
+                 "gid":9,
+                 "height":8,
+                 "id":246,
+                 "name":"NaniteBox",
+                 "rotation":0,
+                 "type":"nanitebox",
+                 "visible":true,
+                 "width":8,
+                 "x":704,
+                 "y":664
+                }, 
+                {
+                 "gid":9,
+                 "height":8,
+                 "id":247,
+                 "name":"NaniteBox",
+                 "rotation":0,
+                 "type":"nanitebox",
+                 "visible":true,
+                 "width":8,
+                 "x":696,
+                 "y":664
+                }, 
+                {
+                 "gid":9,
+                 "height":8,
+                 "id":248,
+                 "name":"NaniteBox",
+                 "rotation":0,
+                 "type":"nanitebox",
+                 "visible":true,
+                 "width":8,
+                 "x":672,
+                 "y":664
+                }, 
+                {
+                 "gid":9,
+                 "height":8,
+                 "id":249,
+                 "name":"NaniteBox",
+                 "rotation":0,
+                 "type":"nanitebox",
+                 "visible":true,
+                 "width":8,
+                 "x":664,
+                 "y":664
+                }, 
+                {
+                 "gid":9,
+                 "height":8,
+                 "id":250,
+                 "name":"NaniteBox",
+                 "rotation":0,
+                 "type":"nanitebox",
+                 "visible":true,
+                 "width":8,
+                 "x":664,
+                 "y":672
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1248,7 +1416,7 @@
          "y":0
         }],
  "nextlayerid":11,
- "nextobjectid":237,
+ "nextobjectid":251,
  "orientation":"orthogonal",
  "properties":[
         {
@@ -1257,7 +1425,7 @@
          "value":"labCaveWall"
         }],
  "renderorder":"right-down",
- "tiledversion":"1.3.1",
+ "tiledversion":"1.3.2",
  "tileheight":8,
  "tilesets":[
         {

@@ -1031,7 +1031,17 @@ function processWorldObjects(objects){
             break;
             case "note":
                 results.push(new Note(obj));
-            break
+            break;
+            case "nanitebox": 
+                G.pickups.spawn(
+                    obj.x, obj.y, 0, 0, 1, 1, 1, 1, G.PLAYER_ITEM_NANITE);
+                
+            break;
+            case "healthbox":
+                G.pickups.spawn(
+                    obj.x, obj.y, 0, 0, 1, 1, 1, 1, G.PLAYER_ITEM_HEALTH);
+                
+            break;
             default:
                 //nothing
 

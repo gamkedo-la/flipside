@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="300" height="120" tilewidth="8" tileheight="8" infinite="0" backgroundcolor="#28283c" nextlayerid="11" nextobjectid="237">
+<map version="1.2" tiledversion="1.3.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="300" height="120" tilewidth="8" tileheight="8" infinite="0" backgroundcolor="#28283c" nextlayerid="11" nextobjectid="251">
  <editorsettings>
   <export target="../../src/maps/room02.json" format="json"/>
  </editorsettings>
@@ -734,5 +734,19 @@ But it could lead to a level you designed!
 open up room02 and wire it up!</property>
    </properties>
   </object>
+  <object id="237" name="HealthBox" type="healthbox" gid="8" x="760" y="672" width="8" height="8"/>
+  <object id="238" name="NaniteBox" type="nanitebox" gid="9" x="696" y="672" width="8" height="8"/>
+  <object id="239" name="HealthBox" type="healthbox" gid="8" x="728" y="672" width="8" height="8"/>
+  <object id="240" name="NaniteBox" type="nanitebox" gid="9" x="672" y="672" width="8" height="8"/>
+  <object id="241" name="HealthBox" type="healthbox" gid="8" x="840" y="680" width="8" height="8"/>
+  <object id="242" name="HealthBox" type="healthbox" gid="8" x="856" y="680" width="8" height="8"/>
+  <object id="243" name="HealthBox" type="healthbox" gid="8" x="840" y="664" width="8" height="8"/>
+  <object id="244" name="HealthBox" type="healthbox" gid="8" x="856" y="664" width="8" height="8"/>
+  <object id="245" name="NaniteBox" type="nanitebox" gid="9" x="704" y="672" width="8" height="8"/>
+  <object id="246" name="NaniteBox" type="nanitebox" gid="9" x="704" y="664" width="8" height="8"/>
+  <object id="247" name="NaniteBox" type="nanitebox" gid="9" x="696" y="664" width="8" height="8"/>
+  <object id="248" name="NaniteBox" type="nanitebox" gid="9" x="672" y="664" width="8" height="8"/>
+  <object id="249" name="NaniteBox" type="nanitebox" gid="9" x="664" y="664" width="8" height="8"/>
+  <object id="250" name="NaniteBox" type="nanitebox" gid="9" x="664" y="672" width="8" height="8"/>
  </objectgroup>
 </map>
