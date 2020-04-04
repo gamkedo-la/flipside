@@ -122,10 +122,7 @@ const images = [
     'msgBox3',
     'pauseScreen',
     'titleScreen',
-    'portraits',
-    'face1',
-    'face2',
-    'face3'
+    'portraits'
 ]
 
  //sounds list!---------------------------------------------------------------

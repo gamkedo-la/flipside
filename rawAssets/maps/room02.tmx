@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.3.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="300" height="120" tilewidth="8" tileheight="8" infinite="0" backgroundcolor="#28283c" nextlayerid="11" nextobjectid="255">
+<map version="1.2" tiledversion="1.3.1" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="300" height="120" tilewidth="8" tileheight="8" infinite="0" backgroundcolor="#28283c" nextlayerid="11" nextobjectid="257">
  <editorsettings>
   <export target="../../src/maps/room02.json" format="json"/>
  </editorsettings>
@@ -514,8 +514,8 @@
   </object>
   <object id="230" name="Level 8" type="door" x="552" y="256" width="31.4167" height="47.5">
    <properties>
-    <property name="destinationMap" value="room08"/>
-    <property name="destinationSpawn" value="PlayerStart"/>
+    <property name="destinationMap" value="room13"/>
+    <property name="destinationSpawn" value="enterBottomLeft"/>
    </properties>
   </object>
   <object id="231" name="Level 7" type="door" x="176" y="192" width="31.4167" height="47.5">
@@ -538,6 +538,12 @@
     <property name="destinationMap" value="bunker"/>
     <property name="destinationSpawn" value="Checkpoint4"/>
    </properties>
+  </object>
+  <object id="255" name="enter13TopLeft" type="spawnPoint" x="1487" y="266">
+   <point/>
+  </object>
+  <object id="256" name="enter13BottomLeft" type="spawnPoint" x="571" y="265">
+   <point/>
   </object>
  </objectgroup>
  <objectgroup id="6" name="Object Layer">
