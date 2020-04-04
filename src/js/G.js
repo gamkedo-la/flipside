@@ -48,10 +48,15 @@ export const G = {
 
 
     //portrait enums
-    PORTRAIT_SIZE          :           50,
+    PORTRAIT_SIZE       :           50,
     PORTRAIT_FLIPBAT    :           1,
-    PORTRAIT_INFO       :           2,
+    PORTRAIT_FLIPSLIME  :           2,
     PORTRAIT_FLIPPIG    :           3,
+    PORTRAIT_FLIPSPIDER :           4,
+    PORTRAIT_FLIPTANK   :           5,
+    PORTRAIT_FLIPDRONE  :           6,
+    PORTRAIT_FLIPBIRD   :           7,
+    PORTRAIT_INFO       :           8,
 
 
     scenes: {},

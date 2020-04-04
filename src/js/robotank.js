@@ -12,18 +12,19 @@ const ROBO_SEEK_DIST = 16; // only seek player if farther away than this
 const ROBO_FIRE_DIST = 64; // shoot at the player if we get closer than this
 
 // patrols the area near pos, back and forth horizontally
-const RoboTank = function RoboTank({pos}={}){
-    this.start = pos;
+const RoboTank = function RoboTank(obj){
+    this.start = {x:obj.x, y:obj.y};
+    this.name = obj.name;
     this.type = "EnemyFlipTank";
     this.currentAnimation = 'idle';
-    this.target = {x: pos.x + 24, y: pos.y };
+    this.target = {x: obj.x + 24, y: obj.y };
     this.speed = 0.001;
     this.width = ROBOTANK_W; // note: width and height are hitbox, not drawsize
     this.height = ROBOTANK_H;
     this.rect = {};
     this.health = 5;
     this.healthMax = 5;
-    this.pos = {x: pos.x, y: pos.y-11}; // put feet where bottom of Tiled icon appears
+    this.pos = {x: obj.x, y: obj.y-11}; // put feet where bottom of Tiled icon appears
     this.drawOffset = {x: 4, y: -1}; // center the sprite when rendering
     this.gunOffset = {leftX: -14, rightX: 20, y: -3}; // where bullets come from
     this.wasHit = false;
@@ -154,7 +155,11 @@ RoboTank.prototype.update = function update(dt){
     var self = this;
     
     if(rectCollision(this.rect, G.player.rect)){
-        G.MSG.dispatch('hurt', {amount: 5});
+        if(this.name) {
+            G.MSG.dispatch('hurt', {amount: 5, message:{text: this.name, speaker:G.PORTRAIT_FLIPTANK}});
+        } else {
+            G.MSG.dispatch('hurt', {amount: 5});
+        }
     }
 
     // look at player

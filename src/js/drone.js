@@ -18,11 +18,12 @@ const DRONE_SEEK_DIST = 16;
 const DRONE_FIRE_DIST = 64;
 
 // Patrols the area near pos, back and forth horizontally
-const Drone = function Drone({pos}={}){
-    this.start = pos;
+const Drone = function Drone(obj){
+    this.start = {x:obj.x, y:obj.y};
+    this.name = obj.name;
     this.type = "EnemyTinydrone";//May need to change, there is no image yet
     this.currentAnimation = 'idle';
-    this.target = {x: pos.x + 24, y: pos.y };
+    this.target = {x: obj.x + 24, y: obj.y };
     this.speed = 0.001;
     // width and height are hitbox, not drawsize
     this.width = DRONE_W; 
@@ -30,7 +31,7 @@ const Drone = function Drone({pos}={}){
     this.rect = {};
     this.health = 5;
     this.healthMax = 5;
-    this.pos = {x: pos.x, y: pos.y-11};
+    this.pos = {x: obj.x, y: obj.y-11};
     // Center the sprite when rendering
     this.drawOffset = {x: 4, y: -2}; 
     // Where bullets come from
@@ -136,7 +137,11 @@ Drone.prototype.update = function update(dt){
     
     // Check if collide with player
     if(rectCollision(this.rect, G.player.rect)){
-        G.MSG.dispatch('hurt', {amount: 5});
+        if(this.name) {
+            G.MSG.dispatch('hurt', {amount: 5, message:{text: this.name, speaker:G.PORTRAIT_FLIPDRONE}});
+        } else {
+            G.MSG.dispatch('hurt', {amount: 5});
+        }
     }
 
     // Check if drone was hit by player's bullets

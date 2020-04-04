@@ -13,18 +13,19 @@ const SPIDER_SEEK_DIST = 16; // only seek player if farther away than this
 const SPIDER_FIRE_DIST = 32; // shoot at the player if we get closer than this
 
 // patrols the area near pos, back and forth horizontally
-const FlipSpider = function FlipSpider({pos}={}){
-    this.start = pos;
+const FlipSpider = function FlipSpider(obj){
+    this.start = {x:obj.x, y:obj.y};
+    this.name = obj.name;
     this.type = "flipspider";
     this.currentAnimation = 'idle';
-    this.target = {x: pos.x + 24, y: pos.y };
+    this.target = {x: obj.x + 24, y: obj.y };
     this.speed = 0.001;
     this.width = FlipSpider_W; // note: width and height are hitbox, not drawsize
     this.height = FlipSpider_H;
     this.rect = {};
     this.health = 4;
     this.healthMax = 4;
-    this.pos = {x: pos.x, y: pos.y-11}; // put feet where bottom of Tiled icon appears
+    this.pos = {x: obj.x, y: obj.y-11}; // put feet where bottom of Tiled icon appears
     this.drawOffset = {x: -4, y: -2}; // center the sprite when rendering
     this.gunOffset = {leftX: -20, rightX: 10, y: -2}; // where bullets come from
     this.wasHit = false;
@@ -189,8 +190,12 @@ FlipSpider.prototype.update = function update(dt){
     }
     var self = this;
     
-    if(rectCollision(this.rect, G.player.rect)){
-        G.MSG.dispatch('hurt', {amount: 5});
+    if(rectCollision(this.rect, G.player.rect)) {
+        if(this.name) {
+            G.MSG.dispatch('hurt', {amount: 5, message:{text: this.name, speaker:G.PORTRAIT_FLIPSPIDER}});
+        } else {
+            G.MSG.dispatch('hurt', {amount: 5});
+        }
     }
 
     // look at player

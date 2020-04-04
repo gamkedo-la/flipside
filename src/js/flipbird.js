@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 // BIRD - a diving flip creature
 
 import { rectCollision, pointInRect } from "./util.js";
@@ -8,11 +9,12 @@ import { onScreen } from './graphics.js';
 import G from './G.js';
 
 // patrols the area near pos, back and forth horizontally
-const BIRD = function BIRD({pos}={}){
+const BIRD = function BIRD(obj){
     this.type = "EnemyTinydiver";
-    this.start = pos;
+    this.name = obj.name;
+    this.start = {x:obj.x, y:obj.y};
     this.target = {x: Player.pos.x, y: Player.pos.y }
-    this.pos = {x: pos.x, y: pos.y + 6};
+    this.pos = {x: obj.x, y: obj.y + 6};
     this.vel = {x:0, y:0};
     this.width = 18;
     this.height = 27;
@@ -126,7 +128,11 @@ BIRD.prototype.update = function update(dt){
     
 
     if(rectCollision(this.rect, G.player.rect)){
-        G.MSG.dispatch('hurt', {amount: 5});
+        if(this.name) {
+            G.MSG.dispatch('hurt', {amount: 5, message:{text: this.name, speaker:G.PORTRAIT_FLIPBIRD}});
+        } else {
+            G.MSG.dispatch('hurt', {amount: 5});
+        }
     }
 
     for(let i = 0; i < G.bullets.pool.length; i+= G.bullets.tuple){

@@ -10,6 +10,7 @@ import G from './G.js'
 // patrols the area near pos, back and forth horizontally
 const Slime = function Slime(obj){
     this.type = "EnemyFlipSlime";
+    this.name = obj.name;
     this.start = {x:obj.x, y:obj.y};
     this.pathWidth = obj.properties.find(function(e){return e.name == 'pathWidthInTiles'}).value;
     this.pathHeight = obj.properties.find(function(e){return e.name == 'pathHeightInTiles'}).value;
@@ -280,18 +281,12 @@ Slime.prototype.update = function update(dt){
     var self = this;
     
     if(rectCollision(this.rect, G.player.rect)) {
-        G.MSG.dispatch('hurt', {amount: 5});
-        //FIXME: Do we have a slime portrait?
-//        G.MSG.dispatch('hurt', {amount: 5, message:{text: this.name, speaker:G.PORTRAIT_FLIPPIG}});
+        G.MSG.dispatch('hurt', {amount: 5, message:{text: this.name, speaker:G.PORTRAIT_FLIPSLIME}});
     }
-
-    // look at player
-    // G.player.pos.x < this.pos.x ? this.play('idleRight') : this.play('idleLeft');
 
     for(let i = 0; i < G.bullets.pool.length; i+= G.bullets.tuple){
         if(G.bullets.pool[i]>=0) {
             if(rectCollision({left:G.bullets.pool[i+G.PARTICLE_X] - 3, right:G.bullets.pool[i+G.PARTICLE_X] + 3, top:G.bullets.pool[i+G.PARTICLE_Y] - 3, bottom:G.bullets.pool[i+G.PARTICLE_Y] + 3}, this.rect)) {
-//                if(pointInRect(G.bullets.pool[i+G.PARTICLE_X], G.bullets.pool[i+G.PARTICLE_Y], this.rect)){
                     G.bullets.kill(i)
                 this.wasHit = true;
                 this.health--;

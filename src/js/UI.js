@@ -82,11 +82,11 @@ export function handleMessageBox(){
         msgBoxX,
         msgBoxY
         );
-    if (showMessageSpeaker != 0){
+    if (showMessageSpeaker != 0) {
         G.ctx.drawImage(
             G.img.portraits,
-            showMessageSpeaker * G.PORTRAIT_SIZE,
-            0, G.PORTRAIT_SIZE, G.PORTRAIT_SIZE,
+            showMessageSpeaker * G.PORTRAIT_SIZE, 0, 
+            G.PORTRAIT_SIZE, G.PORTRAIT_SIZE,
             faceX,
             faceY,
             G.PORTRAIT_SIZE, G.PORTRAIT_SIZE

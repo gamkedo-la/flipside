@@ -1006,19 +1006,19 @@ function processWorldObjects(objects){
                 results.push(new FlipPig(obj).init());
             break;
             case "flipbird":
-                results.push(new FlipBird({pos:{x: obj.x, y: obj.y}}).init());
+                results.push(new FlipBird(obj).init());
             break;
             case "robotank":
-                results.push(new RoboTank({pos:{x: obj.x, y: obj.y}}).init());
+                results.push(new RoboTank(obj).init());
             break;
             case "flipspider":
-                results.push(new FlipSpider({pos:{x: obj.x, y: obj.y}}).init());
+                results.push(new FlipSpider(obj).init());
             break;
             case "flipslime":
                 results.push(new FlipSlime(obj).init());
             break;
              case "drone":
-                 results.push(new Drone({pos:{x: obj.x, y: obj.y}}).init());
+                 results.push(new Drone(obj).init());
              break;
             case "barricade":
                 results.push(new Barricade(obj));
