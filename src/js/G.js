@@ -22,6 +22,12 @@ export const G = {
     DUST               :          15,
     PLAYER_HURT        :          16,
     PLAYER_PICKED_UP   :          17,
+    PLAYER_ITEM_HEALTH :          18,
+    PLAYER_ITEM_NANITE :          19,
+    PLAYER_BOOTS_PICKUP:          20,
+    PLAYER_GUN_PICKUP  :          21,
+    PLAYER_EVSUIT_PICKUP:         22,
+    PLAYER_EVGUN_PICKUP:          23,
 
 //particle buffer params
     PARTICLE_X         :           1,

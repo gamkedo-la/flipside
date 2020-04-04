@@ -127,6 +127,7 @@ const Player = {
         crouchingY:6,
         pointedDownY:6,
         pointedDownX:3
+        
     },
 
 
@@ -331,8 +332,17 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
                         this.health = this.maxHealth;
                     }
                 }
+                if(G.pickups.pool[i+8] == G.PLAYER_ITEM_NANITE) {
+                    this.nanitesCollected += 20;
+                } else if(G.pickups.pool[i+8] == G.PICKUP_HEALTH) {
+                    console.log("Picked up some health");
+                    this.health += 20;
+                    if(this.health > this.maxHealth) {
+                        this.health = this.maxHealth;
+                    }
+                }
                 G.pickups.kill(i);
-                G.audio.playSound(G.sounds.test2, 0, 0.03, 1, false);
+                G.audio.playSound(G.sounds.test2, 0, 1, 1, false);
                 
 
             }

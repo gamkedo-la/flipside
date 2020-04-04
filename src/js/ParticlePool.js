@@ -175,6 +175,38 @@ ParticlePool.prototype.draw = function draw(){
                         7
                         );
                 break;
+
+                case G.PLAYER_ITEM_HEALTH: {
+                    pcolor = 50;
+                    G.rb.fillCircle(
+                        this.pool[i+1]-G.view.x,
+                        this.pool[i+2]-G.view.y,
+                        4,
+                        pcolor
+                        );
+                    pcolor = 5;
+                    G.rb.pset(
+                        this.pool[i+1]-G.view.x + rndInt(-8,8),
+                        this.pool[i+2]-G.view.y + rndInt(-8,8),
+                        pcolor);
+                    break;
+                }
+
+                case G.PLAYER_ITEM_NANITE: {
+                    pcolor = 11;
+                    G.rb.fillCircle(
+                        this.pool[i+1]-G.view.x,
+                        this.pool[i+2]-G.view.y,
+                        4,
+                        pcolor
+                        );
+                    pcolor = 19;
+                    G.rb.pset(
+                        this.pool[i+1]-G.view.x + rndInt(8,-8),
+                        this.pool[i+2]-G.view.y + rndInt(8,-8),
+                        pcolor);
+                    break;
+                }
     
                 default:
                     G.rb.fillRect(
@@ -223,6 +255,16 @@ ParticlePool.prototype.update = function update(dt){
                     this.pool[i+2] += this.pool[i+4]*dt; //y += vy;
                     break;
 
+                }
+
+                case G.PLAYER_ITEM_HEALTH: {
+
+                    break;
+                }
+
+                case G.PLAYER_ITEM_NANITE: {
+
+                    break;
                 }
                 default: 
                 this.pool[i] = this.pool[i]-1;
