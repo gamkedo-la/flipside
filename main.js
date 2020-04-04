@@ -1042,6 +1042,22 @@ function processWorldObjects(objects){
                     obj.x, obj.y, 0, 0, 1, 1, 1, 1, G.PLAYER_ITEM_HEALTH);
                 
             break;
+            case "boots":
+                G.pickups.spawn(
+                    obj.x, obj.y, 0, 0, 1, 16, 16, 1, G.PLAYER_BOOTS_PICKUP); 
+            break;
+            case "gun":
+                G.pickups.spawn(
+                    obj.x, obj.y, 0, 0, 1, 16, 24, 1, G.PLAYER_GUN_PICKUP); 
+            break;
+            case "suit":
+                G.pickups.spawn(
+                    obj.x, obj.y, 0, 0, 1, 16, 24, 1, G.PLAYER_EVSUIT_PICKUP); 
+            break;
+            case "suitgun":
+                G.pickups.spawn(
+                    obj.x, obj.y, 0, 0, 1, 16, 16, 1, G.PLAYER_EVGUN_PICKUP); 
+            break;
             default:
                 //nothing
 

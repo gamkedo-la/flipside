@@ -34,8 +34,10 @@ const Player = {
     nanitesCollected: 0,
     nanitesMax: 3000,
 
-    hasPugGun: true,
-    hasHighJump: true,
+    hasPugGun: false,
+    hasHighJump: false,
+    hasEVSuit: false,
+    hasEVGun: false,
 
     collideIndex: G.collideIndex,
     hazardTilesStartIndex: G.hazardTilesStartIndex,
@@ -322,7 +324,7 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
                         25,
                         G.PICKUP_DEATH  //this pick up is dead because we picked it up
                     )
-                switch(G.pickups.pool[G.PARTICLE_TYPE]){
+                switch(G.pickups.pool[i+G.PARTICLE_TYPE]){
 
                     case G.PICKUP_NANITE:
                         this.nanitesCollected++;
@@ -330,45 +332,43 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
 
                     case G.PICKUP_HEALTH:
                         this.health += 5;
-                        if(this.health > this.maxHealth) {
-                            this.health = this.maxHealth;
-                        }
+                        
                     break;
 
                     case G.PLAYER_ITEM_NANITE:
-                        this.nanitesCollected += 20;
+                        this.nanitesCollected += 40;
                     break;
 
                     case G.PLAYER_ITEM_HEALTH:
-                        this.health += 20;
-                        if(this.health > this.maxHealth) {
-                            this.health = this.maxHealth;
-                        }
+                        this.health += 20;  
                     break;
-                    
+
+                    case G.PLAYER_BOOTS_PICKUP:
+                        this.hasHighJump = true;
+                        this.getPowerUp();
+                    break;
+
+                    case G.PLAYER_GUN_PICKUP:
+                        this.hasPugGun = true;
+                        this.getPowerUp();
+                    break;
+
+                    case G.PLAYER_EVSUIT_PICKUP:
+                        this.hasEVSuit = true;
+                        this.getPowerUp();
+                    break;
+
+                    case G.PLAYER_EVGUN_PICKUP:
+                        this.hasEVGun = true;
+                        this.getPowerUp();
+                    break;
+                    default:
                 }
-                // if(G.pickups.pool[i+8] == G.PICKUP_NANITE) {
-                //     this.nanitesCollected += 1;
-                // } else if(G.pickups.pool[i+8] == G.PICKUP_HEALTH) {
-                //     console.log("Picked up some health");
-                //     this.health += 5;
-                //     if(this.health > this.maxHealth) {
-                //         this.health = this.maxHealth;
-                //     }
-                // }
-                // if(G.pickups.pool[i+8] == G.PLAYER_ITEM_NANITE) {
-                //     this.nanitesCollected += 20;
-                // } else if(G.pickups.pool[i+8] == G.PICKUP_HEALTH) {
-                //     console.log("Picked up some health");
-                //     this.health += 20;
-                //     if(this.health > this.maxHealth) {
-                //         this.health = this.maxHealth;
-                //     }
-                // }
+                if(this.health > this.maxHealth) {
+                    this.health = this.maxHealth;
+                }
                 G.pickups.kill(i);
                 G.audio.playSound(G.sounds.test2, 0, 1, 1, false);
-                
-
             }
         }
     }
@@ -377,38 +377,6 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
 
 
 }
-
-Player.zapWalls = function() {
-
-    const dist = 64;
-    const walk = 20;
-    const width = 1;
-    const chaos = 0;
-    const segs = 64; // fixme, optimize!
-    const rgba = 'rgba(0,255,255,1)';
-    const spd1 = 666;
-    const spd2 = 555;
-    let now = performance.now();
-    G.lightning.bolt(this.pos.x-G.view.x,this.pos.y-G.view.y,
-        this.pos.x+dist-G.view.x+Math.cos(now/spd1)*walk,
-        this.pos.y+dist-G.view.y+Math.cos(now/spd2)*walk,
-        width, chaos, segs, rgba, true);
-    G.lightning.bolt(this.pos.x-G.view.x,this.pos.y-G.view.y,
-        this.pos.x-dist-G.view.x+Math.cos(now/spd1)*-walk,
-        this.pos.y+dist-G.view.y+Math.cos(now/spd2)*walk,
-        width, chaos, segs, rgba, true);
-    G.lightning.bolt(this.pos.x-G.view.x,this.pos.y-G.view.y,
-        this.pos.x+dist-G.view.x+Math.cos(now/spd1)*walk,
-        this.pos.y-dist-G.view.y+Math.cos(now/spd2)*-walk,
-        width, chaos, segs, rgba, true);
-    G.lightning.bolt(this.pos.x-G.view.x,this.pos.y-G.view.y,
-        this.pos.x-dist-G.view.x+Math.cos(now/spd1)*-walk,
-        this.pos.y-dist-G.view.y+Math.cos(now/spd2)*-walk,
-        width, chaos, segs, rgba, true);
-
-}
-
-
 
 Player.render = function render(glRenderer, dt, world, worldFlipped, worldForeground){
 

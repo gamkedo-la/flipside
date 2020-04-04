@@ -207,6 +207,66 @@ ParticlePool.prototype.draw = function draw(){
                         pcolor);
                     break;
                 }
+
+                case G.PLAYER_BOOTS_PICKUP: 
+                G.ctx.drawImage(
+                    G.img.tiles,
+                    0,
+                    256,
+                    16,
+                    16,
+                    Math.floor(this.pool[i+1]-G.view.x),
+                    Math.floor(this.pool[i+2]-G.view.y),
+                    16,
+                    16
+                )
+                break;
+
+                case G.PLAYER_GUN_PICKUP: 
+                G.ctx.drawImage(
+                    G.img.tiles,
+                    16,
+                    256,
+                    24,
+                    16,
+                    Math.floor(this.pool[i+1]-G.view.x),
+                    Math.floor(this.pool[i+2]-G.view.y),
+                    24,
+                    16
+                )
+                break;
+
+                case G.PLAYER_EVSUIT_PICKUP: 
+                G.ctx.drawImage(
+                    G.img.tiles,
+                    40,
+                    256,
+                    24,
+                    16,
+                    Math.floor(this.pool[i+1]-G.view.x),
+                    Math.floor(this.pool[i+2]-G.view.y),
+                    24,
+                    16
+                )
+                break;
+
+                case G.PLAYER_EVGUN_PICKUP: 
+                G.ctx.drawImage(
+                    G.img.tiles,
+                    64,
+                    256,
+                    16,
+                    16,
+                    Math.floor(this.pool[i+1]-G.view.x),
+                    Math.floor(this.pool[i+2]-G.view.y),
+                    16,
+                    16
+                )
+                break;
+                // PLAYER_BOOTS_PICKUP:          20,
+            // PLAYER_GUN_PICKUP  :          21,
+            // PLAYER_EVSUIT_PICKUP:         22,
+            // PLAYER_EVGUN_PICKUP:          23,
     
                 default:
                     G.rb.fillRect(
@@ -266,6 +326,23 @@ ParticlePool.prototype.update = function update(dt){
 
                     break;
                 }
+
+                case G.PLAYER_BOOTS_PICKUP: {
+
+                    break;
+                }
+                case G.PLAYER_GUN_PICKUP: {
+
+                    break;
+                }
+                case G.PLAYER_EVSUIT_PICKUP: {
+
+                    break;
+                }
+                case G.PLAYER_EVGUN_PICKUP: {
+
+                    break;
+                }
                 default: 
                 this.pool[i] = this.pool[i]-1;
                 this.pool[i+9] = this.pool[i+1]; //prevX = this X
@@ -273,6 +350,10 @@ ParticlePool.prototype.update = function update(dt){
                 this.pool[i+1] += this.pool[i+3]*dt; //x += vx;
                 this.pool[i+2] += this.pool[i+4]*dt; //y += vy;
             // console.log(this.pool[i+1], this.pool[i+2])
+            // PLAYER_BOOTS_PICKUP:          20,
+            // PLAYER_GUN_PICKUP  :          21,
+            // PLAYER_EVSUIT_PICKUP:         22,
+            // PLAYER_EVGUN_PICKUP:          23,
             }
             
         }
