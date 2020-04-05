@@ -425,7 +425,11 @@ function drawPauseMenu() {
 const greetsTXT = // inspired by cracktro leet greet loadscreen scrollers
     "Welcome to Flipside! A HomeTeam GameDev production "+
     "by Ryan Malm and a team of 20 people. "+
-    "Greets go out to: Tynter, Jamsers, Kissa, Eudoxus, DonMess, Leo, Keeva, and the funky fresh street beat party crew in the t-dot."
+    "Leet greetz go out to: "+
+    // these are the initials of everybody in credits:
+    "RM, HT, CD, CK, MS, AM, JH, JL, MF, SH, VK, MO, GD, JF, MM, IC"; 
+    
+    
 var txtWidth = greetsTXT.length*7; // guess pixel width of string
 var greetsX = -999999999;
 var greetsY = 0;
