@@ -544,9 +544,7 @@
   <object id="185" type="messageBox" x="328" y="664" width="24" height="16">
    <properties>
     <property name="speaker" type="int" value="8"/>
-    <property name="text">Template Space 03
-Make it yours!
-Edit room03.tmx</property>
+    <property name="text">testing room 03</property>
    </properties>
   </object>
   <object id="186" type="note" x="608" y="600">

@@ -694,7 +694,7 @@
                         {
                          "name":"text",
                          "type":"string",
-                         "value":"Template Space 03\nMake it yours!\nEdit room03.tmx"
+                         "value":"testing room 03"
                         }],
                  "rotation":0,
                  "type":"messageBox",

@@ -550,8 +550,7 @@
   <object id="153" type="messageBox" x="320" y="536" width="24" height="16">
    <properties>
     <property name="speaker" type="int" value="8"/>
-    <property name="text">template space 04
-Make it yours! edit room04.tmx</property>
+    <property name="text">testing room 04</property>
    </properties>
   </object>
   <object id="154" type="messageBox" x="232" y="608" width="24" height="16">
@@ -563,10 +562,7 @@ Make it yours! edit room04.tmx</property>
   <object id="155" type="messageBox" x="232" y="472" width="24" height="16">
    <properties>
     <property name="speaker" type="int" value="8"/>
-    <property name="text">Template Space 05
-Make it yours!
-Edit room05.tmx
-</property>
+    <property name="text">testing room 05</property>
    </properties>
   </object>
   <object id="160" type="messageBox" x="232" y="344" width="24" height="16">
@@ -627,9 +623,7 @@ Flipspace creature infestation</property>
   <object id="185" type="messageBox" x="328" y="664" width="24" height="16">
    <properties>
     <property name="speaker" type="int" value="8"/>
-    <property name="text">Template Space 03
-Make it yours!
-Edit room03.tmx</property>
+    <property name="text">testing room 03</property>
    </properties>
   </object>
   <object id="186" type="note" x="608" y="600">
