@@ -130,7 +130,7 @@ const soundList = [
     { name: "test1", url:"./src/snd/test1.mp3" },
     { name: "test2", url:"./src/snd/test2.mp3" },
     { name: "stebsscarymusic", url:"./src/snd/stebsScaryFlipside(2).mp3" },
-    { name: "vanishing", url:"./src/snd/Vanishing-2.mp3" },
+    { name: "vanishing", url:"./src/snd/Vanishing.mp3" },
     { name: "testMusic1", url:"./src/snd/klaim-layers_of_cool_lasers-no_guitar_solo-ingame_version.mp3" },
     { name: "testMusic3", url:"./src/snd/klaim-layers_of_cool_lasers-ingame_version.mp3" },
     { name: "playerShoot", url:"./src/snd/playerShoot1.mp3" },
@@ -429,9 +429,7 @@ const greetsTXT = // inspired by cracktro leet greet loadscreen scrollers
     "by Ryan Malm and a team of 20 people. "+
     "Leet greetz go out to: "+
     // these are the initials of everybody in credits:
-    "RM, HT, CD, CK, MS, AM, JH, JL, MF, SH, VK, MO, GD, JF, MM, IC"; 
-    
-    
+    "RM, HT, CD, CK, MS, AM, JH, JL, MF, SH, VK, MO, GD, JF, MM, IC";
 var txtWidth = greetsTXT.length*7; // guess pixel width of string
 var greetsX = -999999999;
 var greetsY = 0;
@@ -529,7 +527,7 @@ function drawTitleScreen() {
     }
 
     if(Key.isDown(Key.z)){
-        G.audio.playMusic(G.sounds.testMusic1)
+        G.audio.swapMusic(G.sounds.testMusic1);
         requestAnimationFrame(frame);
         return;
     }else{
@@ -965,7 +963,14 @@ function loadFromConsole(loadedMap, spawnPoint) {
 function updateWorldData(world, worldFlipped, worldForeground, currentMap) {
 
     console.log(currentMap);
+    console.log(G.musicMap[currentMap]);
+    let song = G.musicMap[currentMap];
+
+    if(G.sounds){
+        G.audio.swapMusic(G.sounds[song]);
+    }
     
+
     world.widthInTiles = loader.tileMaps[currentMap].layers[0].width;
     world.heightInTiles= loader.tileMaps[currentMap].layers[0].height;
 
