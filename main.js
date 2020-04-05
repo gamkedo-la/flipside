@@ -57,8 +57,10 @@ G.GamepadSupport = new GamepadSupport();
 
 //initialize and show the FPS/mem use counter
 const stats = new Stats();
-stats.showPanel( 1 ); // 0: fps, 1: ms, 2: mb, 3+: custom
-document.body.appendChild( stats.dom );
+if(G.DEBUG_MODE) {
+    stats.showPanel( 1 ); // 0: fps, 1: ms, 2: mb, 3+: custom
+    document.body.appendChild( stats.dom );
+}
 
 //canvas init and other data init---------------------------------------------
 G.debugEvents = [];
@@ -426,7 +428,7 @@ function drawPauseMenu() {
 
 const greetsTXT = // inspired by cracktro leet greet loadscreen scrollers
     "Welcome to Flipside! A HomeTeam GameDev production "+
-    "by Ryan Malm and a team of 14 people. "+
+    "by Ryan Malm with a team of 14 people. "+
     "Leet greetz go out to: "+
     // these are the initials of everybody in credits:
     "RM, HT, CD, CK, MS, AM, JH, JL, MF, SH, VK, MO, GD, JF, MM, IC";
@@ -768,7 +770,9 @@ function render(dt){
      })
 
     UIRender();
-    debugRender();
+    if(G.DEBUG_MODE) {
+        debugRender();
+    }
     if(G.showMiniMap){
 
         //G.ctx.fillStyle = 'rgba(0,0,0,0.7)';

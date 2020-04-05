@@ -1,4 +1,5 @@
 export const G = {
+    DEBUG_MODE          :       false,
     //loading totals
     imagesLoaded        :           0,
     soundsLoaded        :           0,
