@@ -426,7 +426,7 @@ function drawPauseMenu() {
 
 const greetsTXT = // inspired by cracktro leet greet loadscreen scrollers
     "Welcome to Flipside! A HomeTeam GameDev production "+
-    "by Ryan Malm and a team of 20 people. "+
+    "by Ryan Malm and a team of 14 people. "+
     "Leet greetz go out to: "+
     // these are the initials of everybody in credits:
     "RM, HT, CD, CK, MS, AM, JH, JL, MF, SH, VK, MO, GD, JF, MM, IC";
