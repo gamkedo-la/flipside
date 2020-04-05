@@ -38,7 +38,7 @@ const GamepadSupport = function GamepadKeyboardEventEmulator()
     var SIMULATED_KEY_B_BUTTON = 88;//z
     var SIMULATED_KEY_A_BUTTON = 90;//32;//space
     var SIMULATED_KEY_X_BUTTON = 88;//x
-    var SIMULATED_KEY_Y_BUTTON = 90;//13;//enter
+    var SIMULATED_KEY_Y_BUTTON = 67;//C //90;//13;//enter
 	//17//lctrl
     //16//lshift
 	//18//alt

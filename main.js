@@ -489,6 +489,7 @@ function leetGreetz() {
 
 function drawTitleScreen() {
     Key.update();
+    if (G.GamepadSupport) G.GamepadSupport.handle_gamepad(); // polled each frame
 
     if(G.credits.showCreditsNow) {
         G.credits.drawCredits();
