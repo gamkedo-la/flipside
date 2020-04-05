@@ -70,7 +70,13 @@ export function showMessage(withText, fromSpeaker = 0){//work in progress
 
 export function handleMessageBox(){
     let msgBoxX = 30;
-    let msgBoxY = 160;
+    let msgBoxY;
+    // is player near bottom of screen?
+    if(G.player.pos.y - G.view.y > 130) {
+        msgBoxY = 10; // then put message near top
+    } else { // otherwise
+        msgBoxY = 160; // have it near bottom
+    }
     let faceX = msgBoxX + 10;
     let faceY = msgBoxY + 10;
     let msgBoxTextX = msgBoxX + 66;
