@@ -360,7 +360,7 @@
                         {
                          "name":"message",
                          "type":"string",
-                         "value":"This is a template room meant for\nsomeone -maybe you! to edit and replace.\nopen up room03 in Tiled editor and hack away!"
+                         "value":"This was a testing lab leftover from facility construction."
                         }],
                  "rotation":0,
                  "type":"note",

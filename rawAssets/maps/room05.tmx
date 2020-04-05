@@ -704,9 +704,7 @@ right edge of map.</property>
   </object>
   <object id="76" type="note" x="904" y="736">
    <properties>
-    <property name="message">This is a template room meant for
-someone -maybe you! to edit and replace.
-open up room05 in Tiled editor and hack away!</property>
+    <property name="message">This was a testing lab leftover from facility construction.</property>
    </properties>
    <point/>
   </object>

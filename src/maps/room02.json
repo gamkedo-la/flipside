@@ -712,7 +712,7 @@
                         {
                          "name":"message",
                          "type":"string",
-                         "value":"<-- THE HUB\nTemporary area to connect up WIP maps to. \n\n--> TEST AREA\nAll of the in-game objects are spawned here once, for\ntesting purposes. "
+                         "value":"<-- THE HUB\nTemporary area to connect up WIP maps to. \n\n--> TEST AREA\nAll of the in-game objects are spawned here once, for\ntesting purposes.\n\nArrows or WASD move.\nZ and X are action buttons"
                         }],
                  "rotation":0,
                  "type":"note",

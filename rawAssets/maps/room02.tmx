@@ -556,7 +556,11 @@ Temporary area to connect up WIP maps to.
 
 --&gt; TEST AREA
 All of the in-game objects are spawned here once, for
-testing purposes. </property>
+testing purposes.
+
+Arrows or WASD move.
+Z and X are action buttons
+</property>
    </properties>
    <point/>
   </object>
