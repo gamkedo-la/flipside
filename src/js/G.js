@@ -72,6 +72,7 @@ export const G = {
     hazardTilesEndIndex: 120,
     cloudTilesStartIndex: 977,
     cloudTilesEndIndex: 992,
+    switchingMusic: false,
 
     healthBarLocation : {x: 4, y: 4},
     healthBarDimensions : {w: 50, h: 8},
@@ -86,7 +87,30 @@ export const G = {
     deathCooldown: 0,
     deathCooldownMax: 180,
 
-    showMiniMap: false
+    showMiniMap: false,
+
+    musicMap: {
+        room02: "testMusic1",
+        room03: "vanishing",
+        room04: "testMusic1",
+        room04a: "tesMusic1",
+        room05: "testMusic1",
+        room06: "testMusic1",
+        room07: "testMusic1",
+        room08: "testMusic1",
+        room09: "testMusic1",
+        room10: "testMusic1",
+        room13: "testMusic1",
+        room13a: "testMusic1",
+        room14: "testMusic1",
+        bunker: "testMusic1",
+        theArmory: "testMusic1",
+        theLab: "testMusic1",
+        flipSpaceCavern: "testMusic1",
+        bunker: "testMusic1",
+
+        
+    }
 
 };
 

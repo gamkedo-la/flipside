@@ -129,7 +129,8 @@ const images = [
 const soundList = [
     { name: "test1", url:"./src/snd/test1.mp3" },
     { name: "test2", url:"./src/snd/test2.mp3" },
-    { name: "testMusic2", url:"./src/snd/stebsScaryFlipside(2).mp3" },
+    { name: "stebsscarymusic", url:"./src/snd/stebsScaryFlipside(2).mp3" },
+    { name: "vanishing", url:"./src/snd/Vanishing-2.mp3" },
     { name: "testMusic1", url:"./src/snd/klaim-layers_of_cool_lasers-no_guitar_solo-ingame_version.mp3" },
     { name: "testMusic3", url:"./src/snd/klaim-layers_of_cool_lasers-ingame_version.mp3" },
     { name: "playerShoot", url:"./src/snd/playerShoot1.mp3" },
@@ -311,8 +312,8 @@ function start(sounds){
 
     //Fire it up!
     requestAnimationFrame(drawTitleScreen);
-    if (soundEnabled) G.music = G.audio.playMusic(G.sounds.testMusic1)
-    G.music.volume.gain.value = 0.65;
+    if (soundEnabled) G.music = G.audio.playMusic(G.sounds.stebsscarymusic)
+    G.music.volume.gain.value = 0.5;
     //console.log(G.music);
 
 }
@@ -349,6 +350,7 @@ function frame(){
 
     if(G.transitioning){
     }else{
+        
         requestAnimationFrame(frame);
     }
 
@@ -488,6 +490,7 @@ function leetGreetz() {
 }
 
 function drawTitleScreen() {
+    
     Key.update();
     if (G.GamepadSupport) G.GamepadSupport.handle_gamepad(); // polled each frame
 
@@ -522,6 +525,7 @@ function drawTitleScreen() {
     }
 
     if(Key.isDown(Key.z)){
+        G.audio.playMusic(G.sounds.testMusic1)
         requestAnimationFrame(frame);
         return;
     }else{
@@ -550,16 +554,6 @@ function render(dt){
 
 //    clearScreen('black');
     G.rb.clear(64);
-
-    //render background parallax
-    //var parallaxImage = img[world.parallax0];
-    //console.log(parallaxImage);
-    //var bgWidth = img[world.parallax0].width;
-    //var bgHeight = img[world.parallax0].height;
-    //let bgPadding = 1;
-    //let bgTileWidth = (Math.round( c.width / img[world.parallax0].width ) + 1 * 2);
-    //let bgTileHeight = (Math.round( c.height / img[world.parallax0].width ) + 1 * 2);
-    //console.log(bgTileWidth, bgTileHeight);
 
     if(!USE_GL_RENDERER) {
         for(let i = -1; i <= (Math.round( c.width / G.img[G.world.parallax0].width ) + 1 * 2); i++){
@@ -965,6 +959,9 @@ function loadFromConsole(loadedMap, spawnPoint) {
 }
 
 function updateWorldData(world, worldFlipped, worldForeground, currentMap) {
+
+    console.log(currentMap);
+    
     world.widthInTiles = loader.tileMaps[currentMap].layers[0].width;
     world.heightInTiles= loader.tileMaps[currentMap].layers[0].height;
 
