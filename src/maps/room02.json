@@ -730,7 +730,7 @@
                         {
                          "name":"message",
                          "type":"string",
-                         "value":"player abilities can be toggled with number keys.\nCurently: \n1: toggle PUG gun\n2: toggle high jump"
+                         "value":"DANGER\nfind a suit before entering\nthe purple FLIPSPACE ahead!\nthen move+jump to jetpack\n\nor else you'll get stuck!"
                         }],
                  "rotation":0,
                  "type":"note",

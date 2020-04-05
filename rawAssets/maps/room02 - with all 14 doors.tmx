@@ -643,10 +643,13 @@ Z and X are action buttons
   </object>
   <object id="187" type="note" x="840" y="600">
    <properties>
-    <property name="message">player abilities can be toggled with number keys.
-Curently: 
-1: toggle PUG gun
-2: toggle high jump</property>
+    <property name="message">DANGER
+find a suit before entering
+nthe purple FLIPSPACE ahead!
+then move+jump to jetpack
+
+or else you'll get stuck!
+    </property>
    </properties>
    <point/>
   </object>
