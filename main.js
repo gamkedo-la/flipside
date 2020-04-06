@@ -8,6 +8,31 @@
 Flipside - made by the http://hometeamgamedev.com club
 */
 
+
+var browserNotSupported = false;
+// safari test from https://stackoverflow.com/questions/7944460/detect-safari-browser
+var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+// IE/edge test from https://stackoverflow.com/questions/31757852/how-can-i-detect-internet-explorer-ie-and-microsoft-edge-using-javascript
+if(isSafari ||
+    /MSIE 10/i.test(navigator.userAgent) || // This is internet explorer 10
+    /MSIE 9/i.test(navigator.userAgent) || /rv:11.0/i.test(navigator.userAgent) || // This is internet explorer 9 or 11
+    /Edge\/\d./i.test(navigator.userAgent) ) { // This is Microsoft Edge
+    browserNotSupported = true;
+
+    var local_c=document.getElementById("c");
+    var local_ctx = local_c.getContext('2d');
+
+    local_ctx.fillStyle = 'rgba(0,0,0, 1.0)';
+    local_ctx.fillRect(0,0,local_c.width,local_c.height);
+    local_ctx.fillStyle = 'rgba(255,255,255, 1.0)';
+    local_ctx.font = "14px Arial";
+    local_ctx.textAlign = "left";
+    local_ctx.fillText("Sorry, this browser is not supported.",35,55);
+    local_ctx.fillText("Please revisit with Chrome or Firefox.",35,75);
+
+    throw Error("browser not supported"); // intentional error to derail code
+}
+
 /* eslint-disable max-depth */
 /* eslint-disable complexity */
 import Stats from './src/js/stats.module.js';
@@ -199,20 +224,8 @@ loader.redrawLoadUpdate(); // drawing instantly, even if 0, to replace black scr
 function init(){
     console.log("Main init begins...")
 
-    // safari test from https://stackoverflow.com/questions/7944460/detect-safari-browser
-    var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-    // IE/edge test from https://stackoverflow.com/questions/31757852/how-can-i-detect-internet-explorer-ie-and-microsoft-edge-using-javascript
-    if(isSafari ||
-        /MSIE 10/i.test(navigator.userAgent) || // This is internet explorer 10
-        /MSIE 9/i.test(navigator.userAgent) || /rv:11.0/i.test(navigator.userAgent) || // This is internet explorer 9 or 11
-        /Edge\/\d./i.test(navigator.userAgent) ) { // This is Microsoft Edge
-       
-        ctx.fillStyle = 'rgba(0,0,0, 1.0)';
-        ctx.fillRect(0,0,G.c.width,G.c.height);
-        ctx.fillStyle = 'rgba(255,255,255, 1.0)';
-        ctx.font = "14px Arial";
-        ctx.fillText("Sorry, this browser is not supported.",45,55);
-        ctx.fillText("Please revisit with Chrome or Firefox.",45,75);
+    if(browserNotSupported) {
+        console.log("browserNotSupported - code shouldn't have reached here");
         return; // block loading
     }
 
