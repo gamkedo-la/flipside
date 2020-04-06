@@ -1160,7 +1160,85 @@ Player.hurt = function(params){
             }
         }
         if(params.message){
-            showMessage(params.message.text, params.message.speaker )
+            let toShow = params.message.text;
+
+            if(params.message.text == "spidey") {
+                let spideyTalk = [
+                    "It's tangle time",
+                    "I've caught you now",
+                    "zzzzkkkkkk",
+                    "Let me in your ear",
+                    "Give me that",
+                    "Join me for dinner"
+                ];
+                toShow+=": "+spideyTalk[Math.floor(Math.random()*spideyTalk.length)];
+            }
+            if(params.message.text == "bat" ||
+                    params.message.text == "Bzzzzzzzzz....DIE..zzzzz") {
+                let batTalk = [
+                    "chomp",
+                    "You're delicious",
+                    "Come to the flipside",
+                    "You'll never send us back",
+                    "Closer...",
+                    "You're bacon me angry",
+                    "Bzzzzzzzzz....DIE..zzzzz"
+                ];
+                // = instead of += since common buzz phrase doesn't start with name
+                toShow="bat: "+batTalk[Math.floor(Math.random()*batTalk.length)];
+
+            }
+            if(params.message.text == "pig") {
+                let pigTalk = [
+                    "oink",
+                    "Watch where you're going",
+                    "You clumsy oaf",
+                    "Out of my way!",
+                    "grrrrrr",
+                    "You're bacon me mad"
+                ];
+                toShow+=": "+pigTalk[Math.floor(Math.random()*pigTalk.length)];
+            }
+            if(params.message.text == "Ho hum de dum") { // slime
+                let slimeTalk = [
+                    "*bubbling*",
+                    "*boiling*",
+                    "*broiling*",
+                    "*rolling*",
+                    "*sticking*",
+                    "*popping*"
+                ];
+                // note: not += but = for slime since name not common default
+                toShow="slime : "+slimeTalk[Math.floor(Math.random()*slimeTalk.length)];
+            }
+            if(params.message.text == "Flipbird") {
+                let birdTalk = [
+                    "screeeeeeee",
+                    "squawk",
+                    "chirp chirp",
+                    "chomp",
+                    "snap",
+                    "coo coo"
+                ];
+                toShow+=": "+birdTalk[Math.floor(Math.random()*birdTalk.length)];
+            }
+            if(params.message.text == "RoboTank") {
+                let tankTalk = [
+                    "I will flip you",
+                    "Prepare to be space",
+                    "You will not escape",
+                    "I'll light you up",
+                    "Intruder!",
+                    "These experiments must end",
+                    "You must be purified",
+                    "Contaminant detected",
+                    "Protocol breach confirmed",
+                    "I must crush you"
+                ];
+                toShow+=": "+tankTalk[Math.floor(Math.random()*tankTalk.length)];
+            }
+
+            showMessage(toShow, params.message.speaker );
         }
     }//end cooldown check
 
