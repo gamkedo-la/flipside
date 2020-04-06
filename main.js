@@ -932,6 +932,10 @@ function loadMap({map, spawnPoint}){
 
     console.log("Loading map: " + map);
 
+    G.particles.resetAll();
+    G.pickups.resetAll();
+    G.bullets.resetAll();
+
     let { loader, currentMap, world, worldFlipped, worldForeground } = G;
 
     currentMap = map;

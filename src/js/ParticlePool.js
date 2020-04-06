@@ -375,7 +375,9 @@ ParticlePool.prototype.update = function update(dt){
    
 }
 
-
+ParticlePool.prototype.resetAll = function resetAll(){
+    this.pool.fill(0, 0, this.size * this.tuple);
+}
 
 ParticlePool.prototype.kill = function kill(index){
     this.pool.fill(0, index, index+10)
