@@ -114,6 +114,7 @@ const images = [
     'EnemyTinyflyer',
     'EnemyTinycrawler',
     'EnemyTinydiver',
+    'EnemyFlipDrone',
     'EnemyRoboTank',
     'EnemyFlipTank',
     'EnemyFlipSlime',
@@ -259,7 +260,7 @@ function start(sounds){
                 frameCount:4
             },
             EnemyTinydrone: {
-                image:G.img.EnemyFlipTank,
+                image:G.img.EnemyFlipDrone,
                 frameCount:4
             },
             EnemyTinycrawler: {

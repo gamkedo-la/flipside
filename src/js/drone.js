@@ -1,7 +1,5 @@
 // Drone - a horizontally patrolling unit
 
-// Using EnemyFlipTank as a placeholder for the animation
-
 import { rectCollision, pointInRect } from "./util.js";
 import { rndFloat, rndInt, range } from "./math.js";
 import SpriteSheet from './spritesheet.js';
@@ -157,20 +155,20 @@ Drone.prototype.update = function update(dt){
 
     // Drone shines when hit by player's bullets
     if(this.wasHit) {
-        this.spritesheet.image = G.loader.brightImages.EnemyFlipTank;
+        this.spritesheet.image = G.loader.brightImages.EnemyFlipDrone;
         this.timeSinceHit += dt;
         this.brightTime += dt;
         if(this.timeSinceHit > this.flashTime) {
             this.timeSinceHit = 0;
             this.wasHit = false;
-            this.spritesheet.image = G.img.EnemyFlipTank;
+            this.spritesheet.image = G.img.EnemyFlipDrone;
         } else {
             if(this.brightTime > this.flashTime / 5) {
                 this.brightImages = 0;
-                if(this.spritesheet.image == G.img.EnemyFlipTank) {
-                    this.spritesheet.image = G.img.EnemyFlipTank;
+                if(this.spritesheet.image == G.img.EnemyFlipDrone) {
+                    this.spritesheet.image = G.img.EnemyFlipDrone;
                 } else {
-                    this.spritesheet.image = G.loader.brightImages.EnemyFlipTank;
+                    this.spritesheet.image = G.loader.brightImages.EnemyFlipDrone;
                 }
             }
             
@@ -225,9 +223,8 @@ Drone.prototype.getSpriteSheetFrame = function getSpriteSheetFrame() {
 }
 
 Drone.prototype.init = function init(){
-    // Using EnemyFlipTank as a placeholder
     this.spritesheet = new SpriteSheet({
-        image: G.img.EnemyFlipTank,
+        image: G.img.EnemyFlipDrone,
         frameWidth: DRONE_W,
         frameHeight: DRONE_H,
         animations: {
