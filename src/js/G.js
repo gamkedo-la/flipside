@@ -94,7 +94,7 @@ export const G = {
         "room02": "testMusic1",
         "room03": "vanishing",
         "room04": "testMusic1",
-        "room04a": "tesMusic1",
+        "room04a": "testMusic1",
         "room05": "testMusic1",
         "room06": "testMusic1",
         "room07": "testMusic1",

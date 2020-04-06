@@ -1162,7 +1162,8 @@ Player.hurt = function(params){
         if(params.message){
             let toShow = params.message.text;
 
-            if(params.message.text == "spidey") {
+            if(params.message.text == "spidey" ||
+                params.message.text == "Spidey") {
                 let spideyTalk = [
                     "It's tangle time",
                     "I've caught you now",
@@ -1174,7 +1175,8 @@ Player.hurt = function(params){
                 toShow+=": "+spideyTalk[Math.floor(Math.random()*spideyTalk.length)];
             }
             if(params.message.text == "bat" ||
-                    params.message.text == "Bzzzzzzzzz....DIE..zzzzz") {
+                    params.message.text == "Bzzzzzzzzz....DIE..zzzzz" ||
+                    params.message.text == "My name is my quote..") {
                 let batTalk = [
                     "chomp",
                     "You're delicious",
@@ -1188,16 +1190,20 @@ Player.hurt = function(params){
                 toShow="bat: "+batTalk[Math.floor(Math.random()*batTalk.length)];
 
             }
-            if(params.message.text == "pig") {
+            if(params.message.text == "pig" ||
+                    params.message.text == "There's so much good to eat here!" ||
+                    params.message.text == "I fart in your general direction") {
                 let pigTalk = [
                     "oink",
                     "Watch where you're going",
                     "You clumsy oaf",
                     "Out of my way!",
                     "grrrrrr",
-                    "You're bacon me mad"
+                    "You're bacon me mad",
+                    "There's so much good to eat here!"
                 ];
-                toShow+=": "+pigTalk[Math.floor(Math.random()*pigTalk.length)];
+                // = instead of += since common buzz phrase doesn't start with name
+                toShow ="pig: "+pigTalk[Math.floor(Math.random()*pigTalk.length)];
             }
             if(params.message.text == "Ho hum de dum") { // slime
                 let slimeTalk = [
@@ -1206,12 +1212,15 @@ Player.hurt = function(params){
                     "*broiling*",
                     "*rolling*",
                     "*sticking*",
-                    "*popping*"
+                    "*popping*",
+                    "*gurgling*",
+                    "*belching*"
                 ];
                 // note: not += but = for slime since name not common default
                 toShow="slime : "+slimeTalk[Math.floor(Math.random()*slimeTalk.length)];
             }
-            if(params.message.text == "Flipbird") {
+            if(params.message.text == "Flipbird" ||
+                    params.message.text == "bird") {
                 let birdTalk = [
                     "screeeeeeee",
                     "squawk",
@@ -1220,9 +1229,12 @@ Player.hurt = function(params){
                     "snap",
                     "coo coo"
                 ];
-                toShow+=": "+birdTalk[Math.floor(Math.random()*birdTalk.length)];
+                // note: not += but = for slime since name not common default
+                toShow ="Flipbird: "+birdTalk[Math.floor(Math.random()*birdTalk.length)];
             }
-            if(params.message.text == "RoboTank") {
+            if(params.message.text == "RoboTank" ||
+                params.message.text == "tank" ||
+                    params.message.text == "RoboTDrone") {
                 let tankTalk = [
                     "I will flip you",
                     "Prepare to be space",
@@ -1235,6 +1247,12 @@ Player.hurt = function(params){
                     "Protocol breach confirmed",
                     "I must crush you"
                 ];
+                if(params.message.text == "RoboTDrone") {
+                    toShow = "RoboDrone"; // replacing RoboTDrone
+                } else {
+                    toShow = "RoboTank"; // replacing "tank" in some cases
+                }
+
                 toShow+=": "+tankTalk[Math.floor(Math.random()*tankTalk.length)];
             }
 
