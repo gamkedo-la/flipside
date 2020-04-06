@@ -1235,7 +1235,8 @@ Player.hurt = function(params){
             if(params.message.text == "RoboTank" ||
                 params.message.text == "tank" ||
                     params.message.text == "drone" ||
-                    params.message.text == "RoboTDrone") {
+                    params.message.text == "RoboTDrone" ||
+                    params.message.text == "RoboDrone") {
                 let tankTalk = [
                     "I will flip you",
                     "Prepare to be space",
@@ -1248,7 +1249,8 @@ Player.hurt = function(params){
                     "Protocol breach confirmed",
                     "I must crush you"
                 ];
-                if(params.message.text == "RoboTDrone" || params.message.text == "drone") {
+                if(params.message.text == "RoboTDrone" || params.message.text == "drone" ||
+                    params.message.text == "RoboDrone") { // just to not get replaced with tank
                     toShow = "RoboDrone"; // replacing other namings
                 } else {
                     toShow = "RoboTank"; // replacing "tank" in some cases
