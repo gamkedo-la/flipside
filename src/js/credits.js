@@ -21,7 +21,7 @@ const Credits = function Credits() {
 "Michael \"Misha\" Fewkes: Audio implementation (advanced; spatialization, ducking, track swapping, and more), volume controls"," ",
 "Stebs: Creepy synthwave track"," ",
 "Vaan Hope Khani: Assorted sound effects (environment, enemy, attacks, interface, pickups, and more), main dialog box functionality"," ",
-"Michelly-Michelly Oliveira: Drone logic"," ",
+"Michelly Oliveira: RoboDrone logic"," ",
 "Gonzalo Delgado: Blue pipes tiles, OS compatibility fix"," ",
 "Jeremiah Franczyk: Animations (walk, idle, with and without gun), initial EV suit"," ",
 "Matthew \"McCordinator\" McCord: Pause menu, blocked movement while crouching"," ",
