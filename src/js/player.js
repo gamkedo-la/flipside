@@ -176,8 +176,10 @@ Player.update = function update(dt, world, worldFlipped, worldForeground){
     this.transformCooldown--;
     const { MSG } = G;
 
-    // fell off bottom of map?
-    if(this.pos.y > G.world.heightInTiles * G.world.tileSize + this.height) { // + height to be off camera
+    // left map
+    if(this.pos.y > G.world.heightInTiles * G.world.tileSize + this.height || // + height to be off camera
+        this.pos.x < 0 ||
+        this.pos.x > G.world.widthInTiles * G.world.tileSize + this.width) {
         this.died(); // kill to reset
         return;
     }
