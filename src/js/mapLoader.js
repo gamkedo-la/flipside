@@ -5,12 +5,20 @@ let mapsToLoad = 0;
 onmessage = function(message) {
     const data = message.data;
     workerTileMaps = data.map;
-
+    if (!workerTileMaps) {
+        // post-release bugfix: this can be undefined (race condition onload on macs?)
+        console.error("mapLoader ERROR! onmessage map data is malformed! IGNORING!")
+        return; // FIXME
+    }
     loadConnectedMaps(data.mapName);
 }
 
 function loadConnectedMaps(map) {
-  const currentMap = workerTileMaps[map];
+  const currentMap = workerTileMaps[map]; 
+  if (!currentMap) {
+    console.error("loadConnectedMaps ERROR! missing currentMap! IGNORING!")
+    return; // FIXME
+}
 
   const portals = currentMap.layers[3].objects;
   const connectedMaps = [];
