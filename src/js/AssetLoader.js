@@ -168,6 +168,15 @@ AssetLoader.prototype.soundLoader = function ({context, urlList, callback} = {})
             alert('error decoding file data: ' + url);
             return;
           }
+
+          // clear screen
+          ctx.fillStyle = 'rgba(0,0,0, 1.0)';
+          ctx.fillRect(0,0,G.c.width,G.c.height);
+          // NOTE: we cannot safely use G.gameFont for drawText here yet, since it may not be loaded!
+          ctx.fillStyle = 'rgba(180,180,180, 1.0)';
+          ctx.fillText("Images: "+G.imagesLoaded+"/"+G.imagesTotal,25,25);
+          ctx.fillText("Audio: "+G.soundsLoaded+"/"+G.soundsTotal,25,35);
+
           loader.sounds[key] = buffer;
           ++G.soundsLoaded;
           if (++loader.loadCount == loader.urlList.length)
