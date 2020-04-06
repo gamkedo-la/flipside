@@ -190,14 +190,13 @@ G.MSG.addEventListener('achievement',  function (event) { showMessage(`ACHIEVEME
 
 loader.loadInitialMapData(G.currentMap, init);
 
+G.imagesTotal = images.length;
+G.soundsTotal = soundList.length;
+
+loader.redrawLoadUpdate(); // drawing instantly, even if 0, to replace black screen step
+
 function init(){
     console.log("Main init begins...")
-
-    G.imagesTotal = images.length;
-    G.soundsTotal = soundList.length;
-
-    console.log("Images loaded: "+G.imagesLoaded+"/"+G.imagesTotal);
-    console.log("Sounds loaded: "+G.soundsTotal+"/"+soundList.length);
 
     G.img = loader.loadImages(images, soundInit);
 
@@ -208,8 +207,9 @@ function init(){
     G.credits = new Credits();
     G.credits.wrapCredits(); // slicing to fit screen width
 
-    if(G.imagesLoaded != G.imagesTotal && G.soundsTotal != soundList.length){
-        requestAnimationFrame(drawLoadingScreen);
+    if(G.imagesLoaded != G.imagesTotal || G.soundsTotal != soundList.length){ //// was &&, so didn't show if images or sound finished
+        // requestAnimationFrame(drawLoadingScreen);
+        console.log("showing incremental load feedback");
     } else {
         console.log("No drawLoadingScreen required: everything loaded already.");
     }

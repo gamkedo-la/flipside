@@ -18,6 +18,7 @@ AssetLoader.prototype.loadImages = function loadImages(names, callback) {
         self = this,
         onload = function() {
             G.imagesLoaded++; // used by the loading Screen
+            self.redrawLoadUpdate();
             if(--count == 0){
                 this.images = result;
                 self.prepareBrightImages(result);
@@ -148,6 +149,16 @@ AssetLoader.prototype.soundLoader = function ({context, urlList, callback} = {})
     
     this.loadCount = G.soundsLoaded;
   }
+
+  AssetLoader.prototype.redrawLoadUpdate = function() {
+    // clear screen
+    ctx.fillStyle = 'rgba(0,0,0, 1.0)';
+    ctx.fillRect(0,0,G.c.width,G.c.height);
+    // NOTE: we cannot safely use G.gameFont for drawText here yet, since it may not be loaded!
+    ctx.fillStyle = 'rgba(180,180,180, 1.0)';
+    ctx.fillText("Images: "+G.imagesLoaded+"/"+G.imagesTotal,25,25);
+    ctx.fillText("Audio: "+G.soundsLoaded+"/"+G.soundsTotal,25,35);
+  }
   
   AssetLoader.prototype.loadBuffer = function(url, key) {
     // Load buffer asynchronously
@@ -156,7 +167,7 @@ AssetLoader.prototype.soundLoader = function ({context, urlList, callback} = {})
     request.responseType = "arraybuffer";
   
     var loader = this;
-  
+
     request.onload = function() {
       // Asynchronously decode the audio file data in request.response
       // FIXME: G.audio has to be initialized for this to run!
@@ -169,16 +180,9 @@ AssetLoader.prototype.soundLoader = function ({context, urlList, callback} = {})
             return;
           }
 
-          // clear screen
-          ctx.fillStyle = 'rgba(0,0,0, 1.0)';
-          ctx.fillRect(0,0,G.c.width,G.c.height);
-          // NOTE: we cannot safely use G.gameFont for drawText here yet, since it may not be loaded!
-          ctx.fillStyle = 'rgba(180,180,180, 1.0)';
-          ctx.fillText("Images: "+G.imagesLoaded+"/"+G.imagesTotal,25,25);
-          ctx.fillText("Audio: "+G.soundsLoaded+"/"+G.soundsTotal,25,35);
-
           loader.sounds[key] = buffer;
           ++G.soundsLoaded;
+          loader.redrawLoadUpdate();
           if (++loader.loadCount == loader.urlList.length)
             loader.onSoundsLoaded(loader.sounds);
         },
