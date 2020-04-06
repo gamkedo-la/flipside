@@ -902,9 +902,6 @@ function handleInput(dt){
         audio.turnVolumeUp();
     }
 
-    if (Key.isDown(Key.b)) {
-        showMessage();
-    }
 }
 
 function handleCamera(dt){

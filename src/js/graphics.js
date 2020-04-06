@@ -117,6 +117,7 @@ export function spriteFont({
     }
 
 spriteFont.prototype.drawText = function drawText({ textString, pos={x: 0, y: 0}, hspacing=0, vspacing = 2 } = {}){
+    if (!textString) return;
     var lines = textString.split("\n");
     var self = this;
     self.pos = pos, self.hspacing = hspacing, self.vspacing = vspacing;
