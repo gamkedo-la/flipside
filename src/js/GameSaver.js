@@ -30,7 +30,7 @@ const GameSaver = function GameSaver() {
 }
 
 GameSaver.prototype.getSavedGame = function getSavedGame(game) {
-    if(this.saves[game] === undefined) {
+    if(typeof this.saves[game] === 'undefined') {
         console.error(`Game Save: ${game} does not exist`);
         return this.saves.game1 = new this.GameSaveObject();
     } else if(this.saves[game] == null) {

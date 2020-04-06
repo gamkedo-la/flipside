@@ -96,11 +96,12 @@ G.gameKey = 'game1';//TODO: User input to decide which game save to load
 G.savedGame = G.saver.getSavedGame(G.gameKey);
 
 G.player = player;
-G.player.maxHealth = G.savedGame.maxHealth;
-G.Records = G.savedGame.Records;
+if(typeof G.savedGame !== 'undefined') {
+    G.player.maxHealth = G.savedGame.maxHealth;
+    G.Records = G.savedGame.Records;
+    G.currentMap = G.savedGame.map;
+}
 G.transitioner = new Transitioner();
-
-G.currentMap = G.savedGame.map;
 
 const images = [
     //image loader assumes .png and appends it. all images should be in /src/img/.
@@ -226,7 +227,11 @@ function soundInit(){
     //next we load our soundlist, passing in start as a callback once complete.
     //soundloader just gives loader the properties,  loadAudioBuffer actually decodes the files and
     //creates a list of buffers.
-    loadMap({map: G.currentMap, spawnPoint: G.savedGame.spawnPoint});
+    if(typeof G.savedGame !== 'undefined') {
+        loadMap({map: G.currentMap, spawnPoint: G.savedGame.spawnPoint});
+    } else {
+        loadMap({map: G.currentMap, spawnPoint: G.PLAYER_STARTSPAWN});
+    }
 
     if (soundEnabled) {
         loader.soundLoader({context: audio.context, urlList: soundList, callback: start});
