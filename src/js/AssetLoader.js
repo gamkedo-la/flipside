@@ -156,8 +156,14 @@ AssetLoader.prototype.soundLoader = function ({context, urlList, callback} = {})
     ctx.fillRect(0,0,G.c.width,G.c.height);
     // NOTE: we cannot safely use G.gameFont for drawText here yet, since it may not be loaded!
     ctx.fillStyle = 'rgba(180,180,180, 1.0)';
-    ctx.fillText("Images: "+G.imagesLoaded+"/"+G.imagesTotal,25,25);
-    ctx.fillText("Audio: "+G.soundsLoaded+"/"+G.soundsTotal,25,35);
+    // ctx.fillText("8MB RAM SYSTEM READY",15,05);
+    ctx.fillText("HTGD-GW Protected Mode Run-Time Version 1.97",15,15);
+    ctx.fillText("Online Collaboration by HomeTeam GameDev, Apollo",15,25);
+    ctx.fillText("Images: "+G.imagesLoaded+"/"+G.imagesTotal,15,35);
+    ctx.fillText("Audio: "+G.soundsLoaded+"/"+G.soundsTotal,15,45);
+    if( (G.soundsLoaded + G.imagesLoaded)%2 == 1 ) {
+      ctx.fillText("_",15,55);
+    }
   }
   
   AssetLoader.prototype.loadBuffer = function(url, key) {
